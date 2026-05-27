@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import dagre from '@dagrejs/dagre';
 import { SmartStepEdge } from '@jalez/react-flow-smart-edge';
+import { parse, stringify } from 'yaml';
 import {
   Box,
   Button,
@@ -87,7 +88,7 @@ function getEdgeColor(className: string | undefined, isSelected: boolean, isConn
   return 'var(--ctp-overlay0)';
 }
 
-const POSITIONS_FILE_URL = '/positions.json';
+const POSITIONS_FILE_URL = '/services/gnmi/0.7.0/pos.yaml';
 const AUTO_LAYOUT_CONFIG = {
   rankdir: 'LR',
   nodesep: 120,
@@ -260,6 +261,20 @@ function getPositions(payload: unknown): Record<string, NodePosition> {
   );
 }
 
+function getPositionsYaml(nodes: GnmiFlowNode[]) {
+  const positions = Object.fromEntries(
+    nodes.map((node) => [
+      node.id,
+      {
+        x: Math.round(node.position.x),
+        y: Math.round(node.position.y),
+      },
+    ]),
+  );
+
+  return stringify({ nodes: positions });
+}
+
 function applyPositions(nodes: GnmiFlowNode[], positions: Record<string, NodePosition>) {
   return nodes.map((node) => ({
     ...node,
@@ -320,27 +335,6 @@ function estimatedNodeSize(node: Node<GnmiNodeData>) {
   };
 }
 
-function downloadPositions(nodes: GnmiFlowNode[]) {
-  const positions = Object.fromEntries(
-    nodes.map((node) => [
-      node.id,
-      {
-        x: Math.round(node.position.x),
-        y: Math.round(node.position.y),
-      },
-    ]),
-  );
-
-  const payload = JSON.stringify({ nodes: positions }, null, 2);
-  const blob = new Blob([`${payload}\n`], { type: 'application/json' });
-  const url = URL.createObjectURL(blob);
-  const anchor = document.createElement('a');
-  anchor.href = url;
-  anchor.download = 'positions.json';
-  anchor.click();
-  URL.revokeObjectURL(url);
-}
-
 type GnmiMapProps = {
   themeMode: ThemeMode;
   onThemeToggle: () => void;
@@ -350,11 +344,12 @@ function GnmiMap({ themeMode, onThemeToggle }: GnmiMapProps) {
   const [query, setQuery] = useState('');
   const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null);
   const [selectedEdgeId, setSelectedEdgeId] = useState<string | null>(null);
-  const [useSmartRouting, setUseSmartRouting] = useState(true);
+  const [useSmartRouting, setUseSmartRouting] = useState(false);
   const [flowNodes, setFlowNodes] = useState<GnmiFlowNode[]>(gnmiNodes);
   const [positionsStatus, setPositionsStatus] = useState<'checking' | 'loaded' | 'missing' | 'invalid'>(
     'checking',
   );
+  const [copyStatus, setCopyStatus] = useState<'idle' | 'copied' | 'failed'>('idle');
   const nodesInitialized = useNodesInitialized();
   const { fitView, getNodes } = useReactFlow();
   const hasAutoLayoutRun = useRef(false);
@@ -417,30 +412,34 @@ function GnmiMap({ themeMode, onThemeToggle }: GnmiMapProps) {
           return null;
         }
 
-        return response.json();
+        return response.text();
       })
-      .then((payload: unknown) => {
+      .then((payload: string | null) => {
         if (!isMounted) {
           return;
         }
 
         if (!payload) {
+          setUseSmartRouting(true);
           setPositionsStatus('missing');
           return;
         }
 
-        const positions = getPositions(payload);
+        const positions = getPositions(parse(payload));
 
         if (Object.keys(positions).length === 0) {
+          setUseSmartRouting(true);
           setPositionsStatus('invalid');
           return;
         }
 
         setFlowNodes((nodes) => applyPositions(nodes, positions));
+        setUseSmartRouting(false);
         setPositionsStatus('loaded');
       })
       .catch(() => {
         if (isMounted) {
+          setUseSmartRouting(true);
           setPositionsStatus('missing');
         }
       });
@@ -590,6 +589,17 @@ function GnmiMap({ themeMode, onThemeToggle }: GnmiMapProps) {
     setUseSmartRouting(false);
   };
 
+  const copyPositions = async () => {
+    try {
+      await navigator.clipboard.writeText(getPositionsYaml(flowNodes));
+      setCopyStatus('copied');
+      window.setTimeout(() => setCopyStatus('idle'), 1800);
+    } catch {
+      setCopyStatus('failed');
+      window.setTimeout(() => setCopyStatus('idle'), 2400);
+    }
+  };
+
   const onPaneClick = () => {
     setSelectedNodeId(null);
     setSelectedEdgeId(null);
@@ -625,9 +635,13 @@ function GnmiMap({ themeMode, onThemeToggle }: GnmiMapProps) {
           type="button"
           variant="contained"
           color="primary"
-          onClick={() => downloadPositions(flowNodes)}
+          onClick={copyPositions}
         >
-          Save positions
+          {copyStatus === 'copied'
+            ? 'Copied'
+            : copyStatus === 'failed'
+              ? 'Copy failed'
+              : 'Copy positions'}
         </Button>
         <FormControlLabel
           className="top-bar__theme-toggle"

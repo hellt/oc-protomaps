@@ -1,0 +1,130 @@
+nodes:
+  service-gnmi:
+    x: -1060
+    y: 680
+  rpc-capabilities:
+    x: -410
+    y: -1990
+  rpc-get:
+    x: -410
+    y: -990
+  rpc-set:
+    x: -600
+    y: 3400
+  rpc-subscribe:
+    x: -460
+    y: 850
+  capability-request:
+    x: 20
+    y: -2200
+  capability-response:
+    x: 410
+    y: -1850
+  model-data:
+    x: 1200
+    y: -610
+  get-request:
+    x: 10
+    y: -1300
+  get-response:
+    x: 10
+    y: -850
+  data-type:
+    x: 340
+    y: -1480
+  encoding:
+    x: 340
+    y: -1150
+  path:
+    x: 1790
+    y: 70
+  path-elem:
+    x: 2190
+    y: 60
+  notification:
+    x: 750
+    y: 1140
+  update:
+    x: 400
+    y: 2970
+  typed-value:
+    x: 2390
+    y: 1660
+  typed-value-oneof:
+    x: 3460
+    y: 1040
+  decimal64:
+    x: 3320
+    y: 1520
+  scalar-array:
+    x: 2950
+    y: 2210
+  protobuf-any:
+    x: 3090
+    y: 70
+  value:
+    x: 1910
+    y: 330
+  error:
+    x: 290
+    y: 1700
+  set-request:
+    x: -150
+    y: 3130
+  set-response:
+    x: -120
+    y: 3920
+  update-result:
+    x: 1970
+    y: 720
+  operation:
+    x: 2760
+    y: 950
+  subscribe-request:
+    x: -70
+    y: 540
+  subscribe-request-oneof:
+    x: 290
+    y: 590
+  poll:
+    x: 750
+    y: 690
+  subscription-list:
+    x: 750
+    y: 180
+  subscription:
+    x: 1200
+    y: -260
+  subscription-mode:
+    x: 2300
+    y: 2460
+  mode:
+    x: 2800
+    y: 2260
+  qos-marking:
+    x: 900
+    y: 2620
+  alias-list:
+    x: 750
+    y: 920
+  alias:
+    x: 3420
+    y: 1910
+  subscribe-response:
+    x: -70
+    y: 1180
+  subscribe-response-oneof:
+    x: 290
+    y: 1040
+  gnmi-ext-extension:
+    x: 3570
+    y: -50
+  registered-extension:
+    x: 3070
+    y: 320
+  extension-id:
+    x: 3060
+    y: 570
+  master-arbitration:
+    x: 3350
+    y: 1090
