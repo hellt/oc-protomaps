@@ -1,4 +1,4 @@
-import { type CSSProperties, useCallback, useEffect, useMemo, useState } from 'react';
+import { type CSSProperties, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
   BaseEdge,
   type NodeChange,
@@ -31,13 +31,11 @@ import {
   Sun,
 } from 'lucide-react';
 import {
-  getVisibleMap,
   type MapEdge,
   type MapEdgeKind,
   type MapField,
   type MapNode,
-  mapSource,
-} from './gnmiMap';
+} from './protoMapTypes';
 import {
   applyManualPositions,
   computeReadableNodeLayout,
@@ -46,6 +44,15 @@ import {
   type RoutePoint,
   type TargetHandleLayout,
 } from './mapLayout';
+import {
+  getInitialServiceRoute,
+  serviceChoiceForRoute,
+  serviceMapOrder,
+  serviceMaps,
+  type ServiceId,
+  type ServiceMapChoice,
+  type ServiceMapDefinition,
+} from './serviceMaps';
 
 const edgeStyleByKind: Record<MapEdgeKind, CSSProperties> = {
   rpc: { stroke: 'var(--edge-rpc)', strokeWidth: 2.2 },
@@ -66,7 +73,6 @@ const edgeTypes: EdgeTypes = {
   routed: RoutedEdge,
 };
 
-const pdfMapUrl = `${import.meta.env.BASE_URL}gnmi_0.10.0_map.pdf`;
 const themeStorageKey = 'gnmi-map-theme';
 
 type ThemeMode = 'light' | 'dark';
@@ -76,8 +82,8 @@ type NodePosition = {
   y: number;
 };
 
-let cachedElkLayoutPositions: Record<string, NodePosition> | null = null;
-let cachedElkLayoutPromise: Promise<Record<string, NodePosition>> | null = null;
+const cachedElkLayoutPositions = new Map<string, Record<string, NodePosition>>();
+const cachedElkLayoutPromises = new Map<string, Promise<Record<string, NodePosition>>>();
 
 type RoutedEdgeData = Record<string, unknown> & {
   routePoints: RoutePoint[];
@@ -126,33 +132,53 @@ function nodePositions(nodes: MapNode[]): Record<string, NodePosition> {
   return Object.fromEntries(nodes.map((node) => [node.id, node.position]));
 }
 
-function computeElkLayoutPositions(force = false): Promise<Record<string, NodePosition>> {
+function computeElkLayoutPositions(
+  cacheKey: string,
+  visibleMap: { nodes: MapNode[]; edges: MapEdge[] },
+  compact: boolean,
+  force = false,
+): Promise<Record<string, NodePosition>> {
   if (force) {
-    cachedElkLayoutPositions = null;
-    cachedElkLayoutPromise = null;
+    cachedElkLayoutPositions.delete(cacheKey);
+    cachedElkLayoutPromises.delete(cacheKey);
   }
 
-  if (cachedElkLayoutPositions) {
-    return Promise.resolve(cachedElkLayoutPositions);
+  const cachedPositions = cachedElkLayoutPositions.get(cacheKey);
+  if (cachedPositions) {
+    return Promise.resolve(cachedPositions);
   }
 
-  if (!cachedElkLayoutPromise) {
-    const fullMap = getVisibleMap({ showDeprecated: true, showExtensions: true });
-    cachedElkLayoutPromise = computeReadableNodeLayout(fullMap.nodes, fullMap.edges).then(
-      (layoutNodes) => {
-        const positions = nodePositions(layoutNodes);
-        cachedElkLayoutPositions = positions;
-        cachedElkLayoutPromise = null;
-        return positions;
-      },
-      (error: unknown) => {
-        cachedElkLayoutPromise = null;
-        throw error;
-      },
-    );
+  const cachedPromise = cachedElkLayoutPromises.get(cacheKey);
+  if (cachedPromise) {
+    return cachedPromise;
   }
 
-  return cachedElkLayoutPromise;
+  const layoutPromise = computeReadableNodeLayout(visibleMap.nodes, visibleMap.edges, {
+    compact,
+  }).then(
+    (layoutNodes) => {
+      const positions = nodePositions(layoutNodes);
+      cachedElkLayoutPositions.set(cacheKey, positions);
+      cachedElkLayoutPromises.delete(cacheKey);
+      return positions;
+    },
+    (error: unknown) => {
+      cachedElkLayoutPromises.delete(cacheKey);
+      throw error;
+    },
+  );
+  cachedElkLayoutPromises.set(cacheKey, layoutPromise);
+
+  return layoutPromise;
+}
+
+function serviceSubtitle(serviceMap: ServiceMapDefinition): string {
+  if (serviceMap.serviceVersion) {
+    return `${serviceMap.label} service ${serviceMap.serviceVersion}`;
+  }
+  return serviceMap.sourceTag
+    ? `${serviceMap.label} ${serviceMap.sourceTag}`
+    : `${serviceMap.label} service family`;
 }
 
 function searchableText(node: MapNode): string {
@@ -175,11 +201,22 @@ function fieldMatches(field: MapField, query: string): boolean {
 
 function AppShell() {
   const { fitView } = useReactFlow<MapNode, RoutedMapEdge>();
+  const initialServiceRoute = useMemo(() => getInitialServiceRoute(), []);
+  const [activeServiceId, setActiveServiceId] = useState<ServiceId>(
+    () => initialServiceRoute.serviceId,
+  );
+  const [serviceChoiceIds, setServiceChoiceIds] = useState<Record<ServiceId, string>>(() => ({
+    gnmi: serviceMaps.gnmi.defaultServiceChoiceId,
+    gnoi: serviceMaps.gnoi.defaultServiceChoiceId,
+    gnsi: serviceMaps.gnsi.defaultServiceChoiceId,
+    gribi: serviceMaps.gribi.defaultServiceChoiceId,
+    [initialServiceRoute.serviceId]: initialServiceRoute.serviceChoiceId,
+  }));
   const [theme, setTheme] = useState<ThemeMode>(getInitialTheme);
   const [layoutResetCount, setLayoutResetCount] = useState(0);
   const [layoutPending, setLayoutPending] = useState(false);
   const [elkLayoutPositions, setElkLayoutPositions] =
-    useState<Record<string, NodePosition> | null>(cachedElkLayoutPositions);
+    useState<Record<string, NodePosition> | null>(null);
   const [queryValue, setQueryValue] = useState('');
   const [showExtensions, setShowExtensions] = useState(false);
   const [showDeprecated, setShowDeprecated] = useState(false);
@@ -187,14 +224,59 @@ function AppShell() {
   const [selectedEdgeId, setSelectedEdgeId] = useState<string | null>(null);
   const [manualPositions, setManualPositions] = useState<Record<string, NodePosition>>({});
   const [routingPositions, setRoutingPositions] = useState<Record<string, NodePosition>>({});
+  const appliedLayoutResetCount = useRef(0);
 
+  const activeService = serviceMaps[activeServiceId];
+  const activeServiceChoice =
+    serviceChoiceForRoute(activeService, serviceChoiceIds[activeServiceId]) ??
+    activeService.serviceChoices[0];
+  const activeServiceChoiceId = activeServiceChoice.id;
+  const compactLayout = activeServiceChoiceId !== activeService.defaultServiceChoiceId;
+  const layoutCacheKey = `${activeServiceId}:${activeServiceChoiceId}:${compactLayout ? 'compact' : 'regular'}`;
   const query = queryValue.trim().toLowerCase();
   const darkMode = theme === 'dark';
   const visibleMap = useMemo(
-    () => getVisibleMap({ showDeprecated, showExtensions }),
-    [showDeprecated, showExtensions],
+    () =>
+      activeService.getVisibleMap({
+        showDeprecated,
+        showExtensions,
+        focusNodeId: activeServiceChoiceId,
+      }),
+    [activeService, activeServiceChoiceId, showDeprecated, showExtensions],
+  );
+  const layoutSourceMap = useMemo(
+    () =>
+      activeService.getVisibleMap({
+        showDeprecated: true,
+        showExtensions: true,
+        focusNodeId: activeServiceChoiceId,
+      }),
+    [activeService, activeServiceChoiceId],
   );
   const fallbackLayoutNodes = useMemo(() => improveNodeLayout(visibleMap.nodes), [visibleMap.nodes]);
+
+  useEffect(() => {
+    setSelectedId(null);
+    setSelectedEdgeId(null);
+    setManualPositions({});
+    setRoutingPositions({});
+    setQueryValue('');
+    setElkLayoutPositions(cachedElkLayoutPositions.get(layoutCacheKey) ?? null);
+  }, [layoutCacheKey]);
+
+  useEffect(() => {
+    const nextHash =
+      activeService.serviceChoices.length > 1
+        ? `#${activeServiceId}/${encodeURIComponent(activeServiceChoiceId)}`
+        : `#${activeServiceId}`;
+    if (window.location.hash !== nextHash) {
+      window.history.replaceState(
+        null,
+        '',
+        `${window.location.pathname}${window.location.search}${nextHash}`,
+      );
+    }
+  }, [activeService, activeServiceChoiceId, activeServiceId]);
 
   useEffect(() => {
     document.documentElement.dataset.theme = theme;
@@ -204,8 +286,12 @@ function AppShell() {
   useEffect(() => {
     let cancelled = false;
     setLayoutPending(true);
+    const forceLayout = layoutResetCount > appliedLayoutResetCount.current;
+    if (forceLayout) {
+      appliedLayoutResetCount.current = layoutResetCount;
+    }
 
-    computeElkLayoutPositions(layoutResetCount > 0)
+    computeElkLayoutPositions(layoutCacheKey, layoutSourceMap, compactLayout, forceLayout)
       .then((layoutPositions) => {
         if (!cancelled) {
           setElkLayoutPositions(layoutPositions);
@@ -223,7 +309,7 @@ function AppShell() {
     return () => {
       cancelled = true;
     };
-  }, [layoutResetCount]);
+  }, [compactLayout, layoutCacheKey, layoutResetCount, layoutSourceMap]);
 
   const layoutNodes = useMemo(
     () =>
@@ -254,8 +340,8 @@ function AppShell() {
     [layoutNodes, routingPositions],
   );
   const readableLayout = useMemo(
-    () => routeReadableLayout(routedLayoutNodes, visibleMap.edges),
-    [routedLayoutNodes, visibleMap.edges],
+    () => routeReadableLayout(routedLayoutNodes, visibleMap.edges, { compact: compactLayout }),
+    [compactLayout, routedLayoutNodes, visibleMap.edges],
   );
   const displayedLayoutNodes = useMemo(
     () => applyManualPositions(readableLayout.nodes, manualPositions),
@@ -500,14 +586,31 @@ function AppShell() {
     setRoutingPositions({});
     setLayoutResetCount((count) => count + 1);
   }, []);
+  const selectServiceChoice = useCallback(
+    (serviceChoiceId: string) => {
+      setServiceChoiceIds((currentChoices) => ({
+        ...currentChoices,
+        [activeServiceId]: serviceChoiceId,
+      }));
+    },
+    [activeServiceId],
+  );
 
   return (
     <div className="app-shell">
       <header className="topbar">
         <div className="brand">
-          <span className="brand-kicker">gNMI service {mapSource.gnmiServiceVersion}</span>
-          <h1>React Flow Map</h1>
+          <span className="brand-kicker">{serviceSubtitle(activeService)}</span>
+          <h1>{activeService.title}</h1>
         </div>
+
+        <ServiceNav activeServiceId={activeServiceId} onSelect={setActiveServiceId} />
+
+        <ServiceChoiceSelect
+          serviceMap={activeService}
+          value={activeServiceChoiceId}
+          onSelect={selectServiceChoice}
+        />
 
         <div className="toolbar" role="toolbar" aria-label="Map controls">
           <label className="search-box">
@@ -536,9 +639,9 @@ function AppShell() {
             </span>
           </button>
 
-          <button className="tool-button" type="button" onClick={fit}>
+          <button className="tool-button" type="button" onClick={fit} title="Fit map">
             <Focus size={16} aria-hidden="true" />
-            Fit
+            <span className="tool-label">Fit</span>
           </button>
 
           <button
@@ -546,9 +649,10 @@ function AppShell() {
             type="button"
             onClick={resetLayout}
             disabled={layoutPending}
+            title="Reset layout"
           >
             <RotateCcw size={16} aria-hidden="true" />
-            Reset
+            <span className="tool-label">Reset</span>
           </button>
 
           <button
@@ -556,11 +660,11 @@ function AppShell() {
             type="button"
             onClick={() => setShowExtensions((value) => !value)}
             aria-pressed={showExtensions}
-            data-tooltip="Show gNMI extension fields and extension-detail relationships."
-            title="Show gNMI extension fields and extension-detail relationships."
+            data-tooltip="Show extension fields and extension-detail relationships."
+            title="Show extension fields and extension-detail relationships."
           >
             <GitBranch size={16} aria-hidden="true" />
-            Extensions
+            <span className="tool-label">Extensions</span>
           </button>
 
           <button
@@ -572,13 +676,21 @@ function AppShell() {
             title="Show deprecated proto fields and deprecated message types."
           >
             <EyeOff size={16} aria-hidden="true" />
-            Deprecated
+            <span className="tool-label">Deprecated</span>
           </button>
 
-          <a className="tool-button" href={pdfMapUrl} target="_blank" rel="noreferrer">
-            <FileDown size={16} aria-hidden="true" />
-            PDF
-          </a>
+          {activeService.pdfUrl ? (
+            <a
+              className="tool-button"
+              href={activeService.pdfUrl}
+              target="_blank"
+              rel="noreferrer"
+              title="Download PDF"
+            >
+              <FileDown size={16} aria-hidden="true" />
+              <span className="tool-label">PDF</span>
+            </a>
+          ) : null}
         </div>
       </header>
 
@@ -622,11 +734,68 @@ function AppShell() {
 
         <Inspector
           node={selectedNode}
+          serviceLabel={activeService.label}
+          serviceChoice={activeServiceChoice}
           totalNodes={visibleMap.nodes.length}
           totalEdges={visibleMap.edges.length}
         />
       </main>
     </div>
+  );
+}
+
+type ServiceNavProps = {
+  activeServiceId: ServiceId;
+  onSelect: (serviceId: ServiceId) => void;
+};
+
+function ServiceNav({ activeServiceId, onSelect }: ServiceNavProps) {
+  return (
+    <nav className="service-nav" aria-label="Service maps">
+      {serviceMapOrder.map((serviceId) => {
+        const serviceMap = serviceMaps[serviceId];
+        const active = serviceId === activeServiceId;
+
+        return (
+          <button
+            key={serviceId}
+            className={`service-tab ${active ? 'is-active' : ''}`}
+            type="button"
+            aria-pressed={active}
+            onClick={() => onSelect(serviceId)}
+          >
+            <span>{serviceMap.label}</span>
+          </button>
+        );
+      })}
+    </nav>
+  );
+}
+
+type ServiceChoiceSelectProps = {
+  serviceMap: ServiceMapDefinition;
+  value: string;
+  onSelect: (serviceChoiceId: string) => void;
+};
+
+function ServiceChoiceSelect({ serviceMap, value, onSelect }: ServiceChoiceSelectProps) {
+  if (serviceMap.serviceChoices.length <= 1) {
+    return null;
+  }
+
+  return (
+    <label className="service-choice">
+      <span>{serviceMap.label} service</span>
+      <select value={value} onChange={(event) => onSelect(event.target.value)}>
+        {serviceMap.serviceChoices.map((serviceChoice) => (
+          <option key={serviceChoice.id} value={serviceChoice.id}>
+            {serviceChoice.version
+              ? `${serviceChoice.label} ${serviceChoice.version}`
+              : serviceChoice.label}
+          </option>
+        ))}
+      </select>
+    </label>
   );
 }
 
@@ -675,7 +844,7 @@ function SchemaNode({ data, selected }: NodeProps<MapNode>) {
             </a>
           ) : null}
           {data.specUrl ? (
-            <a href={data.specUrl} title="gNMI documentation" target="_blank" rel="noreferrer">
+            <a href={data.specUrl} title="Service documentation" target="_blank" rel="noreferrer">
               <BookOpen size={14} aria-hidden="true" />
             </a>
           ) : null}
@@ -731,6 +900,9 @@ function FieldRow({
   const isExtension = field.ref === 'extension';
   const visibleExtensionHandle = !isExtension || showExtensions;
   const clickable = Boolean(connectionEdgeId && onConnectionClick);
+  const fieldTitle = [field.type, field.name, field.group, field.badge]
+    .filter(Boolean)
+    .join(' ');
   const selectConnection = () => {
     if (connectionEdgeId && onConnectionClick) {
       onConnectionClick(connectionEdgeId);
@@ -752,7 +924,7 @@ function FieldRow({
         .join(' ')}
       role={clickable ? 'button' : undefined}
       tabIndex={clickable ? 0 : undefined}
-      title={clickable ? `${field.name} -> ${field.ref}` : undefined}
+      title={field.ref ? `${fieldTitle} -> ${field.ref}` : fieldTitle}
       aria-label={clickable ? `Highlight ${field.name} connection to ${field.ref}` : undefined}
       onClick={(event) => {
         if (!clickable) {
@@ -1102,17 +1274,22 @@ function fieldClickHandlerFromData(data: MapNode['data']): FieldClickHandler | u
 
 type InspectorProps = {
   node?: MapNode;
+  serviceLabel: string;
+  serviceChoice: ServiceMapChoice;
   totalNodes: number;
   totalEdges: number;
 };
 
-function Inspector({ node, totalNodes, totalEdges }: InspectorProps) {
+function Inspector({ node, serviceLabel, serviceChoice, totalNodes, totalEdges }: InspectorProps) {
   if (!node) {
     return (
       <aside className="inspector">
-        <span className="inspector-kicker">Map</span>
+        <span className="inspector-kicker">{serviceLabel}</span>
         <h2>{totalNodes} nodes</h2>
-        <p>{totalEdges} relationships across gNMI RPCs, messages, enums, and external types.</p>
+        <p>
+          {totalEdges} relationships across {serviceChoice.label} RPCs, messages, enums, and
+          external types.
+        </p>
       </aside>
     );
   }

@@ -138,7 +138,8 @@ body {
 }
 
 button,
-input {
+input,
+select {
   font: inherit;
 }
 
@@ -158,7 +159,7 @@ a {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 20px;
+  gap: 14px;
   min-height: 76px;
   padding: 12px 18px;
   border-bottom: 1px solid var(--line);
@@ -167,6 +168,7 @@ a {
 }
 
 .brand {
+  flex: 0 1 210px;
   min-width: 178px;
 }
 
@@ -187,9 +189,90 @@ a {
   line-height: 1.2;
 }
 
+.brand h1 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.service-nav {
+  display: inline-flex;
+  flex: 0 1 auto;
+  align-items: center;
+  gap: 6px;
+  height: 38px;
+  min-width: 0;
+  padding: 3px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel-soft);
+}
+
+.service-tab {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-width: 72px;
+  height: 30px;
+  padding: 0 10px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.service-tab:hover,
+.service-tab:focus-visible,
+.service-tab.is-active {
+  background: var(--panel);
+  color: var(--focus);
+  outline: none;
+}
+
+.service-choice {
+  display: flex;
+  align-items: center;
+  min-width: 172px;
+  height: 38px;
+}
+
+.service-choice > span {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.service-choice select {
+  min-width: 0;
+  width: 100%;
+  height: 38px;
+  padding: 0 30px 0 10px;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  background: var(--panel);
+  color: var(--ink);
+  font-size: 13px;
+  font-weight: 800;
+  outline: none;
+  text-transform: none;
+}
+
+.service-choice select:hover,
+.service-choice select:focus-visible {
+  border-color: var(--focus);
+}
+
 .toolbar {
   display: flex;
-  flex-wrap: wrap;
+  flex: 1 1 auto;
+  flex-wrap: nowrap;
   align-items: center;
   justify-content: flex-end;
   gap: 8px;
@@ -197,11 +280,12 @@ a {
 }
 
 .search-box {
+  flex: 1 1 180px;
   display: flex;
   align-items: center;
   gap: 8px;
-  width: min(360px, 44vw);
-  min-width: 210px;
+  width: clamp(140px, 18vw, 280px);
+  min-width: 130px;
   height: 38px;
   padding: 0 11px;
   border: 1px solid var(--line);
@@ -368,6 +452,86 @@ a {
   color: var(--muted);
   cursor: not-allowed;
   opacity: 0.56;
+}
+
+@media (max-width: 1500px) and (min-width: 761px) {
+  .topbar {
+    gap: 9px;
+    padding-inline: 12px;
+  }
+
+  .brand {
+    flex-basis: 165px;
+    min-width: 138px;
+  }
+
+  .brand-kicker {
+    font-size: 10px;
+  }
+
+  .brand h1 {
+    font-size: 18px;
+  }
+
+  .service-nav {
+    gap: 4px;
+  }
+
+  .service-tab {
+    min-width: 58px;
+    padding: 0 8px;
+    font-size: 12px;
+  }
+
+  .service-choice {
+    min-width: 136px;
+  }
+
+  .service-choice select {
+    padding-right: 24px;
+    font-size: 12px;
+  }
+
+  .toolbar {
+    gap: 6px;
+  }
+
+  .search-box {
+    flex-basis: 138px;
+    width: clamp(118px, 10vw, 170px);
+    min-width: 112px;
+    padding-inline: 9px;
+  }
+
+  .tool-button {
+    gap: 5px;
+    padding-inline: 8px;
+    font-size: 13px;
+  }
+
+  .theme-switch {
+    padding-inline: 6px;
+  }
+}
+
+@media (max-width: 1180px) and (min-width: 761px) {
+  .tool-button {
+    width: 38px;
+    padding-inline: 0;
+  }
+
+  .tool-label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+
+  .search-box input::placeholder {
+    color: transparent;
+  }
 }
 
 .map-stage {
@@ -591,22 +755,32 @@ a {
 }
 
 .field-type {
-  overflow-wrap: anywhere;
+  min-width: 0;
+  overflow: hidden;
   color: var(--field-type-ink);
   font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .field-name {
-  overflow-wrap: anywhere;
+  min-width: 0;
+  overflow: hidden;
   font-family:
     "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
   font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .field-group,
 .field-badge {
   grid-column: span 1;
   justify-self: start;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .empty-field {
@@ -784,6 +958,16 @@ a {
 
   .toolbar {
     justify-content: flex-start;
+  }
+
+  .service-nav {
+    align-self: flex-start;
+    max-width: 100%;
+    overflow-x: auto;
+  }
+
+  .service-choice {
+    width: 100%;
   }
 
   .search-box {

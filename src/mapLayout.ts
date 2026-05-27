@@ -1,5 +1,5 @@
 import ELK, { type ElkExtendedEdge, type ElkNode } from 'elkjs/lib/elk.bundled.js';
-import type { MapEdge, MapField, MapNode, VisibleMap } from './gnmiMap';
+import type { MapEdge, MapField, MapNode, VisibleMap } from './protoMapTypes';
 
 export const nodeHeaderHeight = 36;
 export const nodeBodyPadding = 8;
@@ -17,6 +17,7 @@ const routePadding = 18;
 const routeEndpointOffset = 34;
 const routeOuterMargin = 160;
 const routeBendPenalty = 42;
+const compactRoutePadding = 16;
 
 export type RoutePoint = {
   x: number;
@@ -56,6 +57,14 @@ export type LayoutBounds = {
   y: number;
   width: number;
   height: number;
+};
+
+export type ReadableNodeLayoutOptions = {
+  compact?: boolean;
+};
+
+export type RouteReadableLayoutOptions = {
+  compact?: boolean;
 };
 
 export function mapNodeWidth(node: MapNode): number {
@@ -185,21 +194,31 @@ export function improveNodeLayout(nodes: MapNode[]): MapNode[] {
   });
 }
 
-export async function computeReadableNodeLayout(nodes: MapNode[], edges: MapEdge[]): Promise<MapNode[]> {
+export async function computeReadableNodeLayout(
+  nodes: MapNode[],
+  edges: MapEdge[],
+  options: ReadableNodeLayoutOptions = {},
+): Promise<MapNode[]> {
+  const activeLayerSpacing = options.compact ? 40 : layerSpacing;
+  const activeNodeSpacing = options.compact ? 24 : nodeSpacing;
+  const activeEdgeNodeSpacing = options.compact ? 20 : 42;
+
   const graph: ElkNode = {
     id: 'gnmi-map',
     layoutOptions: {
       'elk.algorithm': 'layered',
       'elk.direction': 'RIGHT',
       'elk.edgeRouting': 'ORTHOGONAL',
-      'elk.layered.nodePlacement.strategy': 'BRANDES_KOEPF',
+      'elk.layered.nodePlacement.strategy': options.compact ? 'SIMPLE' : 'BRANDES_KOEPF',
       'elk.layered.crossingMinimization.strategy': 'LAYER_SWEEP',
       'elk.layered.layering.strategy': 'NETWORK_SIMPLEX',
-      'elk.layered.spacing.nodeNodeBetweenLayers': `${layerSpacing}`,
-      'elk.spacing.nodeNode': `${nodeSpacing}`,
-      'elk.spacing.edgeEdge': '26',
-      'elk.spacing.edgeNode': '42',
-      'elk.padding': '[top=40,left=40,bottom=40,right=40]',
+      'elk.layered.spacing.nodeNodeBetweenLayers': `${activeLayerSpacing}`,
+      'elk.spacing.nodeNode': `${activeNodeSpacing}`,
+      'elk.spacing.edgeEdge': options.compact ? '12' : '26',
+      'elk.spacing.edgeNode': `${activeEdgeNodeSpacing}`,
+      'elk.padding': options.compact
+        ? '[top=24,left=24,bottom=24,right=24]'
+        : '[top=40,left=40,bottom=40,right=40]',
     },
     children: nodes.map((node) => ({
       id: node.id,
@@ -259,7 +278,11 @@ export function applyManualPositions(
   });
 }
 
-export function routeReadableLayout(nodes: MapNode[], edges: MapEdge[]): ReadableLayout {
+export function routeReadableLayout(
+  nodes: MapNode[],
+  edges: MapEdge[],
+  options: RouteReadableLayoutOptions = {},
+): ReadableLayout {
   const bounds = mapNodesBounds(nodes);
   const boxes = new Map<string, LayoutBox>(
     nodes.map((node) => [
@@ -295,7 +318,7 @@ export function routeReadableLayout(nodes: MapNode[], edges: MapEdge[]): Readabl
       return {
         edge,
         targetHandle: targetHandle?.id ?? targetHandleId(edge),
-        routePoints: routeEdge(edge, nodesById, boxes, bounds, targetHandle),
+        routePoints: routeEdge(edge, nodesById, boxes, bounds, targetHandle, options),
       };
     }),
     bounds,
@@ -389,6 +412,7 @@ function routeEdge(
   boxes: Map<string, LayoutBox>,
   bounds: LayoutBounds,
   targetHandle?: TargetHandleLayout,
+  options: RouteReadableLayoutOptions = {},
 ): RoutePoint[] {
   const source = nodesById.get(edge.source);
   const target = nodesById.get(edge.target);
@@ -407,6 +431,23 @@ function routeEdge(
     x: targetBox.x,
     y: targetBox.y + (targetHandle?.y ?? targetBox.height / 2),
   };
+
+  if (options.compact && isForwardEdge(sourceBox, targetBox)) {
+    const route = compactForwardRoute(start, end, sourceBox, targetBox);
+    const routeObstacles = [...boxes.values()];
+
+    if (!routeIntersectsBoxes(route, routeObstacles)) {
+      return route;
+    }
+  }
+
+  if (options.compact) {
+    const route = compactDetourRoute(start, end, sourceBox, targetBox, [...boxes.values()]);
+    if (route) {
+      return route;
+    }
+  }
+
   const routeStart = { x: start.x + routeEndpointOffset, y: start.y };
   const routeEnd = { x: end.x - routeEndpointOffset, y: end.y };
   const obstacles = [...boxes.values()].map((box) => expandedBox(box, routePadding));
@@ -419,6 +460,150 @@ function routeEdge(
     routeEnd,
     end,
   ]);
+}
+
+function compactDetourRoute(
+  start: RoutePoint,
+  end: RoutePoint,
+  sourceBox: LayoutBox,
+  targetBox: LayoutBox,
+  boxes: LayoutBox[],
+): RoutePoint[] | null {
+  return isForwardEdge(sourceBox, targetBox)
+    ? compactForwardDetourRoute(start, end, sourceBox, targetBox, boxes)
+    : compactBackDetourRoute(start, end, sourceBox, targetBox, boxes);
+}
+
+function compactForwardDetourRoute(
+  start: RoutePoint,
+  end: RoutePoint,
+  sourceBox: LayoutBox,
+  targetBox: LayoutBox,
+  boxes: LayoutBox[],
+): RoutePoint[] | null {
+  const sourceRight = sourceBox.x + sourceBox.width;
+  const targetLeft = targetBox.x;
+  const betweenBoxes = boxes.filter(
+    (box) =>
+      box.id !== sourceBox.id &&
+      box.id !== targetBox.id &&
+      box.x < targetLeft - compactRoutePadding &&
+      rangesOverlap(box.x, box.x + box.width, sourceRight, targetLeft),
+  );
+
+  if (!betweenBoxes.length) {
+    return null;
+  }
+
+  const firstObstacleLeft = Math.min(...betweenBoxes.map((box) => box.x));
+  const lastObstacleRight = Math.max(...betweenBoxes.map((box) => box.x + box.width));
+  const firstBendX = horizontalLaneBetween(sourceRight, firstObstacleLeft);
+  const lastBendX = horizontalLaneBetween(lastObstacleRight, targetLeft);
+
+  return compactLaneRoute(start, end, firstBendX, lastBendX, boxes);
+}
+
+function compactBackDetourRoute(
+  start: RoutePoint,
+  end: RoutePoint,
+  sourceBox: LayoutBox,
+  targetBox: LayoutBox,
+  boxes: LayoutBox[],
+): RoutePoint[] | null {
+  const firstBendX = sourceBox.x + sourceBox.width + routeEndpointOffset;
+  const lastBendX = targetBox.x - routeEndpointOffset;
+
+  return compactLaneRoute(start, end, firstBendX, lastBendX, boxes);
+}
+
+function compactLaneRoute(
+  start: RoutePoint,
+  end: RoutePoint,
+  firstBendX: number,
+  lastBendX: number,
+  boxes: LayoutBox[],
+): RoutePoint[] | null {
+  const xMin = Math.min(firstBendX, lastBendX);
+  const xMax = Math.max(firstBendX, lastBendX);
+  const candidateBoxes = boxes.filter((box) => rangesOverlap(box.x, box.x + box.width, xMin, xMax));
+  const yCandidates = uniqueSortedNumbers(
+    candidateBoxes.flatMap((box) => [
+      box.y - compactRoutePadding,
+      box.y + box.height + compactRoutePadding,
+    ]),
+  ).sort((first, second) => {
+    const firstRoute = compactLaneRoutePoints(start, end, firstBendX, lastBendX, first);
+    const secondRoute = compactLaneRoutePoints(start, end, firstBendX, lastBendX, second);
+    return routeCost(firstRoute) - routeCost(secondRoute);
+  });
+
+  for (const y of yCandidates) {
+    const route = compactLaneRoutePoints(start, end, firstBendX, lastBendX, y);
+    if (!routeIntersectsBoxes(route, boxes)) {
+      return route;
+    }
+  }
+
+  return null;
+}
+
+function compactLaneRoutePoints(
+  start: RoutePoint,
+  end: RoutePoint,
+  firstBendX: number,
+  lastBendX: number,
+  y: number,
+): RoutePoint[] {
+  return compactRoute([
+    start,
+    { x: firstBendX, y: start.y },
+    { x: firstBendX, y },
+    { x: lastBendX, y },
+    { x: lastBendX, y: end.y },
+    end,
+  ]);
+}
+
+function routeCost(points: RoutePoint[]): number {
+  return routeSegments(points).reduce(
+    (distance, [start, end]) => distance + manhattanDistance(start, end),
+    0,
+  );
+}
+
+function horizontalLaneBetween(left: number, right: number): number {
+  const gap = right - left;
+  if (gap >= compactRoutePadding * 2) {
+    return Math.round(left + gap / 2);
+  }
+
+  return Math.round(left + Math.max(compactRoutePadding, gap / 2));
+}
+
+function compactForwardRoute(
+  start: RoutePoint,
+  end: RoutePoint,
+  sourceBox: LayoutBox,
+  targetBox: LayoutBox,
+): RoutePoint[] {
+  const gapMidpointX = Math.round((sourceBox.x + sourceBox.width + targetBox.x) / 2);
+
+  return compactRoute([
+    start,
+    { x: gapMidpointX, y: start.y },
+    { x: gapMidpointX, y: end.y },
+    end,
+  ]);
+}
+
+function isForwardEdge(sourceBox: LayoutBox, targetBox: LayoutBox): boolean {
+  return sourceBox.x + sourceBox.width <= targetBox.x;
+}
+
+function routeIntersectsBoxes(routePoints: RoutePoint[], boxes: LayoutBox[]): boolean {
+  return routeSegments(routePoints).some(([start, end]) =>
+    boxes.some((box) => segmentIntersectsBox(start, end, box)),
+  );
 }
 
 function findOrthogonalRoute(

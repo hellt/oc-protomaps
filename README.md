@@ -13,6 +13,8 @@ gNMI Map makes it easy to understand the composition of the gNMI service as well
 
 This repository now includes a React Flow recreation of the latest tagged upstream gNMI protobuf IDL. The app currently tracks `openconfig/gnmi` release `v0.14.1`, whose `gnmi.proto` advertises gNMI service compatibility `0.10.0`. It adds an interactive canvas with search, field-level links, a minimap, source/documentation links, an extension-edge toggle, and a deprecated-field toggle. Deprecated proto fields are hidden by default so the map follows the current spec-facing surface.
 
+The React app is structured around a gNxI service registry. gNMI uses the curated legacy map, while gNOI, gNSI, and gRIBI are generated from the latest tagged OpenConfig protobufs and are selectable from the top navigation. Multi-service families render one concrete service at a time through the service selector, keeping large families such as gNOI responsive.
+
 ```bash
 npm install
 npm run dev
@@ -41,6 +43,7 @@ To refresh the generated React Flow map from the latest `openconfig/gnmi` tag:
 
 ```bash
 npm run build:map
+npm run build:service-maps
 npm run test:map
 ```
 

@@ -3,8 +3,6 @@ import {
   mapEdges,
   mapNodes,
   mapSource,
-  type MapEdge,
-  type MapNode,
 } from '../src/gnmiMap';
 import {
   computeReadableNodeLayout,
@@ -12,7 +10,10 @@ import {
   mapNodeWidth,
   routeIntersectsNode,
   routeReadableLayout,
+  type ReadableNodeLayoutOptions,
 } from '../src/mapLayout';
+import type { MapEdge, MapNode } from '../src/protoMapTypes';
+import { serviceMapOrder, serviceMaps } from '../src/serviceMaps';
 
 function assert(condition: unknown, message: string): asserts condition {
   if (!condition) {
@@ -86,9 +87,52 @@ function validateDeprecatedVisibility(): void {
   );
 }
 
-async function validateReadableLayout(nodes: MapNode[], edges: MapEdge[], label: string): Promise<void> {
-  const layoutNodes = await computeReadableNodeLayout(nodes, edges);
-  const layout = routeReadableLayout(layoutNodes, edges);
+function validateServiceRegistryMaps(): void {
+  for (const serviceId of serviceMapOrder) {
+    const serviceMap = serviceMaps[serviceId];
+    const fullMap = serviceMap.getVisibleMap({ showDeprecated: true, showExtensions: true });
+    const serviceNodeCount = fullMap.nodes.filter((node) => node.data.kind === 'service').length;
+    const rpcNodeCount = fullMap.nodes.filter((node) => node.data.kind === 'rpc').length;
+
+    assert(serviceNodeCount > 0, `${serviceId}: map must include service nodes`);
+    assert(rpcNodeCount > 0, `${serviceId}: map must include RPC nodes`);
+    assert(fullMap.edges.length > 0, `${serviceId}: map must include relationships`);
+    validateEdges(fullMap.nodes, fullMap.edges, `${serviceId} full map`);
+
+    for (const serviceChoice of serviceMap.serviceChoices) {
+      const focusedMap = serviceMap.getVisibleMap({
+        showDeprecated: true,
+        showExtensions: true,
+        focusNodeId: serviceChoice.id,
+      });
+      assert(
+        focusedMap.nodes.some((node) => node.id === serviceChoice.id),
+        `${serviceId}/${serviceChoice.label}: focused map must include selected service node`,
+      );
+      assert(
+        focusedMap.nodes.some((node) => node.data.kind === 'rpc'),
+        `${serviceId}/${serviceChoice.label}: focused map must include RPC nodes`,
+      );
+      assert(
+        focusedMap.nodes.length < fullMap.nodes.length ||
+          serviceChoice.id === serviceMap.defaultServiceChoiceId ||
+          serviceMap.serviceChoices.length === 1,
+        `${serviceId}/${serviceChoice.label}: focused map should be narrower than family map`,
+      );
+      validateEdges(focusedMap.nodes, focusedMap.edges, `${serviceId}/${serviceChoice.label}`);
+    }
+  }
+}
+
+async function validateReadableLayout(
+  nodes: MapNode[],
+  edges: MapEdge[],
+  label: string,
+  options: ReadableNodeLayoutOptions = {},
+): Promise<void> {
+  const layoutNodes = await computeReadableNodeLayout(nodes, edges, options);
+  const layout = routeReadableLayout(layoutNodes, edges, options);
+  const routeMargin = options.compact ? 80 : 180;
 
   for (let firstIndex = 0; firstIndex < layout.nodes.length; firstIndex += 1) {
     const first = layout.nodes[firstIndex];
@@ -99,6 +143,16 @@ async function validateReadableLayout(nodes: MapNode[], edges: MapEdge[], label:
   }
 
   for (const routedEdge of layout.edges) {
+    for (const point of routedEdge.routePoints) {
+      assert(
+        point.x >= layout.bounds.x - routeMargin &&
+          point.x <= layout.bounds.x + layout.bounds.width + routeMargin &&
+          point.y >= layout.bounds.y - routeMargin &&
+          point.y <= layout.bounds.y + layout.bounds.height + routeMargin,
+        `${label}: edge ${routedEdge.edge.id} routes too far outside the graph`,
+      );
+    }
+
     for (const node of layout.nodes) {
       if (node.id === routedEdge.edge.source || node.id === routedEdge.edge.target) {
         continue;
@@ -132,11 +186,40 @@ async function main(): Promise<void> {
   validateEdges(deprecatedMap.nodes, deprecatedMap.edges, 'deprecated map');
   validateLinks();
   validateDeprecatedVisibility();
+  validateServiceRegistryMaps();
 
   await validateReadableLayout(appDefaultMap.nodes, appDefaultMap.edges, 'default layout');
   await validateReadableLayout(extensionMap.nodes, extensionMap.edges, 'extension layout');
   await validateReadableLayout(deprecatedMap.nodes, deprecatedMap.edges, 'deprecated layout');
   await validateReadableLayout(fullMap.nodes, fullMap.edges, 'full layout');
+
+  for (const [serviceId, serviceChoiceIds] of [
+    ['gnmi', ['rpc-capabilities', 'rpc-get', 'rpc-set', 'rpc-subscribe']],
+    [
+      'gribi',
+      serviceMaps.gribi.serviceChoices
+        .filter((choice) => choice.id !== serviceMaps.gribi.defaultServiceChoiceId)
+        .map((choice) => choice.id),
+    ],
+  ] as const) {
+    for (const serviceChoiceId of serviceChoiceIds) {
+      for (const options of [
+        { showDeprecated: false, showExtensions: false },
+        { showDeprecated: true, showExtensions: true },
+      ]) {
+        const focusedMap = serviceMaps[serviceId].getVisibleMap({
+          ...options,
+          focusNodeId: serviceChoiceId,
+        });
+        await validateReadableLayout(
+          focusedMap.nodes,
+          focusedMap.edges,
+          `${serviceId} ${serviceChoiceId} compact layout`,
+          { compact: true },
+        );
+      }
+    }
+  }
 
   console.log('Map data is valid');
 }
