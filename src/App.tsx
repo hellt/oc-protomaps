@@ -330,7 +330,7 @@ function estimatedNodeSize(node: Node<GnmiNodeData>) {
   const noteHeight = node.data.note ? 44 : 0;
 
   return {
-    width: node.data.kind === 'service' ? 300 : node.data.kind === 'enum' || node.data.kind === 'oneof' ? 230 : 260,
+    width: node.data.kind === 'service' ? 300 : node.data.kind === 'enum' || node.data.kind === 'oneof' ? 240 : 260,
     height: baseHeight + rowCount * rowHeight + noteHeight,
   };
 }
@@ -659,7 +659,7 @@ function GnmiMap({ themeMode, onThemeToggle }: GnmiMapProps) {
           minZoom={0.18}
           maxZoom={1.7}
           snapToGrid
-          snapGrid={[10, 10]}
+          snapGrid={[20, 20]}
           onNodesChange={onNodesChange}
           onNodeClick={onNodeClick}
           onEdgeClick={onEdgeClick}
