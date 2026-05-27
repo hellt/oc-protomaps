@@ -1,13 +1,13 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import dagre from '@dagrejs/dagre';
 import { SmartStepEdge } from '@jalez/react-flow-smart-edge';
+import { Box, Button, Link, Paper, TextField, Typography } from '@mui/material';
 import {
   applyNodeChanges,
   Background,
   BackgroundVariant,
   Controls,
   MarkerType,
-  MiniMap,
   Panel,
   ReactFlow,
   ReactFlowProvider,
@@ -402,15 +402,43 @@ function GnmiMap() {
     setUseSmartRouting(false);
   };
 
-  const onAutoLayoutClick = () => {
-    setUseSmartRouting(false);
-    runAutoLayout();
-  };
-
   const onPaneClick = () => setSelectedNodeId(null);
 
   return (
     <main className="app-shell">
+      <Paper component="header" className="top-bar" elevation={0} square>
+        <Box>
+          <Typography
+            component="p"
+            variant="overline"
+            color="text.secondary"
+            sx={{ display: 'block', fontWeight: 700, lineHeight: 1.2 }}
+          >
+            OpenConfig proto map
+          </Typography>
+          <Typography component="h1" variant="h4">
+            service gNMI 0.7.0
+          </Typography>
+        </Box>
+        <TextField
+          className="top-bar__search"
+          label="Search map"
+          size="small"
+          value={query}
+          onChange={(event) => setQuery(event.target.value)}
+          placeholder="Try SubscribeRequest, Path, Encoding..."
+          fullWidth
+        />
+        <Button
+          className="top-bar__button"
+          type="button"
+          variant="contained"
+          color="primary"
+          onClick={() => downloadPositions(flowNodes)}
+        >
+          Save positions
+        </Button>
+      </Paper>
       <section className="map-card" aria-label="gNMI 0.7.0 React Flow map">
         <ReactFlow
           nodes={nodes}
@@ -430,98 +458,22 @@ function GnmiMap() {
         >
           <Background variant={BackgroundVariant.Dots} gap={24} size={1} />
           <Controls position="bottom-right" />
-          <MiniMap
-            pannable
-            zoomable
-            position="bottom-left"
-            nodeColor={(node: Node<GnmiNodeData>) => {
-              switch (node.data.kind) {
-                case 'service':
-                  return '#0f766e';
-                case 'rpc':
-                  return '#2563eb';
-                case 'enum':
-                  return '#7c3aed';
-                case 'extension':
-                  return '#c2410c';
-                case 'embedded':
-                  return '#047857';
-                case 'deprecated':
-                  return '#9f1239';
-                default:
-                  return '#475569';
-              }
-            }}
-          />
-
-          <Panel position="top-left" className="intro-panel">
-            <p className="eyebrow">OpenConfig proto map</p>
-            <h1>gNMI 0.7.0</h1>
-            <p>
-              Interactive React Flow recreation of the PDF map. Select a node to highlight
-              relationships, drag cards to reposition them, or search by message, field, enum,
-              doc link, or proto path.
-            </p>
-            <label className="search-box">
-              <span>Search map</span>
-              <input
-                value={query}
-                onChange={(event) => setQuery(event.target.value)}
-                placeholder="Try SubscribeRequest, Path, Encoding..."
-              />
-            </label>
-            <div className="positions-actions">
-              <button type="button" onClick={onAutoLayoutClick}>
-                Auto layout
-              </button>
-              <button type="button" onClick={() => downloadPositions(flowNodes)}>
-                Save positions.json
-              </button>
-              <p>
-                {positionsStatus === 'loaded'
-                  ? 'Loaded /positions.json for this layout.'
-                  : positionsStatus === 'invalid'
-                    ? 'Found /positions.json, but no valid node positions.'
-                    : positionsStatus === 'checking'
-                      ? 'Checking for /positions.json...'
-                      : 'No /positions.json found; using built-in layout.'}
-              </p>
-            </div>
-          </Panel>
-
-          <Panel position="top-right" className="legend-panel">
-            <h2>Legend</h2>
-            <ul>
-              <li>
-                <span className="legend-dot legend-dot--docs" />
-                `docs` opens the OpenConfig specification section.
-              </li>
-              <li>
-                <span className="legend-dot legend-dot--proto" />
-                Proto links open the source definition path and line.
-              </li>
-              <li>
-                <span className="legend-dot legend-dot--embedded" />
-                Green nodes are embedded protobuf types.
-              </li>
-              <li>
-                <span className="legend-dot legend-dot--extension" />
-                Arrows to gNMI extension fields are omitted, matching the PDF.
-              </li>
-            </ul>
-          </Panel>
 
           <Panel position="bottom-center" className="credit-panel">
-            <span>Created from Roman Dodin&apos;s gNMI map.</span>
-            <a href={sourceLinks.project} target="_blank" rel="noreferrer">
-              Source PDF
-            </a>
-            <a href={sourceLinks.author} target="_blank" rel="noreferrer">
-              Author
-            </a>
-            <a href={sourceLinks.social} target="_blank" rel="noreferrer">
-              Twitter
-            </a>
+            <Box sx={{ display: 'flex', gap: 1.5, alignItems: 'center', flexWrap: 'wrap' }}>
+              <Typography variant="body2" color="text.secondary">
+                Created from Roman Dodin&apos;s gNMI map.
+              </Typography>
+              <Link href={sourceLinks.project} target="_blank" rel="noreferrer" underline="hover">
+                Source PDF
+              </Link>
+              <Link href={sourceLinks.author} target="_blank" rel="noreferrer" underline="hover">
+                Author
+              </Link>
+              <Link href={sourceLinks.social} target="_blank" rel="noreferrer" underline="hover">
+                Twitter
+              </Link>
+            </Box>
           </Panel>
         </ReactFlow>
       </section>
