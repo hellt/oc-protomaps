@@ -1,730 +1,1015 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import dagre from '@dagrejs/dagre';
-import { SmartStepEdge } from '@jalez/react-flow-smart-edge';
-import { parse, stringify } from 'yaml';
+import { type CSSProperties, useCallback, useEffect, useMemo, useState } from 'react';
 import {
-  Box,
-  Button,
-  CssBaseline,
-  FormControlLabel,
-  Link,
-  Paper,
-  Switch,
-  TextField,
-  ThemeProvider,
-  Typography,
-  createTheme,
-} from '@mui/material';
-import {
-  applyNodeChanges,
+  BaseEdge,
+  type NodeChange,
   Background,
-  BackgroundVariant,
   Controls,
+  type Edge,
+  type EdgeProps,
+  type EdgeTypes,
+  Handle,
   MarkerType,
-  Panel,
+  type NodeProps,
+  type NodeTypes,
+  Position,
   ReactFlow,
   ReactFlowProvider,
-  useNodesInitialized,
   useReactFlow,
-  type Edge,
-  type EdgeMouseHandler,
-  type Node,
-  type NodeChange,
-  type NodeMouseHandler,
-  type OnNodeDrag,
 } from '@xyflow/react';
-import { GnmiNode } from './components/GnmiNode';
+import '@xyflow/react/dist/style.css';
 import {
-  gnmiEdges,
-  gnmiNodes,
-  HEADER_SOURCE_HANDLE,
-  HEADER_TARGET_HANDLE,
-  sourceLinks,
-  type GnmiNode as GnmiFlowNode,
-  type GnmiNodeData,
-} from './data/gnmi070';
+  BookOpen,
+  ExternalLink,
+  EyeOff,
+  FileCode2,
+  FileDown,
+  Focus,
+  GitBranch,
+  RotateCcw,
+  Search,
+} from 'lucide-react';
+import {
+  getVisibleMap,
+  type MapEdge,
+  type MapEdgeKind,
+  type MapField,
+  type MapNode,
+  mapSource,
+} from './gnmiMap';
+import {
+  applyManualPositions,
+  computeReadableNodeLayout,
+  improveNodeLayout,
+  routeReadableLayout,
+  type RoutePoint,
+  type TargetHandleLayout,
+} from './mapLayout';
 
-const nodeTypes = {
-  gnmi: GnmiNode,
-};
-
-const edgeTypes = {
-  smart: SmartStepEdge,
-};
-
-const edgeDefaults = {
-  markerEnd: {
-    type: MarkerType.ArrowClosed,
-    width: 16,
-    height: 16,
+const edgeStyleByKind: Record<MapEdgeKind, CSSProperties> = {
+  rpc: { stroke: '#0b4b8f', strokeWidth: 2.2 },
+  field: { stroke: '#5b708a', strokeWidth: 1.6 },
+  extension: {
+    stroke: '#8a6a1f',
+    strokeWidth: 1.4,
+    strokeDasharray: '7 6',
   },
+  'extension-detail': { stroke: '#b47a18', strokeWidth: 1.5 },
 };
 
-function getEdgeColor(className: string | undefined, isSelected: boolean, isConnected: boolean) {
-  if (isSelected) {
-    return 'var(--ctp-mauve)';
-  }
-
-  if (isConnected) {
-    return 'var(--ctp-peach)';
-  }
-
-  if (className?.includes('edge-service')) {
-    return 'var(--ctp-teal)';
-  }
-
-  if (className?.includes('edge-rpc')) {
-    return 'var(--ctp-blue)';
-  }
-
-  if (className?.includes('edge-oneof')) {
-    return 'var(--ctp-mauve)';
-  }
-
-  if (className?.includes('edge-deprecated')) {
-    return 'var(--ctp-red)';
-  }
-
-  return 'var(--ctp-overlay0)';
-}
-
-const POSITIONS_FILE_URL = '/services/gnmi/0.7.0/pos.yaml';
-const AUTO_LAYOUT_CONFIG = {
-  rankdir: 'LR',
-  nodesep: 120,
-  ranksep: 260,
-  marginx: 120,
-  marginy: 120,
+const nodeTypes: NodeTypes = {
+  schema: SchemaNode,
 };
 
-type ThemeMode = 'light' | 'dark';
+const edgeTypes: EdgeTypes = {
+  routed: RoutedEdge,
+};
 
-const catppuccin = {
-  light: {
-    base: '#eff1f5',
-    mantle: '#e6e9ef',
-    crust: '#dce0e8',
-    surface0: '#ccd0da',
-    surface1: '#bcc0cc',
-    surface2: '#acb0be',
-    overlay0: '#9ca0b0',
-    overlay1: '#8c8fa1',
-    text: '#4c4f69',
-    subtext1: '#5c5f77',
-    blue: '#1e66f5',
-    lavender: '#7287fd',
-    teal: '#179299',
-    green: '#40a02b',
-    mauve: '#8839ef',
-    peach: '#fe640b',
-    red: '#d20f39',
-  },
-  dark: {
-    base: '#1e1e2e',
-    mantle: '#181825',
-    crust: '#11111b',
-    surface0: '#313244',
-    surface1: '#45475a',
-    surface2: '#585b70',
-    overlay0: '#6c7086',
-    overlay1: '#7f849c',
-    text: '#cdd6f4',
-    subtext1: '#bac2de',
-    blue: '#89b4fa',
-    lavender: '#b4befe',
-    teal: '#94e2d5',
-    green: '#a6e3a1',
-    mauve: '#cba6f7',
-    peach: '#fab387',
-    red: '#f38ba8',
-  },
-} as const;
+const pdfMapUrl = `${import.meta.env.BASE_URL}gnmi_0.10.0_map.pdf`;
 
 type NodePosition = {
   x: number;
   y: number;
 };
 
-type PositionsFile = {
-  nodes?: Record<string, NodePosition>;
-  positions?: Record<string, NodePosition>;
+type RoutedEdgeData = Record<string, unknown> & {
+  routePoints: RoutePoint[];
+  routeBridges: RouteBridge[];
 };
 
-type VisibleHandles = NonNullable<GnmiNodeData['visibleHandles']>;
-
-function getSystemTheme(): ThemeMode {
-  if (typeof window === 'undefined') {
-    return 'light';
-  }
-
-  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-}
-
-function createCatppuccinTheme(mode: ThemeMode) {
-  const palette = catppuccin[mode];
-
-  return createTheme({
-    palette: {
-      mode,
-      primary: {
-        main: palette.teal,
-      },
-      secondary: {
-        main: palette.blue,
-      },
-      error: {
-        main: palette.red,
-      },
-      warning: {
-        main: palette.peach,
-      },
-      success: {
-        main: palette.green,
-      },
-      text: {
-        primary: palette.text,
-        secondary: palette.subtext1,
-      },
-      background: {
-        default: palette.base,
-        paper: palette.mantle,
-      },
-      divider: palette.surface0,
-    },
-    shape: {
-      borderRadius: 4,
-    },
-    typography: {
-      fontFamily:
-        'Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
-      h1: {
-        fontWeight: 800,
-        letterSpacing: '-0.04em',
-      },
-      button: {
-        fontWeight: 800,
-        textTransform: 'none',
-      },
-    },
-    components: {
-      MuiButton: {
-        styleOverrides: {
-          root: {
-            boxShadow: 'none',
-          },
-        },
-      },
-    },
-  });
-}
-
-function matchesQuery(node: Node<GnmiNodeData>, query: string) {
-  const haystack = [
-    node.data.title,
-    node.data.subtitle,
-    node.data.kind,
-    node.data.packageName,
-    node.data.codePath,
-    ...(node.data.fields?.map((field) => field.signature) ?? []),
-    ...(node.data.values ?? []),
-  ]
-    .filter(Boolean)
-    .join(' ')
-    .toLowerCase();
-
-  return haystack.includes(query);
-}
-
-function isPosition(value: unknown): value is NodePosition {
-  return (
-    typeof value === 'object' &&
-    value !== null &&
-    typeof (value as NodePosition).x === 'number' &&
-    typeof (value as NodePosition).y === 'number'
-  );
-}
-
-function getPositions(payload: unknown): Record<string, NodePosition> {
-  if (typeof payload !== 'object' || payload === null) {
-    return {};
-  }
-
-  const maybeFile = payload as PositionsFile;
-  const candidate = maybeFile.nodes ?? maybeFile.positions ?? payload;
-
-  if (typeof candidate !== 'object' || candidate === null) {
-    return {};
-  }
-
-  return Object.fromEntries(
-    Object.entries(candidate).filter((entry): entry is [string, NodePosition] => isPosition(entry[1])),
-  );
-}
-
-function getPositionsYaml(nodes: GnmiFlowNode[]) {
-  const positions = Object.fromEntries(
-    nodes.map((node) => [
-      node.id,
-      {
-        x: Math.round(node.position.x),
-        y: Math.round(node.position.y),
-      },
-    ]),
-  );
-
-  return stringify({ nodes: positions });
-}
-
-function applyPositions(nodes: GnmiFlowNode[], positions: Record<string, NodePosition>) {
-  return nodes.map((node) => ({
-    ...node,
-    position: positions[node.id] ?? node.position,
-  }));
-}
-
-function createVisibleHandleMap() {
-  const handlesByNode = new Map<string, Required<VisibleHandles>>();
-
-  const getHandles = (nodeId: string) => {
-    const existing = handlesByNode.get(nodeId);
-
-    if (existing) {
-      return existing;
-    }
-
-    const handles = {
-      headerSource: false,
-      headerTarget: false,
-      fieldSources: [],
-      fieldTargets: [],
-    };
-
-    handlesByNode.set(nodeId, handles);
-    return handles;
-  };
-
-  gnmiEdges.forEach((edge) => {
-    const sourceHandles = getHandles(edge.source);
-    const targetHandles = getHandles(edge.target);
-
-    if (edge.sourceHandle === HEADER_SOURCE_HANDLE) {
-      sourceHandles.headerSource = true;
-    } else if (edge.sourceHandle) {
-      sourceHandles.fieldSources.push(edge.sourceHandle);
-    }
-
-    if (edge.targetHandle === HEADER_TARGET_HANDLE) {
-      targetHandles.headerTarget = true;
-    } else if (edge.targetHandle) {
-      targetHandles.fieldTargets.push(edge.targetHandle);
-    }
-  });
-
-  return handlesByNode;
-}
-
-function estimatedNodeSize(node: Node<GnmiNodeData>) {
-  const rowCount = Math.max(node.data.fields?.length ?? 0, node.data.values?.length ?? 0);
-  const baseHeight = 112;
-  const rowHeight = 36;
-  const noteHeight = node.data.note ? 44 : 0;
-
-  return {
-    width: node.data.kind === 'service' ? 300 : node.data.kind === 'enum' || node.data.kind === 'oneof' ? 240 : 260,
-    height: baseHeight + rowCount * rowHeight + noteHeight,
-  };
-}
-
-type GnmiMapProps = {
-  themeMode: ThemeMode;
-  onThemeToggle: () => void;
+type RoutedMapEdge = Edge<RoutedEdgeData, 'routed'> & {
+  sourceHandle: string;
+  targetHandle: string;
+  kind: MapEdgeKind;
+  deprecated: boolean;
 };
 
-function GnmiMap({ themeMode, onThemeToggle }: GnmiMapProps) {
-  const [query, setQuery] = useState('');
-  const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null);
+type FieldConnectionIds = Record<string, string>;
+type FieldClickHandler = (edgeId: string) => void;
+
+type RouteBridge = RoutePoint & {
+  orientation: 'horizontal' | 'vertical';
+};
+
+type RouteSegment = {
+  edgeId: string;
+  index: number;
+  start: RoutePoint;
+  end: RoutePoint;
+  orientation: 'horizontal' | 'vertical';
+  fixed: number;
+  from: number;
+  to: number;
+};
+
+function searchableText(node: MapNode): string {
+  const fieldText = node.data.fields
+    ?.map((field) => `${field.type} ${field.name} ${field.group ?? ''} ${field.badge ?? ''}`)
+    .join(' ');
+
+  return `${node.data.kind} ${node.data.label} ${fieldText ?? ''}`.toLowerCase();
+}
+
+function fieldMatches(field: MapField, query: string): boolean {
+  if (!query) {
+    return false;
+  }
+
+  return `${field.type} ${field.name} ${field.group ?? ''} ${field.badge ?? ''}`
+    .toLowerCase()
+    .includes(query);
+}
+
+function AppShell() {
+  const { fitView } = useReactFlow<MapNode, RoutedMapEdge>();
+  const [queryValue, setQueryValue] = useState('');
+  const [showExtensions, setShowExtensions] = useState(false);
+  const [showDeprecated, setShowDeprecated] = useState(false);
+  const [selectedId, setSelectedId] = useState<string | null>(null);
   const [selectedEdgeId, setSelectedEdgeId] = useState<string | null>(null);
-  const [useSmartRouting, setUseSmartRouting] = useState(false);
-  const [flowNodes, setFlowNodes] = useState<GnmiFlowNode[]>(gnmiNodes);
-  const [positionsStatus, setPositionsStatus] = useState<'checking' | 'loaded' | 'missing' | 'invalid'>(
-    'checking',
+  const [manualPositions, setManualPositions] = useState<Record<string, NodePosition>>({});
+  const [routingPositions, setRoutingPositions] = useState<Record<string, NodePosition>>({});
+
+  const query = queryValue.trim().toLowerCase();
+  const visibleMap = useMemo(
+    () => getVisibleMap({ showDeprecated, showExtensions }),
+    [showDeprecated, showExtensions],
   );
-  const [copyStatus, setCopyStatus] = useState<'idle' | 'copied' | 'failed'>('idle');
-  const nodesInitialized = useNodesInitialized();
-  const { fitView, getNodes } = useReactFlow();
-  const hasAutoLayoutRun = useRef(false);
-  const visibleHandleMap = useMemo(() => createVisibleHandleMap(), []);
-
-  const runAutoLayout = useCallback(() => {
-    const measuredNodes = getNodes() as GnmiFlowNode[];
-    const nodesForLayout = measuredNodes.length > 0 ? measuredNodes : flowNodes;
-    const graph = new dagre.graphlib.Graph({ multigraph: true });
-
-    graph.setGraph(AUTO_LAYOUT_CONFIG);
-    graph.setDefaultEdgeLabel(() => ({}));
-
-    nodesForLayout.forEach((node) => {
-      const estimate = estimatedNodeSize(node);
-
-      graph.setNode(node.id, {
-        width: node.measured?.width ?? node.width ?? estimate.width,
-        height: node.measured?.height ?? node.height ?? estimate.height,
-      });
-    });
-
-    gnmiEdges.forEach((edge) => {
-      graph.setEdge(edge.source, edge.target, {}, edge.id);
-    });
-
-    dagre.layout(graph);
-
-    setFlowNodes((currentNodes) =>
-      currentNodes.map((node) => {
-        const layoutNode = graph.node(node.id);
-        const measuredNode = nodesForLayout.find((candidate) => candidate.id === node.id);
-        const estimate = estimatedNodeSize(node);
-        const width = measuredNode?.measured?.width ?? measuredNode?.width ?? estimate.width;
-        const height = measuredNode?.measured?.height ?? measuredNode?.height ?? estimate.height;
-
-        if (!layoutNode) {
-          return node;
-        }
-
-        return {
-          ...node,
-          position: {
-            x: Math.round(layoutNode.x - width / 2),
-            y: Math.round(layoutNode.y - height / 2),
-          },
-        };
-      }),
-    );
-
-    window.requestAnimationFrame(() => fitView({ duration: 300, padding: 0.12 }));
-  }, [fitView, flowNodes, getNodes]);
+  const fallbackLayoutNodes = useMemo(() => improveNodeLayout(visibleMap.nodes), [visibleMap.nodes]);
+  const [elkLayoutNodes, setElkLayoutNodes] = useState<MapNode[] | null>(null);
 
   useEffect(() => {
-    let isMounted = true;
+    let cancelled = false;
+    setElkLayoutNodes(null);
 
-    fetch(POSITIONS_FILE_URL, { cache: 'no-store' })
-      .then(async (response) => {
-        if (!response.ok) {
-          return null;
+    computeReadableNodeLayout(visibleMap.nodes, visibleMap.edges)
+      .then((layoutNodes) => {
+        if (!cancelled) {
+          setElkLayoutNodes(layoutNodes);
         }
-
-        return response.text();
       })
-      .then((payload: string | null) => {
-        if (!isMounted) {
-          return;
-        }
-
-        if (!payload) {
-          setUseSmartRouting(true);
-          setPositionsStatus('missing');
-          return;
-        }
-
-        const positions = getPositions(parse(payload));
-
-        if (Object.keys(positions).length === 0) {
-          setUseSmartRouting(true);
-          setPositionsStatus('invalid');
-          return;
-        }
-
-        setFlowNodes((nodes) => applyPositions(nodes, positions));
-        setUseSmartRouting(false);
-        setPositionsStatus('loaded');
-      })
-      .catch(() => {
-        if (isMounted) {
-          setUseSmartRouting(true);
-          setPositionsStatus('missing');
-        }
+      .catch((error) => {
+        console.error('Failed to compute readable map layout', error);
       });
 
     return () => {
-      isMounted = false;
+      cancelled = true;
     };
-  }, []);
+  }, [visibleMap.edges, visibleMap.nodes]);
 
+  const layoutNodes = elkLayoutNodes ?? fallbackLayoutNodes;
   useEffect(() => {
-    if (
-      !nodesInitialized ||
-      positionsStatus === 'checking' ||
-      positionsStatus === 'loaded' ||
-      hasAutoLayoutRun.current
-    ) {
+    if (!elkLayoutNodes) {
       return;
     }
 
-    hasAutoLayoutRun.current = true;
-    runAutoLayout();
-  }, [nodesInitialized, positionsStatus, runAutoLayout]);
+    let secondFrame: number | null = null;
+    const firstFrame = window.requestAnimationFrame(() => {
+      secondFrame = window.requestAnimationFrame(() => fitView({ padding: 0.1, duration: 350 }));
+    });
 
-  const visibleIds = useMemo(() => {
-    const normalized = query.trim().toLowerCase();
-    if (!normalized) {
-      return new Set(gnmiNodes.map((node) => node.id));
+    return () => {
+      window.cancelAnimationFrame(firstFrame);
+      if (secondFrame !== null) {
+        window.cancelAnimationFrame(secondFrame);
+      }
+    };
+  }, [elkLayoutNodes, fitView]);
+
+  const routedLayoutNodes = useMemo(
+    () => applyManualPositions(layoutNodes, routingPositions),
+    [layoutNodes, routingPositions],
+  );
+  const readableLayout = useMemo(
+    () => routeReadableLayout(routedLayoutNodes, visibleMap.edges),
+    [routedLayoutNodes, visibleMap.edges],
+  );
+  const displayedLayoutNodes = useMemo(
+    () => applyManualPositions(readableLayout.nodes, manualPositions),
+    [manualPositions, readableLayout.nodes],
+  );
+
+  const nodeMatches = useMemo(() => {
+    if (!query) {
+      return new Set<string>();
     }
 
-    const directMatches = new Set(
-      gnmiNodes.filter((node) => matchesQuery(node, normalized)).map((node) => node.id),
+    return new Set(
+      visibleMap.nodes
+        .filter((currentNode) => searchableText(currentNode).includes(query))
+        .map((currentNode) => currentNode.id),
     );
+  }, [query, visibleMap.nodes]);
 
-    gnmiEdges.forEach((edge) => {
-      if (directMatches.has(edge.source)) {
-        directMatches.add(edge.target);
-      }
-      if (directMatches.has(edge.target)) {
-        directMatches.add(edge.source);
-      }
-    });
-
-    return directMatches;
-  }, [query]);
-
-  const selectedNeighborhood = useMemo(() => {
-    if (selectedEdgeId) {
-      const selectedEdge = gnmiEdges.find((edge) => edge.id === selectedEdgeId);
-
-      if (!selectedEdge) {
-        return null;
-      }
-
-      return {
-        nodeIds: new Set([selectedEdge.source, selectedEdge.target]),
-        edgeIds: new Set([selectedEdge.id]),
-      };
-    }
-
-    if (!selectedNodeId) {
-      return null;
-    }
-
-    const nodeIds = new Set([selectedNodeId]);
-    const edgeIds = new Set<string>();
-
-    gnmiEdges.forEach((edge) => {
-      if (edge.source === selectedNodeId || edge.target === selectedNodeId) {
-        nodeIds.add(edge.source);
-        nodeIds.add(edge.target);
-        edgeIds.add(edge.id);
-      }
-    });
-
-    return { nodeIds, edgeIds };
-  }, [selectedEdgeId, selectedNodeId]);
+  const selectedEdge = useMemo(
+    () => visibleMap.edges.find((edge) => edge.id === selectedEdgeId) ?? null,
+    [selectedEdgeId, visibleMap.edges],
+  );
+  const selectedEdgeEndpointIds = useMemo(
+    () =>
+      selectedEdge ? new Set([selectedEdge.source, selectedEdge.target]) : new Set<string>(),
+    [selectedEdge],
+  );
+  const edgeIdBySourceHandle = useMemo(
+    () =>
+      new Map(
+        visibleMap.edges.map((edge) => [`${edge.source}:${edge.sourceHandle}`, edge.id] as const),
+      ),
+    [visibleMap.edges],
+  );
+  const selectFieldConnection = useCallback((edgeId: string) => {
+    setSelectedId(null);
+    setSelectedEdgeId(edgeId);
+  }, []);
 
   const nodes = useMemo(
     () =>
-      flowNodes.map((node) => ({
-        ...node,
-        data: {
-          ...node.data,
-          visibleHandles: visibleHandleMap.get(node.id),
-        },
-        hidden: !visibleIds.has(node.id),
-        className:
-          selectedNeighborhood && !selectedNeighborhood.nodeIds.has(node.id)
-            ? 'is-dimmed'
-            : undefined,
-        selected: selectedNodeId === node.id,
-      })),
-    [flowNodes, selectedNeighborhood, selectedNodeId, visibleHandleMap, visibleIds],
+      displayedLayoutNodes.map((currentNode) => {
+        const active = !query || nodeMatches.has(currentNode.id);
+        const edgeEndpoint = selectedEdgeEndpointIds.has(currentNode.id);
+        const fieldConnectionIds = Object.fromEntries(
+          (currentNode.data.fields ?? [])
+            .map((field) => [
+              field.id,
+              edgeIdBySourceHandle.get(`${currentNode.id}:${field.id}`),
+            ])
+            .filter((entry): entry is [string, string] => Boolean(entry[1])),
+        );
+
+        return {
+          ...currentNode,
+          selected: selectedId === currentNode.id,
+          data: {
+            ...currentNode.data,
+            active: active || edgeEndpoint,
+            edgeEndpoint,
+            activeEdgeSourceHandle:
+              selectedEdge?.source === currentNode.id ? selectedEdge.sourceHandle : null,
+            fieldConnectionIds,
+            onFieldConnectionClick: selectFieldConnection,
+            query,
+            showExtensions,
+          },
+        };
+      }),
+    [
+      nodeMatches,
+      displayedLayoutNodes,
+      edgeIdBySourceHandle,
+      query,
+      selectFieldConnection,
+      selectedEdge,
+      selectedEdgeEndpointIds,
+      selectedId,
+      showExtensions,
+    ],
   );
 
-  const edges = useMemo(
+  const routeBridgesByEdge = useMemo(
+    () => routeBridges(readableLayout.edges),
+    [readableLayout.edges],
+  );
+
+  const edges = useMemo<RoutedMapEdge[]>(
     () =>
-      gnmiEdges.map((edge) => {
-        const isSelectedEdge = edge.id === selectedEdgeId;
-        const isConnected = Boolean(selectedNeighborhood?.edgeIds.has(edge.id));
-        const isDimmed = Boolean(selectedNeighborhood && !selectedNeighborhood.edgeIds.has(edge.id));
-        const edgeColor = getEdgeColor(edge.className, isSelectedEdge, isConnected);
+      readableLayout.edges.map(({ edge, routePoints, targetHandle }) => {
+        const connectedToMatch =
+          !query || nodeMatches.has(edge.source) || nodeMatches.has(edge.target);
+        const style = edgeStyleByKind[edge.kind] ?? edgeStyleByKind.field;
+        const selected = selectedEdge?.id === edge.id;
+        const selectionDimmed = Boolean(selectedEdge) && !selected;
+        const opacity = connectedToMatch ? (selectionDimmed ? 0.24 : 1) : 0.14;
+        const stroke = selected ? '#d21f3c' : style.stroke;
+        const strokeWidth =
+          typeof style.strokeWidth === 'number'
+            ? style.strokeWidth + (selected ? 1.8 : 0)
+            : style.strokeWidth;
 
         return {
           ...edge,
-          ...edgeDefaults,
-          markerEnd: {
-            ...edgeDefaults.markerEnd,
-            color: edgeColor,
-          },
-          type: useSmartRouting && !isSelectedEdge ? edge.type : 'smoothstep',
-          selected: isSelectedEdge,
-          style: isSelectedEdge
-            ? { stroke: edgeColor, strokeWidth: 5 }
-            : isConnected
-              ? { stroke: edgeColor, strokeWidth: 4 }
-              : undefined,
-          hidden: !visibleIds.has(edge.source) || !visibleIds.has(edge.target),
+          type: 'routed',
+          targetHandle,
+          selected,
+          zIndex: selected ? 12 : 1,
+          interactionWidth: 28,
           className: [
-            edge.className,
-            isConnected ? 'edge-connected' : undefined,
-            isSelectedEdge ? 'edge-selected' : undefined,
-            isDimmed ? 'edge-dimmed' : undefined,
+            'flow-edge',
+            `flow-edge-${edge.kind}`,
+            selected ? 'is-selected' : '',
+            selectionDimmed ? 'is-dimmed' : '',
           ]
             .filter(Boolean)
             .join(' '),
-        };
+          markerEnd: { type: MarkerType.ArrowClosed, color: stroke },
+          animated: selected || (query ? connectedToMatch : edge.kind === 'rpc'),
+          data: { routePoints, routeBridges: routeBridgesByEdge.get(edge.id) ?? [] },
+          style: {
+            ...style,
+            opacity,
+            stroke,
+            strokeWidth,
+          },
+        } satisfies RoutedMapEdge;
       }),
-    [selectedEdgeId, selectedNeighborhood, useSmartRouting, visibleIds],
+    [nodeMatches, query, readableLayout.edges, routeBridgesByEdge, selectedEdge],
   );
 
-  const onNodesChange = (changes: NodeChange<GnmiFlowNode>[]) => {
-    setFlowNodes((currentNodes) => applyNodeChanges(changes, currentNodes) as GnmiFlowNode[]);
-  };
+  const selectedNode = useMemo(
+    () => nodes.find((currentNode) => currentNode.id === selectedId),
+    [nodes, selectedId],
+  );
 
-  const onNodeClick: NodeMouseHandler = (_, node) => {
-    setSelectedEdgeId(null);
-    setSelectedNodeId(node.id);
-  };
+  const fit = useCallback(() => {
+    fitView({ padding: 0.12, duration: 450 });
+  }, [fitView]);
 
-  const onEdgeClick: EdgeMouseHandler = (_, edge) => {
-    setSelectedNodeId(null);
-    setSelectedEdgeId(edge.id);
-  };
+  const onNodesChange = useCallback((changes: NodeChange<MapNode>[]) => {
+    setManualPositions((currentPositions) => {
+      let nextPositions = currentPositions;
 
-  const onNodeDragStart: OnNodeDrag<GnmiFlowNode> = () => {
-    setUseSmartRouting(false);
-  };
+      for (const change of changes) {
+        if (change.type !== 'position' || !change.position) {
+          continue;
+        }
 
-  const copyPositions = async () => {
-    try {
-      await navigator.clipboard.writeText(getPositionsYaml(flowNodes));
-      setCopyStatus('copied');
-      window.setTimeout(() => setCopyStatus('idle'), 1800);
-    } catch {
-      setCopyStatus('failed');
-      window.setTimeout(() => setCopyStatus('idle'), 2400);
+        if (nextPositions === currentPositions) {
+          nextPositions = { ...currentPositions };
+        }
+
+        nextPositions[change.id] = change.position;
+      }
+
+      return nextPositions;
+    });
+
+    setRoutingPositions((currentPositions) => {
+      let nextPositions = currentPositions;
+
+      for (const change of changes) {
+        if (change.type !== 'position' || !change.position || change.dragging !== false) {
+          continue;
+        }
+
+        if (nextPositions === currentPositions) {
+          nextPositions = { ...currentPositions };
+        }
+
+        nextPositions[change.id] = change.position;
+      }
+
+      return nextPositions;
+    });
+
+    setSelectedId((currentSelectedId) => {
+      let selectedNodeWasCleared = false;
+
+      for (const change of changes) {
+        if (change.type !== 'select') {
+          continue;
+        }
+
+        if (change.selected) {
+          return change.id;
+        }
+
+        if (change.id === currentSelectedId) {
+          selectedNodeWasCleared = true;
+        }
+      }
+
+      return selectedNodeWasCleared ? null : currentSelectedId;
+    });
+  }, []);
+
+  const resetLayout = useCallback(() => {
+    setManualPositions({});
+    setRoutingPositions({});
+    window.requestAnimationFrame(() => fitView({ padding: 0.12, duration: 450 }));
+  }, [fitView]);
+
+  const hasManualPositions = Object.keys(manualPositions).length > 0;
+
+  return (
+    <div className="app-shell">
+      <header className="topbar">
+        <div className="brand">
+          <span className="brand-kicker">gNMI service {mapSource.gnmiServiceVersion}</span>
+          <h1>React Flow Map</h1>
+        </div>
+
+        <div className="toolbar" role="toolbar" aria-label="Map controls">
+          <label className="search-box">
+            <Search size={16} aria-hidden="true" />
+            <input
+              value={queryValue}
+              onChange={(event) => setQueryValue(event.target.value)}
+              placeholder="Search messages, fields, enums"
+              type="search"
+            />
+          </label>
+
+          <button className="tool-button" type="button" onClick={fit}>
+            <Focus size={16} aria-hidden="true" />
+            Fit
+          </button>
+
+          <button
+            className="tool-button"
+            type="button"
+            onClick={resetLayout}
+            disabled={!hasManualPositions}
+          >
+            <RotateCcw size={16} aria-hidden="true" />
+            Reset
+          </button>
+
+          <button
+            className={`tool-button ${showExtensions ? 'is-active' : ''}`}
+            type="button"
+            onClick={() => setShowExtensions((value) => !value)}
+            aria-pressed={showExtensions}
+            data-tooltip="Show gNMI extension fields and extension-detail relationships."
+            title="Show gNMI extension fields and extension-detail relationships."
+          >
+            <GitBranch size={16} aria-hidden="true" />
+            Extensions
+          </button>
+
+          <button
+            className={`tool-button ${showDeprecated ? 'is-active' : ''}`}
+            type="button"
+            onClick={() => setShowDeprecated((value) => !value)}
+            aria-pressed={showDeprecated}
+            data-tooltip="Show deprecated proto fields and deprecated message types."
+            title="Show deprecated proto fields and deprecated message types."
+          >
+            <EyeOff size={16} aria-hidden="true" />
+            Deprecated
+          </button>
+
+          <a className="tool-button" href={pdfMapUrl} target="_blank" rel="noreferrer">
+            <FileDown size={16} aria-hidden="true" />
+            PDF
+          </a>
+        </div>
+      </header>
+
+      <main className="map-stage">
+        <ReactFlow<MapNode, RoutedMapEdge>
+          nodes={nodes}
+          edges={edges}
+          nodeTypes={nodeTypes}
+          edgeTypes={edgeTypes}
+          onNodesChange={onNodesChange}
+          onNodeDragStop={(_, node) => {
+            setRoutingPositions((currentPositions) => ({
+              ...currentPositions,
+              [node.id]: node.position,
+            }));
+          }}
+          nodesDraggable
+          minZoom={0.18}
+          maxZoom={1.7}
+          defaultViewport={{ x: 70, y: 40, zoom: 0.42 }}
+          fitView
+          fitViewOptions={{ padding: 0.08 }}
+          onNodeClick={(_, node) => {
+            setSelectedId(node.id);
+            setSelectedEdgeId(null);
+          }}
+          onEdgeClick={(event, edge) => {
+            event.stopPropagation();
+            setSelectedId(null);
+            setSelectedEdgeId(edge.id);
+          }}
+          onPaneClick={() => {
+            setSelectedId(null);
+            setSelectedEdgeId(null);
+          }}
+          proOptions={{ hideAttribution: true }}
+        >
+          <Background color="#c4ced9" gap={34} size={1.1} />
+          <Controls position="bottom-left" />
+        </ReactFlow>
+
+        <Inspector
+          node={selectedNode}
+          totalNodes={visibleMap.nodes.length}
+          totalEdges={visibleMap.edges.length}
+        />
+      </main>
+    </div>
+  );
+}
+
+function SchemaNode({ data, selected }: NodeProps<MapNode>) {
+  const fields = data.fields ?? [];
+  const dimmed = data.active === false;
+  const targetHandles = targetHandlesFromData(data);
+  const fieldConnectionIds = fieldConnectionIdsFromData(data);
+  const onFieldConnectionClick = fieldClickHandlerFromData(data);
+  const activeEdgeSourceHandle =
+    typeof data.activeEdgeSourceHandle === 'string' ? data.activeEdgeSourceHandle : null;
+  const className = [
+    'schema-node',
+    `kind-${data.kind}`,
+    selected ? 'is-selected' : '',
+    data.edgeEndpoint ? 'is-edge-endpoint' : '',
+    dimmed ? 'is-dimmed' : '',
+  ]
+    .filter(Boolean)
+    .join(' ');
+
+  return (
+    <section className={className}>
+      {targetHandles.length ? (
+        targetHandles.map((handle) => (
+          <Handle
+            key={handle.id}
+            type="target"
+            id={handle.id}
+            position={Position.Left}
+            className="node-target"
+            style={{ top: `${handle.y}px` }}
+          />
+        ))
+      ) : (
+        <Handle type="target" position={Position.Left} className="node-target" />
+      )}
+
+      <header className="node-header">
+        <span className="node-kind">{data.kind}</span>
+        <strong title={data.label}>{data.label}</strong>
+        <div className="node-links nodrag nopan">
+          {data.protoUrl ? (
+            <a href={data.protoUrl} title="Proto definition" target="_blank" rel="noreferrer">
+              <FileCode2 size={14} aria-hidden="true" />
+            </a>
+          ) : null}
+          {data.specUrl ? (
+            <a href={data.specUrl} title="gNMI documentation" target="_blank" rel="noreferrer">
+              <BookOpen size={14} aria-hidden="true" />
+            </a>
+          ) : null}
+        </div>
+      </header>
+
+      {data.badges?.length ? (
+        <div className="node-badges">
+          {data.badges.map((badge) => (
+            <span key={badge}>{badge}</span>
+          ))}
+        </div>
+      ) : null}
+
+      <div className="node-body">
+        {fields.length ? (
+          fields.map((field) => (
+            <FieldRow
+              key={field.id}
+              field={field}
+              highlighted={fieldMatches(field, data.query ?? '')}
+              edgeHighlighted={field.id === activeEdgeSourceHandle}
+              connectionEdgeId={fieldConnectionIds[field.id]}
+              onConnectionClick={onFieldConnectionClick}
+              showExtensions={data.showExtensions}
+            />
+          ))
+        ) : (
+          <div className="empty-field">empty message</div>
+        )}
+      </div>
+    </section>
+  );
+}
+
+type FieldRowProps = {
+  field: MapField;
+  highlighted: boolean;
+  edgeHighlighted: boolean;
+  connectionEdgeId?: string;
+  onConnectionClick?: FieldClickHandler;
+  showExtensions?: boolean;
+};
+
+function FieldRow({
+  field,
+  highlighted,
+  edgeHighlighted,
+  connectionEdgeId,
+  onConnectionClick,
+  showExtensions,
+}: FieldRowProps) {
+  const isExtension = field.ref === 'extension';
+  const visibleExtensionHandle = !isExtension || showExtensions;
+  const clickable = Boolean(connectionEdgeId && onConnectionClick);
+  const selectConnection = () => {
+    if (connectionEdgeId && onConnectionClick) {
+      onConnectionClick(connectionEdgeId);
     }
   };
 
-  const onPaneClick = () => {
-    setSelectedNodeId(null);
-    setSelectedEdgeId(null);
-  };
-
   return (
-    <main className="app-shell" data-theme={themeMode}>
-      <Paper component="header" className="top-bar" elevation={0} square>
-        <Box>
-          <Typography
-            component="p"
-            variant="overline"
-            color="text.secondary"
-            sx={{ display: 'block', fontWeight: 700, lineHeight: 1.2 }}
-          >
-            OpenConfig proto map
-          </Typography>
-          <Typography component="h1" variant="h4">
-            service gNMI 0.7.0
-          </Typography>
-        </Box>
-        <TextField
-          className="top-bar__search"
-          label="Search map"
-          size="small"
-          value={query}
-          onChange={(event) => setQuery(event.target.value)}
-          placeholder="Try SubscribeRequest, Path, Encoding..."
-          fullWidth
+    <div
+      className={[
+        'field-row',
+        field.ref ? 'has-ref' : '',
+        highlighted ? 'is-highlighted' : '',
+        edgeHighlighted ? 'is-edge-highlighted' : '',
+        clickable ? 'is-clickable nodrag nopan' : '',
+        field.badge === 'deprecated' ? 'is-deprecated' : '',
+      ]
+        .filter(Boolean)
+        .join(' ')}
+      role={clickable ? 'button' : undefined}
+      tabIndex={clickable ? 0 : undefined}
+      title={clickable ? `${field.name} -> ${field.ref}` : undefined}
+      aria-label={clickable ? `Highlight ${field.name} connection to ${field.ref}` : undefined}
+      onClick={(event) => {
+        if (!clickable) {
+          return;
+        }
+        event.stopPropagation();
+        selectConnection();
+      }}
+      onKeyDown={(event) => {
+        if (!clickable || (event.key !== 'Enter' && event.key !== ' ')) {
+          return;
+        }
+        event.preventDefault();
+        event.stopPropagation();
+        selectConnection();
+      }}
+    >
+      <span className="field-type">{field.type}</span>
+      <span className="field-name">{field.name}</span>
+      {field.group ? <span className="field-group">{field.group}</span> : null}
+      {field.badge ? <span className={`field-badge badge-${field.badge}`}>{field.badge}</span> : null}
+      {field.ref && visibleExtensionHandle ? (
+        <Handle
+          type="source"
+          id={field.id}
+          position={Position.Right}
+          className="field-handle"
+          title={`${field.name} -> ${field.ref}`}
         />
-        <Button
-          className="top-bar__button"
-          type="button"
-          variant="contained"
-          color="primary"
-          onClick={copyPositions}
-        >
-          {copyStatus === 'copied'
-            ? 'Copied'
-            : copyStatus === 'failed'
-              ? 'Copy failed'
-              : 'Copy positions'}
-        </Button>
-        <FormControlLabel
-          className="top-bar__theme-toggle"
-          control={<Switch checked={themeMode === 'dark'} onChange={onThemeToggle} color="primary" />}
-          label={themeMode === 'dark' ? 'Mocha' : 'Latte'}
-        />
-      </Paper>
-      <section className="map-card" aria-label="gNMI 0.7.0 React Flow map">
-        <ReactFlow
-          nodes={nodes}
-          edges={edges as Edge[]}
-          nodeTypes={nodeTypes}
-          edgeTypes={edgeTypes}
-          fitView
-          minZoom={0.18}
-          maxZoom={1.7}
-          snapToGrid
-          snapGrid={[20, 20]}
-          onNodesChange={onNodesChange}
-          onNodeClick={onNodeClick}
-          onEdgeClick={onEdgeClick}
-          onNodeDragStart={onNodeDragStart}
-          onPaneClick={onPaneClick}
-          proOptions={{ hideAttribution: true }}
-        >
-          <Background variant={BackgroundVariant.Dots} gap={24} size={1} />
-          <Controls position="bottom-right" />
-
-          <Panel position="bottom-center" className="credit-panel">
-            <Box sx={{ display: 'flex', gap: 1.5, alignItems: 'center', flexWrap: 'wrap' }}>
-              <Typography variant="body2" color="text.secondary">
-                Created from Roman Dodin&apos;s gNMI map.
-              </Typography>
-              <Link href={sourceLinks.project} target="_blank" rel="noreferrer" underline="hover">
-                Source PDF
-              </Link>
-              <Link href={sourceLinks.author} target="_blank" rel="noreferrer" underline="hover">
-                Author
-              </Link>
-              <Link href={sourceLinks.social} target="_blank" rel="noreferrer" underline="hover">
-                Twitter
-              </Link>
-            </Box>
-          </Panel>
-        </ReactFlow>
-      </section>
-    </main>
+      ) : null}
+    </div>
   );
 }
 
-function App() {
-  const userSelectedTheme = useRef(false);
-  const [themeMode, setThemeMode] = useState<ThemeMode>(() => getSystemTheme());
-  const muiTheme = useMemo(() => createCatppuccinTheme(themeMode), [themeMode]);
+function RoutedEdge({
+  id,
+  sourceX,
+  sourceY,
+  targetX,
+  targetY,
+  data,
+  markerEnd,
+  style,
+  interactionWidth,
+}: EdgeProps<RoutedMapEdge>) {
+  const routePoints =
+    data?.routePoints?.length && data.routePoints.length > 1
+      ? data.routePoints
+      : [
+          { x: sourceX, y: sourceY },
+          { x: targetX, y: targetY },
+        ];
+  const routeBridges = data?.routeBridges ?? [];
+  const stroke = typeof style?.stroke === 'string' ? style.stroke : '#5b708a';
+  const strokeWidth = typeof style?.strokeWidth === 'number' ? style.strokeWidth : 1.6;
+  const path = roundedRoutePath(routePoints);
 
-  useEffect(() => {
-    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-    const handleChange = (event: MediaQueryListEvent) => {
-      if (!userSelectedTheme.current) {
-        setThemeMode(event.matches ? 'dark' : 'light');
+  return (
+    <>
+      <path
+        className="flow-edge-halo"
+        d={path}
+        style={{ strokeWidth: strokeWidth + 5 }}
+      />
+      <BaseEdge
+        id={id}
+        path={path}
+        markerEnd={markerEnd}
+        style={style}
+        interactionWidth={interactionWidth ?? 28}
+      />
+      {routeBridges.map((bridge, index) => {
+        const path = bridgePath(bridge);
+
+        return (
+          <g key={`${bridge.orientation}-${bridge.x}-${bridge.y}-${index}`}>
+            <path className="flow-edge-bridge-gap" d={path} />
+            <path
+              className="flow-edge-bridge"
+              d={path}
+              style={{
+                stroke,
+                strokeWidth: Math.max(strokeWidth, 1.8),
+              }}
+            />
+          </g>
+        );
+      })}
+    </>
+  );
+}
+
+function roundedRoutePath(points: RoutePoint[], radius = 18): string {
+  if (!points.length) {
+    return '';
+  }
+
+  const [start] = points;
+  const commands = [`M ${start.x} ${start.y}`];
+
+  for (let index = 1; index < points.length; index += 1) {
+    const previous = points[index - 1];
+    const current = points[index];
+    const next = points[index + 1];
+
+    if (!next) {
+      commands.push(`L ${current.x} ${current.y}`);
+      continue;
+    }
+
+    const incomingDistance = pointDistance(previous, current);
+    const outgoingDistance = pointDistance(current, next);
+    if (incomingDistance === 0 || outgoingDistance === 0) {
+      commands.push(`L ${current.x} ${current.y}`);
+      continue;
+    }
+
+    const cornerRadius = Math.min(radius, incomingDistance / 2, outgoingDistance / 2);
+    const incomingUnit = {
+      x: (current.x - previous.x) / incomingDistance,
+      y: (current.y - previous.y) / incomingDistance,
+    };
+    const outgoingUnit = {
+      x: (next.x - current.x) / outgoingDistance,
+      y: (next.y - current.y) / outgoingDistance,
+    };
+    const beforeCorner = {
+      x: current.x - incomingUnit.x * cornerRadius,
+      y: current.y - incomingUnit.y * cornerRadius,
+    };
+    const afterCorner = {
+      x: current.x + outgoingUnit.x * cornerRadius,
+      y: current.y + outgoingUnit.y * cornerRadius,
+    };
+
+    commands.push(
+      `L ${roundPathNumber(beforeCorner.x)} ${roundPathNumber(beforeCorner.y)}`,
+      `Q ${current.x} ${current.y} ${roundPathNumber(afterCorner.x)} ${roundPathNumber(afterCorner.y)}`,
+    );
+  }
+
+  return commands.join(' ');
+}
+
+function bridgePath(bridge: RouteBridge): string {
+  const radius = 9;
+  const height = 4;
+
+  if (bridge.orientation === 'horizontal') {
+    return [
+      `M ${bridge.x - radius} ${bridge.y}`,
+      `Q ${bridge.x} ${bridge.y - height} ${bridge.x + radius} ${bridge.y}`,
+    ].join(' ');
+  }
+
+  return [
+    `M ${bridge.x} ${bridge.y - radius}`,
+    `Q ${bridge.x + height} ${bridge.y} ${bridge.x} ${bridge.y + radius}`,
+  ].join(' ');
+}
+
+function routeBridges(
+  routedEdges: Array<{ edge: MapEdge; routePoints: RoutePoint[] }>,
+): Map<string, RouteBridge[]> {
+  const bridgesByEdge = new Map<string, RouteBridge[]>();
+  const segments = routedEdges.flatMap(({ edge, routePoints }) =>
+    routeSegments(edge.id, routePoints),
+  );
+
+  for (let firstIndex = 0; firstIndex < segments.length; firstIndex += 1) {
+    const first = segments[firstIndex];
+
+    for (let secondIndex = firstIndex + 1; secondIndex < segments.length; secondIndex += 1) {
+      const second = segments[secondIndex];
+      if (first.edgeId === second.edgeId) {
+        continue;
       }
-    };
 
-    mediaQuery.addEventListener('change', handleChange);
+      if (first.orientation !== second.orientation) {
+        addCrossingBridge(bridgesByEdge, first, second);
+      }
+    }
+  }
 
-    return () => {
-      mediaQuery.removeEventListener('change', handleChange);
-    };
-  }, []);
+  for (const [edgeId, bridges] of bridgesByEdge) {
+    bridgesByEdge.set(edgeId, dedupeBridges(bridges));
+  }
 
-  const toggleTheme = () => {
-    userSelectedTheme.current = true;
-    setThemeMode((currentTheme) => (currentTheme === 'dark' ? 'light' : 'dark'));
-  };
+  return bridgesByEdge;
+}
 
+function routeSegments(edgeId: string, points: RoutePoint[]): RouteSegment[] {
+  const segments: RouteSegment[] = [];
+
+  for (let index = 0; index < points.length - 1; index += 1) {
+    const start = points[index];
+    const end = points[index + 1];
+    if (start.x === end.x && start.y === end.y) {
+      continue;
+    }
+
+    if (start.y === end.y) {
+      segments.push({
+        edgeId,
+        index,
+        start,
+        end,
+        orientation: 'horizontal',
+        fixed: start.y,
+        from: Math.min(start.x, end.x),
+        to: Math.max(start.x, end.x),
+      });
+      continue;
+    }
+
+    if (start.x === end.x) {
+      segments.push({
+        edgeId,
+        index,
+        start,
+        end,
+        orientation: 'vertical',
+        fixed: start.x,
+        from: Math.min(start.y, end.y),
+        to: Math.max(start.y, end.y),
+      });
+    }
+  }
+
+  return segments;
+}
+
+function addCrossingBridge(
+  bridgesByEdge: Map<string, RouteBridge[]>,
+  first: RouteSegment,
+  second: RouteSegment,
+): void {
+  const horizontal = first.orientation === 'horizontal' ? first : second;
+  const vertical = first.orientation === 'vertical' ? first : second;
+  const x = vertical.fixed;
+  const y = horizontal.fixed;
+  const crossingMargin = 34;
+
+  if (
+    x <= horizontal.from + crossingMargin ||
+    x >= horizontal.to - crossingMargin ||
+    y <= vertical.from + crossingMargin ||
+    y >= vertical.to - crossingMargin
+  ) {
+    return;
+  }
+
+  if (segmentsShareEndpoint(first, second)) {
+    return;
+  }
+
+  const bridgeSegment = first.edgeId > second.edgeId ? first : second;
+  appendBridge(bridgesByEdge, bridgeSegment.edgeId, {
+    x,
+    y,
+    orientation: bridgeSegment.orientation,
+  });
+}
+
+function appendBridge(
+  bridgesByEdge: Map<string, RouteBridge[]>,
+  edgeId: string,
+  bridge: RouteBridge,
+): void {
+  bridgesByEdge.set(edgeId, [...(bridgesByEdge.get(edgeId) ?? []), bridge]);
+}
+
+function dedupeBridges(bridges: RouteBridge[]): RouteBridge[] {
+  const seen = new Set<string>();
+
+  return bridges
+    .sort((first, second) => first.x - second.x || first.y - second.y)
+    .filter((bridge) => {
+      const key = `${bridge.orientation}:${Math.round(bridge.x / 8)}:${Math.round(bridge.y / 8)}`;
+      if (seen.has(key)) {
+        return false;
+      }
+      seen.add(key);
+      return true;
+    });
+}
+
+function segmentsShareEndpoint(first: RouteSegment, second: RouteSegment): boolean {
   return (
-    <ThemeProvider theme={muiTheme}>
-      <CssBaseline />
-      <ReactFlowProvider>
-        <GnmiMap themeMode={themeMode} onThemeToggle={toggleTheme} />
-      </ReactFlowProvider>
-    </ThemeProvider>
+    pointsEqual(first.start, second.start) ||
+    pointsEqual(first.start, second.end) ||
+    pointsEqual(first.end, second.start) ||
+    pointsEqual(first.end, second.end)
   );
 }
 
-export default App;
+function pointsEqual(first: RoutePoint, second: RoutePoint): boolean {
+  return Math.abs(first.x - second.x) < 0.5 && Math.abs(first.y - second.y) < 0.5;
+}
+
+function pointDistance(first: RoutePoint, second: RoutePoint): number {
+  return Math.hypot(second.x - first.x, second.y - first.y);
+}
+
+function roundPathNumber(value: number): number {
+  return Math.round(value * 100) / 100;
+}
+
+function targetHandlesFromData(data: MapNode['data']): TargetHandleLayout[] {
+  return Array.isArray(data.targetHandles)
+    ? (data.targetHandles as TargetHandleLayout[])
+    : [];
+}
+
+function fieldConnectionIdsFromData(data: MapNode['data']): FieldConnectionIds {
+  return data.fieldConnectionIds &&
+    typeof data.fieldConnectionIds === 'object' &&
+    !Array.isArray(data.fieldConnectionIds)
+    ? (data.fieldConnectionIds as FieldConnectionIds)
+    : {};
+}
+
+function fieldClickHandlerFromData(data: MapNode['data']): FieldClickHandler | undefined {
+  return typeof data.onFieldConnectionClick === 'function'
+    ? (data.onFieldConnectionClick as FieldClickHandler)
+    : undefined;
+}
+
+type InspectorProps = {
+  node?: MapNode;
+  totalNodes: number;
+  totalEdges: number;
+};
+
+function Inspector({ node, totalNodes, totalEdges }: InspectorProps) {
+  if (!node) {
+    return (
+      <aside className="inspector">
+        <span className="inspector-kicker">Map</span>
+        <h2>{totalNodes} nodes</h2>
+        <p>{totalEdges} relationships across gNMI RPCs, messages, enums, and external types.</p>
+      </aside>
+    );
+  }
+
+  return (
+    <aside className="inspector">
+      <span className="inspector-kicker">{node.data.kind}</span>
+      <h2>{node.data.label}</h2>
+
+      <div className="inspector-actions">
+        {node.data.protoUrl ? (
+          <a href={node.data.protoUrl} target="_blank" rel="noreferrer">
+            <FileCode2 size={15} aria-hidden="true" />
+            Proto
+            <ExternalLink size={13} aria-hidden="true" />
+          </a>
+        ) : null}
+        {node.data.specUrl ? (
+          <a href={node.data.specUrl} target="_blank" rel="noreferrer">
+            <BookOpen size={15} aria-hidden="true" />
+            Docs
+            <ExternalLink size={13} aria-hidden="true" />
+          </a>
+        ) : null}
+      </div>
+
+      {node.data.fields?.length ? (
+        <div className="inspector-fields">
+          {node.data.fields.map((field) => (
+            <div key={field.id} className="inspector-field">
+              <span>{field.type}</span>
+              <strong>{field.name}</strong>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <p>No fields.</p>
+      )}
+    </aside>
+  );
+}
+
+export default function App() {
+  return (
+    <ReactFlowProvider>
+      <AppShell />
+    </ReactFlowProvider>
+  );
+}
