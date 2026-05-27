@@ -76,6 +76,9 @@ type NodePosition = {
   y: number;
 };
 
+let cachedElkLayoutPositions: Record<string, NodePosition> | null = null;
+let cachedElkLayoutPromise: Promise<Record<string, NodePosition>> | null = null;
+
 type RoutedEdgeData = Record<string, unknown> & {
   routePoints: RoutePoint[];
   routeBridges: RouteBridge[];
@@ -119,6 +122,39 @@ function getInitialTheme(): ThemeMode {
   return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
 }
 
+function nodePositions(nodes: MapNode[]): Record<string, NodePosition> {
+  return Object.fromEntries(nodes.map((node) => [node.id, node.position]));
+}
+
+function computeElkLayoutPositions(force = false): Promise<Record<string, NodePosition>> {
+  if (force) {
+    cachedElkLayoutPositions = null;
+    cachedElkLayoutPromise = null;
+  }
+
+  if (cachedElkLayoutPositions) {
+    return Promise.resolve(cachedElkLayoutPositions);
+  }
+
+  if (!cachedElkLayoutPromise) {
+    const fullMap = getVisibleMap({ showDeprecated: true, showExtensions: true });
+    cachedElkLayoutPromise = computeReadableNodeLayout(fullMap.nodes, fullMap.edges).then(
+      (layoutNodes) => {
+        const positions = nodePositions(layoutNodes);
+        cachedElkLayoutPositions = positions;
+        cachedElkLayoutPromise = null;
+        return positions;
+      },
+      (error: unknown) => {
+        cachedElkLayoutPromise = null;
+        throw error;
+      },
+    );
+  }
+
+  return cachedElkLayoutPromise;
+}
+
 function searchableText(node: MapNode): string {
   const fieldText = node.data.fields
     ?.map((field) => `${field.type} ${field.name} ${field.group ?? ''} ${field.badge ?? ''}`)
@@ -140,6 +176,10 @@ function fieldMatches(field: MapField, query: string): boolean {
 function AppShell() {
   const { fitView } = useReactFlow<MapNode, RoutedMapEdge>();
   const [theme, setTheme] = useState<ThemeMode>(getInitialTheme);
+  const [layoutResetCount, setLayoutResetCount] = useState(0);
+  const [layoutPending, setLayoutPending] = useState(false);
+  const [elkLayoutPositions, setElkLayoutPositions] =
+    useState<Record<string, NodePosition> | null>(cachedElkLayoutPositions);
   const [queryValue, setQueryValue] = useState('');
   const [showExtensions, setShowExtensions] = useState(false);
   const [showDeprecated, setShowDeprecated] = useState(false);
@@ -155,7 +195,6 @@ function AppShell() {
     [showDeprecated, showExtensions],
   );
   const fallbackLayoutNodes = useMemo(() => improveNodeLayout(visibleMap.nodes), [visibleMap.nodes]);
-  const [elkLayoutNodes, setElkLayoutNodes] = useState<MapNode[] | null>(null);
 
   useEffect(() => {
     document.documentElement.dataset.theme = theme;
@@ -164,26 +203,36 @@ function AppShell() {
 
   useEffect(() => {
     let cancelled = false;
-    setElkLayoutNodes(null);
+    setLayoutPending(true);
 
-    computeReadableNodeLayout(visibleMap.nodes, visibleMap.edges)
-      .then((layoutNodes) => {
+    computeElkLayoutPositions(layoutResetCount > 0)
+      .then((layoutPositions) => {
         if (!cancelled) {
-          setElkLayoutNodes(layoutNodes);
+          setElkLayoutPositions(layoutPositions);
         }
       })
       .catch((error) => {
         console.error('Failed to compute readable map layout', error);
+      })
+      .finally(() => {
+        if (!cancelled) {
+          setLayoutPending(false);
+        }
       });
 
     return () => {
       cancelled = true;
     };
-  }, [visibleMap.edges, visibleMap.nodes]);
+  }, [layoutResetCount]);
 
-  const layoutNodes = elkLayoutNodes ?? fallbackLayoutNodes;
+  const layoutNodes = useMemo(
+    () =>
+      elkLayoutPositions ? applyManualPositions(visibleMap.nodes, elkLayoutPositions) : fallbackLayoutNodes,
+    [elkLayoutPositions, fallbackLayoutNodes, visibleMap.nodes],
+  );
+
   useEffect(() => {
-    if (!elkLayoutNodes) {
+    if (!elkLayoutPositions) {
       return;
     }
 
@@ -198,7 +247,7 @@ function AppShell() {
         window.cancelAnimationFrame(secondFrame);
       }
     };
-  }, [elkLayoutNodes, fitView]);
+  }, [elkLayoutPositions, fitView]);
 
   const routedLayoutNodes = useMemo(
     () => applyManualPositions(layoutNodes, routingPositions),
@@ -325,7 +374,6 @@ function AppShell() {
             .filter(Boolean)
             .join(' '),
           markerEnd: { type: MarkerType.ArrowClosed, color: stroke },
-          animated: selected || (query ? connectedToMatch : edge.kind === 'rpc'),
           data: { routePoints, routeBridges: routeBridgesByEdge.get(edge.id) ?? [] },
           style: {
             ...style,
@@ -412,10 +460,8 @@ function AppShell() {
   const resetLayout = useCallback(() => {
     setManualPositions({});
     setRoutingPositions({});
-    window.requestAnimationFrame(() => fitView({ padding: 0.12, duration: 450 }));
-  }, [fitView]);
-
-  const hasManualPositions = Object.keys(manualPositions).length > 0;
+    setLayoutResetCount((count) => count + 1);
+  }, []);
 
   return (
     <div className="app-shell">
@@ -461,7 +507,7 @@ function AppShell() {
             className="tool-button"
             type="button"
             onClick={resetLayout}
-            disabled={!hasManualPositions}
+            disabled={layoutPending}
           >
             <RotateCcw size={16} aria-hidden="true" />
             Reset
