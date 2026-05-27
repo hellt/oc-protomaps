@@ -1,7 +1,19 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import dagre from '@dagrejs/dagre';
 import { SmartStepEdge } from '@jalez/react-flow-smart-edge';
-import { Box, Button, Link, Paper, TextField, Typography } from '@mui/material';
+import {
+  Box,
+  Button,
+  CssBaseline,
+  FormControlLabel,
+  Link,
+  Paper,
+  Switch,
+  TextField,
+  ThemeProvider,
+  Typography,
+  createTheme,
+} from '@mui/material';
 import {
   applyNodeChanges,
   Background,
@@ -55,6 +67,49 @@ const AUTO_LAYOUT_CONFIG = {
   marginy: 120,
 };
 
+type ThemeMode = 'light' | 'dark';
+
+const catppuccin = {
+  light: {
+    base: '#eff1f5',
+    mantle: '#e6e9ef',
+    crust: '#dce0e8',
+    surface0: '#ccd0da',
+    surface1: '#bcc0cc',
+    surface2: '#acb0be',
+    overlay0: '#9ca0b0',
+    overlay1: '#8c8fa1',
+    text: '#4c4f69',
+    subtext1: '#5c5f77',
+    blue: '#1e66f5',
+    lavender: '#7287fd',
+    teal: '#179299',
+    green: '#40a02b',
+    mauve: '#8839ef',
+    peach: '#fe640b',
+    red: '#d20f39',
+  },
+  dark: {
+    base: '#1e1e2e',
+    mantle: '#181825',
+    crust: '#11111b',
+    surface0: '#313244',
+    surface1: '#45475a',
+    surface2: '#585b70',
+    overlay0: '#6c7086',
+    overlay1: '#7f849c',
+    text: '#cdd6f4',
+    subtext1: '#bac2de',
+    blue: '#89b4fa',
+    lavender: '#b4befe',
+    teal: '#94e2d5',
+    green: '#a6e3a1',
+    mauve: '#cba6f7',
+    peach: '#fab387',
+    red: '#f38ba8',
+  },
+} as const;
+
 type NodePosition = {
   x: number;
   y: number;
@@ -66,6 +121,72 @@ type PositionsFile = {
 };
 
 type VisibleHandles = NonNullable<GnmiNodeData['visibleHandles']>;
+
+function getSystemTheme(): ThemeMode {
+  if (typeof window === 'undefined') {
+    return 'light';
+  }
+
+  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+}
+
+function createCatppuccinTheme(mode: ThemeMode) {
+  const palette = catppuccin[mode];
+
+  return createTheme({
+    palette: {
+      mode,
+      primary: {
+        main: palette.teal,
+      },
+      secondary: {
+        main: palette.blue,
+      },
+      error: {
+        main: palette.red,
+      },
+      warning: {
+        main: palette.peach,
+      },
+      success: {
+        main: palette.green,
+      },
+      text: {
+        primary: palette.text,
+        secondary: palette.subtext1,
+      },
+      background: {
+        default: palette.base,
+        paper: palette.mantle,
+      },
+      divider: palette.surface0,
+    },
+    shape: {
+      borderRadius: 4,
+    },
+    typography: {
+      fontFamily:
+        'Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
+      h1: {
+        fontWeight: 800,
+        letterSpacing: '-0.04em',
+      },
+      button: {
+        fontWeight: 800,
+        textTransform: 'none',
+      },
+    },
+    components: {
+      MuiButton: {
+        styleOverrides: {
+          root: {
+            boxShadow: 'none',
+          },
+        },
+      },
+    },
+  });
+}
 
 function matchesQuery(node: Node<GnmiNodeData>, query: string) {
   const haystack = [
@@ -191,7 +312,12 @@ function downloadPositions(nodes: GnmiFlowNode[]) {
   URL.revokeObjectURL(url);
 }
 
-function GnmiMap() {
+type GnmiMapProps = {
+  themeMode: ThemeMode;
+  onThemeToggle: () => void;
+};
+
+function GnmiMap({ themeMode, onThemeToggle }: GnmiMapProps) {
   const [query, setQuery] = useState('');
   const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null);
   const [useSmartRouting, setUseSmartRouting] = useState(true);
@@ -405,7 +531,7 @@ function GnmiMap() {
   const onPaneClick = () => setSelectedNodeId(null);
 
   return (
-    <main className="app-shell">
+    <main className="app-shell" data-theme={themeMode}>
       <Paper component="header" className="top-bar" elevation={0} square>
         <Box>
           <Typography
@@ -438,6 +564,11 @@ function GnmiMap() {
         >
           Save positions
         </Button>
+        <FormControlLabel
+          className="top-bar__theme-toggle"
+          control={<Switch checked={themeMode === 'dark'} onChange={onThemeToggle} color="primary" />}
+          label={themeMode === 'dark' ? 'Mocha' : 'Latte'}
+        />
       </Paper>
       <section className="map-card" aria-label="gNMI 0.7.0 React Flow map">
         <ReactFlow
@@ -482,10 +613,37 @@ function GnmiMap() {
 }
 
 function App() {
+  const userSelectedTheme = useRef(false);
+  const [themeMode, setThemeMode] = useState<ThemeMode>(() => getSystemTheme());
+  const muiTheme = useMemo(() => createCatppuccinTheme(themeMode), [themeMode]);
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    const handleChange = (event: MediaQueryListEvent) => {
+      if (!userSelectedTheme.current) {
+        setThemeMode(event.matches ? 'dark' : 'light');
+      }
+    };
+
+    mediaQuery.addEventListener('change', handleChange);
+
+    return () => {
+      mediaQuery.removeEventListener('change', handleChange);
+    };
+  }, []);
+
+  const toggleTheme = () => {
+    userSelectedTheme.current = true;
+    setThemeMode((currentTheme) => (currentTheme === 'dark' ? 'light' : 'dark'));
+  };
+
   return (
-    <ReactFlowProvider>
-      <GnmiMap />
-    </ReactFlowProvider>
+    <ThemeProvider theme={muiTheme}>
+      <CssBaseline />
+      <ReactFlowProvider>
+        <GnmiMap themeMode={themeMode} onThemeToggle={toggleTheme} />
+      </ReactFlowProvider>
+    </ThemeProvider>
   );
 }
 

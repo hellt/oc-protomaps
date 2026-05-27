@@ -1,6 +1,6 @@
 :root {
-  color: #0f172a;
-  background: #e2e8f0;
+  color: #4c4f69;
+  background: #eff1f5;
   font-family:
     Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
     sans-serif;
@@ -24,52 +24,101 @@ a {
   color: inherit;
 }
 
+.app-shell[data-theme="light"] {
+  --ctp-base: #eff1f5;
+  --ctp-mantle: #e6e9ef;
+  --ctp-crust: #dce0e8;
+  --ctp-surface0: #ccd0da;
+  --ctp-surface1: #bcc0cc;
+  --ctp-surface2: #acb0be;
+  --ctp-overlay0: #9ca0b0;
+  --ctp-overlay1: #8c8fa1;
+  --ctp-text: #4c4f69;
+  --ctp-subtext1: #5c5f77;
+  --ctp-subtext0: #6c6f85;
+  --ctp-blue: #1e66f5;
+  --ctp-lavender: #7287fd;
+  --ctp-teal: #179299;
+  --ctp-green: #40a02b;
+  --ctp-mauve: #8839ef;
+  --ctp-peach: #fe640b;
+  --ctp-red: #d20f39;
+  --ctp-maroon: #e64553;
+  --shadow-color: rgb(76 79 105 / 14%);
+}
+
+.app-shell[data-theme="dark"] {
+  --ctp-base: #1e1e2e;
+  --ctp-mantle: #181825;
+  --ctp-crust: #11111b;
+  --ctp-surface0: #313244;
+  --ctp-surface1: #45475a;
+  --ctp-surface2: #585b70;
+  --ctp-overlay0: #6c7086;
+  --ctp-overlay1: #7f849c;
+  --ctp-text: #cdd6f4;
+  --ctp-subtext1: #bac2de;
+  --ctp-subtext0: #a6adc8;
+  --ctp-blue: #89b4fa;
+  --ctp-lavender: #b4befe;
+  --ctp-teal: #94e2d5;
+  --ctp-green: #a6e3a1;
+  --ctp-mauve: #cba6f7;
+  --ctp-peach: #fab387;
+  --ctp-red: #f38ba8;
+  --ctp-maroon: #eba0ac;
+  --shadow-color: rgb(17 17 27 / 32%);
+}
+
 .app-shell {
   display: grid;
   grid-template-rows: auto 1fr;
   height: 100vh;
-  background: #f8fafc;
+  color: var(--ctp-text);
+  background: var(--ctp-base);
 }
 
 .map-card {
   min-height: 0;
   overflow: hidden;
   border: 0;
-  border-top: 1px solid rgb(15 23 42 / 12%);
+  border-top: 1px solid var(--ctp-surface0);
   border-radius: 0;
-  background: #f8fafc;
+  background: var(--ctp-base);
   box-shadow: none;
 }
 
 .react-flow {
-  --xy-edge-stroke-default: #64748b;
+  --xy-background-color-default: var(--ctp-base);
+  --xy-edge-stroke-default: var(--ctp-overlay0);
   --xy-edge-stroke-width-default: 1.6;
-  --xy-controls-button-background-color-default: #ffffff;
-  --xy-controls-button-color-default: #0f172a;
+  --xy-controls-button-background-color-default: var(--ctp-mantle);
+  --xy-controls-button-color-default: var(--ctp-text);
+  --xy-controls-button-border-color-default: var(--ctp-surface0);
 }
 
 .react-flow__edge.edge-service path {
-  stroke: #0f766e;
+  stroke: var(--ctp-teal);
   stroke-width: 3;
 }
 
 .react-flow__edge.edge-rpc path {
-  stroke: #2563eb;
+  stroke: var(--ctp-blue);
   stroke-width: 2.5;
 }
 
 .react-flow__edge.edge-oneof path {
-  stroke: #7c3aed;
+  stroke: var(--ctp-mauve);
   stroke-dasharray: 8 5;
 }
 
 .react-flow__edge.edge-deprecated path {
-  stroke: #be123c;
+  stroke: var(--ctp-red);
   stroke-dasharray: 5 5;
 }
 
 .react-flow__edge.edge-connected path {
-  stroke: #f97316;
+  stroke: var(--ctp-peach);
   stroke-width: 4;
 }
 
@@ -78,11 +127,11 @@ a {
 }
 
 .react-flow__edge-textbg {
-  fill: #f8fafc;
+  fill: var(--ctp-base);
 }
 
 .react-flow__edge-text {
-  fill: #334155;
+  fill: var(--ctp-text);
   font-size: 11px;
   font-weight: 700;
 }
@@ -90,17 +139,18 @@ a {
 .gnmi-node {
   width: 260px;
   overflow: visible;
-  border: 1px solid rgb(71 85 105 / 24%);
+  border: 1px solid var(--ctp-surface1);
   border-radius: 18px;
-  background: #ffffff;
-  box-shadow: 0 14px 32px rgb(15 23 42 / 14%);
+  color: var(--ctp-text);
+  background: var(--ctp-mantle);
+  box-shadow: 0 14px 32px var(--shadow-color);
 }
 
 .gnmi-node.is-selected {
-  border-color: #f97316;
+  border-color: var(--ctp-peach);
   box-shadow:
-    0 0 0 4px rgb(249 115 22 / 18%),
-    0 16px 40px rgb(15 23 42 / 18%);
+    0 0 0 4px color-mix(in srgb, var(--ctp-peach) 22%, transparent),
+    0 16px 40px var(--shadow-color);
 }
 
 .react-flow__node.is-dimmed {
@@ -117,11 +167,11 @@ a {
 
 .gnmi-node--service {
   width: 300px;
-  border-color: rgb(15 118 110 / 38%);
+  border-color: color-mix(in srgb, var(--ctp-teal) 48%, var(--ctp-surface1));
 }
 
 .gnmi-node--rpc {
-  border-color: rgb(37 99 235 / 36%);
+  border-color: color-mix(in srgb, var(--ctp-blue) 44%, var(--ctp-surface1));
 }
 
 .gnmi-node--enum,
@@ -130,27 +180,27 @@ a {
 }
 
 .gnmi-node--embedded {
-  border-color: rgb(4 120 87 / 38%);
+  border-color: color-mix(in srgb, var(--ctp-green) 44%, var(--ctp-surface1));
 }
 
 .gnmi-node--extension {
-  border-color: rgb(194 65 12 / 38%);
+  border-color: color-mix(in srgb, var(--ctp-peach) 44%, var(--ctp-surface1));
 }
 
 .gnmi-node--deprecated {
-  border-color: rgb(190 18 60 / 42%);
-  background: #fff7f7;
+  border-color: color-mix(in srgb, var(--ctp-red) 44%, var(--ctp-surface1));
+  background: color-mix(in srgb, var(--ctp-red) 8%, var(--ctp-mantle));
 }
 
 .gnmi-node__handle {
   z-index: 5;
   width: 8px;
   height: 8px;
-  border: 2px solid #64748b;
-  background: #f8fafc;
+  border: 2px solid var(--ctp-overlay0);
+  background: var(--ctp-base);
   box-shadow:
-    0 0 0 2px #ffffff,
-    0 1px 4px rgb(15 23 42 / 24%);
+    0 0 0 2px var(--ctp-mantle),
+    0 1px 4px var(--shadow-color);
   opacity: 1;
 }
 
@@ -162,8 +212,8 @@ a {
   top: 50%;
   width: 8px;
   height: 8px;
-  border-color: #64748b;
-  background: #f8fafc;
+  border-color: var(--ctp-overlay0);
+  background: var(--ctp-base);
 }
 
 .gnmi-node__handle--target {
@@ -182,33 +232,33 @@ a {
   justify-content: space-between;
   padding: 14px 14px 12px;
   border-radius: 17px 17px 0 0;
-  color: #ffffff;
-  background: linear-gradient(135deg, #334155, #0f172a);
+  color: var(--ctp-base);
+  background: linear-gradient(135deg, var(--ctp-surface2), var(--ctp-text));
 }
 
 .gnmi-node--service .gnmi-node__header {
-  background: linear-gradient(135deg, #0f766e, #134e4a);
+  background: linear-gradient(135deg, var(--ctp-teal), color-mix(in srgb, var(--ctp-teal) 55%, var(--ctp-crust)));
 }
 
 .gnmi-node--rpc .gnmi-node__header {
-  background: linear-gradient(135deg, #2563eb, #1e3a8a);
+  background: linear-gradient(135deg, var(--ctp-blue), color-mix(in srgb, var(--ctp-blue) 55%, var(--ctp-crust)));
 }
 
 .gnmi-node--enum .gnmi-node__header,
 .gnmi-node--oneof .gnmi-node__header {
-  background: linear-gradient(135deg, #7c3aed, #4c1d95);
+  background: linear-gradient(135deg, var(--ctp-mauve), color-mix(in srgb, var(--ctp-mauve) 55%, var(--ctp-crust)));
 }
 
 .gnmi-node--embedded .gnmi-node__header {
-  background: linear-gradient(135deg, #047857, #064e3b);
+  background: linear-gradient(135deg, var(--ctp-green), color-mix(in srgb, var(--ctp-green) 55%, var(--ctp-crust)));
 }
 
 .gnmi-node--extension .gnmi-node__header {
-  background: linear-gradient(135deg, #c2410c, #7c2d12);
+  background: linear-gradient(135deg, var(--ctp-peach), color-mix(in srgb, var(--ctp-peach) 55%, var(--ctp-crust)));
 }
 
 .gnmi-node--deprecated .gnmi-node__header {
-  background: linear-gradient(135deg, #be123c, #881337);
+  background: linear-gradient(135deg, var(--ctp-red), color-mix(in srgb, var(--ctp-red) 55%, var(--ctp-crust)));
 }
 
 .gnmi-node__header h2 {
@@ -219,17 +269,17 @@ a {
 
 .gnmi-node__header p {
   margin: 5px 0 0;
-  color: rgb(255 255 255 / 78%);
+  color: color-mix(in srgb, var(--ctp-base) 78%, transparent);
   font-size: 12px;
   line-height: 1.35;
 }
 
 .gnmi-node__header span {
   flex: 0 0 auto;
-  border: 1px solid rgb(255 255 255 / 28%);
+  border: 1px solid color-mix(in srgb, var(--ctp-base) 32%, transparent);
   border-radius: 999px;
   padding: 3px 8px;
-  color: rgb(255 255 255 / 86%);
+  color: color-mix(in srgb, var(--ctp-base) 90%, transparent);
   font-size: 10px;
   font-weight: 800;
   letter-spacing: 0.08em;
@@ -238,7 +288,7 @@ a {
 
 .gnmi-node__package {
   margin-top: 0 !important;
-  color: rgb(255 255 255 / 68%) !important;
+  color: color-mix(in srgb, var(--ctp-base) 72%, transparent) !important;
   font-size: 10px !important;
   font-weight: 800;
   letter-spacing: 0.1em;
@@ -263,18 +313,18 @@ a {
   position: relative;
   border-radius: 9px;
   padding: 6px 7px;
-  background: #f1f5f9;
+  background: var(--ctp-surface0);
 }
 
 .gnmi-node__fields li.is-deprecated {
-  color: #9f1239;
+  color: var(--ctp-red);
   text-decoration: line-through;
 }
 
 .gnmi-node__note {
   margin: 0;
   padding: 0 14px 12px;
-  color: #64748b;
+  color: var(--ctp-subtext1);
   font-size: 12px;
   line-height: 1.45;
 }
@@ -283,17 +333,17 @@ a {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  border-top: 1px solid #e2e8f0;
+  border-top: 1px solid var(--ctp-surface0);
   padding: 10px 14px 12px;
 }
 
 .gnmi-node__links a {
   max-width: 100%;
   overflow: hidden;
-  border: 1px solid #cbd5e1;
+  border: 1px solid var(--ctp-surface1);
   border-radius: 999px;
   padding: 4px 8px;
-  color: #334155;
+  color: var(--ctp-text);
   font-size: 11px;
   font-weight: 800;
   text-decoration: none;
@@ -302,25 +352,25 @@ a {
 }
 
 .gnmi-node__links a:hover {
-  border-color: #2563eb;
-  color: #1d4ed8;
+  border-color: var(--ctp-blue);
+  color: var(--ctp-blue);
 }
 
 .credit-panel {
-  border: 1px solid rgb(148 163 184 / 40%);
+  border: 1px solid var(--ctp-surface1);
   border-radius: 18px;
-  background: rgb(255 255 255 / 88%);
-  box-shadow: 0 14px 32px rgb(15 23 42 / 12%);
+  background: color-mix(in srgb, var(--ctp-mantle) 88%, transparent);
+  box-shadow: 0 14px 32px var(--shadow-color);
   backdrop-filter: blur(16px);
 }
 
 .top-bar {
   display: grid;
-  grid-template-columns: minmax(220px, 1fr) minmax(260px, 520px) auto;
+  grid-template-columns: minmax(220px, 1fr) minmax(260px, 520px) auto auto;
   gap: 16px;
   align-items: center;
-  border-bottom: 1px solid rgb(15 23 42 / 12%);
-  background: #ffffff;
+  border-bottom: 1px solid var(--ctp-surface0);
+  background: var(--ctp-mantle);
   padding: 12px 20px;
 }
 
@@ -333,12 +383,23 @@ a {
   white-space: nowrap;
 }
 
+.top-bar__theme-toggle {
+  justify-self: end;
+  margin-left: 0;
+  color: var(--ctp-text);
+  white-space: nowrap;
+}
+
 @media (max-width: 820px) {
   .top-bar {
     grid-template-columns: 1fr;
   }
 
   .top-bar__button {
+    justify-self: start;
+  }
+
+  .top-bar__theme-toggle {
     justify-self: start;
   }
 }
@@ -348,12 +409,12 @@ a {
   gap: 12px;
   align-items: center;
   padding: 10px 14px;
-  color: #475569;
+  color: var(--ctp-subtext1);
   font-size: 13px;
 }
 
 .credit-panel a {
-  color: #1d4ed8;
+  color: var(--ctp-blue);
   font-weight: 800;
   text-decoration: none;
 }
