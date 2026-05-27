@@ -13,7 +13,13 @@ import {
   type ReadableNodeLayoutOptions,
 } from '../src/mapLayout';
 import type { MapEdge, MapNode } from '../src/protoMapTypes';
-import { serviceMapOrder, serviceMaps } from '../src/serviceMaps';
+import {
+  serviceMapOrder,
+  serviceMaps,
+  serviceRouteFromLocation,
+  serviceRoutePath,
+  type ServiceRoute,
+} from '../src/serviceMaps';
 
 function assert(condition: unknown, message: string): asserts condition {
   if (!condition) {
@@ -126,6 +132,114 @@ function validateServiceRegistryMaps(): void {
   }
 }
 
+function assertServiceRoute(route: ServiceRoute, expected: ServiceRoute, label: string): void {
+  assert(route.serviceId === expected.serviceId, `${label}: expected ${expected.serviceId}`);
+  assert(
+    route.serviceChoiceId === expected.serviceChoiceId,
+    `${label}: expected ${expected.serviceChoiceId}`,
+  );
+  assert(
+    (route.rpcFilterId ?? null) === (expected.rpcFilterId ?? null),
+    `${label}: expected RPC filter ${expected.rpcFilterId ?? 'none'}`,
+  );
+}
+
+function validateServiceRoutes(): void {
+  const gnmiLatestRoute = {
+    serviceId: 'gnmi',
+    serviceChoiceId: 'service-gnmi@0.10.0',
+  } as const;
+  assert(
+    serviceRoutePath(gnmiLatestRoute) === '/gnmi/service-gnmi/0.10.0',
+    'gNMI route must serialize without a hash or encoded @',
+  );
+  assert(
+    serviceRoutePath(gnmiLatestRoute, '/gnmi-map/') ===
+      '/gnmi-map/gnmi/service-gnmi/0.10.0',
+    'gNMI route must serialize under a configured base path',
+  );
+  assertServiceRoute(
+    serviceRouteFromLocation({
+      pathname: '/gnmi/service-gnmi/0.10.0',
+      search: '',
+      hash: '',
+    }),
+    gnmiLatestRoute,
+    'gNMI path route',
+  );
+
+  const gnmiGetRoute = {
+    ...gnmiLatestRoute,
+    rpcFilterId: 'rpc-get',
+  };
+  assert(
+    serviceRoutePath(gnmiGetRoute) === '/gnmi/service-gnmi/0.10.0/rpc-get',
+    'gNMI RPC route must serialize the active RPC filter',
+  );
+  assertServiceRoute(
+    serviceRouteFromLocation({
+      pathname: '/gnmi/service-gnmi/0.10.0/rpc-get',
+      search: '',
+      hash: '',
+    }),
+    gnmiGetRoute,
+    'gNMI RPC path route',
+  );
+  assertServiceRoute(
+    serviceRouteFromLocation({
+      pathname: '/gnmi/service-gnmi/rpc-get',
+      search: '',
+      hash: '',
+    }),
+    gnmiGetRoute,
+    'gNMI RPC path route without explicit version',
+  );
+  assertServiceRoute(
+    serviceRouteFromLocation(
+      {
+        pathname: '/gnmi-map/gnmi/service-gnmi/0.10.0',
+        search: '',
+        hash: '',
+      },
+      '/gnmi-map/',
+    ),
+    gnmiLatestRoute,
+    'gNMI base path route',
+  );
+  assertServiceRoute(
+    serviceRouteFromLocation({
+      pathname: '/',
+      search: '',
+      hash: '#gnmi/service-gnmi%400.10.0',
+    }),
+    gnmiLatestRoute,
+    'legacy gNMI hash route',
+  );
+  assertServiceRoute(
+    serviceRouteFromLocation({
+      pathname: '/',
+      search: '?service=gnmi&map=service-gnmi%400.10.0&rpc=rpc-get',
+      hash: '',
+    }),
+    gnmiGetRoute,
+    'legacy gNMI query route',
+  );
+
+  const gnoiSystemRoute = {
+    serviceId: 'gnoi',
+    serviceChoiceId: 'service-gnoi-system-system@1.4.0',
+  } as const;
+  assertServiceRoute(
+    serviceRouteFromLocation({
+      pathname: '/gnoi/service-gnoi-system-system/1.4.0',
+      search: '',
+      hash: '',
+    }),
+    gnoiSystemRoute,
+    'gNOI system path route',
+  );
+}
+
 async function validateReadableLayout(
   nodes: MapNode[],
   edges: MapEdge[],
@@ -189,6 +303,7 @@ async function main(): Promise<void> {
   validateLinks();
   validateDeprecatedVisibility();
   validateServiceRegistryMaps();
+  validateServiceRoutes();
 
   await validateReadableLayout(appDefaultMap.nodes, appDefaultMap.edges, 'default layout');
   await validateReadableLayout(extensionMap.nodes, extensionMap.edges, 'extension layout');

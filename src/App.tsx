@@ -74,6 +74,7 @@ import {
   serviceChoiceForRoute,
   serviceMapOrder,
   serviceMaps,
+  serviceRoutePath,
   type ServiceId,
   type ServiceMapChoice,
   type ServiceMapDefinition,
@@ -101,6 +102,7 @@ const edgeTypes: EdgeTypes = {
 };
 
 const themeStorageKey = 'gnmi-map-theme';
+const routeBasePath = import.meta.env.BASE_URL;
 
 type NodePosition = {
   x: number;
@@ -333,7 +335,7 @@ type AppShellProps = {
 
 function AppShell({ themeMode, onToggleTheme }: AppShellProps) {
   const { fitView } = useReactFlow<MapNode, RoutedMapEdge>();
-  const initialServiceRoute = useMemo(() => getInitialServiceRoute(), []);
+  const initialServiceRoute = useMemo(() => getInitialServiceRoute(routeBasePath), []);
   const [activeServiceId, setActiveServiceId] = useState<ServiceId>(
     () => initialServiceRoute.serviceId,
   );
@@ -352,7 +354,14 @@ function AppShell({ themeMode, onToggleTheme }: AppShellProps) {
   const [queryValue, setQueryValue] = useState('');
   const [showExtensions, setShowExtensions] = useState(false);
   const [showDeprecated, setShowDeprecated] = useState(false);
-  const [rpcFilterIds, setRpcFilterIds] = useState<Record<string, string>>({});
+  const [rpcFilterIds, setRpcFilterIds] = useState<Record<string, string>>(() =>
+    initialServiceRoute.rpcFilterId
+      ? {
+          [`${initialServiceRoute.serviceId}:${initialServiceRoute.serviceChoiceId}`]:
+            initialServiceRoute.rpcFilterId,
+        }
+      : {},
+  );
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [selectedEdgeId, setSelectedEdgeId] = useState<string | null>(null);
   const [manualPositions, setManualPositions] = useState<Record<string, NodePosition>>({});
@@ -440,18 +449,19 @@ function AppShell({ themeMode, onToggleTheme }: AppShellProps) {
   }, [layoutCacheKey]);
 
   useEffect(() => {
-    const nextHash =
-      activeService.serviceChoices.length > 1
-        ? `#${activeServiceId}/${encodeURIComponent(activeServiceChoiceId)}`
-        : `#${activeServiceId}`;
-    if (window.location.hash !== nextHash) {
-      window.history.replaceState(
-        null,
-        '',
-        `${window.location.pathname}${window.location.search}${nextHash}`,
-      );
+    const nextUrl = `${serviceRoutePath(
+      {
+        serviceId: activeServiceId,
+        serviceChoiceId: activeServiceChoiceId,
+        rpcFilterId: activeRpcFocusNodeId,
+      },
+      routeBasePath,
+    )}${window.location.search}`;
+    const currentUrl = `${window.location.pathname}${window.location.search}${window.location.hash}`;
+    if (currentUrl !== nextUrl) {
+      window.history.replaceState(null, '', nextUrl);
     }
-  }, [activeService, activeServiceChoiceId, activeServiceId]);
+  }, [activeRpcFocusNodeId, activeServiceChoiceId, activeServiceId]);
 
   useEffect(() => {
     let cancelled = false;
