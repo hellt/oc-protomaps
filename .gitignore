@@ -3,3 +3,10 @@ dist
 .pnpm-store
 .DS_Store
 *.local
+
+# wrangler files
+.wrangler
+.dev.vars*
+!.dev.vars.example
+.env*
+!.env.example

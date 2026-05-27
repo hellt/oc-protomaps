@@ -4,6 +4,8 @@ import { cp, readFile, stat } from 'node:fs/promises';
 import path from 'node:path';
 import type { Connect, Plugin } from 'vite';
 
+import { cloudflare } from "@cloudflare/vite-plugin";
+
 const servicesDir = path.resolve(__dirname, 'services');
 
 function servicesStaticPlugin(): Plugin {
@@ -44,5 +46,5 @@ function servicesStaticPlugin(): Plugin {
 }
 
 export default defineConfig({
-  plugins: [react(), servicesStaticPlugin()],
+  plugins: [react(), servicesStaticPlugin(), cloudflare()],
 });
