@@ -40,6 +40,7 @@ export type MapField = {
   id: string;
   type: string;
   name: string;
+  description?: string;
   ref?: string | null;
   group?: string;
   badge?: MapBadge;
@@ -50,6 +51,7 @@ export type MapNodeData = Record<string, unknown> & {
   id: string;
   kind: MapNodeKind;
   label: string;
+  description?: string;
   sourceSymbol?: string;
   deprecated?: boolean;
   protoUrl?: string;
@@ -143,24 +145,28 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "capabilities",
               "type": "rpc",
               "name": "Capabilities",
+              "description": "Capabilities allows the client to retrieve the set of capabilities that\nis supported by the target. This allows the target to validate the\nservice version that is implemented and retrieve the set of models that\nthe target supports. The models can then be specified in subsequent RPCs\nto restrict the set of data that is utilized.\nReference: gNMI Specification Section 3.2",
               "ref": "rpc-capabilities"
             },
             {
               "id": "get",
               "type": "rpc",
               "name": "Get",
+              "description": "Retrieve a snapshot of data from the target. A Get RPC requests that the\ntarget snapshots a subset of the data tree as specified by the paths\nincluded in the message and serializes this to be returned to the\nclient using the specified encoding.\nReference: gNMI Specification Section 3.3",
               "ref": "rpc-get"
             },
             {
               "id": "set",
               "type": "rpc",
               "name": "Set",
+              "description": "Set allows the client to modify the state of data on the target. The\npaths to modified along with the new values that the client wishes\nto set the value to.\nReference: gNMI Specification Section 3.4",
               "ref": "rpc-set"
             },
             {
               "id": "subscribe",
               "type": "rpc",
               "name": "Subscribe",
+              "description": "Subscribe allows a client to request the target to send it values\nof particular paths within the data tree. These values may be streamed\nat a particular cadence (STREAM), sent one off on a long-lived channel\n(POLL), or sent as a one-off retrieval (ONCE).\nReference: gNMI Specification Section 3.5",
               "ref": "rpc-subscribe",
               "badge": "stream"
             }
@@ -181,6 +187,7 @@ export const mapVariants: GnmiMapVariant[] = [
           "id": "rpc-set",
           "kind": "rpc",
           "label": "rpc Set",
+          "description": "Set allows the client to modify the state of data on the target. The\npaths to modified along with the new values that the client wishes\nto set the value to.\nReference: gNMI Specification Section 3.4",
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi/gnmi.proto#L67",
           "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#34-modifying-state",
           "fields": [
@@ -213,6 +220,7 @@ export const mapVariants: GnmiMapVariant[] = [
           "id": "rpc-subscribe",
           "kind": "rpc",
           "label": "rpc Subscribe",
+          "description": "Subscribe allows a client to request the target to send it values\nof particular paths within the data tree. These values may be streamed\nat a particular cadence (STREAM), sent one off on a long-lived channel\n(POLL), or sent as a one-off retrieval (ONCE).\nReference: gNMI Specification Section 3.5",
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi/gnmi.proto#L73",
           "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#35-subscribing-to-telemetry-updates",
           "fields": [
@@ -245,6 +253,7 @@ export const mapVariants: GnmiMapVariant[] = [
           "id": "rpc-get",
           "kind": "rpc",
           "label": "rpc Get",
+          "description": "Retrieve a snapshot of data from the target. A Get RPC requests that the\ntarget snapshots a subset of the data tree as specified by the paths\nincluded in the message and serializes this to be returned to the\nclient using the specified encoding.\nReference: gNMI Specification Section 3.3",
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi/gnmi.proto#L62",
           "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#33-retrieving-snapshots-of-state-information",
           "fields": [
@@ -277,6 +286,7 @@ export const mapVariants: GnmiMapVariant[] = [
           "id": "rpc-capabilities",
           "kind": "rpc",
           "label": "rpc Capabilities",
+          "description": "Capabilities allows the client to retrieve the set of capabilities that\nis supported by the target. This allows the target to validate the\nservice version that is implemented and retrieve the set of models that\nthe target supports. The models can then be specified in subsequent RPCs\nto restrict the set of data that is utilized.\nReference: gNMI Specification Section 3.2",
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi/gnmi.proto#L56",
           "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#32-capability-discovery",
           "fields": [
@@ -309,6 +319,7 @@ export const mapVariants: GnmiMapVariant[] = [
           "id": "set-request",
           "kind": "message",
           "label": "SetRequest",
+          "description": "SetRequest is sent from a client to the target to update values in the data\ntree. Paths are either deleted by the client, or modified by means of being\nupdated, or replaced. Where a replace is used, unspecified values are\nconsidered to be replaced, whereas when update is used the changes are\nconsidered to be incremental. The set of changes that are specified within\na single SetRequest are considered to be a transaction.\nReference: gNMI Specification Section 3.4.1",
           "sourceSymbol": "gnmi.SetRequest",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi/gnmi.proto#L342",
@@ -318,36 +329,42 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "prefix",
               "type": "Path",
               "name": "prefix",
+              "description": "Prefix used for paths in the message.",
               "ref": "path"
             },
             {
               "id": "delete",
               "type": "repeated Path",
               "name": "delete",
+              "description": "Paths to be deleted from the data tree.",
               "ref": "path"
             },
             {
               "id": "replace",
               "type": "repeated Update",
               "name": "replace",
+              "description": "Updates specifying elements to be replaced.",
               "ref": "update"
             },
             {
               "id": "update",
               "type": "repeated Update",
               "name": "update",
+              "description": "Updates specifying elements to updated.",
               "ref": "update"
             },
             {
               "id": "union-replace",
               "type": "repeated Update",
               "name": "union_replace",
+              "description": "Updates specifying elements to union and then replace the data tree.\nSee the gNMI specification at\nhttps://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md\nfor details.",
               "ref": "update"
             },
             {
               "id": "extension",
               "type": "repeated gnmi_ext.Extension",
               "name": "extension",
+              "description": "Extension messages associated with the SetRequest. See the\ngNMI extension specification for further definition.",
               "ref": "extension",
               "badge": "optional"
             }
@@ -368,6 +385,7 @@ export const mapVariants: GnmiMapVariant[] = [
           "id": "set-response",
           "kind": "message",
           "label": "SetResponse",
+          "description": "SetResponse is the response to a SetRequest, sent from the target to the\nclient. It reports the result of the modifications to the data tree that were\nspecified by the client. Errors for this RPC should be reported using the\nhttps://github.com/googleapis/googleapis/blob/master/google/rpc/status.proto\nmessage in the RPC return. The gnmi.Error message can be used to add\nadditional details where required. Reference: gNMI Specification\nSection 3.4.2",
           "sourceSymbol": "gnmi.SetResponse",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi/gnmi.proto#L364",
@@ -377,12 +395,14 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "prefix",
               "type": "Path",
               "name": "prefix",
+              "description": "Prefix used for paths.",
               "ref": "path"
             },
             {
               "id": "response",
               "type": "repeated UpdateResult",
               "name": "response",
+              "description": "A set of responses specifying the result of the operations specified in\nthe SetRequest.",
               "ref": "update-result"
             },
             {
@@ -397,12 +417,14 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "timestamp",
               "type": "int64",
               "name": "timestamp",
+              "description": "Timestamp of transaction (ns since epoch).",
               "ref": null
             },
             {
               "id": "extension",
               "type": "repeated gnmi_ext.Extension",
               "name": "extension",
+              "description": "Extension messages associated with the SetResponse. See the\ngNMI extension specification for further definition.",
               "ref": "extension",
               "badge": "optional"
             }
@@ -423,6 +445,7 @@ export const mapVariants: GnmiMapVariant[] = [
           "id": "subscribe-request",
           "kind": "message",
           "label": "SubscribeRequest",
+          "description": "SubscribeRequest is the message sent by the client to the target when\ninitiating a subscription to a set of paths within the data tree. The\nrequest field must be populated and the initial message must specify a\nSubscriptionList to initiate a subscription.\nReference: gNMI Specification Section 3.5.1.1",
           "sourceSymbol": "gnmi.SubscribeRequest",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi/gnmi.proto#L220",
@@ -432,6 +455,7 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "subscribe",
               "type": "SubscriptionList",
               "name": "subscribe",
+              "description": "Specify the paths within a subscription.",
               "ref": "subscription-list",
               "group": "oneof request"
             },
@@ -439,6 +463,7 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "poll",
               "type": "Poll",
               "name": "poll",
+              "description": "Trigger a polled update.",
               "ref": "poll",
               "group": "oneof request"
             },
@@ -446,6 +471,7 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "extension",
               "type": "repeated gnmi_ext.Extension",
               "name": "extension",
+              "description": "Extension messages associated with the SubscribeRequest. See the\ngNMI extension specification for further definition.",
               "ref": "extension",
               "badge": "optional"
             },
@@ -473,6 +499,7 @@ export const mapVariants: GnmiMapVariant[] = [
           "id": "subscribe-response",
           "kind": "message",
           "label": "SubscribeResponse",
+          "description": "SubscribeResponse is the message used by the target within a Subscribe RPC.\nThe target includes a Notification message which is used to transmit values\nof the path(s) that are associated with the subscription. The same message\nis to indicate that the target has sent all data values once (is\nsynchronized).\nReference: gNMI Specification Section 3.5.1.4",
           "sourceSymbol": "gnmi.SubscribeResponse",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi/gnmi.proto#L245",
@@ -482,6 +509,7 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "update",
               "type": "Notification",
               "name": "update",
+              "description": "Changed or sampled value for a path.",
               "ref": "notification",
               "group": "oneof response"
             },
@@ -489,6 +517,7 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "sync-response",
               "type": "bool",
               "name": "sync_response",
+              "description": "Indicate target has sent all values associated with the subscription\nat least once.",
               "ref": null,
               "group": "oneof response"
             },
@@ -496,6 +525,7 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "error",
               "type": "Error",
               "name": "error",
+              "description": "Deprecated in favour of google.golang.org/genproto/googleapis/rpc/status",
               "ref": "error",
               "group": "oneof response",
               "badge": "deprecated",
@@ -505,6 +535,7 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "extension",
               "type": "repeated gnmi_ext.Extension",
               "name": "extension",
+              "description": "Extension messages associated with the SubscribeResponse. See the\ngNMI extension specification for further definition.",
               "ref": "extension",
               "badge": "optional"
             }
@@ -525,6 +556,7 @@ export const mapVariants: GnmiMapVariant[] = [
           "id": "get-request",
           "kind": "message",
           "label": "GetRequest",
+          "description": "GetRequest is sent when a client initiates a Get RPC. It is used to specify\nthe set of data elements for which the target should return a snapshot of\ndata. The use_models field specifies the set of schema modules that are to\nbe used by the target - where use_models is not specified then the target\nmust use all schema models that it has.\nReference: gNMI Specification Section 3.3.1",
           "sourceSymbol": "gnmi.GetRequest",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi/gnmi.proto#L405",
@@ -534,36 +566,42 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "prefix",
               "type": "Path",
               "name": "prefix",
+              "description": "Prefix used for paths.",
               "ref": "path"
             },
             {
               "id": "path",
               "type": "repeated Path",
               "name": "path",
+              "description": "Paths requested by the client.",
               "ref": "path"
             },
             {
               "id": "type",
               "type": "DataType",
               "name": "type",
+              "description": "The type of data being requested.",
               "ref": "data-type"
             },
             {
               "id": "encoding",
               "type": "Encoding",
               "name": "encoding",
+              "description": "Encoding to be used.",
               "ref": "encoding"
             },
             {
               "id": "use-models",
               "type": "repeated ModelData",
               "name": "use_models",
+              "description": "The schema models to be used.",
               "ref": "model-data"
             },
             {
               "id": "extension",
               "type": "repeated gnmi_ext.Extension",
               "name": "extension",
+              "description": "Extension messages associated with the GetRequest. See the\ngNMI extension specification for further definition.",
               "ref": "extension",
               "badge": "optional"
             }
@@ -584,6 +622,7 @@ export const mapVariants: GnmiMapVariant[] = [
           "id": "get-response",
           "kind": "message",
           "label": "GetResponse",
+          "description": "GetResponse is used by the target to respond to a GetRequest from a client.\nThe set of Notifications corresponds to the data values that are requested\nby the client in the GetRequest.\nReference: gNMI Specification Section 3.3.2",
           "sourceSymbol": "gnmi.GetResponse",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi/gnmi.proto#L430",
@@ -593,12 +632,14 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "notification",
               "type": "repeated Notification",
               "name": "notification",
+              "description": "Data values.",
               "ref": "notification"
             },
             {
               "id": "error",
               "type": "Error",
               "name": "error",
+              "description": "Errors that occurred in the Get.",
               "ref": "error",
               "badge": "deprecated",
               "deprecated": true
@@ -607,6 +648,7 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "extension",
               "type": "repeated gnmi_ext.Extension",
               "name": "extension",
+              "description": "Extension messages associated with the GetResponse. See the\ngNMI extension specification for further definition.",
               "ref": "extension",
               "badge": "optional"
             }
@@ -627,6 +669,7 @@ export const mapVariants: GnmiMapVariant[] = [
           "id": "capability-request",
           "kind": "message",
           "label": "CapabilityRequest",
+          "description": "CapabilityRequest is sent by the client in the Capabilities RPC to request\nthat the target reports its capabilities.\nReference: gNMI Specification Section 3.2.1",
           "sourceSymbol": "gnmi.CapabilityRequest",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi/gnmi.proto#L441",
@@ -636,6 +679,7 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "extension",
               "type": "repeated gnmi_ext.Extension",
               "name": "extension",
+              "description": "Extension messages associated with the CapabilityRequest. See the\ngNMI extension specification for further definition.",
               "ref": "extension",
               "badge": "optional"
             }
@@ -656,6 +700,7 @@ export const mapVariants: GnmiMapVariant[] = [
           "id": "capability-response",
           "kind": "message",
           "label": "CapabilityResponse",
+          "description": "CapabilityResponse is used by the target to report its capabilities to the\nclient within the Capabilities RPC.\nReference: gNMI Specification Section 3.2.2",
           "sourceSymbol": "gnmi.CapabilityResponse",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi/gnmi.proto#L450",
@@ -665,24 +710,28 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "supported-models",
               "type": "repeated ModelData",
               "name": "supported_models",
+              "description": "Supported schema models.",
               "ref": "model-data"
             },
             {
               "id": "supported-encodings",
               "type": "repeated Encoding",
               "name": "supported_encodings",
+              "description": "Supported encodings.",
               "ref": "encoding"
             },
             {
               "id": "g-nmi-version",
               "type": "string",
               "name": "gNMI_version",
+              "description": "Supported gNMI version.",
               "ref": null
             },
             {
               "id": "extension",
               "type": "repeated gnmi_ext.Extension",
               "name": "extension",
+              "description": "Extension messages associated with the CapabilityResponse. See the\ngNMI extension specification for further definition.",
               "ref": "extension",
               "badge": "optional"
             }
@@ -703,6 +752,7 @@ export const mapVariants: GnmiMapVariant[] = [
           "id": "error",
           "kind": "message",
           "label": "Error",
+          "description": "Error message previously utilised to return errors to the client. Deprecated\nin favour of using the google.golang.org/genproto/googleapis/rpc/status\nmessage in the RPC response.\nReference: gNMI Specification Section 2.5",
           "sourceSymbol": "gnmi.Error",
           "deprecated": true,
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi/gnmi.proto#L187",
@@ -715,18 +765,21 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "code",
               "type": "uint32",
               "name": "code",
+              "description": "Canonical gRPC error code.",
               "ref": null
             },
             {
               "id": "message",
               "type": "string",
               "name": "message",
+              "description": "Human readable error.",
               "ref": null
             },
             {
               "id": "data",
               "type": "google.protobuf.Any",
               "name": "data",
+              "description": "Optional additional information.",
               "ref": "any"
             }
           ]
@@ -746,6 +799,7 @@ export const mapVariants: GnmiMapVariant[] = [
           "id": "update-result",
           "kind": "message",
           "label": "UpdateResult",
+          "description": "UpdateResult is used within the SetResponse message to communicate the\nresult of an operation specified within a SetRequest message.\nReference: gNMI Specification Section 3.4.2",
           "sourceSymbol": "gnmi.UpdateResult",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi/gnmi.proto#L380",
@@ -755,6 +809,7 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "timestamp",
               "type": "int64",
               "name": "timestamp",
+              "description": "Deprecated timestamp for the UpdateResult, this field has been\nreplaced by the timestamp within the SetResponse message, since\nall mutations effected by a set should be applied as a single\ntransaction.",
               "ref": null,
               "badge": "deprecated",
               "deprecated": true
@@ -763,12 +818,14 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "path",
               "type": "Path",
               "name": "path",
+              "description": "Path associated with the update.",
               "ref": "path"
             },
             {
               "id": "message",
               "type": "Error",
               "name": "message",
+              "description": "Status of the update operation.",
               "ref": "error",
               "badge": "deprecated",
               "deprecated": true
@@ -777,6 +834,7 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "op",
               "type": "Operation",
               "name": "op",
+              "description": "Update operation type.",
               "ref": "operation"
             }
           ]
@@ -796,6 +854,7 @@ export const mapVariants: GnmiMapVariant[] = [
           "id": "operation",
           "kind": "enum",
           "label": "enum Operation",
+          "description": "The operation that was associated with the Path specified.",
           "sourceSymbol": "gnmi.UpdateResult.Operation",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi/gnmi.proto#L382",
@@ -810,24 +869,28 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "delete",
               "type": "1",
               "name": "DELETE",
+              "description": "The result relates to a delete of Path.",
               "ref": null
             },
             {
               "id": "replace",
               "type": "2",
               "name": "REPLACE",
+              "description": "The result relates to a replace of Path.",
               "ref": null
             },
             {
               "id": "update",
               "type": "3",
               "name": "UPDATE",
+              "description": "The result relates to an update of Path.",
               "ref": null
             },
             {
               "id": "union-replace",
               "type": "4",
               "name": "UNION_REPLACE",
+              "description": "The result of a union_replace of Path or CLI origin.",
               "ref": null
             }
           ]
@@ -847,6 +910,7 @@ export const mapVariants: GnmiMapVariant[] = [
           "id": "poll",
           "kind": "message",
           "label": "Poll",
+          "description": "Poll is sent within a SubscribeRequest to trigger the device to\nsend telemetry updates for the paths that are associated with the\nsubscription.\nReference: gNMI Specification Section Section 3.5.1.4",
           "sourceSymbol": "gnmi.Poll",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi/gnmi.proto#L237",
@@ -868,6 +932,7 @@ export const mapVariants: GnmiMapVariant[] = [
           "id": "subscription-list",
           "kind": "message",
           "label": "SubscriptionList",
+          "description": "SubscriptionList is used within a Subscribe message to specify the list of\npaths that the client wishes to subscribe to. The message consists of a\nlist of (possibly prefixed) paths, and options that relate to the\nsubscription.\nReference: gNMI Specification Section 3.5.1.2",
           "sourceSymbol": "gnmi.SubscriptionList",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi/gnmi.proto#L264",
@@ -877,18 +942,21 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "prefix",
               "type": "Path",
               "name": "prefix",
+              "description": "Prefix used for paths.",
               "ref": "path"
             },
             {
               "id": "subscription",
               "type": "repeated Subscription",
               "name": "subscription",
+              "description": "Set of subscriptions to create.",
               "ref": "subscription"
             },
             {
               "id": "qos",
               "type": "QOSMarking",
               "name": "qos",
+              "description": "DSCP marking to be used.",
               "ref": "qos-marking"
             },
             {
@@ -901,24 +969,28 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "allow-aggregation",
               "type": "bool",
               "name": "allow_aggregation",
+              "description": "Whether elements of the schema that are marked as eligible for aggregation\nshould be aggregated or not.",
               "ref": null
             },
             {
               "id": "use-models",
               "type": "repeated ModelData",
               "name": "use_models",
+              "description": "The set of schemas that define the elements of the data tree that should\nbe sent by the target.",
               "ref": "model-data"
             },
             {
               "id": "encoding",
               "type": "Encoding",
               "name": "encoding",
+              "description": "The encoding that the target should use within the Notifications generated\ncorresponding to the SubscriptionList.",
               "ref": "encoding"
             },
             {
               "id": "updates-only",
               "type": "bool",
               "name": "updates_only",
+              "description": "An optional field to specify that only updates to current state should be\nsent to a client. If set, the initial state is not sent to the client but\nrather only the sync message followed by any subsequent updates to the\ncurrent state. For ONCE and POLL modes, this causes the server to send only\nthe sync message (Sec. 3.5.2.3).",
               "ref": null
             },
             {
@@ -945,6 +1017,7 @@ export const mapVariants: GnmiMapVariant[] = [
           "id": "qos-marking",
           "kind": "message",
           "label": "QOSMarking",
+          "description": "QOSMarking specifies the DSCP value to be set on transmitted telemetry\nupdates from the target.\nReference: gNMI Specification Section 3.5.1.2",
           "sourceSymbol": "gnmi.QOSMarking",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi/gnmi.proto#L331",
@@ -973,6 +1046,7 @@ export const mapVariants: GnmiMapVariant[] = [
           "id": "mode",
           "kind": "enum",
           "label": "enum Mode",
+          "description": "Mode of the subscription.",
           "sourceSymbol": "gnmi.SubscriptionList.Mode",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi/gnmi.proto#L269",
@@ -982,18 +1056,21 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "stream",
               "type": "0",
               "name": "STREAM",
+              "description": "Values streamed by the target (Sec. 3.5.1.5.2).",
               "ref": null
             },
             {
               "id": "once",
               "type": "1",
               "name": "ONCE",
+              "description": "Values sent once-off by the target (Sec. 3.5.1.5.1).",
               "ref": null
             },
             {
               "id": "poll",
               "type": "2",
               "name": "POLL",
+              "description": "Values sent in response to a poll request (Sec. 3.5.1.5.3).",
               "ref": null
             }
           ]
@@ -1013,6 +1090,7 @@ export const mapVariants: GnmiMapVariant[] = [
           "id": "subscription",
           "kind": "message",
           "label": "Subscription",
+          "description": "Subscription is a single request within a SubscriptionList. The path\nspecified is interpreted (along with the prefix) as the elements of the data\ntree that the client is subscribing to. The mode determines how the target\nshould trigger updates to be sent.\nReference: gNMI Specification Section 3.5.1.3",
           "sourceSymbol": "gnmi.Subscription",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi/gnmi.proto#L300",
@@ -1022,30 +1100,35 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "path",
               "type": "Path",
               "name": "path",
+              "description": "The data tree path.",
               "ref": "path"
             },
             {
               "id": "mode",
               "type": "SubscriptionMode",
               "name": "mode",
+              "description": "Subscription mode to be used.",
               "ref": "subscription-mode"
             },
             {
               "id": "sample-interval",
               "type": "uint64",
               "name": "sample_interval",
+              "description": "ns between samples in SAMPLE mode.",
               "ref": null
             },
             {
               "id": "suppress-redundant",
               "type": "bool",
               "name": "suppress_redundant",
+              "description": "Indicates whether values that have not changed should be sent in a SAMPLE\nsubscription.",
               "ref": null
             },
             {
               "id": "heartbeat-interval",
               "type": "uint64",
               "name": "heartbeat_interval",
+              "description": "1. A heartbeat interval MAY be specified along with an “on change”\nsubscription - in this case, the value of the data item(s) MUST be re-sent\nonce per heartbeat interval regardless of whether the value has changed or\nnot.\n2. A heartbeat_interval MAY be specified to modify the behavior of\nsuppress_redundant in a sampled subscription. In this case, the\ntarget MUST generate one telemetry update per heartbeat interval,\nregardless of whether the suppress_redundant flag is set to true.\nThis value is specified as an unsigned 64-bit integer in nanoseconds",
               "ref": null
             }
           ]
@@ -1065,6 +1148,7 @@ export const mapVariants: GnmiMapVariant[] = [
           "id": "subscription-mode",
           "kind": "enum",
           "label": "enum SubscriptionMode",
+          "description": "SubscriptionMode is the mode of the subscription, specifying how the\ntarget must return values in a subscription.\nReference: gNMI Specification Section 3.5.1.3",
           "sourceSymbol": "gnmi.SubscriptionMode",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi/gnmi.proto#L322",
@@ -1074,18 +1158,21 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "target-defined",
               "type": "0",
               "name": "TARGET_DEFINED",
+              "description": "The target selects the relevant mode for each element.",
               "ref": null
             },
             {
               "id": "on-change",
               "type": "1",
               "name": "ON_CHANGE",
+              "description": "The target sends an update on element value change.",
               "ref": null
             },
             {
               "id": "sample",
               "type": "2",
               "name": "SAMPLE",
+              "description": "The target samples values according to the interval.",
               "ref": null
             }
           ]
@@ -1105,6 +1192,7 @@ export const mapVariants: GnmiMapVariant[] = [
           "id": "data-type",
           "kind": "enum",
           "label": "enum DataType",
+          "description": "Type of elements within the data tree.",
           "sourceSymbol": "gnmi.GetRequest.DataType",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi/gnmi.proto#L409",
@@ -1114,24 +1202,28 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "all",
               "type": "0",
               "name": "ALL",
+              "description": "All data elements.",
               "ref": null
             },
             {
               "id": "config",
               "type": "1",
               "name": "CONFIG",
+              "description": "Config (rw) only elements.",
               "ref": null
             },
             {
               "id": "state",
               "type": "2",
               "name": "STATE",
+              "description": "State (ro) only elements.",
               "ref": null
             },
             {
               "id": "operational",
               "type": "3",
               "name": "OPERATIONAL",
+              "description": "Data elements marked in the schema as operational. This refers to data\nelements whose value relates to the state of processes or interactions\nrunning on the device.",
               "ref": null
             }
           ]
@@ -1151,6 +1243,7 @@ export const mapVariants: GnmiMapVariant[] = [
           "id": "model-data",
           "kind": "message",
           "label": "ModelData",
+          "description": "ModelData is used to describe a set of schema modules. It can be used in a\nCapabilityResponse where a target reports the set of modules that it\nsupports, and within the SubscribeRequest and GetRequest messages to specify\nthe set of models from which data tree elements should be reported.\nReference: gNMI Specification Section 3.2.3",
           "sourceSymbol": "gnmi.ModelData",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi/gnmi.proto#L464",
@@ -1160,18 +1253,21 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "name",
               "type": "string",
               "name": "name",
+              "description": "Name of the model.",
               "ref": null
             },
             {
               "id": "organization",
               "type": "string",
               "name": "organization",
+              "description": "Organization publishing the model.",
               "ref": null
             },
             {
               "id": "version",
               "type": "string",
               "name": "version",
+              "description": "Semantic version of the model.",
               "ref": null
             }
           ]
@@ -1191,6 +1287,7 @@ export const mapVariants: GnmiMapVariant[] = [
           "id": "encoding",
           "kind": "enum",
           "label": "enum Encoding",
+          "description": "Encoding defines the value encoding formats that are supported by the gNMI\nprotocol. These encodings are used by both the client (when sending Set\nmessages to modify the state of the target) and the target when serializing\ndata to be returned to the client (in both Subscribe and Get RPCs).\nReference: gNMI Specification Section 2.3",
           "sourceSymbol": "gnmi.Encoding",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi/gnmi.proto#L175",
@@ -1200,30 +1297,35 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "json",
               "type": "0",
               "name": "JSON",
+              "description": "JSON encoded text.",
               "ref": null
             },
             {
               "id": "bytes",
               "type": "1",
               "name": "BYTES",
+              "description": "Arbitrarily encoded bytes.",
               "ref": null
             },
             {
               "id": "proto",
               "type": "2",
               "name": "PROTO",
+              "description": "Encoded according to scalar values of TypedValue.",
               "ref": null
             },
             {
               "id": "ascii",
               "type": "3",
               "name": "ASCII",
+              "description": "ASCII text of an out-of-band agreed format.",
               "ref": null
             },
             {
               "id": "json-ietf",
               "type": "4",
               "name": "JSON_IETF",
+              "description": "JSON encoded text as per RFC7951.",
               "ref": null
             }
           ]
@@ -1243,6 +1345,7 @@ export const mapVariants: GnmiMapVariant[] = [
           "id": "notification",
           "kind": "message",
           "label": "Notification",
+          "description": "Notification is a re-usable message that is used to encode data from the\ntarget to the client. A Notification carries two types of changes to the data\ntree:\n- Deleted values (delete) - a set of paths that have been removed from the\ndata tree.\n- Updated values (update) - a set of path-value pairs indicating the path\nwhose value has changed in the data tree.\nReference: gNMI Specification Section 2.1",
           "sourceSymbol": "gnmi.Notification",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi/gnmi.proto#L84",
@@ -1252,30 +1355,35 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "timestamp",
               "type": "int64",
               "name": "timestamp",
+              "description": "Timestamp in nanoseconds since Epoch.",
               "ref": null
             },
             {
               "id": "prefix",
               "type": "Path",
               "name": "prefix",
+              "description": "Prefix used for paths in the message.",
               "ref": "path"
             },
             {
               "id": "update",
               "type": "repeated Update",
               "name": "update",
+              "description": "Data elements that have changed values.",
               "ref": "update"
             },
             {
               "id": "delete",
               "type": "repeated Path",
               "name": "delete",
+              "description": "Data elements that have been deleted.",
               "ref": "path"
             },
             {
               "id": "atomic",
               "type": "bool",
               "name": "atomic",
+              "description": "This notification contains a set of paths that are always updated together\nreferenced by a globally unique prefix.",
               "ref": null
             },
             {
@@ -1302,6 +1410,7 @@ export const mapVariants: GnmiMapVariant[] = [
           "id": "update",
           "kind": "message",
           "label": "Update",
+          "description": "Update is a re-usable message that is used to store a particular Path,\nValue pair.\nReference: gNMI Specification Section 2.1",
           "sourceSymbol": "gnmi.Update",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi/gnmi.proto#L100",
@@ -1311,12 +1420,14 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "path",
               "type": "Path",
               "name": "path",
+              "description": "The path (key) for the update.",
               "ref": "path"
             },
             {
               "id": "value",
               "type": "Value",
               "name": "value",
+              "description": "The value (value) for the update.",
               "ref": "value",
               "badge": "deprecated",
               "deprecated": true
@@ -1325,12 +1436,14 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "val",
               "type": "TypedValue",
               "name": "val",
+              "description": "The explicitly typed update value.",
               "ref": "typed-value"
             },
             {
               "id": "duplicates",
               "type": "uint32",
               "name": "duplicates",
+              "description": "Number of coalesced duplicates.",
               "ref": null
             }
           ]
@@ -1350,6 +1463,7 @@ export const mapVariants: GnmiMapVariant[] = [
           "id": "path",
           "kind": "message",
           "label": "Path",
+          "description": "Path encodes a data tree path as a series of repeated strings, with\neach element of the path representing a data tree node name and the\nassociated attributes.\nReference: gNMI Specification Section 2.2.2.",
           "sourceSymbol": "gnmi.Path",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi/gnmi.proto#L142",
@@ -1359,6 +1473,7 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "element",
               "type": "repeated string",
               "name": "element",
+              "description": "Elements of the path are no longer encoded as a string, but rather within\nthe elem field as a PathElem message.",
               "ref": null,
               "badge": "deprecated",
               "deprecated": true
@@ -1367,18 +1482,21 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "origin",
               "type": "string",
               "name": "origin",
+              "description": "Label to disambiguate path.",
               "ref": null
             },
             {
               "id": "elem",
               "type": "repeated PathElem",
               "name": "elem",
+              "description": "Elements of the path.",
               "ref": "path-elem"
             },
             {
               "id": "target",
               "type": "string",
               "name": "target",
+              "description": "The name of the target",
               "ref": null
             }
           ]
@@ -1398,6 +1516,7 @@ export const mapVariants: GnmiMapVariant[] = [
           "id": "path-elem",
           "kind": "message",
           "label": "PathElem",
+          "description": "PathElem encodes an element of a gNMI path, along with any attributes (keys)\nthat may be associated with it.\nReference: gNMI Specification Section 2.2.2.",
           "sourceSymbol": "gnmi.PathElem",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi/gnmi.proto#L155",
@@ -1407,12 +1526,14 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "name",
               "type": "string",
               "name": "name",
+              "description": "The name of the element in the path.",
               "ref": null
             },
             {
               "id": "key",
               "type": "map<string,string>",
               "name": "key",
+              "description": "Map of key (attribute) name to value.",
               "ref": null
             }
           ]
@@ -1432,6 +1553,7 @@ export const mapVariants: GnmiMapVariant[] = [
           "id": "value",
           "kind": "message",
           "label": "Value",
+          "description": "Value encodes a data tree node's value - along with the way in which\nthe value is encoded. This message is deprecated by gNMI 0.3.0.\nReference: gNMI Specification Section 2.2.3.",
           "sourceSymbol": "gnmi.Value",
           "deprecated": true,
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi/gnmi.proto#L163",
@@ -1444,12 +1566,14 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "value",
               "type": "bytes",
               "name": "value",
+              "description": "Value of the variable being transmitted.",
               "ref": null
             },
             {
               "id": "type",
               "type": "Encoding",
               "name": "type",
+              "description": "Encoding used for the value field.",
               "ref": "encoding"
             }
           ]
@@ -1469,6 +1593,7 @@ export const mapVariants: GnmiMapVariant[] = [
           "id": "typed-value",
           "kind": "message",
           "label": "TypedValue",
+          "description": "TypedValue is used to encode a value being sent between the client and\ntarget (originated by either entity).",
           "sourceSymbol": "gnmi.TypedValue",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi/gnmi.proto#L109",
@@ -1477,6 +1602,7 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "string-val",
               "type": "string",
               "name": "string_val",
+              "description": "String value.",
               "ref": null,
               "group": "oneof value"
             },
@@ -1484,6 +1610,7 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "int-val",
               "type": "int64",
               "name": "int_val",
+              "description": "Integer value.",
               "ref": null,
               "group": "oneof value"
             },
@@ -1491,6 +1618,7 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "uint-val",
               "type": "uint64",
               "name": "uint_val",
+              "description": "Unsigned integer value.",
               "ref": null,
               "group": "oneof value"
             },
@@ -1498,6 +1626,7 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "bool-val",
               "type": "bool",
               "name": "bool_val",
+              "description": "Bool value.",
               "ref": null,
               "group": "oneof value"
             },
@@ -1505,6 +1634,7 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "bytes-val",
               "type": "bytes",
               "name": "bytes_val",
+              "description": "Arbitrary byte sequence value.",
               "ref": null,
               "group": "oneof value"
             },
@@ -1512,6 +1642,7 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "float-val",
               "type": "float",
               "name": "float_val",
+              "description": "Deprecated - use double_val.",
               "ref": null,
               "group": "oneof value",
               "badge": "deprecated",
@@ -1521,6 +1652,7 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "double-val",
               "type": "double",
               "name": "double_val",
+              "description": "Floating point value.",
               "ref": null,
               "group": "oneof value"
             },
@@ -1537,6 +1669,7 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "leaflist-val",
               "type": "ScalarArray",
               "name": "leaflist_val",
+              "description": "Mixed type scalar array value.",
               "ref": "scalar-array",
               "group": "oneof value"
             },
@@ -1544,6 +1677,7 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "any-val",
               "type": "google.protobuf.Any",
               "name": "any_val",
+              "description": "protobuf.Any encoded bytes.",
               "ref": "any",
               "group": "oneof value"
             },
@@ -1551,6 +1685,7 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "json-val",
               "type": "bytes",
               "name": "json_val",
+              "description": "JSON-encoded text.",
               "ref": null,
               "group": "oneof value"
             },
@@ -1558,6 +1693,7 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "json-ietf-val",
               "type": "bytes",
               "name": "json_ietf_val",
+              "description": "JSON-encoded text per RFC7951.",
               "ref": null,
               "group": "oneof value"
             },
@@ -1565,6 +1701,7 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "ascii-val",
               "type": "string",
               "name": "ascii_val",
+              "description": "Arbitrary ASCII text.",
               "ref": null,
               "group": "oneof value"
             },
@@ -1572,6 +1709,7 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "proto-bytes",
               "type": "bytes",
               "name": "proto_bytes",
+              "description": "Protobuf binary encoded bytes. The message type is not included.\nSee the specification at\ngithub.com/openconfig/reference/blob/master/rpc/gnmi/protobuf-vals.md\nfor a complete specification. [Experimental]",
               "ref": null,
               "group": "oneof value"
             }
@@ -1592,6 +1730,7 @@ export const mapVariants: GnmiMapVariant[] = [
           "id": "decimal64",
           "kind": "message",
           "label": "Decimal64",
+          "description": "Decimal64 is used to encode a fixed precision decimal number. The value\nis expressed as a set of digits with the precision specifying the\nnumber of digits following the decimal point in the digit set.\nThis message is deprecated in favor of encoding all floating point types\nas double precision.",
           "sourceSymbol": "gnmi.Decimal64",
           "deprecated": true,
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi/gnmi.proto#L200",
@@ -1603,12 +1742,14 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "digits",
               "type": "int64",
               "name": "digits",
+              "description": "Set of digits.",
               "ref": null
             },
             {
               "id": "precision",
               "type": "uint32",
               "name": "precision",
+              "description": "Number of digits following the decimal point.",
               "ref": null
             }
           ]
@@ -1628,6 +1769,7 @@ export const mapVariants: GnmiMapVariant[] = [
           "id": "scalar-array",
           "kind": "message",
           "label": "ScalarArray",
+          "description": "ScalarArray is used to encode a mixed-type array of values.",
           "sourceSymbol": "gnmi.ScalarArray",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi/gnmi.proto#L208",
@@ -1636,6 +1778,7 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "element",
               "type": "repeated TypedValue",
               "name": "element",
+              "description": "The set of elements within the array. Each TypedValue message should\nspecify only elements that have a field identifier of 1-7 (i.e., the\nvalues are scalar values).",
               "ref": "typed-value"
             }
           ]
@@ -1684,6 +1827,7 @@ export const mapVariants: GnmiMapVariant[] = [
           "id": "extension",
           "kind": "message",
           "label": "gnmi_ext.Extension",
+          "description": "The Extension message contains a single gNMI extension.",
           "sourceSymbol": "gnmi_ext.Extension",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi_ext/gnmi_ext.proto#L29",
@@ -1693,6 +1837,7 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "registered-ext",
               "type": "RegisteredExtension",
               "name": "registered_ext",
+              "description": "A registered extension.",
               "ref": "registered-extension",
               "group": "oneof ext"
             },
@@ -1700,6 +1845,7 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "master-arbitration",
               "type": "MasterArbitration",
               "name": "master_arbitration",
+              "description": "Well known extensions.",
               "ref": "master-arbitration",
               "group": "oneof ext"
             },
@@ -1707,6 +1853,7 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "history",
               "type": "History",
               "name": "history",
+              "description": "History extension.",
               "ref": "history",
               "group": "oneof ext"
             },
@@ -1714,6 +1861,7 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "commit",
               "type": "Commit",
               "name": "commit",
+              "description": "Commit confirmed extension.",
               "ref": "commit",
               "group": "oneof ext"
             },
@@ -1721,6 +1869,7 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "depth",
               "type": "Depth",
               "name": "depth",
+              "description": "Depth extension.",
               "ref": "depth",
               "group": "oneof ext"
             },
@@ -1728,6 +1877,7 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "config-subscription",
               "type": "ConfigSubscription",
               "name": "config_subscription",
+              "description": "Config Subscription extension.",
               "ref": "config-subscription",
               "group": "oneof ext"
             }
@@ -1748,6 +1898,7 @@ export const mapVariants: GnmiMapVariant[] = [
           "id": "registered-extension",
           "kind": "message",
           "label": "gnmi_ext.RegisteredExtension",
+          "description": "The RegisteredExtension message defines an extension which is defined outside\nof this file.",
           "sourceSymbol": "gnmi_ext.RegisteredExtension",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi_ext/gnmi_ext.proto#L43",
@@ -1756,12 +1907,14 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "id",
               "type": "ExtensionID",
               "name": "id",
+              "description": "The unique ID assigned to this extension.",
               "ref": "extension-id"
             },
             {
               "id": "msg",
               "type": "bytes",
               "name": "msg",
+              "description": "The binary-marshalled protobuf extension payload.",
               "ref": null
             }
           ]
@@ -1781,6 +1934,7 @@ export const mapVariants: GnmiMapVariant[] = [
           "id": "extension-id",
           "kind": "enum",
           "label": "enum gnmi_ext.ExtensionID",
+          "description": "RegisteredExtension is an enumeration acting as a registry for extensions\ndefined by external sources.",
           "sourceSymbol": "gnmi_ext.ExtensionID",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi_ext/gnmi_ext.proto#L50",
@@ -1795,6 +1949,7 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "experimental",
               "type": "999",
               "name": "EID_EXPERIMENTAL",
+              "description": "An experimental extension that may be used during prototyping of a new\nextension.",
               "ref": null
             }
           ]
@@ -1814,6 +1969,7 @@ export const mapVariants: GnmiMapVariant[] = [
           "id": "master-arbitration",
           "kind": "message",
           "label": "gnmi_ext.MasterArbitration",
+          "description": "MasterArbitration is used to select the master among multiple gNMI clients\nwith the same Roles. The client with the largest election_id is honored as\nthe master.\nThe document about gNMI master arbitration can be found at\nhttps://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-master-arbitration.md",
           "sourceSymbol": "gnmi_ext.MasterArbitration",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi_ext/gnmi_ext.proto#L65",
@@ -1847,6 +2003,7 @@ export const mapVariants: GnmiMapVariant[] = [
           "id": "uint128",
           "kind": "message",
           "label": "gnmi_ext.Uint128",
+          "description": "Representation of unsigned 128-bit integer.",
           "sourceSymbol": "gnmi_ext.Uint128",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi_ext/gnmi_ext.proto#L71",
@@ -1880,6 +2037,7 @@ export const mapVariants: GnmiMapVariant[] = [
           "id": "role",
           "kind": "message",
           "label": "gnmi_ext.Role",
+          "description": "There can be one master for each role. The role is identified by its id.",
           "sourceSymbol": "gnmi_ext.Role",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi_ext/gnmi_ext.proto#L77",
@@ -1907,6 +2065,7 @@ export const mapVariants: GnmiMapVariant[] = [
           "id": "history",
           "kind": "message",
           "label": "gnmi_ext.History",
+          "description": "The History extension allows clients to request historical data. Its\nspec can be found at\nhttps://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-history.md",
           "sourceSymbol": "gnmi_ext.History",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi_ext/gnmi_ext.proto#L86",
@@ -1915,6 +2074,7 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "snapshot-time",
               "type": "int64",
               "name": "snapshot_time",
+              "description": "Nanoseconds since the epoch",
               "ref": null,
               "group": "oneof request"
             },
@@ -1950,12 +2110,14 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "start",
               "type": "int64",
               "name": "start",
+              "description": "Nanoseconds since the epoch",
               "ref": null
             },
             {
               "id": "end",
               "type": "int64",
               "name": "end",
+              "description": "Nanoseconds since the epoch",
               "ref": null
             }
           ]
@@ -1975,6 +2137,7 @@ export const mapVariants: GnmiMapVariant[] = [
           "id": "commit",
           "kind": "message",
           "label": "gnmi_ext.Commit",
+          "description": "Commit confirmed extension allows automated revert of the configuration after\ncertain duration if an explicit confirmation is not issued. It allows\nexplicit cancellation of the commit during the rollback window. There cannot\nbe more than one commit active at a given time. The document about gNMI\ncommit confirmed can be found at\nhttps://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-commit-confirmed.md",
           "sourceSymbol": "gnmi_ext.Commit",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi_ext/gnmi_ext.proto#L104",
@@ -1983,12 +2146,14 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "id",
               "type": "string",
               "name": "id",
+              "description": "ID is provided by the client during the commit request. During confirm and\ncancel actions the provided ID should match the ID provided during commit.\nIf ID is not passed in any actions server shall return error.\nRequired.",
               "ref": null
             },
             {
               "id": "commit",
               "type": "CommitRequest",
               "name": "commit",
+              "description": "commit action creates a new commit. If a commit is on-going, server\nreturns error.",
               "ref": "commit-request",
               "group": "oneof action"
             },
@@ -1996,6 +2161,7 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "confirm",
               "type": "CommitConfirm",
               "name": "confirm",
+              "description": "confirm action will confirm an on-going commit, the ID provided during\nconfirm should match the on-going commit ID.",
               "ref": "commit-confirm",
               "group": "oneof action"
             },
@@ -2003,6 +2169,7 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "cancel",
               "type": "CommitCancel",
               "name": "cancel",
+              "description": "cancel action will cancel an on-going commit, the ID provided during\ncancel should match the on-going commit ID.",
               "ref": "commit-cancel",
               "group": "oneof action"
             },
@@ -2010,6 +2177,7 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "set-rollback-duration",
               "type": "CommitSetRollbackDuration",
               "name": "set_rollback_duration",
+              "description": "set rollback duration action sets the rollback duration of an on-going commit\nto a new value.\nThe ID provided with the Commit message should match the on-going commit ID.",
               "ref": "commit-set-rollback-duration",
               "group": "oneof action"
             }
@@ -2030,6 +2198,7 @@ export const mapVariants: GnmiMapVariant[] = [
           "id": "commit-request",
           "kind": "message",
           "label": "gnmi_ext.CommitRequest",
+          "description": "CommitRequest is used to create a new confirmed commit. It hold additional\nparameter requried for commit action.",
           "sourceSymbol": "gnmi_ext.CommitRequest",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi_ext/gnmi_ext.proto#L129",
@@ -2038,6 +2207,7 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "rollback-duration",
               "type": "google.protobuf.Duration",
               "name": "rollback_duration",
+              "description": "Maximum duration to wait for a confirmaton before reverting the commit.",
               "ref": "duration"
             }
           ]
@@ -2057,6 +2227,7 @@ export const mapVariants: GnmiMapVariant[] = [
           "id": "commit-confirm",
           "kind": "message",
           "label": "gnmi_ext.CommitConfirm",
+          "description": "CommitConfirm is used to confirm an on-going commit. It hold additional\nparameter requried for confirm action.",
           "sourceSymbol": "gnmi_ext.CommitConfirm",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi_ext/gnmi_ext.proto#L136",
@@ -2077,6 +2248,7 @@ export const mapVariants: GnmiMapVariant[] = [
           "id": "commit-cancel",
           "kind": "message",
           "label": "gnmi_ext.CommitCancel",
+          "description": "CommitCancel is used to cancel an on-going commit. It hold additional\nparameter requried for cancel action.",
           "sourceSymbol": "gnmi_ext.CommitCancel",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi_ext/gnmi_ext.proto#L140",
@@ -2097,6 +2269,7 @@ export const mapVariants: GnmiMapVariant[] = [
           "id": "commit-set-rollback-duration",
           "kind": "message",
           "label": "gnmi_ext.CommitSetRollbackDuration",
+          "description": "CommitSetRollbackDuration is used to set the existing rollback duration value\nof an on-going commit to a new desired value.",
           "sourceSymbol": "gnmi_ext.CommitSetRollbackDuration",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi_ext/gnmi_ext.proto#L144",
@@ -2105,6 +2278,7 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "rollback-duration",
               "type": "google.protobuf.Duration",
               "name": "rollback_duration",
+              "description": "Maximum duration to wait for a confirmaton before reverting the commit.",
               "ref": "duration"
             }
           ]
@@ -2153,6 +2327,7 @@ export const mapVariants: GnmiMapVariant[] = [
           "id": "depth",
           "kind": "message",
           "label": "gnmi_ext.Depth",
+          "description": "Depth allows clients to specify the depth of the subtree to be returned in\nthe response. The depth is specified as the number of levels below the\nspecified path.\nThe depth is applied to all paths in the Get or Subscribe request.\nThe document about gNMI depth can be found at\nhttps://github.com/openconfig/reference/tree/master/rpc/gnmi/gnmi-depth.md",
           "sourceSymbol": "gnmi_ext.Depth",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi_ext/gnmi_ext.proto#L155",
@@ -2161,6 +2336,7 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "level",
               "type": "uint32",
               "name": "level",
+              "description": "The level of the subtree to be returned in the response.\nValue of 0 means no depth limit and behaves the same as if the extension\nwas not specified.\nValue of 1 means only the specified path and its direct children will be\nreturned.",
               "ref": null
             }
           ]
@@ -2180,6 +2356,7 @@ export const mapVariants: GnmiMapVariant[] = [
           "id": "config-subscription",
           "kind": "message",
           "label": "gnmi_ext.ConfigSubscription",
+          "description": "ConfigSubscription extension allows clients to subscribe to configuration\nschema nodes only.",
           "sourceSymbol": "gnmi_ext.ConfigSubscription",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi_ext/gnmi_ext.proto#L166",
@@ -2188,6 +2365,7 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "start",
               "type": "ConfigSubscriptionStart",
               "name": "start",
+              "description": "ConfigSubscriptionStart is sent by the client in the SubscribeRequest",
               "ref": "config-subscription-start",
               "group": "oneof action"
             },
@@ -2195,6 +2373,7 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "sync-done",
               "type": "ConfigSubscriptionSyncDone",
               "name": "sync_done",
+              "description": "ConfigSubscriptionSyncDone is sent by the server in the SubscribeResponse",
               "ref": "config-subscription-sync-done",
               "group": "oneof action"
             }
@@ -2215,6 +2394,7 @@ export const mapVariants: GnmiMapVariant[] = [
           "id": "config-subscription-start",
           "kind": "message",
           "label": "gnmi_ext.ConfigSubscriptionStart",
+          "description": "ConfigSubscriptionStart is used to indicate to a target that for a given set\nof paths in the SubscribeRequest, the client wishes to receive updates\nfor the configuration schema nodes only.",
           "sourceSymbol": "gnmi_ext.ConfigSubscriptionStart",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi_ext/gnmi_ext.proto#L178",
@@ -2235,6 +2415,7 @@ export const mapVariants: GnmiMapVariant[] = [
           "id": "config-subscription-sync-done",
           "kind": "message",
           "label": "gnmi_ext.ConfigSubscriptionSyncDone",
+          "description": "ConfigSubscriptionSyncDone is sent by the server in the SubscribeResponse\nafter all the updates for the configuration schema nodes have been sent.",
           "sourceSymbol": "gnmi_ext.ConfigSubscriptionSyncDone",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi_ext/gnmi_ext.proto#L182",
@@ -2243,18 +2424,21 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "commit-confirm-id",
               "type": "string",
               "name": "commit_confirm_id",
+              "description": "ID of a commit confirm operation as assigned by the client\nsee Commit Confirm extension for more details.",
               "ref": null
             },
             {
               "id": "server-commit-id",
               "type": "string",
               "name": "server_commit_id",
+              "description": "ID of a commit as might be assigned by the server\nwhen registering a commit operation.",
               "ref": null
             },
             {
               "id": "done",
               "type": "bool",
               "name": "done",
+              "description": "If true indicates that the server is done processing the updates related to the\ncommit_confirm_id and/or server_commit_id.",
               "ref": null
             }
           ]
@@ -2995,24 +3179,28 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "capabilities",
               "type": "rpc",
               "name": "Capabilities",
+              "description": "Capabilities allows the client to retrieve the set of capabilities that\nis supported by the target. This allows the target to validate the\nservice version that is implemented and retrieve the set of models that\nthe target supports. The models can then be specified in subsequent RPCs\nto restrict the set of data that is utilized.\nReference: gNMI Specification Section 3.2",
               "ref": "rpc-capabilities"
             },
             {
               "id": "get",
               "type": "rpc",
               "name": "Get",
+              "description": "Retrieve a snapshot of data from the target. A Get RPC requests that the\ntarget snapshots a subset of the data tree as specified by the paths\nincluded in the message and serializes this to be returned to the\nclient using the specified encoding.\nReference: gNMI Specification Section 3.3",
               "ref": "rpc-get"
             },
             {
               "id": "set",
               "type": "rpc",
               "name": "Set",
+              "description": "Set allows the client to modify the state of data on the target. The\npaths to modified along with the new values that the client wishes\nto set the value to.\nReference: gNMI Specification Section 3.4",
               "ref": "rpc-set"
             },
             {
               "id": "subscribe",
               "type": "rpc",
               "name": "Subscribe",
+              "description": "Subscribe allows a client to request the target to send it values\nof particular paths within the data tree. These values may be streamed\nat a particular cadence (STREAM), sent one off on a long-lived channel\n(POLL), or sent as a one-off retrieval (ONCE).\nReference: gNMI Specification Section 3.5",
               "ref": "rpc-subscribe",
               "badge": "stream"
             }
@@ -3033,6 +3221,7 @@ export const mapVariants: GnmiMapVariant[] = [
           "id": "rpc-set",
           "kind": "rpc",
           "label": "rpc Set",
+          "description": "Set allows the client to modify the state of data on the target. The\npaths to modified along with the new values that the client wishes\nto set the value to.\nReference: gNMI Specification Section 3.4",
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.9.1/proto/gnmi/gnmi.proto#L66",
           "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#34-modifying-state",
           "fields": [
@@ -3065,6 +3254,7 @@ export const mapVariants: GnmiMapVariant[] = [
           "id": "rpc-subscribe",
           "kind": "rpc",
           "label": "rpc Subscribe",
+          "description": "Subscribe allows a client to request the target to send it values\nof particular paths within the data tree. These values may be streamed\nat a particular cadence (STREAM), sent one off on a long-lived channel\n(POLL), or sent as a one-off retrieval (ONCE).\nReference: gNMI Specification Section 3.5",
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.9.1/proto/gnmi/gnmi.proto#L72",
           "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#35-subscribing-to-telemetry-updates",
           "fields": [
@@ -3097,6 +3287,7 @@ export const mapVariants: GnmiMapVariant[] = [
           "id": "rpc-get",
           "kind": "rpc",
           "label": "rpc Get",
+          "description": "Retrieve a snapshot of data from the target. A Get RPC requests that the\ntarget snapshots a subset of the data tree as specified by the paths\nincluded in the message and serializes this to be returned to the\nclient using the specified encoding.\nReference: gNMI Specification Section 3.3",
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.9.1/proto/gnmi/gnmi.proto#L61",
           "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#33-retrieving-snapshots-of-state-information",
           "fields": [
@@ -3129,6 +3320,7 @@ export const mapVariants: GnmiMapVariant[] = [
           "id": "rpc-capabilities",
           "kind": "rpc",
           "label": "rpc Capabilities",
+          "description": "Capabilities allows the client to retrieve the set of capabilities that\nis supported by the target. This allows the target to validate the\nservice version that is implemented and retrieve the set of models that\nthe target supports. The models can then be specified in subsequent RPCs\nto restrict the set of data that is utilized.\nReference: gNMI Specification Section 3.2",
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.9.1/proto/gnmi/gnmi.proto#L55",
           "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#32-capability-discovery",
           "fields": [
@@ -3161,6 +3353,7 @@ export const mapVariants: GnmiMapVariant[] = [
           "id": "set-request",
           "kind": "message",
           "label": "SetRequest",
+          "description": "SetRequest is sent from a client to the target to update values in the data\ntree. Paths are either deleted by the client, or modified by means of being\nupdated, or replaced. Where a replace is used, unspecified values are\nconsidered to be replaced, whereas when update is used the changes are\nconsidered to be incremental. The set of changes that are specified within\na single SetRequest are considered to be a transaction.\nReference: gNMI Specification Section 3.4.1",
           "sourceSymbol": "gnmi.SetRequest",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.9.1/proto/gnmi/gnmi.proto#L335",
@@ -3170,30 +3363,35 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "prefix",
               "type": "Path",
               "name": "prefix",
+              "description": "Prefix used for paths in the message.",
               "ref": "path"
             },
             {
               "id": "delete",
               "type": "repeated Path",
               "name": "delete",
+              "description": "Paths to be deleted from the data tree.",
               "ref": "path"
             },
             {
               "id": "replace",
               "type": "repeated Update",
               "name": "replace",
+              "description": "Updates specifying elements to be replaced.",
               "ref": "update"
             },
             {
               "id": "update",
               "type": "repeated Update",
               "name": "update",
+              "description": "Updates specifying elements to updated.",
               "ref": "update"
             },
             {
               "id": "extension",
               "type": "repeated gnmi_ext.Extension",
               "name": "extension",
+              "description": "Extension messages associated with the SetRequest. See the\ngNMI extension specification for further definition.",
               "ref": "extension",
               "badge": "optional"
             }
@@ -3214,6 +3412,7 @@ export const mapVariants: GnmiMapVariant[] = [
           "id": "set-response",
           "kind": "message",
           "label": "SetResponse",
+          "description": "SetResponse is the response to a SetRequest, sent from the target to the\nclient. It reports the result of the modifications to the data tree that were\nspecified by the client. Errors for this RPC should be reported using the\nhttps://github.com/googleapis/googleapis/blob/master/google/rpc/status.proto\nmessage in the RPC return. The gnmi.Error message can be used to add\nadditional details where required. Reference: gNMI Specification\nSection 3.4.2",
           "sourceSymbol": "gnmi.SetResponse",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.9.1/proto/gnmi/gnmi.proto#L352",
@@ -3223,12 +3422,14 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "prefix",
               "type": "Path",
               "name": "prefix",
+              "description": "Prefix used for paths.",
               "ref": "path"
             },
             {
               "id": "response",
               "type": "repeated UpdateResult",
               "name": "response",
+              "description": "A set of responses specifying the result of the operations specified in\nthe SetRequest.",
               "ref": "update-result"
             },
             {
@@ -3243,12 +3444,14 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "timestamp",
               "type": "int64",
               "name": "timestamp",
+              "description": "Timestamp of transaction (ns since epoch).",
               "ref": null
             },
             {
               "id": "extension",
               "type": "repeated gnmi_ext.Extension",
               "name": "extension",
+              "description": "Extension messages associated with the SetResponse. See the\ngNMI extension specification for further definition.",
               "ref": "extension",
               "badge": "optional"
             }
@@ -3269,6 +3472,7 @@ export const mapVariants: GnmiMapVariant[] = [
           "id": "subscribe-request",
           "kind": "message",
           "label": "SubscribeRequest",
+          "description": "SubscribeRequest is the message sent by the client to the target when\ninitiating a subscription to a set of paths within the data tree. The\nrequest field must be populated and the initial message must specify a\nSubscriptionList to initiate a subscription.\nReference: gNMI Specification Section 3.5.1.1",
           "sourceSymbol": "gnmi.SubscribeRequest",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.9.1/proto/gnmi/gnmi.proto#L219",
@@ -3278,6 +3482,7 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "subscribe",
               "type": "SubscriptionList",
               "name": "subscribe",
+              "description": "Specify the paths within a subscription.",
               "ref": "subscription-list",
               "group": "oneof request"
             },
@@ -3285,6 +3490,7 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "poll",
               "type": "Poll",
               "name": "poll",
+              "description": "Trigger a polled update.",
               "ref": "poll",
               "group": "oneof request"
             },
@@ -3292,6 +3498,7 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "extension",
               "type": "repeated gnmi_ext.Extension",
               "name": "extension",
+              "description": "Extension messages associated with the SubscribeRequest. See the\ngNMI extension specification for further definition.",
               "ref": "extension",
               "badge": "optional"
             },
@@ -3319,6 +3526,7 @@ export const mapVariants: GnmiMapVariant[] = [
           "id": "subscribe-response",
           "kind": "message",
           "label": "SubscribeResponse",
+          "description": "SubscribeResponse is the message used by the target within a Subscribe RPC.\nThe target includes a Notification message which is used to transmit values\nof the path(s) that are associated with the subscription. The same message\nis to indicate that the target has sent all data values once (is\nsynchronized).\nReference: gNMI Specification Section 3.5.1.4",
           "sourceSymbol": "gnmi.SubscribeResponse",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.9.1/proto/gnmi/gnmi.proto#L244",
@@ -3328,6 +3536,7 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "update",
               "type": "Notification",
               "name": "update",
+              "description": "Changed or sampled value for a path.",
               "ref": "notification",
               "group": "oneof response"
             },
@@ -3335,6 +3544,7 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "sync-response",
               "type": "bool",
               "name": "sync_response",
+              "description": "Indicate target has sent all values associated with the subscription\nat least once.",
               "ref": null,
               "group": "oneof response"
             },
@@ -3342,6 +3552,7 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "error",
               "type": "Error",
               "name": "error",
+              "description": "Deprecated in favour of google.golang.org/genproto/googleapis/rpc/status",
               "ref": "error",
               "group": "oneof response",
               "badge": "deprecated",
@@ -3351,6 +3562,7 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "extension",
               "type": "repeated gnmi_ext.Extension",
               "name": "extension",
+              "description": "Extension messages associated with the SubscribeResponse. See the\ngNMI extension specification for further definition.",
               "ref": "extension",
               "badge": "optional"
             }
@@ -3371,6 +3583,7 @@ export const mapVariants: GnmiMapVariant[] = [
           "id": "get-request",
           "kind": "message",
           "label": "GetRequest",
+          "description": "GetRequest is sent when a client initiates a Get RPC. It is used to specify\nthe set of data elements for which the target should return a snapshot of\ndata. The use_models field specifies the set of schema modules that are to\nbe used by the target - where use_models is not specified then the target\nmust use all schema models that it has.\nReference: gNMI Specification Section 3.3.1",
           "sourceSymbol": "gnmi.GetRequest",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.9.1/proto/gnmi/gnmi.proto#L392",
@@ -3380,36 +3593,42 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "prefix",
               "type": "Path",
               "name": "prefix",
+              "description": "Prefix used for paths.",
               "ref": "path"
             },
             {
               "id": "path",
               "type": "repeated Path",
               "name": "path",
+              "description": "Paths requested by the client.",
               "ref": "path"
             },
             {
               "id": "type",
               "type": "DataType",
               "name": "type",
+              "description": "The type of data being requested.",
               "ref": "data-type"
             },
             {
               "id": "encoding",
               "type": "Encoding",
               "name": "encoding",
+              "description": "Encoding to be used.",
               "ref": "encoding"
             },
             {
               "id": "use-models",
               "type": "repeated ModelData",
               "name": "use_models",
+              "description": "The schema models to be used.",
               "ref": "model-data"
             },
             {
               "id": "extension",
               "type": "repeated gnmi_ext.Extension",
               "name": "extension",
+              "description": "Extension messages associated with the GetRequest. See the\ngNMI extension specification for further definition.",
               "ref": "extension",
               "badge": "optional"
             }
@@ -3430,6 +3649,7 @@ export const mapVariants: GnmiMapVariant[] = [
           "id": "get-response",
           "kind": "message",
           "label": "GetResponse",
+          "description": "GetResponse is used by the target to respond to a GetRequest from a client.\nThe set of Notifications corresponds to the data values that are requested\nby the client in the GetRequest.\nReference: gNMI Specification Section 3.3.2",
           "sourceSymbol": "gnmi.GetResponse",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.9.1/proto/gnmi/gnmi.proto#L417",
@@ -3439,12 +3659,14 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "notification",
               "type": "repeated Notification",
               "name": "notification",
+              "description": "Data values.",
               "ref": "notification"
             },
             {
               "id": "error",
               "type": "Error",
               "name": "error",
+              "description": "Errors that occurred in the Get.",
               "ref": "error",
               "badge": "deprecated",
               "deprecated": true
@@ -3453,6 +3675,7 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "extension",
               "type": "repeated gnmi_ext.Extension",
               "name": "extension",
+              "description": "Extension messages associated with the GetResponse. See the\ngNMI extension specification for further definition.",
               "ref": "extension",
               "badge": "optional"
             }
@@ -3473,6 +3696,7 @@ export const mapVariants: GnmiMapVariant[] = [
           "id": "capability-request",
           "kind": "message",
           "label": "CapabilityRequest",
+          "description": "CapabilityRequest is sent by the client in the Capabilities RPC to request\nthat the target reports its capabilities.\nReference: gNMI Specification Section 3.2.1",
           "sourceSymbol": "gnmi.CapabilityRequest",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.9.1/proto/gnmi/gnmi.proto#L428",
@@ -3482,6 +3706,7 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "extension",
               "type": "repeated gnmi_ext.Extension",
               "name": "extension",
+              "description": "Extension messages associated with the CapabilityRequest. See the\ngNMI extension specification for further definition.",
               "ref": "extension",
               "badge": "optional"
             }
@@ -3502,6 +3727,7 @@ export const mapVariants: GnmiMapVariant[] = [
           "id": "capability-response",
           "kind": "message",
           "label": "CapabilityResponse",
+          "description": "CapabilityResponse is used by the target to report its capabilities to the\nclient within the Capabilities RPC.\nReference: gNMI Specification Section 3.2.2",
           "sourceSymbol": "gnmi.CapabilityResponse",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.9.1/proto/gnmi/gnmi.proto#L437",
@@ -3511,24 +3737,28 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "supported-models",
               "type": "repeated ModelData",
               "name": "supported_models",
+              "description": "Supported schema models.",
               "ref": "model-data"
             },
             {
               "id": "supported-encodings",
               "type": "repeated Encoding",
               "name": "supported_encodings",
+              "description": "Supported encodings.",
               "ref": "encoding"
             },
             {
               "id": "g-nmi-version",
               "type": "string",
               "name": "gNMI_version",
+              "description": "Supported gNMI version.",
               "ref": null
             },
             {
               "id": "extension",
               "type": "repeated gnmi_ext.Extension",
               "name": "extension",
+              "description": "Extension messages associated with the CapabilityResponse. See the\ngNMI extension specification for further definition.",
               "ref": "extension",
               "badge": "optional"
             }
@@ -3549,6 +3779,7 @@ export const mapVariants: GnmiMapVariant[] = [
           "id": "error",
           "kind": "message",
           "label": "Error",
+          "description": "Error message previously utilised to return errors to the client. Deprecated\nin favour of using the google.golang.org/genproto/googleapis/rpc/status\nmessage in the RPC response.\nReference: gNMI Specification Section 2.5",
           "sourceSymbol": "gnmi.Error",
           "deprecated": true,
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.9.1/proto/gnmi/gnmi.proto#L186",
@@ -3561,18 +3792,21 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "code",
               "type": "uint32",
               "name": "code",
+              "description": "Canonical gRPC error code.",
               "ref": null
             },
             {
               "id": "message",
               "type": "string",
               "name": "message",
+              "description": "Human readable error.",
               "ref": null
             },
             {
               "id": "data",
               "type": "google.protobuf.Any",
               "name": "data",
+              "description": "Optional additional information.",
               "ref": "any"
             }
           ]
@@ -3592,6 +3826,7 @@ export const mapVariants: GnmiMapVariant[] = [
           "id": "update-result",
           "kind": "message",
           "label": "UpdateResult",
+          "description": "UpdateResult is used within the SetResponse message to communicate the\nresult of an operation specified within a SetRequest message.\nReference: gNMI Specification Section 3.4.2",
           "sourceSymbol": "gnmi.UpdateResult",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.9.1/proto/gnmi/gnmi.proto#L368",
@@ -3601,6 +3836,7 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "timestamp",
               "type": "int64",
               "name": "timestamp",
+              "description": "Deprecated timestamp for the UpdateResult, this field has been\nreplaced by the timestamp within the SetResponse message, since\nall mutations effected by a set should be applied as a single\ntransaction.",
               "ref": null,
               "badge": "deprecated",
               "deprecated": true
@@ -3609,12 +3845,14 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "path",
               "type": "Path",
               "name": "path",
+              "description": "Path associated with the update.",
               "ref": "path"
             },
             {
               "id": "message",
               "type": "Error",
               "name": "message",
+              "description": "Status of the update operation.",
               "ref": "error",
               "badge": "deprecated",
               "deprecated": true
@@ -3623,6 +3861,7 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "op",
               "type": "Operation",
               "name": "op",
+              "description": "Update operation type.",
               "ref": "operation"
             }
           ]
@@ -3642,6 +3881,7 @@ export const mapVariants: GnmiMapVariant[] = [
           "id": "operation",
           "kind": "enum",
           "label": "enum Operation",
+          "description": "The operation that was associated with the Path specified.",
           "sourceSymbol": "gnmi.UpdateResult.Operation",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.9.1/proto/gnmi/gnmi.proto#L370",
@@ -3656,18 +3896,21 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "delete",
               "type": "1",
               "name": "DELETE",
+              "description": "The result relates to a delete of Path.",
               "ref": null
             },
             {
               "id": "replace",
               "type": "2",
               "name": "REPLACE",
+              "description": "The result relates to a replace of Path.",
               "ref": null
             },
             {
               "id": "update",
               "type": "3",
               "name": "UPDATE",
+              "description": "The result relates to an update of Path.",
               "ref": null
             }
           ]
@@ -3687,6 +3930,7 @@ export const mapVariants: GnmiMapVariant[] = [
           "id": "poll",
           "kind": "message",
           "label": "Poll",
+          "description": "Poll is sent within a SubscribeRequest to trigger the device to\nsend telemetry updates for the paths that are associated with the\nsubscription.\nReference: gNMI Specification Section Section 3.5.1.4",
           "sourceSymbol": "gnmi.Poll",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.9.1/proto/gnmi/gnmi.proto#L236",
@@ -3708,6 +3952,7 @@ export const mapVariants: GnmiMapVariant[] = [
           "id": "subscription-list",
           "kind": "message",
           "label": "SubscriptionList",
+          "description": "SubscriptionList is used within a Subscribe message to specify the list of\npaths that the client wishes to subscribe to. The message consists of a\nlist of (possibly prefixed) paths, and options that relate to the\nsubscription.\nReference: gNMI Specification Section 3.5.1.2",
           "sourceSymbol": "gnmi.SubscriptionList",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.9.1/proto/gnmi/gnmi.proto#L263",
@@ -3717,18 +3962,21 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "prefix",
               "type": "Path",
               "name": "prefix",
+              "description": "Prefix used for paths.",
               "ref": "path"
             },
             {
               "id": "subscription",
               "type": "repeated Subscription",
               "name": "subscription",
+              "description": "Set of subscriptions to create.",
               "ref": "subscription"
             },
             {
               "id": "qos",
               "type": "QOSMarking",
               "name": "qos",
+              "description": "DSCP marking to be used.",
               "ref": "qos-marking"
             },
             {
@@ -3741,24 +3989,28 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "allow-aggregation",
               "type": "bool",
               "name": "allow_aggregation",
+              "description": "Whether elements of the schema that are marked as eligible for aggregation\nshould be aggregated or not.",
               "ref": null
             },
             {
               "id": "use-models",
               "type": "repeated ModelData",
               "name": "use_models",
+              "description": "The set of schemas that define the elements of the data tree that should\nbe sent by the target.",
               "ref": "model-data"
             },
             {
               "id": "encoding",
               "type": "Encoding",
               "name": "encoding",
+              "description": "The encoding that the target should use within the Notifications generated\ncorresponding to the SubscriptionList.",
               "ref": "encoding"
             },
             {
               "id": "updates-only",
               "type": "bool",
               "name": "updates_only",
+              "description": "An optional field to specify that only updates to current state should be\nsent to a client. If set, the initial state is not sent to the client but\nrather only the sync message followed by any subsequent updates to the\ncurrent state. For ONCE and POLL modes, this causes the server to send only\nthe sync message (Sec. 3.5.2.3).",
               "ref": null
             },
             {
@@ -3785,6 +4037,7 @@ export const mapVariants: GnmiMapVariant[] = [
           "id": "qos-marking",
           "kind": "message",
           "label": "QOSMarking",
+          "description": "QOSMarking specifies the DSCP value to be set on transmitted telemetry\nupdates from the target.\nReference: gNMI Specification Section 3.5.1.2",
           "sourceSymbol": "gnmi.QOSMarking",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.9.1/proto/gnmi/gnmi.proto#L324",
@@ -3813,6 +4066,7 @@ export const mapVariants: GnmiMapVariant[] = [
           "id": "mode",
           "kind": "enum",
           "label": "enum Mode",
+          "description": "Mode of the subscription.",
           "sourceSymbol": "gnmi.SubscriptionList.Mode",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.9.1/proto/gnmi/gnmi.proto#L268",
@@ -3822,18 +4076,21 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "stream",
               "type": "0",
               "name": "STREAM",
+              "description": "Values streamed by the target (Sec. 3.5.1.5.2).",
               "ref": null
             },
             {
               "id": "once",
               "type": "1",
               "name": "ONCE",
+              "description": "Values sent once-off by the target (Sec. 3.5.1.5.1).",
               "ref": null
             },
             {
               "id": "poll",
               "type": "2",
               "name": "POLL",
+              "description": "Values sent in response to a poll request (Sec. 3.5.1.5.3).",
               "ref": null
             }
           ]
@@ -3853,6 +4110,7 @@ export const mapVariants: GnmiMapVariant[] = [
           "id": "subscription",
           "kind": "message",
           "label": "Subscription",
+          "description": "Subscription is a single request within a SubscriptionList. The path\nspecified is interpreted (along with the prefix) as the elements of the data\ntree that the client is subscribing to. The mode determines how the target\nshould trigger updates to be sent.\nReference: gNMI Specification Section 3.5.1.3",
           "sourceSymbol": "gnmi.Subscription",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.9.1/proto/gnmi/gnmi.proto#L299",
@@ -3862,30 +4120,35 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "path",
               "type": "Path",
               "name": "path",
+              "description": "The data tree path.",
               "ref": "path"
             },
             {
               "id": "mode",
               "type": "SubscriptionMode",
               "name": "mode",
+              "description": "Subscription mode to be used.",
               "ref": "subscription-mode"
             },
             {
               "id": "sample-interval",
               "type": "uint64",
               "name": "sample_interval",
+              "description": "ns between samples in SAMPLE mode.",
               "ref": null
             },
             {
               "id": "suppress-redundant",
               "type": "bool",
               "name": "suppress_redundant",
+              "description": "Indicates whether values that have not changed should be sent in a SAMPLE\nsubscription.",
               "ref": null
             },
             {
               "id": "heartbeat-interval",
               "type": "uint64",
               "name": "heartbeat_interval",
+              "description": "Specifies the maximum allowable silent period in nanoseconds when\nsuppress_redundant is in use. The target should send a value at least once\nin the period specified.",
               "ref": null
             }
           ]
@@ -3905,6 +4168,7 @@ export const mapVariants: GnmiMapVariant[] = [
           "id": "subscription-mode",
           "kind": "enum",
           "label": "enum SubscriptionMode",
+          "description": "SubscriptionMode is the mode of the subscription, specifying how the\ntarget must return values in a subscription.\nReference: gNMI Specification Section 3.5.1.3",
           "sourceSymbol": "gnmi.SubscriptionMode",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.9.1/proto/gnmi/gnmi.proto#L315",
@@ -3914,18 +4178,21 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "target-defined",
               "type": "0",
               "name": "TARGET_DEFINED",
+              "description": "The target selects the relevant mode for each element.",
               "ref": null
             },
             {
               "id": "on-change",
               "type": "1",
               "name": "ON_CHANGE",
+              "description": "The target sends an update on element value change.",
               "ref": null
             },
             {
               "id": "sample",
               "type": "2",
               "name": "SAMPLE",
+              "description": "The target samples values according to the interval.",
               "ref": null
             }
           ]
@@ -3945,6 +4212,7 @@ export const mapVariants: GnmiMapVariant[] = [
           "id": "data-type",
           "kind": "enum",
           "label": "enum DataType",
+          "description": "Type of elements within the data tree.",
           "sourceSymbol": "gnmi.GetRequest.DataType",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.9.1/proto/gnmi/gnmi.proto#L396",
@@ -3954,24 +4222,28 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "all",
               "type": "0",
               "name": "ALL",
+              "description": "All data elements.",
               "ref": null
             },
             {
               "id": "config",
               "type": "1",
               "name": "CONFIG",
+              "description": "Config (rw) only elements.",
               "ref": null
             },
             {
               "id": "state",
               "type": "2",
               "name": "STATE",
+              "description": "State (ro) only elements.",
               "ref": null
             },
             {
               "id": "operational",
               "type": "3",
               "name": "OPERATIONAL",
+              "description": "Data elements marked in the schema as operational. This refers to data\nelements whose value relates to the state of processes or interactions\nrunning on the device.",
               "ref": null
             }
           ]
@@ -3991,6 +4263,7 @@ export const mapVariants: GnmiMapVariant[] = [
           "id": "model-data",
           "kind": "message",
           "label": "ModelData",
+          "description": "ModelData is used to describe a set of schema modules. It can be used in a\nCapabilityResponse where a target reports the set of modules that it\nsupports, and within the SubscribeRequest and GetRequest messages to specify\nthe set of models from which data tree elements should be reported.\nReference: gNMI Specification Section 3.2.3",
           "sourceSymbol": "gnmi.ModelData",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.9.1/proto/gnmi/gnmi.proto#L451",
@@ -4000,18 +4273,21 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "name",
               "type": "string",
               "name": "name",
+              "description": "Name of the model.",
               "ref": null
             },
             {
               "id": "organization",
               "type": "string",
               "name": "organization",
+              "description": "Organization publishing the model.",
               "ref": null
             },
             {
               "id": "version",
               "type": "string",
               "name": "version",
+              "description": "Semantic version of the model.",
               "ref": null
             }
           ]
@@ -4031,6 +4307,7 @@ export const mapVariants: GnmiMapVariant[] = [
           "id": "encoding",
           "kind": "enum",
           "label": "enum Encoding",
+          "description": "Encoding defines the value encoding formats that are supported by the gNMI\nprotocol. These encodings are used by both the client (when sending Set\nmessages to modify the state of the target) and the target when serializing\ndata to be returned to the client (in both Subscribe and Get RPCs).\nReference: gNMI Specification Section 2.3",
           "sourceSymbol": "gnmi.Encoding",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.9.1/proto/gnmi/gnmi.proto#L174",
@@ -4040,30 +4317,35 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "json",
               "type": "0",
               "name": "JSON",
+              "description": "JSON encoded text.",
               "ref": null
             },
             {
               "id": "bytes",
               "type": "1",
               "name": "BYTES",
+              "description": "Arbitrarily encoded bytes.",
               "ref": null
             },
             {
               "id": "proto",
               "type": "2",
               "name": "PROTO",
+              "description": "Encoded according to scalar values of TypedValue.",
               "ref": null
             },
             {
               "id": "ascii",
               "type": "3",
               "name": "ASCII",
+              "description": "ASCII text of an out-of-band agreed format.",
               "ref": null
             },
             {
               "id": "json-ietf",
               "type": "4",
               "name": "JSON_IETF",
+              "description": "JSON encoded text as per RFC7951.",
               "ref": null
             }
           ]
@@ -4083,6 +4365,7 @@ export const mapVariants: GnmiMapVariant[] = [
           "id": "notification",
           "kind": "message",
           "label": "Notification",
+          "description": "Notification is a re-usable message that is used to encode data from the\ntarget to the client. A Notification carries two types of changes to the data\ntree:\n- Deleted values (delete) - a set of paths that have been removed from the\ndata tree.\n- Updated values (update) - a set of path-value pairs indicating the path\nwhose value has changed in the data tree.\nReference: gNMI Specification Section 2.1",
           "sourceSymbol": "gnmi.Notification",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.9.1/proto/gnmi/gnmi.proto#L83",
@@ -4092,30 +4375,35 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "timestamp",
               "type": "int64",
               "name": "timestamp",
+              "description": "Timestamp in nanoseconds since Epoch.",
               "ref": null
             },
             {
               "id": "prefix",
               "type": "Path",
               "name": "prefix",
+              "description": "Prefix used for paths in the message.",
               "ref": "path"
             },
             {
               "id": "update",
               "type": "repeated Update",
               "name": "update",
+              "description": "Data elements that have changed values.",
               "ref": "update"
             },
             {
               "id": "delete",
               "type": "repeated Path",
               "name": "delete",
+              "description": "Data elements that have been deleted.",
               "ref": "path"
             },
             {
               "id": "atomic",
               "type": "bool",
               "name": "atomic",
+              "description": "This notification contains a set of paths that are always updated together\nreferenced by a globally unique prefix.",
               "ref": null
             },
             {
@@ -4142,6 +4430,7 @@ export const mapVariants: GnmiMapVariant[] = [
           "id": "update",
           "kind": "message",
           "label": "Update",
+          "description": "Update is a re-usable message that is used to store a particular Path,\nValue pair.\nReference: gNMI Specification Section 2.1",
           "sourceSymbol": "gnmi.Update",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.9.1/proto/gnmi/gnmi.proto#L99",
@@ -4151,12 +4440,14 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "path",
               "type": "Path",
               "name": "path",
+              "description": "The path (key) for the update.",
               "ref": "path"
             },
             {
               "id": "value",
               "type": "Value",
               "name": "value",
+              "description": "The value (value) for the update.",
               "ref": "value",
               "badge": "deprecated",
               "deprecated": true
@@ -4165,12 +4456,14 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "val",
               "type": "TypedValue",
               "name": "val",
+              "description": "The explicitly typed update value.",
               "ref": "typed-value"
             },
             {
               "id": "duplicates",
               "type": "uint32",
               "name": "duplicates",
+              "description": "Number of coalesced duplicates.",
               "ref": null
             }
           ]
@@ -4190,6 +4483,7 @@ export const mapVariants: GnmiMapVariant[] = [
           "id": "path",
           "kind": "message",
           "label": "Path",
+          "description": "Path encodes a data tree path as a series of repeated strings, with\neach element of the path representing a data tree node name and the\nassociated attributes.\nReference: gNMI Specification Section 2.2.2.",
           "sourceSymbol": "gnmi.Path",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.9.1/proto/gnmi/gnmi.proto#L141",
@@ -4199,6 +4493,7 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "element",
               "type": "repeated string",
               "name": "element",
+              "description": "Elements of the path are no longer encoded as a string, but rather within\nthe elem field as a PathElem message.",
               "ref": null,
               "badge": "deprecated",
               "deprecated": true
@@ -4207,18 +4502,21 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "origin",
               "type": "string",
               "name": "origin",
+              "description": "Label to disambiguate path.",
               "ref": null
             },
             {
               "id": "elem",
               "type": "repeated PathElem",
               "name": "elem",
+              "description": "Elements of the path.",
               "ref": "path-elem"
             },
             {
               "id": "target",
               "type": "string",
               "name": "target",
+              "description": "The name of the target",
               "ref": null
             }
           ]
@@ -4238,6 +4536,7 @@ export const mapVariants: GnmiMapVariant[] = [
           "id": "path-elem",
           "kind": "message",
           "label": "PathElem",
+          "description": "PathElem encodes an element of a gNMI path, along with any attributes (keys)\nthat may be associated with it.\nReference: gNMI Specification Section 2.2.2.",
           "sourceSymbol": "gnmi.PathElem",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.9.1/proto/gnmi/gnmi.proto#L154",
@@ -4247,12 +4546,14 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "name",
               "type": "string",
               "name": "name",
+              "description": "The name of the element in the path.",
               "ref": null
             },
             {
               "id": "key",
               "type": "map<string,string>",
               "name": "key",
+              "description": "Map of key (attribute) name to value.",
               "ref": null
             }
           ]
@@ -4272,6 +4573,7 @@ export const mapVariants: GnmiMapVariant[] = [
           "id": "value",
           "kind": "message",
           "label": "Value",
+          "description": "Value encodes a data tree node's value - along with the way in which\nthe value is encoded. This message is deprecated by gNMI 0.3.0.\nReference: gNMI Specification Section 2.2.3.",
           "sourceSymbol": "gnmi.Value",
           "deprecated": true,
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.9.1/proto/gnmi/gnmi.proto#L162",
@@ -4284,12 +4586,14 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "value",
               "type": "bytes",
               "name": "value",
+              "description": "Value of the variable being transmitted.",
               "ref": null
             },
             {
               "id": "type",
               "type": "Encoding",
               "name": "type",
+              "description": "Encoding used for the value field.",
               "ref": "encoding"
             }
           ]
@@ -4309,6 +4613,7 @@ export const mapVariants: GnmiMapVariant[] = [
           "id": "typed-value",
           "kind": "message",
           "label": "TypedValue",
+          "description": "TypedValue is used to encode a value being sent between the client and\ntarget (originated by either entity).",
           "sourceSymbol": "gnmi.TypedValue",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.9.1/proto/gnmi/gnmi.proto#L108",
@@ -4317,6 +4622,7 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "string-val",
               "type": "string",
               "name": "string_val",
+              "description": "String value.",
               "ref": null,
               "group": "oneof value"
             },
@@ -4324,6 +4630,7 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "int-val",
               "type": "int64",
               "name": "int_val",
+              "description": "Integer value.",
               "ref": null,
               "group": "oneof value"
             },
@@ -4331,6 +4638,7 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "uint-val",
               "type": "uint64",
               "name": "uint_val",
+              "description": "Unsigned integer value.",
               "ref": null,
               "group": "oneof value"
             },
@@ -4338,6 +4646,7 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "bool-val",
               "type": "bool",
               "name": "bool_val",
+              "description": "Bool value.",
               "ref": null,
               "group": "oneof value"
             },
@@ -4345,6 +4654,7 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "bytes-val",
               "type": "bytes",
               "name": "bytes_val",
+              "description": "Arbitrary byte sequence value.",
               "ref": null,
               "group": "oneof value"
             },
@@ -4352,6 +4662,7 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "float-val",
               "type": "float",
               "name": "float_val",
+              "description": "Deprecated - use double_val.",
               "ref": null,
               "group": "oneof value",
               "badge": "deprecated",
@@ -4361,6 +4672,7 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "double-val",
               "type": "double",
               "name": "double_val",
+              "description": "Floating point value.",
               "ref": null,
               "group": "oneof value"
             },
@@ -4377,6 +4689,7 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "leaflist-val",
               "type": "ScalarArray",
               "name": "leaflist_val",
+              "description": "Mixed type scalar array value.",
               "ref": "scalar-array",
               "group": "oneof value"
             },
@@ -4384,6 +4697,7 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "any-val",
               "type": "google.protobuf.Any",
               "name": "any_val",
+              "description": "protobuf.Any encoded bytes.",
               "ref": "any",
               "group": "oneof value"
             },
@@ -4391,6 +4705,7 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "json-val",
               "type": "bytes",
               "name": "json_val",
+              "description": "JSON-encoded text.",
               "ref": null,
               "group": "oneof value"
             },
@@ -4398,6 +4713,7 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "json-ietf-val",
               "type": "bytes",
               "name": "json_ietf_val",
+              "description": "JSON-encoded text per RFC7951.",
               "ref": null,
               "group": "oneof value"
             },
@@ -4405,6 +4721,7 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "ascii-val",
               "type": "string",
               "name": "ascii_val",
+              "description": "Arbitrary ASCII text.",
               "ref": null,
               "group": "oneof value"
             },
@@ -4412,6 +4729,7 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "proto-bytes",
               "type": "bytes",
               "name": "proto_bytes",
+              "description": "Protobuf binary encoded bytes. The message type is not included.\nSee the specification at\ngithub.com/openconfig/reference/blob/master/rpc/gnmi/protobuf-vals.md\nfor a complete specification. [Experimental]",
               "ref": null,
               "group": "oneof value"
             }
@@ -4432,6 +4750,7 @@ export const mapVariants: GnmiMapVariant[] = [
           "id": "decimal64",
           "kind": "message",
           "label": "Decimal64",
+          "description": "Decimal64 is used to encode a fixed precision decimal number. The value\nis expressed as a set of digits with the precision specifying the\nnumber of digits following the decimal point in the digit set.\nThis message is deprecated in favor of encoding all floating point types\nas double precision.",
           "sourceSymbol": "gnmi.Decimal64",
           "deprecated": true,
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.9.1/proto/gnmi/gnmi.proto#L199",
@@ -4443,12 +4762,14 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "digits",
               "type": "int64",
               "name": "digits",
+              "description": "Set of digits.",
               "ref": null
             },
             {
               "id": "precision",
               "type": "uint32",
               "name": "precision",
+              "description": "Number of digits following the decimal point.",
               "ref": null
             }
           ]
@@ -4468,6 +4789,7 @@ export const mapVariants: GnmiMapVariant[] = [
           "id": "scalar-array",
           "kind": "message",
           "label": "ScalarArray",
+          "description": "ScalarArray is used to encode a mixed-type array of values.",
           "sourceSymbol": "gnmi.ScalarArray",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.9.1/proto/gnmi/gnmi.proto#L207",
@@ -4476,6 +4798,7 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "element",
               "type": "repeated TypedValue",
               "name": "element",
+              "description": "The set of elements within the array. Each TypedValue message should\nspecify only elements that have a field identifier of 1-7 (i.e., the\nvalues are scalar values).",
               "ref": "typed-value"
             }
           ]
@@ -4524,6 +4847,7 @@ export const mapVariants: GnmiMapVariant[] = [
           "id": "extension",
           "kind": "message",
           "label": "gnmi_ext.Extension",
+          "description": "The Extension message contains a single gNMI extension.",
           "sourceSymbol": "gnmi_ext.Extension",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.9.1/proto/gnmi_ext/gnmi_ext.proto#L27",
@@ -4533,6 +4857,7 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "registered-ext",
               "type": "RegisteredExtension",
               "name": "registered_ext",
+              "description": "A registered extension.",
               "ref": "registered-extension",
               "group": "oneof ext"
             },
@@ -4540,6 +4865,7 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "master-arbitration",
               "type": "MasterArbitration",
               "name": "master_arbitration",
+              "description": "Well known extensions.",
               "ref": "master-arbitration",
               "group": "oneof ext"
             },
@@ -4547,6 +4873,7 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "history",
               "type": "History",
               "name": "history",
+              "description": "History extension.",
               "ref": "history",
               "group": "oneof ext"
             }
@@ -4567,6 +4894,7 @@ export const mapVariants: GnmiMapVariant[] = [
           "id": "registered-extension",
           "kind": "message",
           "label": "gnmi_ext.RegisteredExtension",
+          "description": "The RegisteredExtension message defines an extension which is defined outside\nof this file.",
           "sourceSymbol": "gnmi_ext.RegisteredExtension",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.9.1/proto/gnmi_ext/gnmi_ext.proto#L38",
@@ -4575,12 +4903,14 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "id",
               "type": "ExtensionID",
               "name": "id",
+              "description": "The unique ID assigned to this extension.",
               "ref": "extension-id"
             },
             {
               "id": "msg",
               "type": "bytes",
               "name": "msg",
+              "description": "The binary-marshalled protobuf extension payload.",
               "ref": null
             }
           ]
@@ -4600,6 +4930,7 @@ export const mapVariants: GnmiMapVariant[] = [
           "id": "extension-id",
           "kind": "enum",
           "label": "enum gnmi_ext.ExtensionID",
+          "description": "RegisteredExtension is an enumeration acting as a registry for extensions\ndefined by external sources.",
           "sourceSymbol": "gnmi_ext.ExtensionID",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.9.1/proto/gnmi_ext/gnmi_ext.proto#L45",
@@ -4614,6 +4945,7 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "experimental",
               "type": "999",
               "name": "EID_EXPERIMENTAL",
+              "description": "An experimental extension that may be used during prototyping of a new\nextension.",
               "ref": null
             }
           ]
@@ -4633,6 +4965,7 @@ export const mapVariants: GnmiMapVariant[] = [
           "id": "master-arbitration",
           "kind": "message",
           "label": "gnmi_ext.MasterArbitration",
+          "description": "MasterArbitration is used to select the master among multiple gNMI clients\nwith the same Roles. The client with the largest election_id is honored as\nthe master.\nThe document about gNMI master arbitration can be found at\nhttps://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-master-arbitration.md",
           "sourceSymbol": "gnmi_ext.MasterArbitration",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.9.1/proto/gnmi_ext/gnmi_ext.proto#L60",
@@ -4666,6 +4999,7 @@ export const mapVariants: GnmiMapVariant[] = [
           "id": "uint128",
           "kind": "message",
           "label": "gnmi_ext.Uint128",
+          "description": "Representation of unsigned 128-bit integer.",
           "sourceSymbol": "gnmi_ext.Uint128",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.9.1/proto/gnmi_ext/gnmi_ext.proto#L66",
@@ -4699,6 +5033,7 @@ export const mapVariants: GnmiMapVariant[] = [
           "id": "role",
           "kind": "message",
           "label": "gnmi_ext.Role",
+          "description": "There can be one master for each role. The role is identified by its id.",
           "sourceSymbol": "gnmi_ext.Role",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.9.1/proto/gnmi_ext/gnmi_ext.proto#L72",
@@ -4726,6 +5061,7 @@ export const mapVariants: GnmiMapVariant[] = [
           "id": "history",
           "kind": "message",
           "label": "gnmi_ext.History",
+          "description": "The History extension allows clients to request historical data. Its\nspec can be found at\nhttps://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-history.md",
           "sourceSymbol": "gnmi_ext.History",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.9.1/proto/gnmi_ext/gnmi_ext.proto#L81",
@@ -4734,6 +5070,7 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "snapshot-time",
               "type": "int64",
               "name": "snapshot_time",
+              "description": "Nanoseconds since the epoch",
               "ref": null,
               "group": "oneof request"
             },
@@ -4769,12 +5106,14 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "start",
               "type": "int64",
               "name": "start",
+              "description": "Nanoseconds since the epoch",
               "ref": null
             },
             {
               "id": "end",
               "type": "int64",
               "name": "end",
+              "description": "Nanoseconds since the epoch",
               "ref": null
             }
           ]
@@ -5448,24 +5787,28 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "capabilities",
               "type": "rpc",
               "name": "Capabilities",
+              "description": "Capabilities allows the client to retrieve the set of capabilities that\nis supported by the target. This allows the target to validate the\nservice version that is implemented and retrieve the set of models that\nthe target supports. The models can then be specified in subsequent RPCs\nto restrict the set of data that is utilized.\nReference: gNMI Specification Section 3.2",
               "ref": "rpc-capabilities"
             },
             {
               "id": "get",
               "type": "rpc",
               "name": "Get",
+              "description": "Retrieve a snapshot of data from the target. A Get RPC requests that the\ntarget snapshots a subset of the data tree as specified by the paths\nincluded in the message and serializes this to be returned to the\nclient using the specified encoding.\nReference: gNMI Specification Section 3.3",
               "ref": "rpc-get"
             },
             {
               "id": "set",
               "type": "rpc",
               "name": "Set",
+              "description": "Set allows the client to modify the state of data on the target. The\npaths to modified along with the new values that the client wishes\nto set the value to.\nReference: gNMI Specification Section 3.4",
               "ref": "rpc-set"
             },
             {
               "id": "subscribe",
               "type": "rpc",
               "name": "Subscribe",
+              "description": "Subscribe allows a client to request the target to send it values\nof particular paths within the data tree. These values may be streamed\nat a particular cadence (STREAM), sent one off on a long-lived channel\n(POLL), or sent as a one-off retrieval (ONCE).\nReference: gNMI Specification Section 3.5",
               "ref": "rpc-subscribe",
               "badge": "stream"
             }
@@ -5486,6 +5829,7 @@ export const mapVariants: GnmiMapVariant[] = [
           "id": "rpc-set",
           "kind": "rpc",
           "label": "rpc Set",
+          "description": "Set allows the client to modify the state of data on the target. The\npaths to modified along with the new values that the client wishes\nto set the value to.\nReference: gNMI Specification Section 3.4",
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.8.0/proto/gnmi/gnmi.proto#L66",
           "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#34-modifying-state",
           "fields": [
@@ -5518,6 +5862,7 @@ export const mapVariants: GnmiMapVariant[] = [
           "id": "rpc-subscribe",
           "kind": "rpc",
           "label": "rpc Subscribe",
+          "description": "Subscribe allows a client to request the target to send it values\nof particular paths within the data tree. These values may be streamed\nat a particular cadence (STREAM), sent one off on a long-lived channel\n(POLL), or sent as a one-off retrieval (ONCE).\nReference: gNMI Specification Section 3.5",
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.8.0/proto/gnmi/gnmi.proto#L72",
           "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#35-subscribing-to-telemetry-updates",
           "fields": [
@@ -5550,6 +5895,7 @@ export const mapVariants: GnmiMapVariant[] = [
           "id": "rpc-get",
           "kind": "rpc",
           "label": "rpc Get",
+          "description": "Retrieve a snapshot of data from the target. A Get RPC requests that the\ntarget snapshots a subset of the data tree as specified by the paths\nincluded in the message and serializes this to be returned to the\nclient using the specified encoding.\nReference: gNMI Specification Section 3.3",
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.8.0/proto/gnmi/gnmi.proto#L61",
           "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#33-retrieving-snapshots-of-state-information",
           "fields": [
@@ -5582,6 +5928,7 @@ export const mapVariants: GnmiMapVariant[] = [
           "id": "rpc-capabilities",
           "kind": "rpc",
           "label": "rpc Capabilities",
+          "description": "Capabilities allows the client to retrieve the set of capabilities that\nis supported by the target. This allows the target to validate the\nservice version that is implemented and retrieve the set of models that\nthe target supports. The models can then be specified in subsequent RPCs\nto restrict the set of data that is utilized.\nReference: gNMI Specification Section 3.2",
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.8.0/proto/gnmi/gnmi.proto#L55",
           "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#32-capability-discovery",
           "fields": [
@@ -5614,6 +5961,7 @@ export const mapVariants: GnmiMapVariant[] = [
           "id": "set-request",
           "kind": "message",
           "label": "SetRequest",
+          "description": "SetRequest is sent from a client to the target to update values in the data\ntree. Paths are either deleted by the client, or modified by means of being\nupdated, or replaced. Where a replace is used, unspecified values are\nconsidered to be replaced, whereas when update is used the changes are\nconsidered to be incremental. The set of changes that are specified within\na single SetRequest are considered to be a transaction.\nReference: gNMI Specification Section 3.4.1",
           "sourceSymbol": "gnmi.SetRequest",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.8.0/proto/gnmi/gnmi.proto#L332",
@@ -5623,30 +5971,35 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "prefix",
               "type": "Path",
               "name": "prefix",
+              "description": "Prefix used for paths in the message.",
               "ref": "path"
             },
             {
               "id": "delete",
               "type": "repeated Path",
               "name": "delete",
+              "description": "Paths to be deleted from the data tree.",
               "ref": "path"
             },
             {
               "id": "replace",
               "type": "repeated Update",
               "name": "replace",
+              "description": "Updates specifying elements to be replaced.",
               "ref": "update"
             },
             {
               "id": "update",
               "type": "repeated Update",
               "name": "update",
+              "description": "Updates specifying elements to updated.",
               "ref": "update"
             },
             {
               "id": "extension",
               "type": "repeated gnmi_ext.Extension",
               "name": "extension",
+              "description": "Extension messages associated with the SetRequest. See the\ngNMI extension specification for further definition.",
               "ref": "extension",
               "badge": "optional"
             }
@@ -5667,6 +6020,7 @@ export const mapVariants: GnmiMapVariant[] = [
           "id": "set-response",
           "kind": "message",
           "label": "SetResponse",
+          "description": "SetResponse is the response to a SetRequest, sent from the target to the\nclient. It reports the result of the modifications to the data tree that were\nspecified by the client. Errors for this RPC should be reported using the\nhttps://github.com/googleapis/googleapis/blob/master/google/rpc/status.proto\nmessage in the RPC return. The gnmi.Error message can be used to add additional\ndetails where required.\nReference: gNMI Specification Section 3.4.2",
           "sourceSymbol": "gnmi.SetResponse",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.8.0/proto/gnmi/gnmi.proto#L349",
@@ -5676,18 +6030,21 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "prefix",
               "type": "Path",
               "name": "prefix",
+              "description": "Prefix used for paths.",
               "ref": "path"
             },
             {
               "id": "response",
               "type": "repeated UpdateResult",
               "name": "response",
+              "description": "A set of responses specifying the result of the operations specified in\nthe SetRequest.",
               "ref": "update-result"
             },
             {
               "id": "message",
               "type": "Error",
               "name": "message",
+              "description": "The overall status of the transaction.",
               "ref": "error",
               "badge": "deprecated",
               "deprecated": true
@@ -5696,12 +6053,14 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "timestamp",
               "type": "int64",
               "name": "timestamp",
+              "description": "Timestamp of transaction (ns since epoch).",
               "ref": null
             },
             {
               "id": "extension",
               "type": "repeated gnmi_ext.Extension",
               "name": "extension",
+              "description": "Extension messages associated with the SetResponse. See the\ngNMI extension specification for further definition.",
               "ref": "extension",
               "badge": "optional"
             }
@@ -5722,6 +6081,7 @@ export const mapVariants: GnmiMapVariant[] = [
           "id": "subscribe-request",
           "kind": "message",
           "label": "SubscribeRequest",
+          "description": "SubscribeRequest is the message sent by the client to the target when\ninitiating a subscription to a set of paths within the data tree. The\nrequest field must be populated and the initial message must specify a\nSubscriptionList to initiate a subscription.\nReference: gNMI Specification Section 3.5.1.1",
           "sourceSymbol": "gnmi.SubscribeRequest",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.8.0/proto/gnmi/gnmi.proto#L215",
@@ -5731,6 +6091,7 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "subscribe",
               "type": "SubscriptionList",
               "name": "subscribe",
+              "description": "Specify the paths within a subscription.",
               "ref": "subscription-list",
               "group": "oneof request"
             },
@@ -5738,6 +6099,7 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "poll",
               "type": "Poll",
               "name": "poll",
+              "description": "Trigger a polled update.",
               "ref": "poll",
               "group": "oneof request"
             },
@@ -5745,6 +6107,7 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "extension",
               "type": "repeated gnmi_ext.Extension",
               "name": "extension",
+              "description": "Extension messages associated with the SubscribeRequest. See the\ngNMI extension specification for further definition.",
               "ref": "extension",
               "badge": "optional"
             },
@@ -5772,6 +6135,7 @@ export const mapVariants: GnmiMapVariant[] = [
           "id": "subscribe-response",
           "kind": "message",
           "label": "SubscribeResponse",
+          "description": "SubscribeResponse is the message used by the target within a Subscribe RPC.\nThe target includes a Notification message which is used to transmit values\nof the path(s) that are associated with the subscription. The same message\nis to indicate that the target has sent all data values once (is\nsynchronized).\nReference: gNMI Specification Section 3.5.1.4",
           "sourceSymbol": "gnmi.SubscribeResponse",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.8.0/proto/gnmi/gnmi.proto#L241",
@@ -5781,6 +6145,7 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "update",
               "type": "Notification",
               "name": "update",
+              "description": "Changed or sampled value for a path.",
               "ref": "notification",
               "group": "oneof response"
             },
@@ -5788,6 +6153,7 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "sync-response",
               "type": "bool",
               "name": "sync_response",
+              "description": "Indicate target has sent all values associated with the subscription\nat least once.",
               "ref": null,
               "group": "oneof response"
             },
@@ -5795,6 +6161,7 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "error",
               "type": "Error",
               "name": "error",
+              "description": "Deprecated in favour of google.golang.org/genproto/googleapis/rpc/status",
               "ref": "error",
               "group": "oneof response",
               "badge": "deprecated",
@@ -5804,6 +6171,7 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "extension",
               "type": "repeated gnmi_ext.Extension",
               "name": "extension",
+              "description": "Extension messages associated with the SubscribeResponse. See the\ngNMI extension specification for further definition.",
               "ref": "extension",
               "badge": "optional"
             }
@@ -5824,6 +6192,7 @@ export const mapVariants: GnmiMapVariant[] = [
           "id": "get-request",
           "kind": "message",
           "label": "GetRequest",
+          "description": "GetRequest is sent when a client initiates a Get RPC. It is used to specify\nthe set of data elements for which the target should return a snapshot of\ndata. The use_models field specifies the set of schema modules that are to\nbe used by the target - where use_models is not specified then the target\nmust use all schema models that it has.\nReference: gNMI Specification Section 3.3.1",
           "sourceSymbol": "gnmi.GetRequest",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.8.0/proto/gnmi/gnmi.proto#L388",
@@ -5833,36 +6202,42 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "prefix",
               "type": "Path",
               "name": "prefix",
+              "description": "Prefix used for paths.",
               "ref": "path"
             },
             {
               "id": "path",
               "type": "repeated Path",
               "name": "path",
+              "description": "Paths requested by the client.",
               "ref": "path"
             },
             {
               "id": "type",
               "type": "DataType",
               "name": "type",
+              "description": "The type of data being requested.",
               "ref": "data-type"
             },
             {
               "id": "encoding",
               "type": "Encoding",
               "name": "encoding",
+              "description": "Encoding to be used.",
               "ref": "encoding"
             },
             {
               "id": "use-models",
               "type": "repeated ModelData",
               "name": "use_models",
+              "description": "The schema models to be used.",
               "ref": "model-data"
             },
             {
               "id": "extension",
               "type": "repeated gnmi_ext.Extension",
               "name": "extension",
+              "description": "Extension messages associated with the GetRequest. See the\ngNMI extension specification for further definition.",
               "ref": "extension",
               "badge": "optional"
             }
@@ -5883,6 +6258,7 @@ export const mapVariants: GnmiMapVariant[] = [
           "id": "get-response",
           "kind": "message",
           "label": "GetResponse",
+          "description": "GetResponse is used by the target to respond to a GetRequest from a client.\nThe set of Notifications corresponds to the data values that are requested\nby the client in the GetRequest.\nReference: gNMI Specification Section 3.3.2",
           "sourceSymbol": "gnmi.GetResponse",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.8.0/proto/gnmi/gnmi.proto#L413",
@@ -5892,12 +6268,14 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "notification",
               "type": "repeated Notification",
               "name": "notification",
+              "description": "Data values.",
               "ref": "notification"
             },
             {
               "id": "error",
               "type": "Error",
               "name": "error",
+              "description": "Errors that occurred in the Get.",
               "ref": "error",
               "badge": "deprecated",
               "deprecated": true
@@ -5906,6 +6284,7 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "extension",
               "type": "repeated gnmi_ext.Extension",
               "name": "extension",
+              "description": "Extension messages associated with the GetResponse. See the\ngNMI extension specification for further definition.",
               "ref": "extension",
               "badge": "optional"
             }
@@ -5926,6 +6305,7 @@ export const mapVariants: GnmiMapVariant[] = [
           "id": "capability-request",
           "kind": "message",
           "label": "CapabilityRequest",
+          "description": "CapabilityRequest is sent by the client in the Capabilities RPC to request\nthat the target reports its capabilities.\nReference: gNMI Specification Section 3.2.1",
           "sourceSymbol": "gnmi.CapabilityRequest",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.8.0/proto/gnmi/gnmi.proto#L424",
@@ -5935,6 +6315,7 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "extension",
               "type": "repeated gnmi_ext.Extension",
               "name": "extension",
+              "description": "Extension messages associated with the CapabilityRequest. See the\ngNMI extension specification for further definition.",
               "ref": "extension",
               "badge": "optional"
             }
@@ -5955,6 +6336,7 @@ export const mapVariants: GnmiMapVariant[] = [
           "id": "capability-response",
           "kind": "message",
           "label": "CapabilityResponse",
+          "description": "CapabilityResponse is used by the target to report its capabilities to the\nclient within the Capabilities RPC.\nReference: gNMI Specification Section 3.2.2",
           "sourceSymbol": "gnmi.CapabilityResponse",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.8.0/proto/gnmi/gnmi.proto#L433",
@@ -5964,24 +6346,28 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "supported-models",
               "type": "repeated ModelData",
               "name": "supported_models",
+              "description": "Supported schema models.",
               "ref": "model-data"
             },
             {
               "id": "supported-encodings",
               "type": "repeated Encoding",
               "name": "supported_encodings",
+              "description": "Supported encodings.",
               "ref": "encoding"
             },
             {
               "id": "g-nmi-version",
               "type": "string",
               "name": "gNMI_version",
+              "description": "Supported gNMI version.",
               "ref": null
             },
             {
               "id": "extension",
               "type": "repeated gnmi_ext.Extension",
               "name": "extension",
+              "description": "Extension messages associated with the CapabilityResponse. See the\ngNMI extension specification for further definition.",
               "ref": "extension",
               "badge": "optional"
             }
@@ -6002,6 +6388,7 @@ export const mapVariants: GnmiMapVariant[] = [
           "id": "error",
           "kind": "message",
           "label": "Error",
+          "description": "Error message previously utilised to return errors to the client. Deprecated\nin favour of using the google.golang.org/genproto/googleapis/rpc/status\nmessage in the RPC response.\nReference: gNMI Specification Section 2.5",
           "sourceSymbol": "gnmi.Error",
           "deprecated": true,
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.8.0/proto/gnmi/gnmi.proto#L184",
@@ -6014,18 +6401,21 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "code",
               "type": "uint32",
               "name": "code",
+              "description": "Canonical gRPC error code.",
               "ref": null
             },
             {
               "id": "message",
               "type": "string",
               "name": "message",
+              "description": "Human readable error.",
               "ref": null
             },
             {
               "id": "data",
               "type": "google.protobuf.Any",
               "name": "data",
+              "description": "Optional additional information.",
               "ref": "any"
             }
           ]
@@ -6045,6 +6435,7 @@ export const mapVariants: GnmiMapVariant[] = [
           "id": "update-result",
           "kind": "message",
           "label": "UpdateResult",
+          "description": "UpdateResult is used within the SetResponse message to communicate the\nresult of an operation specified within a SetRequest message.\nReference: gNMI Specification Section 3.4.2",
           "sourceSymbol": "gnmi.UpdateResult",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.8.0/proto/gnmi/gnmi.proto#L364",
@@ -6054,6 +6445,7 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "timestamp",
               "type": "int64",
               "name": "timestamp",
+              "description": "Deprecated timestamp for the UpdateResult, this field has been\nreplaced by the timestamp within the SetResponse message, since\nall mutations effected by a set should be applied as a single\ntransaction.",
               "ref": null,
               "badge": "deprecated",
               "deprecated": true
@@ -6062,12 +6454,14 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "path",
               "type": "Path",
               "name": "path",
+              "description": "Path associated with the update.",
               "ref": "path"
             },
             {
               "id": "message",
               "type": "Error",
               "name": "message",
+              "description": "Status of the update operation.",
               "ref": "error",
               "badge": "deprecated",
               "deprecated": true
@@ -6076,6 +6470,7 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "op",
               "type": "Operation",
               "name": "op",
+              "description": "Update operation type.",
               "ref": "operation"
             }
           ]
@@ -6095,6 +6490,7 @@ export const mapVariants: GnmiMapVariant[] = [
           "id": "operation",
           "kind": "enum",
           "label": "enum Operation",
+          "description": "The operation that was associated with the Path specified.",
           "sourceSymbol": "gnmi.UpdateResult.Operation",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.8.0/proto/gnmi/gnmi.proto#L366",
@@ -6109,18 +6505,21 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "delete",
               "type": "1",
               "name": "DELETE",
+              "description": "The result relates to a delete of Path.",
               "ref": null
             },
             {
               "id": "replace",
               "type": "2",
               "name": "REPLACE",
+              "description": "The result relates to a replace of Path.",
               "ref": null
             },
             {
               "id": "update",
               "type": "3",
               "name": "UPDATE",
+              "description": "The result relates to an update of Path.",
               "ref": null
             }
           ]
@@ -6140,6 +6539,7 @@ export const mapVariants: GnmiMapVariant[] = [
           "id": "poll",
           "kind": "message",
           "label": "Poll",
+          "description": "Poll is sent within a SubscribeRequest to trigger the device to\nsend telemetry updates for the paths that are associated with the\nsubscription.\nReference: gNMI Specification Section Section 3.5.1.4",
           "sourceSymbol": "gnmi.Poll",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.8.0/proto/gnmi/gnmi.proto#L232",
@@ -6161,6 +6561,7 @@ export const mapVariants: GnmiMapVariant[] = [
           "id": "subscription-list",
           "kind": "message",
           "label": "SubscriptionList",
+          "description": "SubscriptionList is used within a Subscribe message to specify the list of\npaths that the client wishes to subscribe to. The message consists of a\nlist of (possibly prefixed) paths, and options that relate to the\nsubscription.\nReference: gNMI Specification Section 3.5.1.2",
           "sourceSymbol": "gnmi.SubscriptionList",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.8.0/proto/gnmi/gnmi.proto#L260",
@@ -6170,18 +6571,21 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "prefix",
               "type": "Path",
               "name": "prefix",
+              "description": "Prefix used for paths.",
               "ref": "path"
             },
             {
               "id": "subscription",
               "type": "repeated Subscription",
               "name": "subscription",
+              "description": "Set of subscriptions to create.",
               "ref": "subscription"
             },
             {
               "id": "qos",
               "type": "QOSMarking",
               "name": "qos",
+              "description": "DSCP marking to be used.",
               "ref": "qos-marking"
             },
             {
@@ -6194,24 +6598,28 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "allow-aggregation",
               "type": "bool",
               "name": "allow_aggregation",
+              "description": "Whether elements of the schema that are marked as eligible for aggregation\nshould be aggregated or not.",
               "ref": null
             },
             {
               "id": "use-models",
               "type": "repeated ModelData",
               "name": "use_models",
+              "description": "The set of schemas that define the elements of the data tree that should\nbe sent by the target.",
               "ref": "model-data"
             },
             {
               "id": "encoding",
               "type": "Encoding",
               "name": "encoding",
+              "description": "The encoding that the target should use within the Notifications generated\ncorresponding to the SubscriptionList.",
               "ref": "encoding"
             },
             {
               "id": "updates-only",
               "type": "bool",
               "name": "updates_only",
+              "description": "An optional field to specify that only updates to current state should be\nsent to a client. If set, the initial state is not sent to the client but\nrather only the sync message followed by any subsequent updates to the\ncurrent state. For ONCE and POLL modes, this causes the server to send only\nthe sync message (Sec. 3.5.2.3).",
               "ref": null
             },
             {
@@ -6238,6 +6646,7 @@ export const mapVariants: GnmiMapVariant[] = [
           "id": "qos-marking",
           "kind": "message",
           "label": "QOSMarking",
+          "description": "QOSMarking specifies the DSCP value to be set on transmitted telemetry\nupdates from the target.\nReference: gNMI Specification Section 3.5.1.2",
           "sourceSymbol": "gnmi.QOSMarking",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.8.0/proto/gnmi/gnmi.proto#L321",
@@ -6266,6 +6675,7 @@ export const mapVariants: GnmiMapVariant[] = [
           "id": "mode",
           "kind": "enum",
           "label": "enum Mode",
+          "description": "Mode of the subscription.",
           "sourceSymbol": "gnmi.SubscriptionList.Mode",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.8.0/proto/gnmi/gnmi.proto#L265",
@@ -6275,18 +6685,21 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "stream",
               "type": "0",
               "name": "STREAM",
+              "description": "Values streamed by the target (Sec. 3.5.1.5.2).",
               "ref": null
             },
             {
               "id": "once",
               "type": "1",
               "name": "ONCE",
+              "description": "Values sent once-off by the target (Sec. 3.5.1.5.1).",
               "ref": null
             },
             {
               "id": "poll",
               "type": "2",
               "name": "POLL",
+              "description": "Values sent in response to a poll request (Sec. 3.5.1.5.3).",
               "ref": null
             }
           ]
@@ -6306,6 +6719,7 @@ export const mapVariants: GnmiMapVariant[] = [
           "id": "subscription",
           "kind": "message",
           "label": "Subscription",
+          "description": "Subscription is a single request within a SubscriptionList. The path\nspecified is interpreted (along with the prefix) as the elements of the data\ntree that the client is subscribing to. The mode determines how the target\nshould trigger updates to be sent.\nReference: gNMI Specification Section 3.5.1.3",
           "sourceSymbol": "gnmi.Subscription",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.8.0/proto/gnmi/gnmi.proto#L296",
@@ -6315,30 +6729,35 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "path",
               "type": "Path",
               "name": "path",
+              "description": "The data tree path.",
               "ref": "path"
             },
             {
               "id": "mode",
               "type": "SubscriptionMode",
               "name": "mode",
+              "description": "Subscription mode to be used.",
               "ref": "subscription-mode"
             },
             {
               "id": "sample-interval",
               "type": "uint64",
               "name": "sample_interval",
+              "description": "ns between samples in SAMPLE mode.",
               "ref": null
             },
             {
               "id": "suppress-redundant",
               "type": "bool",
               "name": "suppress_redundant",
+              "description": "Indicates whether values that have not changed should be sent in a SAMPLE\nsubscription.",
               "ref": null
             },
             {
               "id": "heartbeat-interval",
               "type": "uint64",
               "name": "heartbeat_interval",
+              "description": "Specifies the maximum allowable silent period in nanoseconds when\nsuppress_redundant is in use. The target should send a value at least once\nin the period specified.",
               "ref": null
             }
           ]
@@ -6358,6 +6777,7 @@ export const mapVariants: GnmiMapVariant[] = [
           "id": "subscription-mode",
           "kind": "enum",
           "label": "enum SubscriptionMode",
+          "description": "SubscriptionMode is the mode of the subscription, specifying how the\ntarget must return values in a subscription.\nReference: gNMI Specification Section 3.5.1.3",
           "sourceSymbol": "gnmi.SubscriptionMode",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.8.0/proto/gnmi/gnmi.proto#L312",
@@ -6367,18 +6787,21 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "target-defined",
               "type": "0",
               "name": "TARGET_DEFINED",
+              "description": "The target selects the relevant mode for each element.",
               "ref": null
             },
             {
               "id": "on-change",
               "type": "1",
               "name": "ON_CHANGE",
+              "description": "The target sends an update on element value change.",
               "ref": null
             },
             {
               "id": "sample",
               "type": "2",
               "name": "SAMPLE",
+              "description": "The target samples values according to the interval.",
               "ref": null
             }
           ]
@@ -6398,6 +6821,7 @@ export const mapVariants: GnmiMapVariant[] = [
           "id": "data-type",
           "kind": "enum",
           "label": "enum DataType",
+          "description": "Type of elements within the data tree.",
           "sourceSymbol": "gnmi.GetRequest.DataType",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.8.0/proto/gnmi/gnmi.proto#L392",
@@ -6407,24 +6831,28 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "all",
               "type": "0",
               "name": "ALL",
+              "description": "All data elements.",
               "ref": null
             },
             {
               "id": "config",
               "type": "1",
               "name": "CONFIG",
+              "description": "Config (rw) only elements.",
               "ref": null
             },
             {
               "id": "state",
               "type": "2",
               "name": "STATE",
+              "description": "State (ro) only elements.",
               "ref": null
             },
             {
               "id": "operational",
               "type": "3",
               "name": "OPERATIONAL",
+              "description": "Data elements marked in the schema as operational. This refers to data\nelements whose value relates to the state of processes or interactions\nrunning on the device.",
               "ref": null
             }
           ]
@@ -6444,6 +6872,7 @@ export const mapVariants: GnmiMapVariant[] = [
           "id": "model-data",
           "kind": "message",
           "label": "ModelData",
+          "description": "ModelData is used to describe a set of schema modules. It can be used in a\nCapabilityResponse where a target reports the set of modules that it\nsupports, and within the SubscribeRequest and GetRequest messages to specify\nthe set of models from which data tree elements should be reported.\nReference: gNMI Specification Section 3.2.3",
           "sourceSymbol": "gnmi.ModelData",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.8.0/proto/gnmi/gnmi.proto#L447",
@@ -6453,18 +6882,21 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "name",
               "type": "string",
               "name": "name",
+              "description": "Name of the model.",
               "ref": null
             },
             {
               "id": "organization",
               "type": "string",
               "name": "organization",
+              "description": "Organization publishing the model.",
               "ref": null
             },
             {
               "id": "version",
               "type": "string",
               "name": "version",
+              "description": "Semantic version of the model.",
               "ref": null
             }
           ]
@@ -6484,6 +6916,7 @@ export const mapVariants: GnmiMapVariant[] = [
           "id": "encoding",
           "kind": "enum",
           "label": "enum Encoding",
+          "description": "Encoding defines the value encoding formats that are supported by the gNMI\nprotocol. These encodings are used by both the client (when sending Set\nmessages to modify the state of the target) and the target when serializing\ndata to be returned to the client (in both Subscribe and Get RPCs).\nReference: gNMI Specification Section 2.3",
           "sourceSymbol": "gnmi.Encoding",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.8.0/proto/gnmi/gnmi.proto#L172",
@@ -6493,30 +6926,35 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "json",
               "type": "0",
               "name": "JSON",
+              "description": "JSON encoded text.",
               "ref": null
             },
             {
               "id": "bytes",
               "type": "1",
               "name": "BYTES",
+              "description": "Arbitrarily encoded bytes.",
               "ref": null
             },
             {
               "id": "proto",
               "type": "2",
               "name": "PROTO",
+              "description": "Encoded according to scalar values of TypedValue.",
               "ref": null
             },
             {
               "id": "ascii",
               "type": "3",
               "name": "ASCII",
+              "description": "ASCII text of an out-of-band agreed format.",
               "ref": null
             },
             {
               "id": "json-ietf",
               "type": "4",
               "name": "JSON_IETF",
+              "description": "JSON encoded text as per RFC7951.",
               "ref": null
             }
           ]
@@ -6536,6 +6974,7 @@ export const mapVariants: GnmiMapVariant[] = [
           "id": "notification",
           "kind": "message",
           "label": "Notification",
+          "description": "Notification is a re-usable message that is used to encode data from the\ntarget to the client. A Notification carries two types of changes to the data\ntree:\n- Deleted values (delete) - a set of paths that have been removed from the\ndata tree.\n- Updated values (update) - a set of path-value pairs indicating the path\nwhose value has changed in the data tree.\nReference: gNMI Specification Section 2.1",
           "sourceSymbol": "gnmi.Notification",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.8.0/proto/gnmi/gnmi.proto#L83",
@@ -6545,30 +6984,35 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "timestamp",
               "type": "int64",
               "name": "timestamp",
+              "description": "Timestamp in nanoseconds since Epoch.",
               "ref": null
             },
             {
               "id": "prefix",
               "type": "Path",
               "name": "prefix",
+              "description": "Prefix used for paths in the message.",
               "ref": "path"
             },
             {
               "id": "update",
               "type": "repeated Update",
               "name": "update",
+              "description": "Data elements that have changed values.",
               "ref": "update"
             },
             {
               "id": "delete",
               "type": "repeated Path",
               "name": "delete",
+              "description": "Data elements that have been deleted.",
               "ref": "path"
             },
             {
               "id": "atomic",
               "type": "bool",
               "name": "atomic",
+              "description": "This notification contains a set of paths that are always updated together\nreferenced by a globally unique prefix.",
               "ref": null
             },
             {
@@ -6595,6 +7039,7 @@ export const mapVariants: GnmiMapVariant[] = [
           "id": "update",
           "kind": "message",
           "label": "Update",
+          "description": "Update is a re-usable message that is used to store a particular Path,\nValue pair.\nReference: gNMI Specification Section 2.1",
           "sourceSymbol": "gnmi.Update",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.8.0/proto/gnmi/gnmi.proto#L99",
@@ -6604,12 +7049,14 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "path",
               "type": "Path",
               "name": "path",
+              "description": "The path (key) for the update.",
               "ref": "path"
             },
             {
               "id": "value",
               "type": "Value",
               "name": "value",
+              "description": "The value (value) for the update.",
               "ref": "value",
               "badge": "deprecated",
               "deprecated": true
@@ -6618,12 +7065,14 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "val",
               "type": "TypedValue",
               "name": "val",
+              "description": "The explicitly typed update value.",
               "ref": "typed-value"
             },
             {
               "id": "duplicates",
               "type": "uint32",
               "name": "duplicates",
+              "description": "Number of coalesced duplicates.",
               "ref": null
             }
           ]
@@ -6643,6 +7092,7 @@ export const mapVariants: GnmiMapVariant[] = [
           "id": "path",
           "kind": "message",
           "label": "Path",
+          "description": "Path encodes a data tree path as a series of repeated strings, with\neach element of the path representing a data tree node name and the\nassociated attributes.\nReference: gNMI Specification Section 2.2.2.",
           "sourceSymbol": "gnmi.Path",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.8.0/proto/gnmi/gnmi.proto#L140",
@@ -6652,6 +7102,7 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "element",
               "type": "repeated string",
               "name": "element",
+              "description": "Elements of the path are no longer encoded as a string, but rather within\nthe elem field as a PathElem message.",
               "ref": null,
               "badge": "deprecated",
               "deprecated": true
@@ -6660,18 +7111,21 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "origin",
               "type": "string",
               "name": "origin",
+              "description": "Label to disambiguate path.",
               "ref": null
             },
             {
               "id": "elem",
               "type": "repeated PathElem",
               "name": "elem",
+              "description": "Elements of the path.",
               "ref": "path-elem"
             },
             {
               "id": "target",
               "type": "string",
               "name": "target",
+              "description": "The name of the target",
               "ref": null
             }
           ]
@@ -6691,6 +7145,7 @@ export const mapVariants: GnmiMapVariant[] = [
           "id": "path-elem",
           "kind": "message",
           "label": "PathElem",
+          "description": "PathElem encodes an element of a gNMI path, along with any attributes (keys)\nthat may be associated with it.\nReference: gNMI Specification Section 2.2.2.",
           "sourceSymbol": "gnmi.PathElem",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.8.0/proto/gnmi/gnmi.proto#L153",
@@ -6700,12 +7155,14 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "name",
               "type": "string",
               "name": "name",
+              "description": "The name of the element in the path.",
               "ref": null
             },
             {
               "id": "key",
               "type": "map<string,string>",
               "name": "key",
+              "description": "Map of key (attribute) name to value.",
               "ref": null
             }
           ]
@@ -6725,6 +7182,7 @@ export const mapVariants: GnmiMapVariant[] = [
           "id": "value",
           "kind": "message",
           "label": "Value",
+          "description": "Value encodes a data tree node's value - along with the way in which\nthe value is encoded. This message is deprecated by gNMI 0.3.0.\nReference: gNMI Specification Section 2.2.3.",
           "sourceSymbol": "gnmi.Value",
           "deprecated": true,
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.8.0/proto/gnmi/gnmi.proto#L161",
@@ -6737,12 +7195,14 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "value",
               "type": "bytes",
               "name": "value",
+              "description": "Value of the variable being transmitted.",
               "ref": null
             },
             {
               "id": "type",
               "type": "Encoding",
               "name": "type",
+              "description": "Encoding used for the value field.",
               "ref": "encoding"
             }
           ]
@@ -6762,6 +7222,7 @@ export const mapVariants: GnmiMapVariant[] = [
           "id": "typed-value",
           "kind": "message",
           "label": "TypedValue",
+          "description": "TypedValue is used to encode a value being sent between the client and\ntarget (originated by either entity).",
           "sourceSymbol": "gnmi.TypedValue",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.8.0/proto/gnmi/gnmi.proto#L108",
@@ -6770,6 +7231,7 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "string-val",
               "type": "string",
               "name": "string_val",
+              "description": "String value.",
               "ref": null,
               "group": "oneof value"
             },
@@ -6777,6 +7239,7 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "int-val",
               "type": "int64",
               "name": "int_val",
+              "description": "Integer value.",
               "ref": null,
               "group": "oneof value"
             },
@@ -6784,6 +7247,7 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "uint-val",
               "type": "uint64",
               "name": "uint_val",
+              "description": "Unsigned integer value.",
               "ref": null,
               "group": "oneof value"
             },
@@ -6791,6 +7255,7 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "bool-val",
               "type": "bool",
               "name": "bool_val",
+              "description": "Bool value.",
               "ref": null,
               "group": "oneof value"
             },
@@ -6798,6 +7263,7 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "bytes-val",
               "type": "bytes",
               "name": "bytes_val",
+              "description": "Arbitrary byte sequence value.",
               "ref": null,
               "group": "oneof value"
             },
@@ -6805,6 +7271,7 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "float-val",
               "type": "float",
               "name": "float_val",
+              "description": "Deprecated - use double_val.",
               "ref": null,
               "group": "oneof value",
               "badge": "deprecated",
@@ -6814,6 +7281,7 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "double-val",
               "type": "double",
               "name": "double_val",
+              "description": "Floating point value.",
               "ref": null,
               "group": "oneof value"
             },
@@ -6821,6 +7289,7 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "decimal-val",
               "type": "Decimal64",
               "name": "decimal_val",
+              "description": "Deprecated - use double_val.",
               "ref": "decimal64",
               "group": "oneof value",
               "badge": "deprecated",
@@ -6830,6 +7299,7 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "leaflist-val",
               "type": "ScalarArray",
               "name": "leaflist_val",
+              "description": "Mixed type scalar array value.",
               "ref": "scalar-array",
               "group": "oneof value"
             },
@@ -6837,6 +7307,7 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "any-val",
               "type": "google.protobuf.Any",
               "name": "any_val",
+              "description": "protobuf.Any encoded bytes.",
               "ref": "any",
               "group": "oneof value"
             },
@@ -6844,6 +7315,7 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "json-val",
               "type": "bytes",
               "name": "json_val",
+              "description": "JSON-encoded text.",
               "ref": null,
               "group": "oneof value"
             },
@@ -6851,6 +7323,7 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "json-ietf-val",
               "type": "bytes",
               "name": "json_ietf_val",
+              "description": "JSON-encoded text per RFC7951.",
               "ref": null,
               "group": "oneof value"
             },
@@ -6858,6 +7331,7 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "ascii-val",
               "type": "string",
               "name": "ascii_val",
+              "description": "Arbitrary ASCII text.",
               "ref": null,
               "group": "oneof value"
             },
@@ -6865,6 +7339,7 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "proto-bytes",
               "type": "bytes",
               "name": "proto_bytes",
+              "description": "Protobuf binary encoded bytes. The message type is not included.\nSee the specification at\ngithub.com/openconfig/reference/blob/master/rpc/gnmi/protobuf-vals.md\nfor a complete specification. [Experimental]",
               "ref": null,
               "group": "oneof value"
             }
@@ -6885,6 +7360,7 @@ export const mapVariants: GnmiMapVariant[] = [
           "id": "decimal64",
           "kind": "message",
           "label": "Decimal64",
+          "description": "Decimal64 is used to encode a fixed precision decimal number. The value\nis expressed as a set of digits with the precision specifying the\nnumber of digits following the decimal point in the digit set.\nThis message is deprecated in favor of encoding all floating point types\nas double precision.",
           "sourceSymbol": "gnmi.Decimal64",
           "deprecated": true,
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.8.0/proto/gnmi/gnmi.proto#L196",
@@ -6896,12 +7372,14 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "digits",
               "type": "int64",
               "name": "digits",
+              "description": "Set of digits.",
               "ref": null
             },
             {
               "id": "precision",
               "type": "uint32",
               "name": "precision",
+              "description": "Number of digits following the decimal point.",
               "ref": null
             }
           ]
@@ -6921,6 +7399,7 @@ export const mapVariants: GnmiMapVariant[] = [
           "id": "scalar-array",
           "kind": "message",
           "label": "ScalarArray",
+          "description": "ScalarArray is used to encode a mixed-type array of values.",
           "sourceSymbol": "gnmi.ScalarArray",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.8.0/proto/gnmi/gnmi.proto#L203",
@@ -6929,6 +7408,7 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "element",
               "type": "repeated TypedValue",
               "name": "element",
+              "description": "The set of elements within the array. Each TypedValue message should\nspecify only elements that have a field identifier of 1-7 (i.e., the\nvalues are scalar values).",
               "ref": "typed-value"
             }
           ]
@@ -6977,6 +7457,7 @@ export const mapVariants: GnmiMapVariant[] = [
           "id": "extension",
           "kind": "message",
           "label": "gnmi_ext.Extension",
+          "description": "The Extension message contains a single gNMI extension.",
           "sourceSymbol": "gnmi_ext.Extension",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.8.0/proto/gnmi_ext/gnmi_ext.proto#L27",
@@ -6986,6 +7467,7 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "registered-ext",
               "type": "RegisteredExtension",
               "name": "registered_ext",
+              "description": "A registered extension.",
               "ref": "registered-extension",
               "group": "oneof ext"
             },
@@ -6993,6 +7475,7 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "master-arbitration",
               "type": "MasterArbitration",
               "name": "master_arbitration",
+              "description": "Well known extensions.",
               "ref": "master-arbitration",
               "group": "oneof ext"
             },
@@ -7000,6 +7483,7 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "history",
               "type": "History",
               "name": "history",
+              "description": "History extension.",
               "ref": "history",
               "group": "oneof ext"
             }
@@ -7020,6 +7504,7 @@ export const mapVariants: GnmiMapVariant[] = [
           "id": "registered-extension",
           "kind": "message",
           "label": "gnmi_ext.RegisteredExtension",
+          "description": "The RegisteredExtension message defines an extension which is defined outside\nof this file.",
           "sourceSymbol": "gnmi_ext.RegisteredExtension",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.8.0/proto/gnmi_ext/gnmi_ext.proto#L38",
@@ -7028,12 +7513,14 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "id",
               "type": "ExtensionID",
               "name": "id",
+              "description": "The unique ID assigned to this extension.",
               "ref": "extension-id"
             },
             {
               "id": "msg",
               "type": "bytes",
               "name": "msg",
+              "description": "The binary-marshalled protobuf extension payload.",
               "ref": null
             }
           ]
@@ -7053,6 +7540,7 @@ export const mapVariants: GnmiMapVariant[] = [
           "id": "extension-id",
           "kind": "enum",
           "label": "enum gnmi_ext.ExtensionID",
+          "description": "RegisteredExtension is an enumeration acting as a registry for extensions\ndefined by external sources.",
           "sourceSymbol": "gnmi_ext.ExtensionID",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.8.0/proto/gnmi_ext/gnmi_ext.proto#L45",
@@ -7067,6 +7555,7 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "experimental",
               "type": "999",
               "name": "EID_EXPERIMENTAL",
+              "description": "An experimental extension that may be used during prototyping of a new\nextension.",
               "ref": null
             }
           ]
@@ -7086,6 +7575,7 @@ export const mapVariants: GnmiMapVariant[] = [
           "id": "master-arbitration",
           "kind": "message",
           "label": "gnmi_ext.MasterArbitration",
+          "description": "MasterArbitration is used to select the master among multiple gNMI clients\nwith the same Roles. The client with the largest election_id is honored as\nthe master.\nThe document about gNMI master arbitration can be found at\nhttps://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-master-arbitration.md",
           "sourceSymbol": "gnmi_ext.MasterArbitration",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.8.0/proto/gnmi_ext/gnmi_ext.proto#L60",
@@ -7119,6 +7609,7 @@ export const mapVariants: GnmiMapVariant[] = [
           "id": "uint128",
           "kind": "message",
           "label": "gnmi_ext.Uint128",
+          "description": "Representation of unsigned 128-bit integer.",
           "sourceSymbol": "gnmi_ext.Uint128",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.8.0/proto/gnmi_ext/gnmi_ext.proto#L66",
@@ -7152,6 +7643,7 @@ export const mapVariants: GnmiMapVariant[] = [
           "id": "role",
           "kind": "message",
           "label": "gnmi_ext.Role",
+          "description": "There can be one master for each role. The role is identified by its id.",
           "sourceSymbol": "gnmi_ext.Role",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.8.0/proto/gnmi_ext/gnmi_ext.proto#L72",
@@ -7179,6 +7671,7 @@ export const mapVariants: GnmiMapVariant[] = [
           "id": "history",
           "kind": "message",
           "label": "gnmi_ext.History",
+          "description": "The History extension allows clients to request historical data. Its\nspec can be found at\nhttps://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-history.md",
           "sourceSymbol": "gnmi_ext.History",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.8.0/proto/gnmi_ext/gnmi_ext.proto#L81",
@@ -7187,6 +7680,7 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "snapshot-time",
               "type": "int64",
               "name": "snapshot_time",
+              "description": "Nanoseconds since the epoch",
               "ref": null,
               "group": "oneof request"
             },
@@ -7222,12 +7716,14 @@ export const mapVariants: GnmiMapVariant[] = [
               "id": "start",
               "type": "int64",
               "name": "start",
+              "description": "Nanoseconds since the epoch",
               "ref": null
             },
             {
               "id": "end",
               "type": "int64",
               "name": "end",
+              "description": "Nanoseconds since the epoch",
               "ref": null
             }
           ]

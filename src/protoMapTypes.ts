@@ -13,6 +13,7 @@ export type MapField = {
   id: string;
   type: string;
   name: string;
+  description?: string;
   ref?: string | null;
   group?: string;
   badge?: MapBadge;
@@ -23,6 +24,7 @@ export type MapNodeData = Record<string, unknown> & {
   id: string;
   kind: MapNodeKind;
   label: string;
+  description?: string;
   sourceSymbol?: string;
   deprecated?: boolean;
   protoUrl?: string;

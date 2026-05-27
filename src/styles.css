@@ -372,7 +372,7 @@ a {
 .map-stage {
   position: relative;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 330px;
+  grid-template-columns: minmax(0, 1fr) clamp(430px, 34vw, 640px);
   min-height: 0;
 }
 
@@ -710,7 +710,7 @@ a {
   width: auto;
   max-height: none;
   overflow: auto;
-  padding: 16px;
+  padding: 20px;
   border: 0;
   border-left: 1px solid var(--line);
   border-radius: 0;
@@ -752,32 +752,112 @@ a {
   outline: none;
 }
 
+.inspector-description {
+  margin-top: 12px;
+  color: var(--ink);
+  font-size: 14px;
+  line-height: 1.62;
+  overflow-wrap: anywhere;
+}
+
 .inspector-fields {
   display: grid;
-  gap: 6px;
-  margin-top: 14px;
+  gap: 10px;
+  margin-top: 16px;
 }
 
 .inspector-field {
   display: grid;
-  grid-template-columns: minmax(72px, 0.8fr) minmax(96px, 1fr);
-  gap: 8px;
-  padding: 7px 8px;
+  gap: 10px;
+  padding: 12px;
+  border: 1px solid color-mix(in srgb, var(--line) 45%, transparent);
   border-radius: 6px;
-  background: var(--panel-soft);
+  background: color-mix(in srgb, var(--panel-soft) 68%, var(--panel));
   font-size: 12px;
 }
 
-.inspector-field span {
-  overflow-wrap: anywhere;
-  color: var(--muted);
-  font-weight: 700;
+.inspector-field-main {
+  display: flex;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 8px;
 }
 
-.inspector-field strong {
+.inspector-field-main span {
+  display: inline-flex;
+  align-items: center;
+  max-width: 100%;
+  min-height: 20px;
+  padding: 2px 6px;
+  border: 1px solid color-mix(in srgb, var(--line) 52%, transparent);
+  border-radius: 5px;
+  background: color-mix(in srgb, var(--panel) 74%, transparent);
   overflow-wrap: anywhere;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.inspector-field-main strong {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  color: var(--ink);
   font-family:
     "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+  font-size: 12px;
+  line-height: 1.65;
+}
+
+.inspector-field-description {
+  margin: 0;
+  padding-left: 10px;
+  border-left: 2px solid color-mix(in srgb, var(--blue) 34%, transparent);
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.62;
+  overflow-wrap: anywhere;
+}
+
+.inspector-description p,
+.inspector-field-description p {
+  margin: 0;
+}
+
+.inspector-description p + p,
+.inspector-description pre + p,
+.inspector-description p + pre,
+.inspector-field-description p + p,
+.inspector-field-description pre + p,
+.inspector-field-description p + pre {
+  margin-top: 10px;
+}
+
+.inspector-description code,
+.inspector-field-description code {
+  padding: 1px 4px;
+  border-radius: 4px;
+  background: color-mix(in srgb, var(--blue) 10%, var(--panel));
+  color: var(--ink);
+  font-family:
+    "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+  font-size: 0.92em;
+}
+
+.inspector-description pre,
+.inspector-field-description pre {
+  margin: 0;
+  max-width: 100%;
+  overflow-x: auto;
+  padding: 8px;
+  border-radius: 5px;
+  background: color-mix(in srgb, var(--panel) 78%, transparent);
+  color: var(--ink);
+  font-family:
+    "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+  font-size: 11px;
+  line-height: 1.45;
+  white-space: pre;
 }
 
 @media (max-width: 760px) {

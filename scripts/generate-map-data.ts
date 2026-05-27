@@ -354,10 +354,12 @@ function fieldData(
   byShortName: ByShortName,
 ): MapField {
   const deprecated = Boolean(field.options?.deprecated);
+  const description = descriptionText(field.comment);
   const data: MapField = {
     id: kebab(field.name),
     type: displayType(field),
     name: field.name,
+    ...(description ? { description } : {}),
     ref: resolveFieldRef(field, currentSymbol, symbolToNodeId, byShortName),
   };
 
@@ -375,12 +377,16 @@ function fieldData(
 }
 
 function enumFields(enumDefinition: protobuf.Enum): MapField[] {
-  return Object.entries(enumDefinition.values).map(([name, value]) => ({
-    id: kebab(name.replace(/^EID_/, '')),
-    type: `${value}`,
-    name,
-    ref: null,
-  }));
+  return Object.entries(enumDefinition.values).map(([name, value]) => {
+    const description = descriptionText(enumDefinition.comments?.[name]);
+    return {
+      id: kebab(name.replace(/^EID_/, '')),
+      type: `${value}`,
+      name,
+      ...(description ? { description } : {}),
+      ref: null,
+    };
+  });
 }
 
 function protoUrl(source: SourceKind, line: number | undefined, gnmiTag: string): string | undefined {
@@ -391,6 +397,11 @@ function protoUrl(source: SourceKind, line: number | undefined, gnmiTag: string)
   const file =
     source === 'gnmi_ext' ? 'proto/gnmi_ext/gnmi_ext.proto' : 'proto/gnmi/gnmi.proto';
   return `${GNMI_GITHUB_BASE}/${gnmiTag}/${file}#L${line}`;
+}
+
+function descriptionText(comment: string | null | undefined): string | undefined {
+  const description = comment?.trim();
+  return description || undefined;
 }
 
 function buildSymbolMaps(
@@ -421,6 +432,7 @@ function serviceNode(
   gnmiTag: string,
 ): MapNode {
   const methods = service.methodsArray;
+  const description = descriptionText(service.comment);
   return {
     ...node,
     style: { ...node.style },
@@ -428,15 +440,20 @@ function serviceNode(
       id: node.id,
       kind: node.data.kind,
       label: `service gNMI ${serviceVersion}`,
+      ...(description ? { description } : {}),
       protoUrl: protoUrl('gnmi', serviceLine, gnmiTag),
       specUrl: specUrlFromLayout(node),
-      fields: methods.map((method) => ({
-        id: kebab(method.name),
-        type: 'rpc',
-        name: method.name,
-        ref: `rpc-${kebab(method.name)}`,
-        ...(method.requestStream || method.responseStream ? { badge: 'stream' as const } : {}),
-      })),
+      fields: methods.map((method) => {
+        const methodDescription = descriptionText(method.comment);
+        return {
+          id: kebab(method.name),
+          type: 'rpc',
+          name: method.name,
+          ...(methodDescription ? { description: methodDescription } : {}),
+          ref: `rpc-${kebab(method.name)}`,
+          ...(method.requestStream || method.responseStream ? { badge: 'stream' as const } : {}),
+        };
+      }),
     },
   };
 }
@@ -457,6 +474,7 @@ function rpcNode(
   if (!method) {
     return null;
   }
+  const description = descriptionText(method.comment);
 
   return {
     ...node,
@@ -465,6 +483,7 @@ function rpcNode(
       id: node.id,
       kind: node.data.kind,
       label: `rpc ${method.name}`,
+      ...(description ? { description } : {}),
       protoUrl: protoUrl('gnmi', rpcLines.get(method.name), gnmiTag),
       specUrl: specUrlFromLayout(node),
       fields: [
@@ -508,6 +527,7 @@ function schemaNode(
   const badges = deprecated
     ? [...new Set<MapBadge>([...(node.data.badges ?? []), 'deprecated'])]
     : node.data.badges?.filter((badge) => badge !== 'deprecated');
+  const description = descriptionText(definition.comment);
 
   return {
     ...node,
@@ -516,6 +536,7 @@ function schemaNode(
       id: node.id,
       kind: node.data.kind,
       label: node.data.label,
+      ...(description ? { description } : {}),
       sourceSymbol: symbol,
       deprecated,
       protoUrl: protoUrl(source, linesBySource[source].get(symbol), gnmiTag),
@@ -610,6 +631,7 @@ export type MapField = {
   id: string;
   type: string;
   name: string;
+  description?: string;
   ref?: string | null;
   group?: string;
   badge?: MapBadge;
@@ -620,6 +642,7 @@ export type MapNodeData = Record<string, unknown> & {
   id: string;
   kind: MapNodeKind;
   label: string;
+  description?: string;
   sourceSymbol?: string;
   deprecated?: boolean;
   protoUrl?: string;
@@ -678,8 +701,8 @@ async function generateGnmiVariant(gnmiTag: string): Promise<GnmiMapVariant> {
   const [gnmiProto, extProto] = await Promise.all([fetchText(gnmiRawUrl), fetchText(extRawUrl)]);
 
   const root = new protobuf.Root();
-  protobuf.parse(extProto, root, { keepCase: true });
-  protobuf.parse(gnmiProto, root, { keepCase: true });
+  protobuf.parse(extProto, root, { keepCase: true, alternateCommentMode: true });
+  protobuf.parse(gnmiProto, root, { keepCase: true, alternateCommentMode: true });
 
   const definitions = collectDefinitions(root);
   const byShortName = groupByShortName(definitions);

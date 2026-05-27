@@ -457,12 +457,16 @@ function reservedFields(type: protobuf.Type): MapField[] {
 }
 
 function enumFields(enumDefinition: protobuf.Enum): MapField[] {
-  return Object.entries(enumDefinition.values).map(([name, value]) => ({
-    id: kebab(name),
-    type: `${value}`,
-    name,
-    ref: null,
-  }));
+  return Object.entries(enumDefinition.values).map(([name, value]) => {
+    const description = descriptionText(enumDefinition.comments?.[name]);
+    return {
+      id: kebab(name),
+      type: `${value}`,
+      name,
+      ...(description ? { description } : {}),
+      ref: null,
+    };
+  });
 }
 
 function nodeIdForSymbol(symbol: string): string {
@@ -504,6 +508,11 @@ function protoUrl(baseUrl: string, source?: SourceLocation): string | undefined 
   return source ? `${baseUrl}/${source.path}#L${source.line}` : undefined;
 }
 
+function descriptionText(comment: string | null | undefined): string | undefined {
+  const description = comment?.trim();
+  return description || undefined;
+}
+
 function serviceVersionFromText(protoText: string): string | undefined {
   const match = protoText.match(
     /option\s+\((?:[A-Za-z0-9_.]+\.)?(?:gnoi_version|gnmi_service)\)\s*=\s*"([^"]+)"/,
@@ -531,10 +540,12 @@ function fieldData(
   ensureExternalNode: (typeName: string) => string,
 ): MapField {
   const deprecated = Boolean(field.options?.deprecated);
+  const description = descriptionText(field.comment);
   const data: MapField = {
     id: kebab(field.name),
     type: displayType(field),
     name: field.name,
+    ...(description ? { description } : {}),
     ref: fieldRef(field, currentSymbol, symbolToNodeId, byShortName, ensureExternalNode),
   };
 
@@ -571,6 +582,7 @@ function schemaNode(
       : enumFields(definition);
   const deprecated = Boolean(definition.options?.deprecated);
   const badges = deprecated ? ['deprecated' as const] : undefined;
+  const description = descriptionText(definition.comment);
 
   return {
     id: nodeIdForSymbol(symbol),
@@ -586,6 +598,7 @@ function schemaNode(
       id: nodeIdForSymbol(symbol),
       kind,
       label: kind === 'enum' ? `enum ${symbol}` : symbol,
+      ...(description ? { description } : {}),
       sourceSymbol: symbol,
       deprecated,
       protoUrl: protoUrl(githubBaseUrl, definitionSource.get(symbol)),
@@ -663,7 +676,7 @@ async function generateFamilyVariant(
   const root = new protobuf.Root();
 
   for (const file of files) {
-    protobuf.parse(file.text, root, { keepCase: true });
+    protobuf.parse(file.text, root, { keepCase: true, alternateCommentMode: true });
   }
 
   const definitions = collectDefinitions(root);
@@ -688,6 +701,7 @@ async function generateFamilyVariant(
   };
   const serviceNodes: MapNode[] = services.map((service, index) => {
     const symbol = service.fullName.replace(/^\./, '');
+    const description = descriptionText(service.comment);
     const version =
       config.versionSource === 'repository-tag'
         ? tag
@@ -707,55 +721,64 @@ async function generateFamilyVariant(
         id: serviceNodeId(symbol),
         kind: 'service',
         label: `service ${service.name}${version ? ` ${version}` : ''}`,
+        ...(description ? { description } : {}),
         sourceSymbol: symbol,
         protoUrl: protoUrl(githubBaseUrl, definitionSource.get(symbol)),
-        fields: service.methodsArray.map((method) => ({
-          id: kebab(method.name),
-          type: 'rpc',
-          name: method.name,
-          ref: rpcNodeId(symbol, method.name),
-          ...(method.requestStream || method.responseStream ? { badge: 'stream' as const } : {}),
-        })),
+        fields: service.methodsArray.map((method) => {
+          const methodDescription = descriptionText(method.comment);
+          return {
+            id: kebab(method.name),
+            type: 'rpc',
+            name: method.name,
+            ...(methodDescription ? { description: methodDescription } : {}),
+            ref: rpcNodeId(symbol, method.name),
+            ...(method.requestStream || method.responseStream ? { badge: 'stream' as const } : {}),
+          };
+        }),
       },
     };
   });
   const rpcNodes = services.flatMap((service, serviceIndex) => {
     const serviceSymbol = service.fullName.replace(/^\./, '');
-    return service.methodsArray.map((method, methodIndex) => ({
-      id: rpcNodeId(serviceSymbol, method.name),
-      type: 'schema' as const,
-      position: {
-        x: 500,
-        y: 60 + serviceIndex * 260 + methodIndex * 105,
-      },
-      style: {
-        width: 280,
-      },
-      data: {
+    return service.methodsArray.map((method, methodIndex) => {
+      const description = descriptionText(method.comment);
+      return {
         id: rpcNodeId(serviceSymbol, method.name),
-        kind: 'rpc' as const,
-        label: `rpc ${method.name}`,
-        protoUrl: protoUrl(githubBaseUrl, methodSource.get(`${serviceSymbol}.${method.name}`)),
-        fields: [
-          {
-            id: 'takes',
-            type: method.requestStream ? 'takes stream' : 'takes',
-            name: method.requestType,
-            ref:
-              resolveSymbol(method.requestType, serviceSymbol, symbolToNodeId, byShortName) ??
-              ensureExternalNode(method.requestType),
-          },
-          {
-            id: 'returns',
-            type: method.responseStream ? 'returns stream' : 'returns',
-            name: method.responseType,
-            ref:
-              resolveSymbol(method.responseType, serviceSymbol, symbolToNodeId, byShortName) ??
-              ensureExternalNode(method.responseType),
-          },
-        ],
-      },
-    }));
+        type: 'schema' as const,
+        position: {
+          x: 500,
+          y: 60 + serviceIndex * 260 + methodIndex * 105,
+        },
+        style: {
+          width: 280,
+        },
+        data: {
+          id: rpcNodeId(serviceSymbol, method.name),
+          kind: 'rpc' as const,
+          label: `rpc ${method.name}`,
+          ...(description ? { description } : {}),
+          protoUrl: protoUrl(githubBaseUrl, methodSource.get(`${serviceSymbol}.${method.name}`)),
+          fields: [
+            {
+              id: 'takes',
+              type: method.requestStream ? 'takes stream' : 'takes',
+              name: method.requestType,
+              ref:
+                resolveSymbol(method.requestType, serviceSymbol, symbolToNodeId, byShortName) ??
+                ensureExternalNode(method.requestType),
+            },
+            {
+              id: 'returns',
+              type: method.responseStream ? 'returns stream' : 'returns',
+              name: method.responseType,
+              ref:
+                resolveSymbol(method.responseType, serviceSymbol, symbolToNodeId, byShortName) ??
+                ensureExternalNode(method.responseType),
+            },
+          ],
+        },
+      };
+    });
   });
   const definitionNodes = [...definitions.entries()]
     .sort(([first], [second]) => first.localeCompare(second))

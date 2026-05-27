@@ -1,4 +1,12 @@
-import { type CSSProperties, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import {
+  type CSSProperties,
+  type ReactNode,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import {
   BaseEdge,
   type NodeChange,
@@ -1934,6 +1942,119 @@ function fieldClickHandlerFromData(data: MapNode['data']): FieldClickHandler | u
     : undefined;
 }
 
+type DescriptionBlock = {
+  text: string;
+  preformatted: boolean;
+};
+
+function descriptionBlocks(description: string): DescriptionBlock[] {
+  const blocks: DescriptionBlock[] = [];
+  let lines: string[] = [];
+
+  const flush = () => {
+    const trimmedLines = lines.map((line) => line.trimEnd()).filter((line) => line.trim());
+    lines = [];
+    if (!trimmedLines.length) {
+      return;
+    }
+
+    const preformatted = isPreformattedDescription(trimmedLines);
+    if (preformatted) {
+      blocks.push({ preformatted: true, text: trimmedLines.join('\n') });
+      return;
+    }
+
+    for (const text of readableParagraphs(
+      trimmedLines
+        .map((line) => line.trim())
+        .join(' ')
+        .replace(/\s+/g, ' '),
+    )) {
+      blocks.push({ preformatted: false, text });
+    }
+  };
+
+  for (const line of description.replace(/\r\n/g, '\n').split('\n')) {
+    if (line.trim()) {
+      lines.push(line);
+    } else {
+      flush();
+    }
+  }
+  flush();
+
+  return blocks;
+}
+
+function isPreformattedDescription(lines: string[]): boolean {
+  return lines.some((line) =>
+    /(?:<-{2,}|-{2,}>|={3,}|\|)|^\s*(?:Client|Target)\s|^\s*(?:[-*]|\d+[.)])\s/.test(line),
+  );
+}
+
+function readableParagraphs(text: string): string[] {
+  if (text.length < 220) {
+    return [text];
+  }
+
+  const sentences = text.match(/[^.!?]+(?:[.!?]+(?:\)|\])?)?/g)?.map((sentence) => sentence.trim()) ?? [
+    text,
+  ];
+  const paragraphs: string[] = [];
+  let current = '';
+
+  for (const sentence of sentences) {
+    if (!sentence) {
+      continue;
+    }
+    if (!current) {
+      current = sentence;
+      continue;
+    }
+    if (current.length + sentence.length > 260) {
+      paragraphs.push(current);
+      current = sentence;
+    } else {
+      current = `${current} ${sentence}`;
+    }
+  }
+
+  if (current) {
+    paragraphs.push(current);
+  }
+  return paragraphs.length ? paragraphs : [text];
+}
+
+function inlineDescriptionText(text: string): ReactNode {
+  const parts = text.split(/(`[^`]+`)/g);
+  return parts.map((part, index) =>
+    part.startsWith('`') && part.endsWith('`') ? (
+      <code key={index}>{part.slice(1, -1)}</code>
+    ) : (
+      part
+    ),
+  );
+}
+
+function DescriptionText({ text, className }: { text: string; className: string }) {
+  const blocks = descriptionBlocks(text);
+  if (!blocks.length) {
+    return null;
+  }
+
+  return (
+    <div className={className}>
+      {blocks.map((block, index) =>
+        block.preformatted ? (
+          <pre key={index}>{block.text}</pre>
+        ) : (
+          <p key={index}>{inlineDescriptionText(block.text)}</p>
+        ),
+      )}
+    </div>
+  );
+}
+
 type InspectorProps = {
   node?: MapNode;
   serviceLabel: string;
@@ -2000,12 +2121,24 @@ function Inspector({ node, serviceLabel, serviceChoice, totalNodes, totalEdges }
         ) : null}
       </Stack>
 
+      {node.data.description ? (
+        <DescriptionText className="inspector-description" text={node.data.description} />
+      ) : null}
+
       {node.data.fields?.length ? (
         <div className="inspector-fields">
           {node.data.fields.map((field) => (
             <div key={field.id} className="inspector-field">
-              <span>{field.type}</span>
-              <strong>{field.name}</strong>
+              <div className="inspector-field-main">
+                <span>{field.type}</span>
+                <strong>{field.name}</strong>
+              </div>
+              {field.description ? (
+                <DescriptionText
+                  className="inspector-field-description"
+                  text={field.description}
+                />
+              ) : null}
             </div>
           ))}
         </div>
