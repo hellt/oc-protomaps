@@ -178,12 +178,8 @@ function computeElkLayoutPositions(
 }
 
 function serviceSubtitle(serviceMap: ServiceMapDefinition): string {
-  if (serviceMap.serviceVersion) {
-    return `${serviceMap.label} service ${serviceMap.serviceVersion}`;
-  }
-  return serviceMap.sourceTag
-    ? `${serviceMap.label} ${serviceMap.sourceTag}`
-    : `${serviceMap.label} service family`;
+  const serviceLabels = new Set(serviceMap.serviceChoices.map((choice) => choice.label));
+  return `${serviceMap.label} ${serviceLabels.size > 1 ? 'service family' : 'service'}`;
 }
 
 type ServiceChoiceGroup = {
