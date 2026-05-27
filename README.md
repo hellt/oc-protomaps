@@ -1,6 +1,6 @@
 # OpenConfig Proto Maps
 
-**Open the app:** https://oc-protomaps.dodin-roman.workers.dev/
+**Open the app:** https://protomap.netdevops.me/
 
 Interactive maps for OpenConfig gNxI protobuf services.
 
