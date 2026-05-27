@@ -330,6 +330,25 @@ function GnmiMap() {
     return directMatches;
   }, [query]);
 
+  const selectedNeighborhood = useMemo(() => {
+    if (!selectedNodeId) {
+      return null;
+    }
+
+    const nodeIds = new Set([selectedNodeId]);
+    const edgeIds = new Set<string>();
+
+    gnmiEdges.forEach((edge) => {
+      if (edge.source === selectedNodeId || edge.target === selectedNodeId) {
+        nodeIds.add(edge.source);
+        nodeIds.add(edge.target);
+        edgeIds.add(edge.id);
+      }
+    });
+
+    return { nodeIds, edgeIds };
+  }, [selectedNodeId]);
+
   const nodes = useMemo(
     () =>
       flowNodes.map((node) => ({
@@ -339,29 +358,36 @@ function GnmiMap() {
           visibleHandles: visibleHandleMap.get(node.id),
         },
         hidden: !visibleIds.has(node.id),
+        className:
+          selectedNeighborhood && !selectedNeighborhood.nodeIds.has(node.id)
+            ? 'is-dimmed'
+            : undefined,
         selected: selectedNodeId === node.id,
       })),
-    [flowNodes, selectedNodeId, visibleHandleMap, visibleIds],
+    [flowNodes, selectedNeighborhood, selectedNodeId, visibleHandleMap, visibleIds],
   );
 
   const edges = useMemo(
     () =>
       gnmiEdges.map((edge) => {
-        const isConnected = selectedNodeId
-          ? edge.source === selectedNodeId || edge.target === selectedNodeId
-          : false;
+        const isConnected = Boolean(selectedNeighborhood?.edgeIds.has(edge.id));
+        const isDimmed = Boolean(selectedNeighborhood && !selectedNeighborhood.edgeIds.has(edge.id));
 
         return {
           ...edge,
           ...edgeDefaults,
           type: useSmartRouting ? edge.type : 'smoothstep',
           hidden: !visibleIds.has(edge.source) || !visibleIds.has(edge.target),
-          className: [edge.className, isConnected ? 'edge-connected' : undefined]
+          className: [
+            edge.className,
+            isConnected ? 'edge-connected' : undefined,
+            isDimmed ? 'edge-dimmed' : undefined,
+          ]
             .filter(Boolean)
             .join(' '),
         };
       }),
-    [selectedNodeId, useSmartRouting, visibleIds],
+    [selectedNeighborhood, useSmartRouting, visibleIds],
   );
 
   const onNodesChange = (changes: NodeChange<GnmiFlowNode>[]) => {

@@ -75,6 +75,10 @@ a {
   stroke-width: 4;
 }
 
+.react-flow__edge.edge-dimmed {
+  opacity: 0.12;
+}
+
 .react-flow__edge-textbg {
   fill: #f8fafc;
 }
@@ -99,6 +103,18 @@ a {
   box-shadow:
     0 0 0 4px rgb(249 115 22 / 18%),
     0 16px 40px rgb(15 23 42 / 18%);
+}
+
+.react-flow__node.is-dimmed {
+  opacity: 0.2;
+}
+
+.react-flow__node {
+  transition: opacity 120ms ease;
+}
+
+.react-flow__edge {
+  transition: opacity 120ms ease;
 }
 
 .gnmi-node--service {
