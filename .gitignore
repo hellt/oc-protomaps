@@ -1,5 +1,6 @@
 node_modules
 dist
 .pnpm-store
+package-lock.json
 .DS_Store
 *.local

@@ -1,730 +1,2174 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import dagre from '@dagrejs/dagre';
-import { SmartStepEdge } from '@jalez/react-flow-smart-edge';
-import { parse, stringify } from 'yaml';
+import {
+  type CSSProperties,
+  type ReactNode,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
+import {
+  BaseEdge,
+  type NodeChange,
+  Background,
+  Controls,
+  type Edge,
+  type EdgeProps,
+  type EdgeTypes,
+  Handle,
+  MarkerType,
+  type NodeProps,
+  type NodeTypes,
+  Position,
+  ReactFlow,
+  ReactFlowProvider,
+  useReactFlow,
+} from '@xyflow/react';
+import '@xyflow/react/dist/style.css';
 import {
   Box,
   Button,
+  Chip,
   CssBaseline,
-  FormControlLabel,
-  Link,
+  Divider,
+  IconButton,
+  InputAdornment,
+  ListItemIcon,
+  ListItemText,
+  Menu,
+  MenuItem,
   Paper,
-  Switch,
+  Stack,
+  Tab,
+  Tabs,
   TextField,
   ThemeProvider,
+  Tooltip,
   Typography,
-  createTheme,
 } from '@mui/material';
+import CheckIcon from '@mui/icons-material/Check';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import CodeOutlinedIcon from '@mui/icons-material/CodeOutlined';
+import DarkModeOutlinedIcon from '@mui/icons-material/DarkModeOutlined';
+import DataObjectOutlinedIcon from '@mui/icons-material/DataObjectOutlined';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import FilterListIcon from '@mui/icons-material/FilterList';
+import FitScreenOutlinedIcon from '@mui/icons-material/FitScreenOutlined';
+import HubOutlinedIcon from '@mui/icons-material/HubOutlined';
+import MenuBookOutlinedIcon from '@mui/icons-material/MenuBookOutlined';
+import OpenInNewIcon from '@mui/icons-material/OpenInNew';
+import PictureAsPdfOutlinedIcon from '@mui/icons-material/PictureAsPdfOutlined';
+import RestartAltIcon from '@mui/icons-material/RestartAlt';
+import SearchIcon from '@mui/icons-material/Search';
+import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
+import VisibilityOffOutlinedIcon from '@mui/icons-material/VisibilityOffOutlined';
+import WbSunnyOutlinedIcon from '@mui/icons-material/WbSunnyOutlined';
 import {
-  applyNodeChanges,
-  Background,
-  BackgroundVariant,
-  Controls,
-  MarkerType,
-  Panel,
-  ReactFlow,
-  ReactFlowProvider,
-  useNodesInitialized,
-  useReactFlow,
-  type Edge,
-  type EdgeMouseHandler,
-  type Node,
-  type NodeChange,
-  type NodeMouseHandler,
-  type OnNodeDrag,
-} from '@xyflow/react';
-import { GnmiNode } from './components/GnmiNode';
+  type MapEdge,
+  type MapEdgeKind,
+  type MapField,
+  type MapNode,
+} from './protoMapTypes';
 import {
-  gnmiEdges,
-  gnmiNodes,
-  HEADER_SOURCE_HANDLE,
-  HEADER_TARGET_HANDLE,
-  sourceLinks,
-  type GnmiNode as GnmiFlowNode,
-  type GnmiNodeData,
-} from './data/gnmi070';
+  applyManualPositions,
+  computeReadableNodeLayout,
+  improveNodeLayout,
+  routeReadableLayout,
+  type RoutePoint,
+  type TargetHandleLayout,
+} from './mapLayout';
+import {
+  getInitialServiceRoute,
+  serviceChoiceForRoute,
+  serviceMapOrder,
+  serviceMaps,
+  serviceRoutePath,
+  type ServiceId,
+  type ServiceMapChoice,
+  type ServiceMapDefinition,
+} from './serviceMaps';
+import { downloadMapPdf, downloadMapSvg, type MapExportInput } from './mapExport';
+import { createAppTheme, type ThemeMode } from './theme';
 
-const nodeTypes = {
-  gnmi: GnmiNode,
-};
-
-const edgeTypes = {
-  smart: SmartStepEdge,
-};
-
-const edgeDefaults = {
-  markerEnd: {
-    type: MarkerType.ArrowClosed,
-    width: 16,
-    height: 16,
+const edgeStyleByKind: Record<MapEdgeKind, CSSProperties> = {
+  rpc: { stroke: 'var(--edge-rpc)', strokeWidth: 2.2 },
+  field: { stroke: 'var(--edge-field)', strokeWidth: 1.6 },
+  extension: {
+    stroke: 'var(--edge-extension)',
+    strokeWidth: 1.4,
+    strokeDasharray: '7 6',
   },
+  'extension-detail': { stroke: 'var(--edge-extension-detail)', strokeWidth: 1.5 },
 };
 
-function getEdgeColor(className: string | undefined, isSelected: boolean, isConnected: boolean) {
-  if (isSelected) {
-    return 'var(--ctp-mauve)';
-  }
-
-  if (isConnected) {
-    return 'var(--ctp-peach)';
-  }
-
-  if (className?.includes('edge-service')) {
-    return 'var(--ctp-teal)';
-  }
-
-  if (className?.includes('edge-rpc')) {
-    return 'var(--ctp-blue)';
-  }
-
-  if (className?.includes('edge-oneof')) {
-    return 'var(--ctp-mauve)';
-  }
-
-  if (className?.includes('edge-deprecated')) {
-    return 'var(--ctp-red)';
-  }
-
-  return 'var(--ctp-overlay0)';
-}
-
-const POSITIONS_FILE_URL = '/services/gnmi/0.7.0/pos.yaml';
-const AUTO_LAYOUT_CONFIG = {
-  rankdir: 'LR',
-  nodesep: 120,
-  ranksep: 260,
-  marginx: 120,
-  marginy: 120,
+const nodeTypes: NodeTypes = {
+  schema: SchemaNode,
 };
 
-type ThemeMode = 'light' | 'dark';
+const edgeTypes: EdgeTypes = {
+  routed: RoutedEdge,
+};
 
-const catppuccin = {
-  light: {
-    base: '#eff1f5',
-    mantle: '#e6e9ef',
-    crust: '#dce0e8',
-    surface0: '#ccd0da',
-    surface1: '#bcc0cc',
-    surface2: '#acb0be',
-    overlay0: '#9ca0b0',
-    overlay1: '#8c8fa1',
-    text: '#4c4f69',
-    subtext1: '#5c5f77',
-    blue: '#1e66f5',
-    lavender: '#7287fd',
-    teal: '#179299',
-    green: '#40a02b',
-    mauve: '#8839ef',
-    peach: '#fe640b',
-    red: '#d20f39',
-  },
-  dark: {
-    base: '#1e1e2e',
-    mantle: '#181825',
-    crust: '#11111b',
-    surface0: '#313244',
-    surface1: '#45475a',
-    surface2: '#585b70',
-    overlay0: '#6c7086',
-    overlay1: '#7f849c',
-    text: '#cdd6f4',
-    subtext1: '#bac2de',
-    blue: '#89b4fa',
-    lavender: '#b4befe',
-    teal: '#94e2d5',
-    green: '#a6e3a1',
-    mauve: '#cba6f7',
-    peach: '#fab387',
-    red: '#f38ba8',
-  },
-} as const;
+const themeStorageKey = 'gnmi-map-theme';
+const routeBasePath = import.meta.env.BASE_URL;
 
 type NodePosition = {
   x: number;
   y: number;
 };
 
-type PositionsFile = {
-  nodes?: Record<string, NodePosition>;
-  positions?: Record<string, NodePosition>;
+const cachedElkLayoutPositions = new Map<string, Record<string, NodePosition>>();
+const cachedElkLayoutPromises = new Map<string, Promise<Record<string, NodePosition>>>();
+
+type RoutedEdgeData = Record<string, unknown> & {
+  routePoints: RoutePoint[];
+  routeBridges: RouteBridge[];
 };
 
-type VisibleHandles = NonNullable<GnmiNodeData['visibleHandles']>;
+type RoutedMapEdge = Edge<RoutedEdgeData, 'routed'> & {
+  sourceHandle: string;
+  targetHandle: string;
+  kind: MapEdgeKind;
+  deprecated: boolean;
+};
 
-function getSystemTheme(): ThemeMode {
-  if (typeof window === 'undefined') {
-    return 'light';
+type FieldConnectionIds = Record<string, string>;
+type FieldClickHandler = (edgeId: string) => void;
+
+type RouteBridge = RoutePoint & {
+  orientation: 'horizontal' | 'vertical';
+};
+
+type RouteSegment = {
+  edgeId: string;
+  index: number;
+  start: RoutePoint;
+  end: RoutePoint;
+  orientation: 'horizontal' | 'vertical';
+  fixed: number;
+  from: number;
+  to: number;
+};
+
+function isThemeMode(value: string | null): value is ThemeMode {
+  return value === 'light' || value === 'dark';
+}
+
+function getInitialTheme(): ThemeMode {
+  const savedTheme = window.localStorage.getItem(themeStorageKey);
+  if (isThemeMode(savedTheme)) {
+    return savedTheme;
   }
 
   return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
 }
 
-function createCatppuccinTheme(mode: ThemeMode) {
-  const palette = catppuccin[mode];
-
-  return createTheme({
-    palette: {
-      mode,
-      primary: {
-        main: palette.teal,
-      },
-      secondary: {
-        main: palette.blue,
-      },
-      error: {
-        main: palette.red,
-      },
-      warning: {
-        main: palette.peach,
-      },
-      success: {
-        main: palette.green,
-      },
-      text: {
-        primary: palette.text,
-        secondary: palette.subtext1,
-      },
-      background: {
-        default: palette.base,
-        paper: palette.mantle,
-      },
-      divider: palette.surface0,
-    },
-    shape: {
-      borderRadius: 4,
-    },
-    typography: {
-      fontFamily:
-        'Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
-      h1: {
-        fontWeight: 800,
-        letterSpacing: '-0.04em',
-      },
-      button: {
-        fontWeight: 800,
-        textTransform: 'none',
-      },
-    },
-    components: {
-      MuiButton: {
-        styleOverrides: {
-          root: {
-            boxShadow: 'none',
-          },
-        },
-      },
-    },
-  });
+function nodePositions(nodes: MapNode[]): Record<string, NodePosition> {
+  return Object.fromEntries(nodes.map((node) => [node.id, node.position]));
 }
 
-function matchesQuery(node: Node<GnmiNodeData>, query: string) {
-  const haystack = [
-    node.data.title,
-    node.data.subtitle,
-    node.data.kind,
-    node.data.packageName,
-    node.data.codePath,
-    ...(node.data.fields?.map((field) => field.signature) ?? []),
-    ...(node.data.values ?? []),
-  ]
-    .filter(Boolean)
-    .join(' ')
-    .toLowerCase();
+function computeElkLayoutPositions(
+  cacheKey: string,
+  visibleMap: { nodes: MapNode[]; edges: MapEdge[] },
+  compact: boolean,
+  force = false,
+): Promise<Record<string, NodePosition>> {
+  if (force) {
+    cachedElkLayoutPositions.delete(cacheKey);
+    cachedElkLayoutPromises.delete(cacheKey);
+  }
 
-  return haystack.includes(query);
+  const cachedPositions = cachedElkLayoutPositions.get(cacheKey);
+  if (cachedPositions) {
+    return Promise.resolve(cachedPositions);
+  }
+
+  const cachedPromise = cachedElkLayoutPromises.get(cacheKey);
+  if (cachedPromise) {
+    return cachedPromise;
+  }
+
+  const layoutPromise = computeReadableNodeLayout(visibleMap.nodes, visibleMap.edges, {
+    compact,
+  }).then(
+    (layoutNodes) => {
+      const positions = nodePositions(layoutNodes);
+      cachedElkLayoutPositions.set(cacheKey, positions);
+      cachedElkLayoutPromises.delete(cacheKey);
+      return positions;
+    },
+    (error: unknown) => {
+      cachedElkLayoutPromises.delete(cacheKey);
+      throw error;
+    },
+  );
+  cachedElkLayoutPromises.set(cacheKey, layoutPromise);
+
+  return layoutPromise;
 }
 
-function isPosition(value: unknown): value is NodePosition {
+function serviceSubtitle(serviceMap: ServiceMapDefinition): string {
+  const serviceLabels = new Set(serviceMap.serviceChoices.map((choice) => choice.label));
+  return `${serviceMap.label} ${serviceLabels.size > 1 ? 'service family' : 'service'}`;
+}
+
+type ServiceChoiceGroup = {
+  key: string;
+  label: string;
+  displayLabel: string;
+  choices: ServiceMapChoice[];
+};
+
+type RpcFilterChoice = {
+  id: string;
+  label: string;
+};
+
+const allRpcFilterId = '__all-rpcs__';
+
+function displayServiceChoiceLabel(label: string): string {
+  if (/^g[A-Z0-9]+$/.test(label) || /^[A-Z0-9]+$/.test(label)) {
+    return label;
+  }
+
+  return label
+    .replace(/([A-Z]+)([A-Z][a-z])/g, '$1 $2')
+    .replace(/([a-z0-9])([A-Z])/g, '$1 $2');
+}
+
+function versionParts(version: string | undefined): number[] | null {
+  if (!version) {
+    return null;
+  }
+
+  const match = version.match(/^v?(\d+)(?:\.(\d+))?(?:\.(\d+))?/);
+  if (!match) {
+    return null;
+  }
+
+  return [Number(match[1]), Number(match[2] ?? 0), Number(match[3] ?? 0)];
+}
+
+function compareVersionsDescending(
+  first: string | undefined,
+  second: string | undefined,
+): number {
+  if (!first && !second) {
+    return 0;
+  }
+  if (!first) {
+    return 1;
+  }
+  if (!second) {
+    return -1;
+  }
+
+  const firstParts = versionParts(first);
+  const secondParts = versionParts(second);
+  if (!firstParts || !secondParts) {
+    return second.localeCompare(first, undefined, { numeric: true, sensitivity: 'base' });
+  }
+
   return (
-    typeof value === 'object' &&
-    value !== null &&
-    typeof (value as NodePosition).x === 'number' &&
-    typeof (value as NodePosition).y === 'number'
+    secondParts[0] - firstParts[0] ||
+    secondParts[1] - firstParts[1] ||
+    secondParts[2] - firstParts[2]
   );
 }
 
-function getPositions(payload: unknown): Record<string, NodePosition> {
-  if (typeof payload !== 'object' || payload === null) {
-    return {};
+function groupedServiceChoices(serviceChoices: ServiceMapChoice[]): ServiceChoiceGroup[] {
+  const groups = new Map<string, ServiceChoiceGroup>();
+
+  for (const choice of serviceChoices) {
+    const key = choice.version ? choice.label : `${choice.label}:${choice.symbol}:${choice.id}`;
+    const group = groups.get(key);
+
+    if (group) {
+      group.choices.push(choice);
+      continue;
+    }
+
+    groups.set(key, {
+      key,
+      label: choice.label,
+      displayLabel: displayServiceChoiceLabel(choice.label),
+      choices: [choice],
+    });
   }
 
-  const maybeFile = payload as PositionsFile;
-  const candidate = maybeFile.nodes ?? maybeFile.positions ?? payload;
-
-  if (typeof candidate !== 'object' || candidate === null) {
-    return {};
-  }
-
-  return Object.fromEntries(
-    Object.entries(candidate).filter((entry): entry is [string, NodePosition] => isPosition(entry[1])),
-  );
-}
-
-function getPositionsYaml(nodes: GnmiFlowNode[]) {
-  const positions = Object.fromEntries(
-    nodes.map((node) => [
-      node.id,
-      {
-        x: Math.round(node.position.x),
-        y: Math.round(node.position.y),
-      },
-    ]),
-  );
-
-  return stringify({ nodes: positions });
-}
-
-function applyPositions(nodes: GnmiFlowNode[], positions: Record<string, NodePosition>) {
-  return nodes.map((node) => ({
-    ...node,
-    position: positions[node.id] ?? node.position,
+  return [...groups.values()].map((group) => ({
+    ...group,
+    choices: [...group.choices].sort((first, second) =>
+      compareVersionsDescending(first.version, second.version),
+    ),
   }));
 }
 
-function createVisibleHandleMap() {
-  const handlesByNode = new Map<string, Required<VisibleHandles>>();
+function rpcFilterChoicesForService(
+  visibleMap: { nodes: MapNode[] },
+  serviceNodeId: string,
+): RpcFilterChoice[] {
+  const serviceNode = visibleMap.nodes.find((node) => node.id === serviceNodeId);
 
-  const getHandles = (nodeId: string) => {
-    const existing = handlesByNode.get(nodeId);
-
-    if (existing) {
-      return existing;
-    }
-
-    const handles = {
-      headerSource: false,
-      headerTarget: false,
-      fieldSources: [],
-      fieldTargets: [],
-    };
-
-    handlesByNode.set(nodeId, handles);
-    return handles;
-  };
-
-  gnmiEdges.forEach((edge) => {
-    const sourceHandles = getHandles(edge.source);
-    const targetHandles = getHandles(edge.target);
-
-    if (edge.sourceHandle === HEADER_SOURCE_HANDLE) {
-      sourceHandles.headerSource = true;
-    } else if (edge.sourceHandle) {
-      sourceHandles.fieldSources.push(edge.sourceHandle);
-    }
-
-    if (edge.targetHandle === HEADER_TARGET_HANDLE) {
-      targetHandles.headerTarget = true;
-    } else if (edge.targetHandle) {
-      targetHandles.fieldTargets.push(edge.targetHandle);
-    }
-  });
-
-  return handlesByNode;
+  return (serviceNode?.data.fields ?? [])
+    .filter((field) => field.type === 'rpc' && field.ref)
+    .map((field) => ({
+      id: field.ref as string,
+      label: field.name,
+    }));
 }
 
-function estimatedNodeSize(node: Node<GnmiNodeData>) {
-  const rowCount = Math.max(node.data.fields?.length ?? 0, node.data.values?.length ?? 0);
-  const baseHeight = 112;
-  const rowHeight = 36;
-  const noteHeight = node.data.note ? 44 : 0;
+function searchableText(node: MapNode): string {
+  const fieldText = node.data.fields
+    ?.map((field) => `${field.type} ${field.name} ${field.group ?? ''} ${field.badge ?? ''}`)
+    .join(' ');
 
-  return {
-    width: node.data.kind === 'service' ? 300 : node.data.kind === 'enum' || node.data.kind === 'oneof' ? 240 : 260,
-    height: baseHeight + rowCount * rowHeight + noteHeight,
-  };
+  return `${node.data.kind} ${node.data.label} ${fieldText ?? ''}`.toLowerCase();
 }
 
-type GnmiMapProps = {
+function fieldMatches(field: MapField, query: string): boolean {
+  if (!query) {
+    return false;
+  }
+
+  return `${field.type} ${field.name} ${field.group ?? ''} ${field.badge ?? ''}`
+    .toLowerCase()
+    .includes(query);
+}
+
+type AppShellProps = {
   themeMode: ThemeMode;
-  onThemeToggle: () => void;
+  onToggleTheme: () => void;
 };
 
-function GnmiMap({ themeMode, onThemeToggle }: GnmiMapProps) {
-  const [query, setQuery] = useState('');
-  const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null);
-  const [selectedEdgeId, setSelectedEdgeId] = useState<string | null>(null);
-  const [useSmartRouting, setUseSmartRouting] = useState(false);
-  const [flowNodes, setFlowNodes] = useState<GnmiFlowNode[]>(gnmiNodes);
-  const [positionsStatus, setPositionsStatus] = useState<'checking' | 'loaded' | 'missing' | 'invalid'>(
-    'checking',
+function AppShell({ themeMode, onToggleTheme }: AppShellProps) {
+  const { fitView } = useReactFlow<MapNode, RoutedMapEdge>();
+  const initialServiceRoute = useMemo(() => getInitialServiceRoute(routeBasePath), []);
+  const [activeServiceId, setActiveServiceId] = useState<ServiceId>(
+    () => initialServiceRoute.serviceId,
   );
-  const [copyStatus, setCopyStatus] = useState<'idle' | 'copied' | 'failed'>('idle');
-  const nodesInitialized = useNodesInitialized();
-  const { fitView, getNodes } = useReactFlow();
-  const hasAutoLayoutRun = useRef(false);
-  const visibleHandleMap = useMemo(() => createVisibleHandleMap(), []);
-
-  const runAutoLayout = useCallback(() => {
-    const measuredNodes = getNodes() as GnmiFlowNode[];
-    const nodesForLayout = measuredNodes.length > 0 ? measuredNodes : flowNodes;
-    const graph = new dagre.graphlib.Graph({ multigraph: true });
-
-    graph.setGraph(AUTO_LAYOUT_CONFIG);
-    graph.setDefaultEdgeLabel(() => ({}));
-
-    nodesForLayout.forEach((node) => {
-      const estimate = estimatedNodeSize(node);
-
-      graph.setNode(node.id, {
-        width: node.measured?.width ?? node.width ?? estimate.width,
-        height: node.measured?.height ?? node.height ?? estimate.height,
-      });
-    });
-
-    gnmiEdges.forEach((edge) => {
-      graph.setEdge(edge.source, edge.target, {}, edge.id);
-    });
-
-    dagre.layout(graph);
-
-    setFlowNodes((currentNodes) =>
-      currentNodes.map((node) => {
-        const layoutNode = graph.node(node.id);
-        const measuredNode = nodesForLayout.find((candidate) => candidate.id === node.id);
-        const estimate = estimatedNodeSize(node);
-        const width = measuredNode?.measured?.width ?? measuredNode?.width ?? estimate.width;
-        const height = measuredNode?.measured?.height ?? measuredNode?.height ?? estimate.height;
-
-        if (!layoutNode) {
-          return node;
+  const [serviceChoiceIds, setServiceChoiceIds] = useState<Record<ServiceId, string>>(() => ({
+    gnmi: serviceMaps.gnmi.defaultServiceChoiceId,
+    gnoi: serviceMaps.gnoi.defaultServiceChoiceId,
+    gnsi: serviceMaps.gnsi.defaultServiceChoiceId,
+    gribi: serviceMaps.gribi.defaultServiceChoiceId,
+    [initialServiceRoute.serviceId]: initialServiceRoute.serviceChoiceId,
+  }));
+  const [layoutResetCount, setLayoutResetCount] = useState(0);
+  const [layoutPending, setLayoutPending] = useState(false);
+  const [pdfExportPending, setPdfExportPending] = useState(false);
+  const [elkLayoutPositions, setElkLayoutPositions] =
+    useState<Record<string, NodePosition> | null>(null);
+  const [queryValue, setQueryValue] = useState('');
+  const [showExtensions, setShowExtensions] = useState(false);
+  const [showDeprecated, setShowDeprecated] = useState(false);
+  const [rpcFilterIds, setRpcFilterIds] = useState<Record<string, string>>(() =>
+    initialServiceRoute.rpcFilterId
+      ? {
+          [`${initialServiceRoute.serviceId}:${initialServiceRoute.serviceChoiceId}`]:
+            initialServiceRoute.rpcFilterId,
         }
+      : {},
+  );
+  const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [selectedEdgeId, setSelectedEdgeId] = useState<string | null>(null);
+  const [manualPositions, setManualPositions] = useState<Record<string, NodePosition>>({});
+  const [routingPositions, setRoutingPositions] = useState<Record<string, NodePosition>>({});
+  const appliedLayoutResetCount = useRef(0);
 
-        return {
-          ...node,
-          position: {
-            x: Math.round(layoutNode.x - width / 2),
-            y: Math.round(layoutNode.y - height / 2),
-          },
-        };
+  const activeService = serviceMaps[activeServiceId];
+  const activeServiceChoice =
+    serviceChoiceForRoute(activeService, serviceChoiceIds[activeServiceId]) ??
+    activeService.serviceChoices[0];
+  const activeServiceChoiceId = activeServiceChoice.id;
+  const activeServiceFocusNodeId = activeServiceChoice.focusNodeId ?? activeServiceChoice.id;
+  const activeSourceTag = activeServiceChoice.sourceTag ?? null;
+  const serviceScopedMap = useMemo(
+    () =>
+      activeService.getVisibleMap({
+        showDeprecated: true,
+        showExtensions: true,
+        focusNodeId: activeServiceFocusNodeId,
+        sourceTag: activeSourceTag,
       }),
-    );
-
-    window.requestAnimationFrame(() => fitView({ duration: 300, padding: 0.12 }));
-  }, [fitView, flowNodes, getNodes]);
+    [activeService, activeServiceFocusNodeId, activeSourceTag],
+  );
+  const rpcFilterChoices = useMemo(
+    () => rpcFilterChoicesForService(serviceScopedMap, activeServiceFocusNodeId),
+    [activeServiceFocusNodeId, serviceScopedMap],
+  );
+  const rpcFilterKey = `${activeServiceId}:${activeServiceChoiceId}`;
+  const selectedRpcFilterId = rpcFilterIds[rpcFilterKey] ?? allRpcFilterId;
+  const activeRpcFilterChoice =
+    selectedRpcFilterId === allRpcFilterId
+      ? null
+      : rpcFilterChoices.find((choice) => choice.id === selectedRpcFilterId) ?? null;
+  const activeRpcFocusNodeId = activeRpcFilterChoice?.id ?? null;
+  const defaultServiceChoice = serviceChoiceForRoute(
+    activeService,
+    activeService.defaultServiceChoiceId,
+  );
+  const defaultFocusNodeId = defaultServiceChoice.focusNodeId ?? defaultServiceChoice.id;
+  const compactLayout =
+    Boolean(activeRpcFocusNodeId) ||
+    activeServiceChoiceId !== activeService.defaultServiceChoiceId ||
+    activeServiceFocusNodeId !== defaultFocusNodeId;
+  const layoutCacheKey = `${activeServiceId}:${activeServiceChoiceId}:${activeRpcFocusNodeId ?? 'all-rpcs'}:${compactLayout ? 'compact' : 'regular'}`;
+  const query = queryValue.trim().toLowerCase();
+  const darkMode = themeMode === 'dark';
+  const visibleMap = useMemo(
+    () =>
+      activeService.getVisibleMap({
+        showDeprecated,
+        showExtensions,
+        focusNodeId: activeServiceFocusNodeId,
+        rpcFocusNodeId: activeRpcFocusNodeId,
+        sourceTag: activeSourceTag,
+      }),
+    [
+      activeRpcFocusNodeId,
+      activeService,
+      activeServiceFocusNodeId,
+      activeSourceTag,
+      showDeprecated,
+      showExtensions,
+    ],
+  );
+  const layoutSourceMap = useMemo(
+    () =>
+      activeService.getVisibleMap({
+        showDeprecated: true,
+        showExtensions: true,
+        focusNodeId: activeServiceFocusNodeId,
+        rpcFocusNodeId: activeRpcFocusNodeId,
+        sourceTag: activeSourceTag,
+      }),
+    [activeRpcFocusNodeId, activeService, activeServiceFocusNodeId, activeSourceTag],
+  );
+  const fallbackLayoutNodes = useMemo(() => improveNodeLayout(visibleMap.nodes), [visibleMap.nodes]);
 
   useEffect(() => {
-    let isMounted = true;
+    setSelectedId(null);
+    setSelectedEdgeId(null);
+    setManualPositions({});
+    setRoutingPositions({});
+    setQueryValue('');
+    setElkLayoutPositions(cachedElkLayoutPositions.get(layoutCacheKey) ?? null);
+  }, [layoutCacheKey]);
 
-    fetch(POSITIONS_FILE_URL, { cache: 'no-store' })
-      .then(async (response) => {
-        if (!response.ok) {
-          return null;
+  useEffect(() => {
+    const nextUrl = `${serviceRoutePath(
+      {
+        serviceId: activeServiceId,
+        serviceChoiceId: activeServiceChoiceId,
+        rpcFilterId: activeRpcFocusNodeId,
+      },
+      routeBasePath,
+    )}${window.location.search}`;
+    const currentUrl = `${window.location.pathname}${window.location.search}${window.location.hash}`;
+    if (currentUrl !== nextUrl) {
+      window.history.replaceState(null, '', nextUrl);
+    }
+  }, [activeRpcFocusNodeId, activeServiceChoiceId, activeServiceId]);
+
+  useEffect(() => {
+    let cancelled = false;
+    setLayoutPending(true);
+    const forceLayout = layoutResetCount > appliedLayoutResetCount.current;
+    if (forceLayout) {
+      appliedLayoutResetCount.current = layoutResetCount;
+    }
+
+    computeElkLayoutPositions(layoutCacheKey, layoutSourceMap, compactLayout, forceLayout)
+      .then((layoutPositions) => {
+        if (!cancelled) {
+          setElkLayoutPositions(layoutPositions);
         }
-
-        return response.text();
       })
-      .then((payload: string | null) => {
-        if (!isMounted) {
-          return;
-        }
-
-        if (!payload) {
-          setUseSmartRouting(true);
-          setPositionsStatus('missing');
-          return;
-        }
-
-        const positions = getPositions(parse(payload));
-
-        if (Object.keys(positions).length === 0) {
-          setUseSmartRouting(true);
-          setPositionsStatus('invalid');
-          return;
-        }
-
-        setFlowNodes((nodes) => applyPositions(nodes, positions));
-        setUseSmartRouting(false);
-        setPositionsStatus('loaded');
+      .catch((error) => {
+        console.error('Failed to compute readable map layout', error);
       })
-      .catch(() => {
-        if (isMounted) {
-          setUseSmartRouting(true);
-          setPositionsStatus('missing');
+      .finally(() => {
+        if (!cancelled) {
+          setLayoutPending(false);
         }
       });
 
     return () => {
-      isMounted = false;
+      cancelled = true;
     };
-  }, []);
+  }, [compactLayout, layoutCacheKey, layoutResetCount, layoutSourceMap]);
+
+  const layoutNodes = useMemo(
+    () =>
+      elkLayoutPositions ? applyManualPositions(visibleMap.nodes, elkLayoutPositions) : fallbackLayoutNodes,
+    [elkLayoutPositions, fallbackLayoutNodes, visibleMap.nodes],
+  );
 
   useEffect(() => {
-    if (
-      !nodesInitialized ||
-      positionsStatus === 'checking' ||
-      positionsStatus === 'loaded' ||
-      hasAutoLayoutRun.current
-    ) {
+    if (!elkLayoutPositions) {
       return;
     }
 
-    hasAutoLayoutRun.current = true;
-    runAutoLayout();
-  }, [nodesInitialized, positionsStatus, runAutoLayout]);
+    let secondFrame: number | null = null;
+    const firstFrame = window.requestAnimationFrame(() => {
+      secondFrame = window.requestAnimationFrame(() => fitView({ padding: 0.1, duration: 350 }));
+    });
 
-  const visibleIds = useMemo(() => {
-    const normalized = query.trim().toLowerCase();
-    if (!normalized) {
-      return new Set(gnmiNodes.map((node) => node.id));
+    return () => {
+      window.cancelAnimationFrame(firstFrame);
+      if (secondFrame !== null) {
+        window.cancelAnimationFrame(secondFrame);
+      }
+    };
+  }, [elkLayoutPositions, fitView]);
+
+  const routedLayoutNodes = useMemo(
+    () => applyManualPositions(layoutNodes, routingPositions),
+    [layoutNodes, routingPositions],
+  );
+  const readableLayout = useMemo(
+    () =>
+      routeReadableLayout(routedLayoutNodes, visibleMap.edges, {
+        compact: compactLayout,
+      }),
+    [compactLayout, routedLayoutNodes, visibleMap.edges],
+  );
+  const displayedLayoutNodes = useMemo(
+    () => applyManualPositions(readableLayout.nodes, manualPositions),
+    [manualPositions, readableLayout.nodes],
+  );
+
+  const nodeMatches = useMemo(() => {
+    if (!query) {
+      return new Set<string>();
     }
 
-    const directMatches = new Set(
-      gnmiNodes.filter((node) => matchesQuery(node, normalized)).map((node) => node.id),
+    return new Set(
+      visibleMap.nodes
+        .filter((currentNode) => searchableText(currentNode).includes(query))
+        .map((currentNode) => currentNode.id),
     );
+  }, [query, visibleMap.nodes]);
 
-    gnmiEdges.forEach((edge) => {
-      if (directMatches.has(edge.source)) {
-        directMatches.add(edge.target);
-      }
-      if (directMatches.has(edge.target)) {
-        directMatches.add(edge.source);
-      }
-    });
-
-    return directMatches;
-  }, [query]);
-
-  const selectedNeighborhood = useMemo(() => {
-    if (selectedEdgeId) {
-      const selectedEdge = gnmiEdges.find((edge) => edge.id === selectedEdgeId);
-
-      if (!selectedEdge) {
-        return null;
-      }
-
-      return {
-        nodeIds: new Set([selectedEdge.source, selectedEdge.target]),
-        edgeIds: new Set([selectedEdge.id]),
-      };
-    }
-
-    if (!selectedNodeId) {
-      return null;
-    }
-
-    const nodeIds = new Set([selectedNodeId]);
+  const selectedEdge = useMemo(
+    () => visibleMap.edges.find((edge) => edge.id === selectedEdgeId) ?? null,
+    [selectedEdgeId, visibleMap.edges],
+  );
+  const selectedEdgeEndpointIds = useMemo(
+    () =>
+      selectedEdge ? new Set([selectedEdge.source, selectedEdge.target]) : new Set<string>(),
+    [selectedEdge],
+  );
+  const selectedNodeConnections = useMemo(() => {
     const edgeIds = new Set<string>();
+    const nodeIds = new Set<string>();
 
-    gnmiEdges.forEach((edge) => {
-      if (edge.source === selectedNodeId || edge.target === selectedNodeId) {
-        nodeIds.add(edge.source);
-        nodeIds.add(edge.target);
-        edgeIds.add(edge.id);
+    if (!selectedId) {
+      return { edgeIds, nodeIds };
+    }
+
+    for (const edge of visibleMap.edges) {
+      if (edge.source !== selectedId && edge.target !== selectedId) {
+        continue;
       }
-    });
 
-    return { nodeIds, edgeIds };
-  }, [selectedEdgeId, selectedNodeId]);
+      edgeIds.add(edge.id);
+      nodeIds.add(edge.source);
+      nodeIds.add(edge.target);
+    }
+
+    return { edgeIds, nodeIds };
+  }, [selectedId, visibleMap.edges]);
+  const edgeIdBySourceHandle = useMemo(
+    () =>
+      new Map(
+        visibleMap.edges.map((edge) => [`${edge.source}:${edge.sourceHandle}`, edge.id] as const),
+      ),
+    [visibleMap.edges],
+  );
+  const selectFieldConnection = useCallback((edgeId: string) => {
+    setSelectedId(null);
+    setSelectedEdgeId(edgeId);
+  }, []);
 
   const nodes = useMemo(
     () =>
-      flowNodes.map((node) => ({
-        ...node,
-        data: {
-          ...node.data,
-          visibleHandles: visibleHandleMap.get(node.id),
-        },
-        hidden: !visibleIds.has(node.id),
-        className:
-          selectedNeighborhood && !selectedNeighborhood.nodeIds.has(node.id)
-            ? 'is-dimmed'
-            : undefined,
-        selected: selectedNodeId === node.id,
-      })),
-    [flowNodes, selectedNeighborhood, selectedNodeId, visibleHandleMap, visibleIds],
+      displayedLayoutNodes.map((currentNode) => {
+        const selectedNodeRelated = selectedNodeConnections.nodeIds.has(currentNode.id);
+        const edgeEndpoint =
+          selectedEdgeEndpointIds.has(currentNode.id) ||
+          (selectedNodeRelated && currentNode.id !== selectedId);
+        const selectionActive = Boolean(selectedId || selectedEdge);
+        const active = selectionActive
+          ? selectedNodeRelated || selectedEdgeEndpointIds.has(currentNode.id)
+          : !query || nodeMatches.has(currentNode.id);
+        const fieldConnectionIds = Object.fromEntries(
+          (currentNode.data.fields ?? [])
+            .map((field) => [
+              field.id,
+              edgeIdBySourceHandle.get(`${currentNode.id}:${field.id}`),
+            ])
+            .filter((entry): entry is [string, string] => Boolean(entry[1])),
+        );
+
+        return {
+          ...currentNode,
+          selected: selectedId === currentNode.id,
+          data: {
+            ...currentNode.data,
+            active: active || edgeEndpoint || currentNode.id === selectedId,
+            edgeEndpoint,
+            activeEdgeSourceHandle:
+              selectedEdge?.source === currentNode.id ? selectedEdge.sourceHandle : null,
+            fieldConnectionIds,
+            onFieldConnectionClick: selectFieldConnection,
+            query,
+            showExtensions,
+          },
+        };
+      }),
+    [
+      nodeMatches,
+      displayedLayoutNodes,
+      edgeIdBySourceHandle,
+      query,
+      selectFieldConnection,
+      selectedEdge,
+      selectedEdgeEndpointIds,
+      selectedId,
+      selectedNodeConnections,
+      showExtensions,
+    ],
   );
 
-  const edges = useMemo(
+  const routeBridgesByEdge = useMemo(
+    () => routeBridges(readableLayout.edges),
+    [readableLayout.edges],
+  );
+
+  const edges = useMemo<RoutedMapEdge[]>(
     () =>
-      gnmiEdges.map((edge) => {
-        const isSelectedEdge = edge.id === selectedEdgeId;
-        const isConnected = Boolean(selectedNeighborhood?.edgeIds.has(edge.id));
-        const isDimmed = Boolean(selectedNeighborhood && !selectedNeighborhood.edgeIds.has(edge.id));
-        const edgeColor = getEdgeColor(edge.className, isSelectedEdge, isConnected);
+      readableLayout.edges.map(({ edge, routePoints, targetHandle }) => {
+        const connectedToMatch =
+          !query || nodeMatches.has(edge.source) || nodeMatches.has(edge.target);
+        const style = edgeStyleByKind[edge.kind] ?? edgeStyleByKind.field;
+        const selected = selectedEdge?.id === edge.id;
+        const connectedToSelectedNode = selectedNodeConnections.edgeIds.has(edge.id);
+        const highlighted = selected || connectedToSelectedNode;
+        const selectionDimmed =
+          (Boolean(selectedEdge) && !selected) || (Boolean(selectedId) && !connectedToSelectedNode);
+        const opacity = highlighted ? 1 : connectedToMatch ? (selectionDimmed ? 0.18 : 1) : 0.14;
+        const stroke = highlighted ? 'var(--edge-selected)' : style.stroke;
+        const strokeWidth =
+          typeof style.strokeWidth === 'number'
+            ? style.strokeWidth + (highlighted ? 1.8 : 0)
+            : style.strokeWidth;
 
         return {
           ...edge,
-          ...edgeDefaults,
-          markerEnd: {
-            ...edgeDefaults.markerEnd,
-            color: edgeColor,
-          },
-          type: useSmartRouting && !isSelectedEdge ? edge.type : 'smoothstep',
-          selected: isSelectedEdge,
-          style: isSelectedEdge
-            ? { stroke: edgeColor, strokeWidth: 5 }
-            : isConnected
-              ? { stroke: edgeColor, strokeWidth: 4 }
-              : undefined,
-          hidden: !visibleIds.has(edge.source) || !visibleIds.has(edge.target),
+          type: 'routed',
+          targetHandle,
+          selected,
+          zIndex: highlighted ? 12 : 1,
+          interactionWidth: 28,
           className: [
-            edge.className,
-            isConnected ? 'edge-connected' : undefined,
-            isSelectedEdge ? 'edge-selected' : undefined,
-            isDimmed ? 'edge-dimmed' : undefined,
+            'flow-edge',
+            `flow-edge-${edge.kind}`,
+            highlighted ? 'is-selected' : '',
+            selectionDimmed ? 'is-dimmed' : '',
           ]
             .filter(Boolean)
             .join(' '),
-        };
+          markerEnd: { type: MarkerType.ArrowClosed, color: stroke },
+          data: { routePoints, routeBridges: routeBridgesByEdge.get(edge.id) ?? [] },
+          style: {
+            ...style,
+            opacity,
+            stroke,
+            strokeWidth,
+          },
+        } satisfies RoutedMapEdge;
       }),
-    [selectedEdgeId, selectedNeighborhood, useSmartRouting, visibleIds],
+    [
+      nodeMatches,
+      query,
+      readableLayout.edges,
+      routeBridgesByEdge,
+      selectedEdge,
+      selectedId,
+      selectedNodeConnections,
+    ],
   );
 
-  const onNodesChange = (changes: NodeChange<GnmiFlowNode>[]) => {
-    setFlowNodes((currentNodes) => applyNodeChanges(changes, currentNodes) as GnmiFlowNode[]);
-  };
+  const selectedNode = useMemo(
+    () => nodes.find((currentNode) => currentNode.id === selectedId),
+    [nodes, selectedId],
+  );
+  const exportInput = useMemo<MapExportInput>(
+    () => ({
+      layout: readableLayout,
+      serviceLabel: activeService.label,
+      serviceTitle: activeService.title,
+      serviceChoiceLabel: displayServiceChoiceLabel(activeServiceChoice.label),
+      serviceChoiceVersion: activeServiceChoice.version ?? activeService.serviceVersion,
+      rpcFilterLabel: activeRpcFilterChoice?.label ?? null,
+      sourceRepository: activeService.sourceRepository,
+      sourceTag: activeSourceTag ?? activeService.sourceTag ?? null,
+      showDeprecated,
+      showExtensions,
+    }),
+    [
+      activeRpcFilterChoice,
+      activeService,
+      activeServiceChoice,
+      activeSourceTag,
+      readableLayout,
+      showDeprecated,
+      showExtensions,
+    ],
+  );
 
-  const onNodeClick: NodeMouseHandler = (_, node) => {
-    setSelectedEdgeId(null);
-    setSelectedNodeId(node.id);
-  };
+  const fit = useCallback(() => {
+    fitView({ padding: 0.12, duration: 450 });
+  }, [fitView]);
 
-  const onEdgeClick: EdgeMouseHandler = (_, edge) => {
-    setSelectedNodeId(null);
-    setSelectedEdgeId(edge.id);
-  };
+  const onNodesChange = useCallback((changes: NodeChange<MapNode>[]) => {
+    setManualPositions((currentPositions) => {
+      let nextPositions = currentPositions;
 
-  const onNodeDragStart: OnNodeDrag<GnmiFlowNode> = () => {
-    setUseSmartRouting(false);
-  };
+      for (const change of changes) {
+        if (change.type !== 'position' || !change.position) {
+          continue;
+        }
 
-  const copyPositions = async () => {
+        if (nextPositions === currentPositions) {
+          nextPositions = { ...currentPositions };
+        }
+
+        nextPositions[change.id] = change.position;
+      }
+
+      return nextPositions;
+    });
+
+    setRoutingPositions((currentPositions) => {
+      let nextPositions = currentPositions;
+
+      for (const change of changes) {
+        if (change.type !== 'position' || !change.position || change.dragging !== false) {
+          continue;
+        }
+
+        if (nextPositions === currentPositions) {
+          nextPositions = { ...currentPositions };
+        }
+
+        nextPositions[change.id] = change.position;
+      }
+
+      return nextPositions;
+    });
+
+    setSelectedId((currentSelectedId) => {
+      let selectedNodeWasCleared = false;
+
+      for (const change of changes) {
+        if (change.type !== 'select') {
+          continue;
+        }
+
+        if (change.selected) {
+          return change.id;
+        }
+
+        if (change.id === currentSelectedId) {
+          selectedNodeWasCleared = true;
+        }
+      }
+
+      return selectedNodeWasCleared ? null : currentSelectedId;
+    });
+  }, []);
+
+  const resetLayout = useCallback(() => {
+    setManualPositions({});
+    setRoutingPositions({});
+    setLayoutResetCount((count) => count + 1);
+  }, []);
+  const exportSvg = useCallback(() => {
+    downloadMapSvg(exportInput);
+  }, [exportInput]);
+  const exportPdf = useCallback(async () => {
+    setPdfExportPending(true);
     try {
-      await navigator.clipboard.writeText(getPositionsYaml(flowNodes));
-      setCopyStatus('copied');
-      window.setTimeout(() => setCopyStatus('idle'), 1800);
-    } catch {
-      setCopyStatus('failed');
-      window.setTimeout(() => setCopyStatus('idle'), 2400);
+      await downloadMapPdf(exportInput);
+    } catch (error) {
+      console.error('Failed to export PDF', error);
+    } finally {
+      setPdfExportPending(false);
     }
-  };
-
-  const onPaneClick = () => {
-    setSelectedNodeId(null);
-    setSelectedEdgeId(null);
-  };
+  }, [exportInput]);
+  const selectServiceChoice = useCallback(
+    (serviceChoiceId: string) => {
+      setServiceChoiceIds((currentChoices) => ({
+        ...currentChoices,
+        [activeServiceId]: serviceChoiceId,
+      }));
+    },
+    [activeServiceId],
+  );
+  const selectRpcFilter = useCallback(
+    (rpcFilterId: string | null) => {
+      setRpcFilterIds((currentFilterIds) => {
+        const nextFilterIds = { ...currentFilterIds };
+        if (!rpcFilterId || rpcFilterId === allRpcFilterId) {
+          delete nextFilterIds[rpcFilterKey];
+        } else {
+          nextFilterIds[rpcFilterKey] = rpcFilterId;
+        }
+        return nextFilterIds;
+      });
+    },
+    [rpcFilterKey],
+  );
+  const exportDisabled = layoutPending || pdfExportPending;
 
   return (
-    <main className="app-shell" data-theme={themeMode}>
-      <Paper component="header" className="top-bar" elevation={0} square>
-        <Box>
-          <Typography
-            component="p"
-            variant="overline"
-            color="text.secondary"
-            sx={{ display: 'block', fontWeight: 700, lineHeight: 1.2 }}
-          >
-            OpenConfig proto map
-          </Typography>
-          <Typography component="h1" variant="h4">
-            service gNMI 0.7.0
-          </Typography>
+    <Box className="app-shell">
+      <Box component="header" className="topbar">
+        <Box className="brand">
+          <span className="brand-kicker">{serviceSubtitle(activeService)}</span>
+          <h1>{activeService.title}</h1>
         </Box>
-        <TextField
-          className="top-bar__search"
-          label="Search map"
-          size="small"
-          value={query}
-          onChange={(event) => setQuery(event.target.value)}
-          placeholder="Try SubscribeRequest, Path, Encoding..."
-          fullWidth
+
+        <ServiceNav activeServiceId={activeServiceId} onSelect={setActiveServiceId} />
+
+        <ServiceChoiceMenu
+          serviceMap={activeService}
+          value={activeServiceChoiceId}
+          onSelect={selectServiceChoice}
         />
-        <Button
-          className="top-bar__button"
-          type="button"
-          variant="contained"
-          color="primary"
-          onClick={copyPositions}
-        >
-          {copyStatus === 'copied'
-            ? 'Copied'
-            : copyStatus === 'failed'
-              ? 'Copy failed'
-              : 'Copy positions'}
-        </Button>
-        <FormControlLabel
-          className="top-bar__theme-toggle"
-          control={<Switch checked={themeMode === 'dark'} onChange={onThemeToggle} color="primary" />}
-          label={themeMode === 'dark' ? 'Mocha' : 'Latte'}
+
+        <RpcFilterMenu
+          choices={rpcFilterChoices}
+          value={activeRpcFocusNodeId}
+          onSelect={selectRpcFilter}
         />
-      </Paper>
-      <section className="map-card" aria-label="gNMI 0.7.0 React Flow map">
-        <ReactFlow
+
+        <Stack className="toolbar" direction="row" role="toolbar" aria-label="Map controls">
+          <TextField
+            className="map-search"
+            value={queryValue}
+            onChange={(event) => setQueryValue(event.target.value)}
+            placeholder="Search messages, fields, enums"
+            type="search"
+            size="small"
+            hiddenLabel
+            slotProps={{
+              input: {
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <SearchIcon sx={{ fontSize: 18 }} />
+                  </InputAdornment>
+                ),
+              },
+            }}
+            sx={{
+              flex: '1 1 180px',
+              width: { xs: '100%', md: 'clamp(140px, 18vw, 280px)' },
+              minWidth: { xs: 0, md: 130 },
+              '& .MuiInputBase-root': {
+                height: 38,
+              },
+            }}
+          />
+
+          <Tooltip title={`Switch to ${darkMode ? 'light' : 'dark'} mode`}>
+            <IconButton
+              type="button"
+              aria-label={`Switch to ${darkMode ? 'light' : 'dark'} mode`}
+              aria-pressed={darkMode}
+              onClick={onToggleTheme}
+              sx={{
+                flex: '0 0 auto',
+                width: 38,
+                height: 38,
+                border: '1px solid var(--line)',
+                bgcolor: 'var(--panel)',
+                color: darkMode ? 'var(--switch-sun)' : 'var(--switch-moon)',
+                '&:hover': {
+                  borderColor: 'var(--focus)',
+                  bgcolor: 'var(--panel)',
+                  color: 'var(--focus)',
+                },
+              }}
+            >
+              {darkMode ? (
+                <WbSunnyOutlinedIcon sx={{ fontSize: 19 }} />
+              ) : (
+                <DarkModeOutlinedIcon sx={{ fontSize: 19 }} />
+              )}
+            </IconButton>
+          </Tooltip>
+
+          <ViewOptionsMenu
+            onFit={fit}
+            onResetLayout={resetLayout}
+            layoutPending={layoutPending}
+            showExtensions={showExtensions}
+            onToggleExtensions={() => setShowExtensions((value) => !value)}
+            showDeprecated={showDeprecated}
+            onToggleDeprecated={() => setShowDeprecated((value) => !value)}
+            onExportPdf={exportPdf}
+            onExportSvg={exportSvg}
+            exportDisabled={exportDisabled}
+            pdfExportPending={pdfExportPending}
+          />
+        </Stack>
+      </Box>
+
+      <main className="map-stage">
+        <ReactFlow<MapNode, RoutedMapEdge>
           nodes={nodes}
-          edges={edges as Edge[]}
+          edges={edges}
           nodeTypes={nodeTypes}
           edgeTypes={edgeTypes}
-          fitView
+          onNodesChange={onNodesChange}
+          onNodeDragStop={(_, node) => {
+            setRoutingPositions((currentPositions) => ({
+              ...currentPositions,
+              [node.id]: node.position,
+            }));
+          }}
+          nodesDraggable
           minZoom={0.18}
           maxZoom={1.7}
-          snapToGrid
-          snapGrid={[20, 20]}
-          onNodesChange={onNodesChange}
-          onNodeClick={onNodeClick}
-          onEdgeClick={onEdgeClick}
-          onNodeDragStart={onNodeDragStart}
-          onPaneClick={onPaneClick}
+          defaultViewport={{ x: 70, y: 40, zoom: 0.42 }}
+          fitView
+          fitViewOptions={{ padding: 0.08 }}
+          onNodeClick={(_, node) => {
+            setSelectedId(node.id);
+            setSelectedEdgeId(null);
+          }}
+          onEdgeClick={(event, edge) => {
+            event.stopPropagation();
+            setSelectedId(null);
+            setSelectedEdgeId(edge.id);
+          }}
+          onPaneClick={() => {
+            setSelectedId(null);
+            setSelectedEdgeId(null);
+          }}
           proOptions={{ hideAttribution: true }}
         >
-          <Background variant={BackgroundVariant.Dots} gap={24} size={1} />
-          <Controls position="bottom-right" />
-
-          <Panel position="bottom-center" className="credit-panel">
-            <Box sx={{ display: 'flex', gap: 1.5, alignItems: 'center', flexWrap: 'wrap' }}>
-              <Typography variant="body2" color="text.secondary">
-                Created from Roman Dodin&apos;s gNMI map.
-              </Typography>
-              <Link href={sourceLinks.project} target="_blank" rel="noreferrer" underline="hover">
-                Source PDF
-              </Link>
-              <Link href={sourceLinks.author} target="_blank" rel="noreferrer" underline="hover">
-                Author
-              </Link>
-              <Link href={sourceLinks.social} target="_blank" rel="noreferrer" underline="hover">
-                Twitter
-              </Link>
-            </Box>
-          </Panel>
+          <Background color="var(--background-pattern)" gap={34} size={1.1} />
+          <Controls position="bottom-left" />
         </ReactFlow>
-      </section>
-    </main>
+
+        <Inspector
+          node={selectedNode}
+          serviceLabel={activeService.label}
+          serviceChoice={activeServiceChoice}
+          totalNodes={visibleMap.nodes.length}
+          totalEdges={visibleMap.edges.length}
+        />
+      </main>
+    </Box>
   );
 }
 
-function App() {
-  const userSelectedTheme = useRef(false);
-  const [themeMode, setThemeMode] = useState<ThemeMode>(() => getSystemTheme());
-  const muiTheme = useMemo(() => createCatppuccinTheme(themeMode), [themeMode]);
+type ServiceNavProps = {
+  activeServiceId: ServiceId;
+  onSelect: (serviceId: ServiceId) => void;
+};
+
+function ServiceNav({ activeServiceId, onSelect }: ServiceNavProps) {
+  return (
+    <Tabs
+      className="service-nav"
+      value={activeServiceId}
+      onChange={(_, serviceId: ServiceId) => onSelect(serviceId)}
+      aria-label="Service maps"
+      variant="scrollable"
+      scrollButtons="auto"
+      sx={{
+        flex: '0 1 auto',
+        minWidth: 0,
+        p: '3px',
+        border: '1px solid var(--line)',
+        borderRadius: '8px',
+        bgcolor: 'var(--panel-soft)',
+      }}
+    >
+      {serviceMapOrder.map((serviceId) => (
+        <Tab key={serviceId} value={serviceId} label={serviceMaps[serviceId].label} />
+      ))}
+    </Tabs>
+  );
+}
+
+type ServiceChoiceMenuProps = {
+  serviceMap: ServiceMapDefinition;
+  value: string;
+  onSelect: (serviceChoiceId: string) => void;
+};
+
+function ServiceChoiceMenu({ serviceMap, value, onSelect }: ServiceChoiceMenuProps) {
+  const groups = useMemo(
+    () => groupedServiceChoices(serviceMap.serviceChoices),
+    [serviceMap.serviceChoices],
+  );
+  const selectedChoice = serviceChoiceForRoute(serviceMap, value);
+  const selectedGroup =
+    groups.find((group) => group.choices.some((choice) => choice.id === selectedChoice.id)) ??
+    groups[0];
+  const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
+  const [activeGroupKey, setActiveGroupKey] = useState<string | null>(
+    selectedGroup?.key ?? null,
+  );
+  const activeGroup =
+    groups.find((group) => group.key === activeGroupKey) ?? selectedGroup ?? groups[0];
+  const open = Boolean(anchorEl);
 
   useEffect(() => {
-    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-    const handleChange = (event: MediaQueryListEvent) => {
-      if (!userSelectedTheme.current) {
-        setThemeMode(event.matches ? 'dark' : 'light');
-      }
-    };
+    setAnchorEl(null);
+    setActiveGroupKey(selectedGroup?.key ?? null);
+  }, [selectedGroup?.key, serviceMap.id]);
 
-    mediaQuery.addEventListener('change', handleChange);
+  if (serviceMap.serviceChoices.length <= 1) {
+    return null;
+  }
 
-    return () => {
-      mediaQuery.removeEventListener('change', handleChange);
-    };
-  }, []);
+  const triggerId = `${serviceMap.id}-choice-trigger`;
+  const selectedDisplayLabel = displayServiceChoiceLabel(selectedChoice.label);
+  const activeGroupHasVersion = activeGroup?.choices.some((choice) => choice.version);
+  const activeGroupSelectedChoice = activeGroup?.choices.find(
+    (choice) => choice.id === selectedChoice.id,
+  );
+  const activeGroupPreselectedChoice =
+    activeGroupSelectedChoice ?? (activeGroupHasVersion ? activeGroup?.choices[0] : undefined);
 
-  const toggleTheme = () => {
-    userSelectedTheme.current = true;
-    setThemeMode((currentTheme) => (currentTheme === 'dark' ? 'light' : 'dark'));
+  const selectChoice = (serviceChoiceId: string) => {
+    onSelect(serviceChoiceId);
+    setAnchorEl(null);
   };
 
   return (
+    <Box className="service-choice">
+      <Button
+        id={triggerId}
+        variant="outlined"
+        color="inherit"
+        aria-haspopup="menu"
+        aria-expanded={open}
+        aria-controls={open ? `${serviceMap.id}-choice-menu` : undefined}
+        aria-label={`${serviceMap.label} service`}
+        endIcon={<ExpandMoreIcon sx={{ fontSize: 18 }} />}
+        onClick={(event) => {
+          setAnchorEl((currentAnchor) => (currentAnchor ? null : event.currentTarget));
+          setActiveGroupKey(selectedGroup?.key ?? groups[0]?.key ?? null);
+        }}
+        sx={{
+          justifyContent: 'space-between',
+          width: '100%',
+          height: 38,
+          minWidth: 0,
+          px: 1.25,
+          borderColor: 'var(--line)',
+          bgcolor: 'var(--panel)',
+          color: 'var(--ink)',
+          '&:hover': {
+            borderColor: 'var(--focus)',
+            bgcolor: 'var(--panel)',
+          },
+        }}
+      >
+        <Box className="service-choice-current" component="span">
+          <Box className="service-choice-name" component="span">
+            {selectedDisplayLabel}
+          </Box>
+          {selectedChoice.version ? (
+            <Chip
+              component="span"
+              label={selectedChoice.version}
+              size="small"
+              sx={{
+                flex: '0 0 auto',
+                bgcolor: 'var(--panel-soft)',
+                color: 'var(--muted)',
+              }}
+            />
+          ) : null}
+        </Box>
+      </Button>
+
+      <Menu
+        id={`${serviceMap.id}-choice-menu`}
+        anchorEl={anchorEl}
+        open={open}
+        onClose={() => setAnchorEl(null)}
+        slotProps={{
+          list: {
+            'aria-labelledby': triggerId,
+            dense: true,
+          },
+          paper: {
+            sx: {
+              mt: 0.75,
+              maxWidth: 'min(420px, calc(100vw - 24px))',
+            },
+          },
+        }}
+      >
+        <Box className="service-choice-popover" role="presentation">
+          <Box className="service-choice-list">
+            {groups.map((group) => {
+              const groupSelected = group.choices.some(
+                (choice) => choice.id === selectedChoice.id,
+              );
+              const groupHasVersion = group.choices.some((choice) => choice.version);
+              const active = group.key === activeGroup?.key;
+
+              return (
+                <MenuItem
+                  key={group.key}
+                  selected={active || groupSelected}
+                  aria-haspopup={groupHasVersion ? 'menu' : undefined}
+                  aria-expanded={groupHasVersion ? group.key === activeGroup?.key : undefined}
+                  aria-current={groupSelected ? 'true' : undefined}
+                  onClick={() => {
+                    selectChoice(group.choices[0].id);
+                  }}
+                  onFocus={() => setActiveGroupKey(group.key)}
+                  onMouseEnter={() => setActiveGroupKey(group.key)}
+                  sx={{ minWidth: 166 }}
+                >
+                  <ListItemText
+                    primary={
+                      <Typography component="span" noWrap sx={{ fontSize: 13, fontWeight: 800 }}>
+                        {group.displayLabel}
+                      </Typography>
+                    }
+                  />
+                  {groupHasVersion ? <ChevronRightIcon sx={{ fontSize: 18 }} /> : null}
+                </MenuItem>
+              );
+            })}
+          </Box>
+
+          {activeGroup && activeGroupHasVersion ? (
+            <Box
+              className="service-choice-submenu"
+              role="menu"
+              aria-label={`${activeGroup.displayLabel} versions`}
+            >
+              {activeGroup.choices.map((choice) => {
+                const selected = choice.id === selectedChoice.id;
+                const preselected = choice.id === activeGroupPreselectedChoice?.id;
+
+                return (
+                  <MenuItem
+                    key={choice.id}
+                    selected={selected || (!selected && preselected)}
+                    aria-checked={selected}
+                    onClick={() => selectChoice(choice.id)}
+                    sx={{
+                      justifyContent: 'center',
+                      minWidth: 62,
+                      px: 1,
+                    }}
+                  >
+                    <span>{choice.version ?? 'Current'}</span>
+                  </MenuItem>
+                );
+              })}
+            </Box>
+          ) : null}
+        </Box>
+      </Menu>
+    </Box>
+  );
+}
+
+type RpcFilterMenuProps = {
+  choices: RpcFilterChoice[];
+  value: string | null;
+  onSelect: (rpcFilterId: string | null) => void;
+};
+
+function RpcFilterMenu({ choices, value, onSelect }: RpcFilterMenuProps) {
+  const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
+  const selectedChoice = choices.find((choice) => choice.id === value) ?? null;
+  const selectedLabel = selectedChoice
+    ? displayServiceChoiceLabel(selectedChoice.label)
+    : 'All RPCs';
+  const open = Boolean(anchorEl);
+
+  useEffect(() => {
+    setAnchorEl(null);
+  }, [choices, value]);
+
+  if (!choices.length) {
+    return null;
+  }
+
+  const selectChoice = (rpcFilterId: string | null) => {
+    onSelect(rpcFilterId);
+    setAnchorEl(null);
+  };
+
+  return (
+    <Box className="rpc-filter">
+      <Button
+        id="rpc-filter-trigger"
+        variant="outlined"
+        color="inherit"
+        aria-haspopup="menu"
+        aria-expanded={open}
+        aria-controls={open ? 'rpc-filter-menu' : undefined}
+        aria-label="RPC filter"
+        startIcon={<FilterListIcon sx={{ fontSize: 18 }} />}
+        endIcon={<ExpandMoreIcon sx={{ fontSize: 18 }} />}
+        onClick={(event) => setAnchorEl((currentAnchor) => (currentAnchor ? null : event.currentTarget))}
+        sx={{
+          justifyContent: 'space-between',
+          width: '100%',
+          height: 38,
+          minWidth: 0,
+          px: 1.25,
+          borderColor: 'var(--line)',
+          bgcolor: 'var(--panel)',
+          color: 'var(--ink)',
+          '& .MuiButton-startIcon': { mr: 0.75 },
+          '& .MuiButton-endIcon': { ml: 0.75 },
+          '&:hover': {
+            borderColor: 'var(--focus)',
+            bgcolor: 'var(--panel)',
+          },
+        }}
+      >
+        <Box className="rpc-filter-current" component="span">
+          {selectedLabel}
+        </Box>
+      </Button>
+
+      <Menu
+        id="rpc-filter-menu"
+        anchorEl={anchorEl}
+        open={open}
+        onClose={() => setAnchorEl(null)}
+        slotProps={{
+          list: {
+            'aria-labelledby': 'rpc-filter-trigger',
+            dense: true,
+          },
+          paper: {
+            sx: {
+              mt: 0.75,
+              minWidth: 190,
+              maxHeight: 'min(430px, calc(100vh - 120px))',
+            },
+          },
+        }}
+      >
+        <MenuItem
+          selected={!selectedChoice}
+          role="menuitemradio"
+          aria-checked={!selectedChoice}
+          onClick={() => selectChoice(null)}
+        >
+          <ListItemText
+            primary={
+              <Typography component="span" noWrap sx={{ fontSize: 13, fontWeight: 800 }}>
+                All RPCs
+              </Typography>
+            }
+          />
+        </MenuItem>
+
+        {choices.map((choice) => {
+          const selected = choice.id === selectedChoice?.id;
+          return (
+            <MenuItem
+              key={choice.id}
+              selected={selected}
+              role="menuitemradio"
+              aria-checked={selected}
+              onClick={() => selectChoice(choice.id)}
+            >
+              <ListItemText
+                primary={
+                  <Typography component="span" noWrap sx={{ fontSize: 13, fontWeight: 800 }}>
+                    {displayServiceChoiceLabel(choice.label)}
+                  </Typography>
+                }
+              />
+            </MenuItem>
+          );
+        })}
+      </Menu>
+    </Box>
+  );
+}
+
+type ViewOptionsMenuProps = {
+  onFit: () => void;
+  onResetLayout: () => void;
+  layoutPending: boolean;
+  showExtensions: boolean;
+  onToggleExtensions: () => void;
+  showDeprecated: boolean;
+  onToggleDeprecated: () => void;
+  onExportPdf: () => Promise<void>;
+  onExportSvg: () => void;
+  exportDisabled: boolean;
+  pdfExportPending: boolean;
+};
+
+function ViewOptionsMenu({
+  onFit,
+  onResetLayout,
+  layoutPending,
+  showExtensions,
+  onToggleExtensions,
+  showDeprecated,
+  onToggleDeprecated,
+  onExportPdf,
+  onExportSvg,
+  exportDisabled,
+  pdfExportPending,
+}: ViewOptionsMenuProps) {
+  const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
+  const open = Boolean(anchorEl);
+
+  const fit = () => {
+    onFit();
+    setAnchorEl(null);
+  };
+  const resetLayout = () => {
+    onResetLayout();
+    setAnchorEl(null);
+  };
+  const exportPdf = () => {
+    void onExportPdf();
+    setAnchorEl(null);
+  };
+  const exportSvg = () => {
+    onExportSvg();
+    setAnchorEl(null);
+  };
+
+  return (
+    <Box className="view-options">
+      <Tooltip title="View options">
+        <IconButton
+          id="view-options-trigger"
+          className="view-options-trigger"
+          aria-haspopup="menu"
+          aria-expanded={open}
+          aria-controls={open ? 'view-options-menu' : undefined}
+          aria-label="View options"
+          onClick={(event) => setAnchorEl((currentAnchor) => (currentAnchor ? null : event.currentTarget))}
+          sx={{
+            width: 38,
+            height: 38,
+            border: '1px solid var(--line)',
+            bgcolor: 'var(--panel)',
+            color: 'var(--ink)',
+            '&:hover': {
+              borderColor: 'var(--focus)',
+              bgcolor: 'var(--panel)',
+              color: 'var(--focus)',
+            },
+          }}
+        >
+          <SettingsOutlinedIcon sx={{ fontSize: 19 }} />
+        </IconButton>
+      </Tooltip>
+
+      <Menu
+        id="view-options-menu"
+        anchorEl={anchorEl}
+        open={open}
+        onClose={() => setAnchorEl(null)}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+        slotProps={{
+          list: {
+            'aria-labelledby': 'view-options-trigger',
+            dense: true,
+          },
+          paper: {
+            sx: {
+              mt: 0.75,
+              minWidth: 186,
+            },
+          },
+        }}
+      >
+        <MenuItem onClick={fit}>
+          <ListItemIcon>
+            <FitScreenOutlinedIcon fontSize="small" />
+          </ListItemIcon>
+          <ListItemText primary="Fit" />
+        </MenuItem>
+
+        <MenuItem onClick={resetLayout} disabled={layoutPending}>
+          <ListItemIcon>
+            <RestartAltIcon fontSize="small" />
+          </ListItemIcon>
+          <ListItemText primary="Reset" />
+        </MenuItem>
+
+        <MenuItem
+          selected={showExtensions}
+          role="menuitemcheckbox"
+          aria-checked={showExtensions}
+          onClick={onToggleExtensions}
+          title="Show extension fields and extension-detail relationships."
+        >
+          <ListItemIcon>
+            <HubOutlinedIcon fontSize="small" />
+          </ListItemIcon>
+          <ListItemText primary="Extensions" />
+          {showExtensions ? <CheckIcon sx={{ fontSize: 16 }} /> : null}
+        </MenuItem>
+
+        <MenuItem
+          selected={showDeprecated}
+          role="menuitemcheckbox"
+          aria-checked={showDeprecated}
+          onClick={onToggleDeprecated}
+          title="Show deprecated proto fields and deprecated message types."
+        >
+          <ListItemIcon>
+            <VisibilityOffOutlinedIcon fontSize="small" />
+          </ListItemIcon>
+          <ListItemText primary="Deprecated" />
+          {showDeprecated ? <CheckIcon sx={{ fontSize: 16 }} /> : null}
+        </MenuItem>
+
+        <Divider sx={{ my: 0.5 }} />
+
+        <MenuItem onClick={exportPdf} disabled={exportDisabled} aria-busy={pdfExportPending}>
+          <ListItemIcon>
+            <PictureAsPdfOutlinedIcon fontSize="small" />
+          </ListItemIcon>
+          <ListItemText primary="Export PDF" />
+        </MenuItem>
+
+        <MenuItem onClick={exportSvg} disabled={exportDisabled}>
+          <ListItemIcon>
+            <DataObjectOutlinedIcon fontSize="small" />
+          </ListItemIcon>
+          <ListItemText primary="Export SVG" />
+        </MenuItem>
+      </Menu>
+    </Box>
+  );
+}
+
+function SchemaNode({ data, selected }: NodeProps<MapNode>) {
+  const fields = data.fields ?? [];
+  const dimmed = data.active === false;
+  const targetHandles = targetHandlesFromData(data);
+  const fieldConnectionIds = fieldConnectionIdsFromData(data);
+  const onFieldConnectionClick = fieldClickHandlerFromData(data);
+  const activeEdgeSourceHandle =
+    typeof data.activeEdgeSourceHandle === 'string' ? data.activeEdgeSourceHandle : null;
+  const className = [
+    'schema-node',
+    `kind-${data.kind}`,
+    selected ? 'is-selected' : '',
+    data.edgeEndpoint ? 'is-edge-endpoint' : '',
+    dimmed ? 'is-dimmed' : '',
+  ]
+    .filter(Boolean)
+    .join(' ');
+
+  return (
+    <section className={className}>
+      {targetHandles.length ? (
+        targetHandles.map((handle) => (
+          <Handle
+            key={handle.id}
+            type="target"
+            id={handle.id}
+            position={Position.Left}
+            className="node-target"
+            style={{ top: `${handle.y}px` }}
+          />
+        ))
+      ) : (
+        <Handle type="target" position={Position.Left} className="node-target" />
+      )}
+
+      <header className="node-header">
+        <span className="node-kind">{data.kind}</span>
+        <strong title={data.label}>{data.label}</strong>
+        <div className="node-links nodrag nopan">
+          {data.protoUrl ? (
+            <a href={data.protoUrl} title="Proto definition" target="_blank" rel="noreferrer">
+              <CodeOutlinedIcon sx={{ fontSize: 14 }} aria-hidden="true" />
+            </a>
+          ) : null}
+          {data.specUrl ? (
+            <a href={data.specUrl} title="Service documentation" target="_blank" rel="noreferrer">
+              <MenuBookOutlinedIcon sx={{ fontSize: 14 }} aria-hidden="true" />
+            </a>
+          ) : null}
+        </div>
+      </header>
+
+      {data.badges?.length ? (
+        <div className="node-badges">
+          {data.badges.map((badge) => (
+            <span key={badge}>{badge}</span>
+          ))}
+        </div>
+      ) : null}
+
+      <div className="node-body">
+        {fields.length ? (
+          fields.map((field) => (
+            <FieldRow
+              key={field.id}
+              field={field}
+              highlighted={fieldMatches(field, data.query ?? '')}
+              edgeHighlighted={field.id === activeEdgeSourceHandle}
+              connectionEdgeId={fieldConnectionIds[field.id]}
+              onConnectionClick={onFieldConnectionClick}
+              showExtensions={data.showExtensions}
+            />
+          ))
+        ) : (
+          <div className="empty-field">empty message</div>
+        )}
+      </div>
+    </section>
+  );
+}
+
+type FieldRowProps = {
+  field: MapField;
+  highlighted: boolean;
+  edgeHighlighted: boolean;
+  connectionEdgeId?: string;
+  onConnectionClick?: FieldClickHandler;
+  showExtensions?: boolean;
+};
+
+function FieldRow({
+  field,
+  highlighted,
+  edgeHighlighted,
+  connectionEdgeId,
+  onConnectionClick,
+  showExtensions,
+}: FieldRowProps) {
+  const isExtension = field.ref === 'extension';
+  const visibleExtensionHandle = !isExtension || showExtensions;
+  const clickable = Boolean(connectionEdgeId && onConnectionClick);
+  const fieldTitle = [field.type, field.name, field.group, field.badge]
+    .filter(Boolean)
+    .join(' ');
+  const selectConnection = () => {
+    if (connectionEdgeId && onConnectionClick) {
+      onConnectionClick(connectionEdgeId);
+    }
+  };
+
+  return (
+    <div
+      className={[
+        'field-row',
+        field.group || field.badge ? 'is-detail' : '',
+        field.ref ? 'has-ref' : '',
+        highlighted ? 'is-highlighted' : '',
+        edgeHighlighted ? 'is-edge-highlighted' : '',
+        clickable ? 'is-clickable nodrag nopan' : '',
+        field.badge === 'deprecated' ? 'is-deprecated' : '',
+      ]
+        .filter(Boolean)
+        .join(' ')}
+      role={clickable ? 'button' : undefined}
+      tabIndex={clickable ? 0 : undefined}
+      title={field.ref ? `${fieldTitle} -> ${field.ref}` : fieldTitle}
+      aria-label={clickable ? `Highlight ${field.name} connection to ${field.ref}` : undefined}
+      onClick={(event) => {
+        if (!clickable) {
+          return;
+        }
+        event.stopPropagation();
+        selectConnection();
+      }}
+      onKeyDown={(event) => {
+        if (!clickable || (event.key !== 'Enter' && event.key !== ' ')) {
+          return;
+        }
+        event.preventDefault();
+        event.stopPropagation();
+        selectConnection();
+      }}
+    >
+      <span className="field-type">{field.type}</span>
+      <span className="field-name">{field.name}</span>
+      {field.group ? <span className="field-group">{field.group}</span> : null}
+      {field.badge ? <span className={`field-badge badge-${field.badge}`}>{field.badge}</span> : null}
+      {field.ref && visibleExtensionHandle ? (
+        <Handle
+          type="source"
+          id={field.id}
+          position={Position.Right}
+          className="field-handle"
+          title={`${field.name} -> ${field.ref}`}
+        />
+      ) : null}
+    </div>
+  );
+}
+
+function RoutedEdge({
+  id,
+  sourceX,
+  sourceY,
+  targetX,
+  targetY,
+  data,
+  markerEnd,
+  style,
+  interactionWidth,
+}: EdgeProps<RoutedMapEdge>) {
+  const routePoints =
+    data?.routePoints?.length && data.routePoints.length > 1
+      ? alignRouteEndpoints(data.routePoints, { x: sourceX, y: sourceY }, { x: targetX, y: targetY })
+      : [
+        { x: sourceX, y: sourceY },
+        { x: targetX, y: targetY },
+      ];
+  const routeBridges = data?.routeBridges ?? [];
+  const stroke = typeof style?.stroke === 'string' ? style.stroke : 'var(--edge-field)';
+  const strokeWidth = typeof style?.strokeWidth === 'number' ? style.strokeWidth : 1.6;
+  const path = roundedRoutePath(routePoints);
+
+  return (
+    <>
+      <path
+        className="flow-edge-halo"
+        d={path}
+        style={{ strokeWidth: strokeWidth + 5 }}
+      />
+      <BaseEdge
+        id={id}
+        path={path}
+        markerEnd={markerEnd}
+        style={style}
+        interactionWidth={interactionWidth ?? 28}
+      />
+      {routeBridges.map((bridge, index) => {
+        const path = bridgePath(bridge);
+
+        return (
+          <g key={`${bridge.orientation}-${bridge.x}-${bridge.y}-${index}`}>
+            <path className="flow-edge-bridge-gap" d={path} />
+            <path
+              className="flow-edge-bridge"
+              d={path}
+              style={{
+                stroke,
+                strokeWidth: Math.max(strokeWidth, 1.8),
+              }}
+            />
+          </g>
+        );
+      })}
+    </>
+  );
+}
+
+function alignRouteEndpoints(
+  routePoints: RoutePoint[],
+  source: RoutePoint,
+  target: RoutePoint,
+): RoutePoint[] {
+  const alignedPoints = routePoints.map((point) => ({ ...point }));
+  const lastIndex = alignedPoints.length - 1;
+
+  alignedPoints[0] = { ...alignedPoints[0], y: source.y };
+  alignedPoints[lastIndex] = { ...alignedPoints[lastIndex], y: target.y };
+
+  if (alignedPoints.length > 2) {
+    alignedPoints[1] = { ...alignedPoints[1], y: source.y };
+    alignedPoints[lastIndex - 1] = { ...alignedPoints[lastIndex - 1], y: target.y };
+  }
+
+  return alignedPoints;
+}
+
+function roundedRoutePath(points: RoutePoint[], radius = 18): string {
+  if (!points.length) {
+    return '';
+  }
+
+  const [start] = points;
+  const commands = [`M ${start.x} ${start.y}`];
+
+  for (let index = 1; index < points.length; index += 1) {
+    const previous = points[index - 1];
+    const current = points[index];
+    const next = points[index + 1];
+
+    if (!next) {
+      commands.push(`L ${current.x} ${current.y}`);
+      continue;
+    }
+
+    const incomingDistance = pointDistance(previous, current);
+    const outgoingDistance = pointDistance(current, next);
+    if (incomingDistance === 0 || outgoingDistance === 0) {
+      commands.push(`L ${current.x} ${current.y}`);
+      continue;
+    }
+
+    const cornerRadius = Math.min(radius, incomingDistance / 2, outgoingDistance / 2);
+    const incomingUnit = {
+      x: (current.x - previous.x) / incomingDistance,
+      y: (current.y - previous.y) / incomingDistance,
+    };
+    const outgoingUnit = {
+      x: (next.x - current.x) / outgoingDistance,
+      y: (next.y - current.y) / outgoingDistance,
+    };
+    const beforeCorner = {
+      x: current.x - incomingUnit.x * cornerRadius,
+      y: current.y - incomingUnit.y * cornerRadius,
+    };
+    const afterCorner = {
+      x: current.x + outgoingUnit.x * cornerRadius,
+      y: current.y + outgoingUnit.y * cornerRadius,
+    };
+
+    commands.push(
+      `L ${roundPathNumber(beforeCorner.x)} ${roundPathNumber(beforeCorner.y)}`,
+      `Q ${current.x} ${current.y} ${roundPathNumber(afterCorner.x)} ${roundPathNumber(afterCorner.y)}`,
+    );
+  }
+
+  return commands.join(' ');
+}
+
+function bridgePath(bridge: RouteBridge): string {
+  const radius = 9;
+  const height = 4;
+
+  if (bridge.orientation === 'horizontal') {
+    return [
+      `M ${bridge.x - radius} ${bridge.y}`,
+      `Q ${bridge.x} ${bridge.y - height} ${bridge.x + radius} ${bridge.y}`,
+    ].join(' ');
+  }
+
+  return [
+    `M ${bridge.x} ${bridge.y - radius}`,
+    `Q ${bridge.x + height} ${bridge.y} ${bridge.x} ${bridge.y + radius}`,
+  ].join(' ');
+}
+
+function routeBridges(
+  routedEdges: Array<{ edge: MapEdge; routePoints: RoutePoint[] }>,
+): Map<string, RouteBridge[]> {
+  const bridgesByEdge = new Map<string, RouteBridge[]>();
+  const segments = routedEdges.flatMap(({ edge, routePoints }) =>
+    routeSegments(edge.id, routePoints),
+  );
+
+  for (let firstIndex = 0; firstIndex < segments.length; firstIndex += 1) {
+    const first = segments[firstIndex];
+
+    for (let secondIndex = firstIndex + 1; secondIndex < segments.length; secondIndex += 1) {
+      const second = segments[secondIndex];
+      if (first.edgeId === second.edgeId) {
+        continue;
+      }
+
+      if (first.orientation !== second.orientation) {
+        addCrossingBridge(bridgesByEdge, first, second);
+      }
+    }
+  }
+
+  for (const [edgeId, bridges] of bridgesByEdge) {
+    bridgesByEdge.set(edgeId, dedupeBridges(bridges));
+  }
+
+  return bridgesByEdge;
+}
+
+function routeSegments(edgeId: string, points: RoutePoint[]): RouteSegment[] {
+  const segments: RouteSegment[] = [];
+
+  for (let index = 0; index < points.length - 1; index += 1) {
+    const start = points[index];
+    const end = points[index + 1];
+    if (start.x === end.x && start.y === end.y) {
+      continue;
+    }
+
+    if (start.y === end.y) {
+      segments.push({
+        edgeId,
+        index,
+        start,
+        end,
+        orientation: 'horizontal',
+        fixed: start.y,
+        from: Math.min(start.x, end.x),
+        to: Math.max(start.x, end.x),
+      });
+      continue;
+    }
+
+    if (start.x === end.x) {
+      segments.push({
+        edgeId,
+        index,
+        start,
+        end,
+        orientation: 'vertical',
+        fixed: start.x,
+        from: Math.min(start.y, end.y),
+        to: Math.max(start.y, end.y),
+      });
+    }
+  }
+
+  return segments;
+}
+
+function addCrossingBridge(
+  bridgesByEdge: Map<string, RouteBridge[]>,
+  first: RouteSegment,
+  second: RouteSegment,
+): void {
+  const horizontal = first.orientation === 'horizontal' ? first : second;
+  const vertical = first.orientation === 'vertical' ? first : second;
+  const x = vertical.fixed;
+  const y = horizontal.fixed;
+  const crossingMargin = 34;
+
+  if (
+    x <= horizontal.from + crossingMargin ||
+    x >= horizontal.to - crossingMargin ||
+    y <= vertical.from + crossingMargin ||
+    y >= vertical.to - crossingMargin
+  ) {
+    return;
+  }
+
+  if (segmentsShareEndpoint(first, second)) {
+    return;
+  }
+
+  const bridgeSegment = first.edgeId > second.edgeId ? first : second;
+  appendBridge(bridgesByEdge, bridgeSegment.edgeId, {
+    x,
+    y,
+    orientation: bridgeSegment.orientation,
+  });
+}
+
+function appendBridge(
+  bridgesByEdge: Map<string, RouteBridge[]>,
+  edgeId: string,
+  bridge: RouteBridge,
+): void {
+  bridgesByEdge.set(edgeId, [...(bridgesByEdge.get(edgeId) ?? []), bridge]);
+}
+
+function dedupeBridges(bridges: RouteBridge[]): RouteBridge[] {
+  const seen = new Set<string>();
+
+  return bridges
+    .sort((first, second) => first.x - second.x || first.y - second.y)
+    .filter((bridge) => {
+      const key = `${bridge.orientation}:${Math.round(bridge.x / 8)}:${Math.round(bridge.y / 8)}`;
+      if (seen.has(key)) {
+        return false;
+      }
+      seen.add(key);
+      return true;
+    });
+}
+
+function segmentsShareEndpoint(first: RouteSegment, second: RouteSegment): boolean {
+  return (
+    pointsEqual(first.start, second.start) ||
+    pointsEqual(first.start, second.end) ||
+    pointsEqual(first.end, second.start) ||
+    pointsEqual(first.end, second.end)
+  );
+}
+
+function pointsEqual(first: RoutePoint, second: RoutePoint): boolean {
+  return Math.abs(first.x - second.x) < 0.5 && Math.abs(first.y - second.y) < 0.5;
+}
+
+function pointDistance(first: RoutePoint, second: RoutePoint): number {
+  return Math.hypot(second.x - first.x, second.y - first.y);
+}
+
+function roundPathNumber(value: number): number {
+  return Math.round(value * 100) / 100;
+}
+
+function targetHandlesFromData(data: MapNode['data']): TargetHandleLayout[] {
+  return Array.isArray(data.targetHandles)
+    ? (data.targetHandles as TargetHandleLayout[])
+    : [];
+}
+
+function fieldConnectionIdsFromData(data: MapNode['data']): FieldConnectionIds {
+  return data.fieldConnectionIds &&
+    typeof data.fieldConnectionIds === 'object' &&
+    !Array.isArray(data.fieldConnectionIds)
+    ? (data.fieldConnectionIds as FieldConnectionIds)
+    : {};
+}
+
+function fieldClickHandlerFromData(data: MapNode['data']): FieldClickHandler | undefined {
+  return typeof data.onFieldConnectionClick === 'function'
+    ? (data.onFieldConnectionClick as FieldClickHandler)
+    : undefined;
+}
+
+type DescriptionBlock = {
+  text: string;
+  preformatted: boolean;
+};
+
+function descriptionBlocks(description: string): DescriptionBlock[] {
+  const blocks: DescriptionBlock[] = [];
+  let lines: string[] = [];
+
+  const flush = () => {
+    const trimmedLines = lines.map((line) => line.trimEnd()).filter((line) => line.trim());
+    lines = [];
+    if (!trimmedLines.length) {
+      return;
+    }
+
+    const preformatted = isPreformattedDescription(trimmedLines);
+    if (preformatted) {
+      blocks.push({ preformatted: true, text: trimmedLines.join('\n') });
+      return;
+    }
+
+    for (const text of readableParagraphs(
+      trimmedLines
+        .map((line) => line.trim())
+        .join(' ')
+        .replace(/\s+/g, ' '),
+    )) {
+      blocks.push({ preformatted: false, text });
+    }
+  };
+
+  for (const line of description.replace(/\r\n/g, '\n').split('\n')) {
+    if (line.trim()) {
+      lines.push(line);
+    } else {
+      flush();
+    }
+  }
+  flush();
+
+  return blocks;
+}
+
+function isPreformattedDescription(lines: string[]): boolean {
+  return lines.some((line) =>
+    /(?:<-{2,}|-{2,}>|={3,}|\|)|^\s*(?:Client|Target)\s|^\s*(?:[-*]|\d+[.)])\s/.test(line),
+  );
+}
+
+function readableParagraphs(text: string): string[] {
+  if (text.length < 220) {
+    return [text];
+  }
+
+  const sentences = text.match(/[^.!?]+(?:[.!?]+(?:\)|\])?)?/g)?.map((sentence) => sentence.trim()) ?? [
+    text,
+  ];
+  const paragraphs: string[] = [];
+  let current = '';
+
+  for (const sentence of sentences) {
+    if (!sentence) {
+      continue;
+    }
+    if (!current) {
+      current = sentence;
+      continue;
+    }
+    if (current.length + sentence.length > 260) {
+      paragraphs.push(current);
+      current = sentence;
+    } else {
+      current = `${current} ${sentence}`;
+    }
+  }
+
+  if (current) {
+    paragraphs.push(current);
+  }
+  return paragraphs.length ? paragraphs : [text];
+}
+
+function inlineDescriptionText(text: string): ReactNode {
+  const parts = text.split(/(`[^`]+`)/g);
+  return parts.map((part, index) =>
+    part.startsWith('`') && part.endsWith('`') ? (
+      <code key={index}>{part.slice(1, -1)}</code>
+    ) : (
+      part
+    ),
+  );
+}
+
+function DescriptionText({ text, className }: { text: string; className: string }) {
+  const blocks = descriptionBlocks(text);
+  if (!blocks.length) {
+    return null;
+  }
+
+  return (
+    <div className={className}>
+      {blocks.map((block, index) =>
+        block.preformatted ? (
+          <pre key={index}>{block.text}</pre>
+        ) : (
+          <p key={index}>{inlineDescriptionText(block.text)}</p>
+        ),
+      )}
+    </div>
+  );
+}
+
+type InspectorProps = {
+  node?: MapNode;
+  serviceLabel: string;
+  serviceChoice: ServiceMapChoice;
+  totalNodes: number;
+  totalEdges: number;
+};
+
+function Inspector({ node, serviceLabel, serviceChoice, totalNodes, totalEdges }: InspectorProps) {
+  if (!node) {
+    return (
+      <Paper component="aside" className="inspector" elevation={0} square>
+        <Typography className="inspector-kicker" component="span">
+          {serviceLabel}
+        </Typography>
+        <Typography variant="h6" component="h2">
+          {totalNodes} nodes
+        </Typography>
+        <Typography variant="body2" color="text.secondary">
+          {totalEdges} relationships across {serviceChoice.label} RPCs, messages, enums, and
+          external types.
+        </Typography>
+      </Paper>
+    );
+  }
+
+  return (
+    <Paper component="aside" className="inspector" elevation={0} square>
+      <Typography className="inspector-kicker" component="span">
+        {node.data.kind}
+      </Typography>
+      <Typography variant="h6" component="h2">
+        {node.data.label}
+      </Typography>
+
+      <Stack className="inspector-actions" direction="row" sx={{ flexWrap: 'wrap' }}>
+        {node.data.protoUrl ? (
+          <Button
+            component="a"
+            href={node.data.protoUrl}
+            target="_blank"
+            rel="noreferrer"
+            size="small"
+            variant="outlined"
+            startIcon={<CodeOutlinedIcon fontSize="small" />}
+            endIcon={<OpenInNewIcon sx={{ fontSize: 14 }} />}
+          >
+            Proto
+          </Button>
+        ) : null}
+        {node.data.specUrl ? (
+          <Button
+            component="a"
+            href={node.data.specUrl}
+            target="_blank"
+            rel="noreferrer"
+            size="small"
+            variant="outlined"
+            startIcon={<MenuBookOutlinedIcon fontSize="small" />}
+            endIcon={<OpenInNewIcon sx={{ fontSize: 14 }} />}
+          >
+            Docs
+          </Button>
+        ) : null}
+      </Stack>
+
+      {node.data.description ? (
+        <DescriptionText className="inspector-description" text={node.data.description} />
+      ) : null}
+
+      {node.data.fields?.length ? (
+        <div className="inspector-fields">
+          {node.data.fields.map((field) => (
+            <div key={field.id} className="inspector-field">
+              <div className="inspector-field-main">
+                <span>{field.type}</span>
+                <strong>{field.name}</strong>
+              </div>
+              {field.description ? (
+                <DescriptionText
+                  className="inspector-field-description"
+                  text={field.description}
+                />
+              ) : null}
+            </div>
+          ))}
+        </div>
+      ) : (
+        <Typography variant="body2" color="text.secondary">
+          No fields.
+        </Typography>
+      )}
+    </Paper>
+  );
+}
+
+export default function App() {
+  const [themeMode, setThemeMode] = useState<ThemeMode>(getInitialTheme);
+  const muiTheme = useMemo(() => createAppTheme(themeMode), [themeMode]);
+  const toggleTheme = useCallback(() => {
+    setThemeMode((currentTheme) => (currentTheme === 'dark' ? 'light' : 'dark'));
+  }, []);
+
+  useEffect(() => {
+    document.documentElement.dataset.theme = themeMode;
+    window.localStorage.setItem(themeStorageKey, themeMode);
+  }, [themeMode]);
+
+  return (
     <ThemeProvider theme={muiTheme}>
-      <CssBaseline />
+      <CssBaseline enableColorScheme />
       <ReactFlowProvider>
-        <GnmiMap themeMode={themeMode} onThemeToggle={toggleTheme} />
+        <AppShell themeMode={themeMode} onToggleTheme={toggleTheme} />
       </ReactFlowProvider>
     </ThemeProvider>
   );
 }
-
-export default App;
