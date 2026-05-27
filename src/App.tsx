@@ -26,6 +26,7 @@ import {
   useNodesInitialized,
   useReactFlow,
   type Edge,
+  type EdgeMouseHandler,
   type Node,
   type NodeChange,
   type NodeMouseHandler,
@@ -57,6 +58,34 @@ const edgeDefaults = {
     height: 16,
   },
 };
+
+function getEdgeColor(className: string | undefined, isSelected: boolean, isConnected: boolean) {
+  if (isSelected) {
+    return 'var(--ctp-mauve)';
+  }
+
+  if (isConnected) {
+    return 'var(--ctp-peach)';
+  }
+
+  if (className?.includes('edge-service')) {
+    return 'var(--ctp-teal)';
+  }
+
+  if (className?.includes('edge-rpc')) {
+    return 'var(--ctp-blue)';
+  }
+
+  if (className?.includes('edge-oneof')) {
+    return 'var(--ctp-mauve)';
+  }
+
+  if (className?.includes('edge-deprecated')) {
+    return 'var(--ctp-red)';
+  }
+
+  return 'var(--ctp-overlay0)';
+}
 
 const POSITIONS_FILE_URL = '/positions.json';
 const AUTO_LAYOUT_CONFIG = {
@@ -320,6 +349,7 @@ type GnmiMapProps = {
 function GnmiMap({ themeMode, onThemeToggle }: GnmiMapProps) {
   const [query, setQuery] = useState('');
   const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null);
+  const [selectedEdgeId, setSelectedEdgeId] = useState<string | null>(null);
   const [useSmartRouting, setUseSmartRouting] = useState(true);
   const [flowNodes, setFlowNodes] = useState<GnmiFlowNode[]>(gnmiNodes);
   const [positionsStatus, setPositionsStatus] = useState<'checking' | 'loaded' | 'missing' | 'invalid'>(
@@ -457,6 +487,19 @@ function GnmiMap({ themeMode, onThemeToggle }: GnmiMapProps) {
   }, [query]);
 
   const selectedNeighborhood = useMemo(() => {
+    if (selectedEdgeId) {
+      const selectedEdge = gnmiEdges.find((edge) => edge.id === selectedEdgeId);
+
+      if (!selectedEdge) {
+        return null;
+      }
+
+      return {
+        nodeIds: new Set([selectedEdge.source, selectedEdge.target]),
+        edgeIds: new Set([selectedEdge.id]),
+      };
+    }
+
     if (!selectedNodeId) {
       return null;
     }
@@ -473,7 +516,7 @@ function GnmiMap({ themeMode, onThemeToggle }: GnmiMapProps) {
     });
 
     return { nodeIds, edgeIds };
-  }, [selectedNodeId]);
+  }, [selectedEdgeId, selectedNodeId]);
 
   const nodes = useMemo(
     () =>
@@ -496,24 +539,37 @@ function GnmiMap({ themeMode, onThemeToggle }: GnmiMapProps) {
   const edges = useMemo(
     () =>
       gnmiEdges.map((edge) => {
+        const isSelectedEdge = edge.id === selectedEdgeId;
         const isConnected = Boolean(selectedNeighborhood?.edgeIds.has(edge.id));
         const isDimmed = Boolean(selectedNeighborhood && !selectedNeighborhood.edgeIds.has(edge.id));
+        const edgeColor = getEdgeColor(edge.className, isSelectedEdge, isConnected);
 
         return {
           ...edge,
           ...edgeDefaults,
-          type: useSmartRouting ? edge.type : 'smoothstep',
+          markerEnd: {
+            ...edgeDefaults.markerEnd,
+            color: edgeColor,
+          },
+          type: useSmartRouting && !isSelectedEdge ? edge.type : 'smoothstep',
+          selected: isSelectedEdge,
+          style: isSelectedEdge
+            ? { stroke: edgeColor, strokeWidth: 5 }
+            : isConnected
+              ? { stroke: edgeColor, strokeWidth: 4 }
+              : undefined,
           hidden: !visibleIds.has(edge.source) || !visibleIds.has(edge.target),
           className: [
             edge.className,
             isConnected ? 'edge-connected' : undefined,
+            isSelectedEdge ? 'edge-selected' : undefined,
             isDimmed ? 'edge-dimmed' : undefined,
           ]
             .filter(Boolean)
             .join(' '),
         };
       }),
-    [selectedNeighborhood, useSmartRouting, visibleIds],
+    [selectedEdgeId, selectedNeighborhood, useSmartRouting, visibleIds],
   );
 
   const onNodesChange = (changes: NodeChange<GnmiFlowNode>[]) => {
@@ -521,14 +577,23 @@ function GnmiMap({ themeMode, onThemeToggle }: GnmiMapProps) {
   };
 
   const onNodeClick: NodeMouseHandler = (_, node) => {
+    setSelectedEdgeId(null);
     setSelectedNodeId(node.id);
+  };
+
+  const onEdgeClick: EdgeMouseHandler = (_, edge) => {
+    setSelectedNodeId(null);
+    setSelectedEdgeId(edge.id);
   };
 
   const onNodeDragStart: OnNodeDrag<GnmiFlowNode> = () => {
     setUseSmartRouting(false);
   };
 
-  const onPaneClick = () => setSelectedNodeId(null);
+  const onPaneClick = () => {
+    setSelectedNodeId(null);
+    setSelectedEdgeId(null);
+  };
 
   return (
     <main className="app-shell" data-theme={themeMode}>
@@ -583,6 +648,7 @@ function GnmiMap({ themeMode, onThemeToggle }: GnmiMapProps) {
           snapGrid={[10, 10]}
           onNodesChange={onNodesChange}
           onNodeClick={onNodeClick}
+          onEdgeClick={onEdgeClick}
           onNodeDragStart={onNodeDragStart}
           onPaneClick={onPaneClick}
           proOptions={{ hideAttribution: true }}
