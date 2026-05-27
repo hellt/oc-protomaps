@@ -18,22 +18,43 @@ import {
 } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 import {
-  BookOpen,
-  ChevronDown,
-  ChevronRight,
-  ExternalLink,
-  EyeOff,
-  FileCode2,
-  FileDown,
-  Filter,
-  Focus,
-  GitBranch,
-  Moon,
-  RotateCcw,
-  Search,
-  Settings,
-  Sun,
-} from 'lucide-react';
+  Box,
+  Button,
+  Chip,
+  CssBaseline,
+  Divider,
+  IconButton,
+  InputAdornment,
+  ListItemIcon,
+  ListItemText,
+  Menu,
+  MenuItem,
+  Paper,
+  Stack,
+  Tab,
+  Tabs,
+  TextField,
+  ThemeProvider,
+  Tooltip,
+  Typography,
+} from '@mui/material';
+import CheckIcon from '@mui/icons-material/Check';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import CodeOutlinedIcon from '@mui/icons-material/CodeOutlined';
+import DarkModeOutlinedIcon from '@mui/icons-material/DarkModeOutlined';
+import DataObjectOutlinedIcon from '@mui/icons-material/DataObjectOutlined';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import FilterListIcon from '@mui/icons-material/FilterList';
+import FitScreenOutlinedIcon from '@mui/icons-material/FitScreenOutlined';
+import HubOutlinedIcon from '@mui/icons-material/HubOutlined';
+import MenuBookOutlinedIcon from '@mui/icons-material/MenuBookOutlined';
+import OpenInNewIcon from '@mui/icons-material/OpenInNew';
+import PictureAsPdfOutlinedIcon from '@mui/icons-material/PictureAsPdfOutlined';
+import RestartAltIcon from '@mui/icons-material/RestartAlt';
+import SearchIcon from '@mui/icons-material/Search';
+import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
+import VisibilityOffOutlinedIcon from '@mui/icons-material/VisibilityOffOutlined';
+import WbSunnyOutlinedIcon from '@mui/icons-material/WbSunnyOutlined';
 import {
   type MapEdge,
   type MapEdgeKind,
@@ -58,6 +79,7 @@ import {
   type ServiceMapDefinition,
 } from './serviceMaps';
 import { downloadMapPdf, downloadMapSvg, type MapExportInput } from './mapExport';
+import { createAppTheme, type ThemeMode } from './theme';
 
 const edgeStyleByKind: Record<MapEdgeKind, CSSProperties> = {
   rpc: { stroke: 'var(--edge-rpc)', strokeWidth: 2.2 },
@@ -79,8 +101,6 @@ const edgeTypes: EdgeTypes = {
 };
 
 const themeStorageKey = 'gnmi-map-theme';
-
-type ThemeMode = 'light' | 'dark';
 
 type NodePosition = {
   x: number;
@@ -306,7 +326,12 @@ function fieldMatches(field: MapField, query: string): boolean {
     .includes(query);
 }
 
-function AppShell() {
+type AppShellProps = {
+  themeMode: ThemeMode;
+  onToggleTheme: () => void;
+};
+
+function AppShell({ themeMode, onToggleTheme }: AppShellProps) {
   const { fitView } = useReactFlow<MapNode, RoutedMapEdge>();
   const initialServiceRoute = useMemo(() => getInitialServiceRoute(), []);
   const [activeServiceId, setActiveServiceId] = useState<ServiceId>(
@@ -319,7 +344,6 @@ function AppShell() {
     gribi: serviceMaps.gribi.defaultServiceChoiceId,
     [initialServiceRoute.serviceId]: initialServiceRoute.serviceChoiceId,
   }));
-  const [theme, setTheme] = useState<ThemeMode>(getInitialTheme);
   const [layoutResetCount, setLayoutResetCount] = useState(0);
   const [layoutPending, setLayoutPending] = useState(false);
   const [pdfExportPending, setPdfExportPending] = useState(false);
@@ -374,7 +398,7 @@ function AppShell() {
     activeServiceFocusNodeId !== defaultFocusNodeId;
   const layoutCacheKey = `${activeServiceId}:${activeServiceChoiceId}:${activeRpcFocusNodeId ?? 'all-rpcs'}:${compactLayout ? 'compact' : 'regular'}`;
   const query = queryValue.trim().toLowerCase();
-  const darkMode = theme === 'dark';
+  const darkMode = themeMode === 'dark';
   const visibleMap = useMemo(
     () =>
       activeService.getVisibleMap({
@@ -428,11 +452,6 @@ function AppShell() {
       );
     }
   }, [activeService, activeServiceChoiceId, activeServiceId]);
-
-  useEffect(() => {
-    document.documentElement.dataset.theme = theme;
-    window.localStorage.setItem(themeStorageKey, theme);
-  }, [theme]);
 
   useEffect(() => {
     let cancelled = false;
@@ -696,10 +715,6 @@ function AppShell() {
     fitView({ padding: 0.12, duration: 450 });
   }, [fitView]);
 
-  const toggleTheme = useCallback(() => {
-    setTheme((currentTheme) => (currentTheme === 'dark' ? 'light' : 'dark'));
-  }, []);
-
   const onNodesChange = useCallback((changes: NodeChange<MapNode>[]) => {
     setManualPositions((currentPositions) => {
       let nextPositions = currentPositions;
@@ -802,12 +817,12 @@ function AppShell() {
   const exportDisabled = layoutPending || pdfExportPending;
 
   return (
-    <div className="app-shell">
-      <header className="topbar">
-        <div className="brand">
+    <Box className="app-shell">
+      <Box component="header" className="topbar">
+        <Box className="brand">
           <span className="brand-kicker">{serviceSubtitle(activeService)}</span>
           <h1>{activeService.title}</h1>
-        </div>
+        </Box>
 
         <ServiceNav activeServiceId={activeServiceId} onSelect={setActiveServiceId} />
 
@@ -823,32 +838,61 @@ function AppShell() {
           onSelect={selectRpcFilter}
         />
 
-        <div className="toolbar" role="toolbar" aria-label="Map controls">
-          <label className="search-box">
-            <Search size={16} aria-hidden="true" />
-            <input
-              value={queryValue}
-              onChange={(event) => setQueryValue(event.target.value)}
-              placeholder="Search messages, fields, enums"
-              type="search"
-            />
-          </label>
+        <Stack className="toolbar" direction="row" role="toolbar" aria-label="Map controls">
+          <TextField
+            className="map-search"
+            value={queryValue}
+            onChange={(event) => setQueryValue(event.target.value)}
+            placeholder="Search messages, fields, enums"
+            type="search"
+            size="small"
+            hiddenLabel
+            slotProps={{
+              input: {
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <SearchIcon sx={{ fontSize: 18 }} />
+                  </InputAdornment>
+                ),
+              },
+            }}
+            sx={{
+              flex: '1 1 180px',
+              width: { xs: '100%', md: 'clamp(140px, 18vw, 280px)' },
+              minWidth: { xs: 0, md: 130 },
+              '& .MuiInputBase-root': {
+                height: 38,
+              },
+            }}
+          />
 
-          <button
-            className="theme-switch"
-            type="button"
-            role="switch"
-            aria-checked={darkMode}
-            aria-label={`Switch to ${darkMode ? 'light' : 'dark'} mode`}
-            title={`Switch to ${darkMode ? 'light' : 'dark'} mode`}
-            onClick={toggleTheme}
-          >
-            <span className="theme-switch-track" aria-hidden="true">
-              <Sun className="theme-switch-icon theme-switch-icon-sun" size={15} />
-              <Moon className="theme-switch-icon theme-switch-icon-moon" size={15} />
-              <span className="theme-switch-thumb" />
-            </span>
-          </button>
+          <Tooltip title={`Switch to ${darkMode ? 'light' : 'dark'} mode`}>
+            <IconButton
+              type="button"
+              aria-label={`Switch to ${darkMode ? 'light' : 'dark'} mode`}
+              aria-pressed={darkMode}
+              onClick={onToggleTheme}
+              sx={{
+                flex: '0 0 auto',
+                width: 38,
+                height: 38,
+                border: '1px solid var(--line)',
+                bgcolor: 'var(--panel)',
+                color: darkMode ? 'var(--switch-sun)' : 'var(--switch-moon)',
+                '&:hover': {
+                  borderColor: 'var(--focus)',
+                  bgcolor: 'var(--panel)',
+                  color: 'var(--focus)',
+                },
+              }}
+            >
+              {darkMode ? (
+                <WbSunnyOutlinedIcon sx={{ fontSize: 19 }} />
+              ) : (
+                <DarkModeOutlinedIcon sx={{ fontSize: 19 }} />
+              )}
+            </IconButton>
+          </Tooltip>
 
           <ViewOptionsMenu
             onFit={fit}
@@ -863,8 +907,8 @@ function AppShell() {
             exportDisabled={exportDisabled}
             pdfExportPending={pdfExportPending}
           />
-        </div>
-      </header>
+        </Stack>
+      </Box>
 
       <main className="map-stage">
         <ReactFlow<MapNode, RoutedMapEdge>
@@ -912,7 +956,7 @@ function AppShell() {
           totalEdges={visibleMap.edges.length}
         />
       </main>
-    </div>
+    </Box>
   );
 }
 
@@ -923,24 +967,26 @@ type ServiceNavProps = {
 
 function ServiceNav({ activeServiceId, onSelect }: ServiceNavProps) {
   return (
-    <nav className="service-nav" aria-label="Service maps">
-      {serviceMapOrder.map((serviceId) => {
-        const serviceMap = serviceMaps[serviceId];
-        const active = serviceId === activeServiceId;
-
-        return (
-          <button
-            key={serviceId}
-            className={`service-tab ${active ? 'is-active' : ''}`}
-            type="button"
-            aria-pressed={active}
-            onClick={() => onSelect(serviceId)}
-          >
-            <span>{serviceMap.label}</span>
-          </button>
-        );
-      })}
-    </nav>
+    <Tabs
+      className="service-nav"
+      value={activeServiceId}
+      onChange={(_, serviceId: ServiceId) => onSelect(serviceId)}
+      aria-label="Service maps"
+      variant="scrollable"
+      scrollButtons="auto"
+      sx={{
+        flex: '0 1 auto',
+        minWidth: 0,
+        p: '3px',
+        border: '1px solid var(--line)',
+        borderRadius: '8px',
+        bgcolor: 'var(--panel-soft)',
+      }}
+    >
+      {serviceMapOrder.map((serviceId) => (
+        <Tab key={serviceId} value={serviceId} label={serviceMaps[serviceId].label} />
+      ))}
+    </Tabs>
   );
 }
 
@@ -951,7 +997,6 @@ type ServiceChoiceMenuProps = {
 };
 
 function ServiceChoiceMenu({ serviceMap, value, onSelect }: ServiceChoiceMenuProps) {
-  const menuRef = useRef<HTMLDivElement>(null);
   const groups = useMemo(
     () => groupedServiceChoices(serviceMap.serviceChoices),
     [serviceMap.serviceChoices],
@@ -960,47 +1005,24 @@ function ServiceChoiceMenu({ serviceMap, value, onSelect }: ServiceChoiceMenuPro
   const selectedGroup =
     groups.find((group) => group.choices.some((choice) => choice.id === selectedChoice.id)) ??
     groups[0];
-  const [open, setOpen] = useState(false);
+  const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
   const [activeGroupKey, setActiveGroupKey] = useState<string | null>(
     selectedGroup?.key ?? null,
   );
   const activeGroup =
     groups.find((group) => group.key === activeGroupKey) ?? selectedGroup ?? groups[0];
+  const open = Boolean(anchorEl);
 
   useEffect(() => {
-    setOpen(false);
+    setAnchorEl(null);
     setActiveGroupKey(selectedGroup?.key ?? null);
   }, [selectedGroup?.key, serviceMap.id]);
-
-  useEffect(() => {
-    if (!open) {
-      return;
-    }
-
-    const closeOnOutsidePointer = (event: PointerEvent) => {
-      if (!menuRef.current?.contains(event.target as Node)) {
-        setOpen(false);
-      }
-    };
-    const closeOnEscape = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
-        setOpen(false);
-      }
-    };
-
-    document.addEventListener('pointerdown', closeOnOutsidePointer);
-    document.addEventListener('keydown', closeOnEscape);
-
-    return () => {
-      document.removeEventListener('pointerdown', closeOnOutsidePointer);
-      document.removeEventListener('keydown', closeOnEscape);
-    };
-  }, [open]);
 
   if (serviceMap.serviceChoices.length <= 1) {
     return null;
   }
 
+  const triggerId = `${serviceMap.id}-choice-trigger`;
   const selectedDisplayLabel = displayServiceChoiceLabel(selectedChoice.label);
   const activeGroupHasVersion = activeGroup?.choices.some((choice) => choice.version);
   const activeGroupSelectedChoice = activeGroup?.choices.find(
@@ -1011,75 +1033,114 @@ function ServiceChoiceMenu({ serviceMap, value, onSelect }: ServiceChoiceMenuPro
 
   const selectChoice = (serviceChoiceId: string) => {
     onSelect(serviceChoiceId);
-    setOpen(false);
+    setAnchorEl(null);
   };
 
   return (
-    <div className="service-choice" ref={menuRef}>
-      <button
-        className="service-choice-trigger"
-        type="button"
+    <Box className="service-choice">
+      <Button
+        id={triggerId}
+        variant="outlined"
+        color="inherit"
         aria-haspopup="menu"
         aria-expanded={open}
+        aria-controls={open ? `${serviceMap.id}-choice-menu` : undefined}
         aria-label={`${serviceMap.label} service`}
-        onClick={() => {
-          setOpen((currentOpen) => !currentOpen);
+        endIcon={<ExpandMoreIcon sx={{ fontSize: 18 }} />}
+        onClick={(event) => {
+          setAnchorEl((currentAnchor) => (currentAnchor ? null : event.currentTarget));
           setActiveGroupKey(selectedGroup?.key ?? groups[0]?.key ?? null);
         }}
+        sx={{
+          justifyContent: 'space-between',
+          width: '100%',
+          height: 38,
+          minWidth: 0,
+          px: 1.25,
+          borderColor: 'var(--line)',
+          bgcolor: 'var(--panel)',
+          color: 'var(--ink)',
+          '&:hover': {
+            borderColor: 'var(--focus)',
+            bgcolor: 'var(--panel)',
+          },
+        }}
       >
-        <span className="service-choice-current">
-          <span className="service-choice-name">{selectedDisplayLabel}</span>
+        <Box className="service-choice-current" component="span">
+          <Box className="service-choice-name" component="span">
+            {selectedDisplayLabel}
+          </Box>
           {selectedChoice.version ? (
-            <span className="service-choice-version">{selectedChoice.version}</span>
+            <Chip
+              component="span"
+              label={selectedChoice.version}
+              size="small"
+              sx={{
+                flex: '0 0 auto',
+                bgcolor: 'var(--panel-soft)',
+                color: 'var(--muted)',
+              }}
+            />
           ) : null}
-        </span>
-        <ChevronDown size={15} aria-hidden="true" />
-      </button>
+        </Box>
+      </Button>
 
-      {open ? (
-        <div className="service-choice-popover" role="menu" aria-label={`${serviceMap.label} maps`}>
-          <div className="service-choice-list">
+      <Menu
+        id={`${serviceMap.id}-choice-menu`}
+        anchorEl={anchorEl}
+        open={open}
+        onClose={() => setAnchorEl(null)}
+        slotProps={{
+          list: {
+            'aria-labelledby': triggerId,
+            dense: true,
+          },
+          paper: {
+            sx: {
+              mt: 0.75,
+              maxWidth: 'min(420px, calc(100vw - 24px))',
+            },
+          },
+        }}
+      >
+        <Box className="service-choice-popover" role="presentation">
+          <Box className="service-choice-list">
             {groups.map((group) => {
               const groupSelected = group.choices.some(
                 (choice) => choice.id === selectedChoice.id,
               );
               const groupHasVersion = group.choices.some((choice) => choice.version);
-              const itemClassName = [
-                'service-choice-item',
-                group.key === activeGroup?.key ? 'is-active' : '',
-                groupSelected ? 'is-selected' : '',
-              ]
-                .filter(Boolean)
-                .join(' ');
+              const active = group.key === activeGroup?.key;
 
               return (
-                <button
+                <MenuItem
                   key={group.key}
-                  className={itemClassName}
-                  type="button"
-                  role="menuitem"
+                  selected={active || groupSelected}
                   aria-haspopup={groupHasVersion ? 'menu' : undefined}
                   aria-expanded={groupHasVersion ? group.key === activeGroup?.key : undefined}
                   aria-current={groupSelected ? 'true' : undefined}
                   onClick={() => {
-                    if (groupHasVersion) {
-                      selectChoice(group.choices[0].id);
-                    } else {
-                      selectChoice(group.choices[0].id);
-                    }
+                    selectChoice(group.choices[0].id);
                   }}
                   onFocus={() => setActiveGroupKey(group.key)}
                   onMouseEnter={() => setActiveGroupKey(group.key)}
+                  sx={{ minWidth: 166 }}
                 >
-                  <span className="service-choice-name">{group.displayLabel}</span>
-                  {groupHasVersion ? <ChevronRight size={14} aria-hidden="true" /> : null}
-                </button>
+                  <ListItemText
+                    primary={
+                      <Typography component="span" noWrap sx={{ fontSize: 13, fontWeight: 800 }}>
+                        {group.displayLabel}
+                      </Typography>
+                    }
+                  />
+                  {groupHasVersion ? <ChevronRightIcon sx={{ fontSize: 18 }} /> : null}
+                </MenuItem>
               );
             })}
-          </div>
+          </Box>
 
           {activeGroup && activeGroupHasVersion ? (
-            <div
+            <Box
               className="service-choice-submenu"
               role="menu"
               aria-label={`${activeGroup.displayLabel} versions`}
@@ -1087,32 +1148,28 @@ function ServiceChoiceMenu({ serviceMap, value, onSelect }: ServiceChoiceMenuPro
               {activeGroup.choices.map((choice) => {
                 const selected = choice.id === selectedChoice.id;
                 const preselected = choice.id === activeGroupPreselectedChoice?.id;
-                const versionItemClassName = [
-                  'service-choice-version-item',
-                  selected ? 'is-selected' : '',
-                  !selected && preselected ? 'is-preselected' : '',
-                ]
-                  .filter(Boolean)
-                  .join(' ');
 
                 return (
-                  <button
+                  <MenuItem
                     key={choice.id}
-                    className={versionItemClassName}
-                    type="button"
-                    role="menuitemradio"
+                    selected={selected || (!selected && preselected)}
                     aria-checked={selected}
                     onClick={() => selectChoice(choice.id)}
+                    sx={{
+                      justifyContent: 'center',
+                      minWidth: 62,
+                      px: 1,
+                    }}
                   >
                     <span>{choice.version ?? 'Current'}</span>
-                  </button>
+                  </MenuItem>
                 );
               })}
-            </div>
+            </Box>
           ) : null}
-        </div>
-      ) : null}
-    </div>
+        </Box>
+      </Menu>
+    </Box>
   );
 }
 
@@ -1123,41 +1180,16 @@ type RpcFilterMenuProps = {
 };
 
 function RpcFilterMenu({ choices, value, onSelect }: RpcFilterMenuProps) {
-  const menuRef = useRef<HTMLDivElement>(null);
-  const [open, setOpen] = useState(false);
+  const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
   const selectedChoice = choices.find((choice) => choice.id === value) ?? null;
   const selectedLabel = selectedChoice
     ? displayServiceChoiceLabel(selectedChoice.label)
     : 'All RPCs';
+  const open = Boolean(anchorEl);
 
   useEffect(() => {
-    setOpen(false);
+    setAnchorEl(null);
   }, [choices, value]);
-
-  useEffect(() => {
-    if (!open) {
-      return;
-    }
-
-    const closeOnOutsidePointer = (event: PointerEvent) => {
-      if (!menuRef.current?.contains(event.target as Node)) {
-        setOpen(false);
-      }
-    };
-    const closeOnEscape = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
-        setOpen(false);
-      }
-    };
-
-    document.addEventListener('pointerdown', closeOnOutsidePointer);
-    document.addEventListener('keydown', closeOnEscape);
-
-    return () => {
-      document.removeEventListener('pointerdown', closeOnOutsidePointer);
-      document.removeEventListener('keydown', closeOnEscape);
-    };
-  }, [open]);
 
   if (!choices.length) {
     return null;
@@ -1165,54 +1197,100 @@ function RpcFilterMenu({ choices, value, onSelect }: RpcFilterMenuProps) {
 
   const selectChoice = (rpcFilterId: string | null) => {
     onSelect(rpcFilterId);
-    setOpen(false);
+    setAnchorEl(null);
   };
 
   return (
-    <div className="rpc-filter" ref={menuRef}>
-      <button
-        className="rpc-filter-trigger"
-        type="button"
+    <Box className="rpc-filter">
+      <Button
+        id="rpc-filter-trigger"
+        variant="outlined"
+        color="inherit"
         aria-haspopup="menu"
         aria-expanded={open}
+        aria-controls={open ? 'rpc-filter-menu' : undefined}
         aria-label="RPC filter"
-        onClick={() => setOpen((currentOpen) => !currentOpen)}
+        startIcon={<FilterListIcon sx={{ fontSize: 18 }} />}
+        endIcon={<ExpandMoreIcon sx={{ fontSize: 18 }} />}
+        onClick={(event) => setAnchorEl((currentAnchor) => (currentAnchor ? null : event.currentTarget))}
+        sx={{
+          justifyContent: 'space-between',
+          width: '100%',
+          height: 38,
+          minWidth: 0,
+          px: 1.25,
+          borderColor: 'var(--line)',
+          bgcolor: 'var(--panel)',
+          color: 'var(--ink)',
+          '& .MuiButton-startIcon': { mr: 0.75 },
+          '& .MuiButton-endIcon': { ml: 0.75 },
+          '&:hover': {
+            borderColor: 'var(--focus)',
+            bgcolor: 'var(--panel)',
+          },
+        }}
       >
-        <Filter size={15} aria-hidden="true" />
-        <span className="rpc-filter-current">{selectedLabel}</span>
-        <ChevronDown size={15} aria-hidden="true" />
-      </button>
+        <Box className="rpc-filter-current" component="span">
+          {selectedLabel}
+        </Box>
+      </Button>
 
-      {open ? (
-        <div className="rpc-filter-popover" role="menu" aria-label="RPC filter">
-          <button
-            className={`rpc-filter-item ${selectedChoice ? '' : 'is-selected'}`}
-            type="button"
-            role="menuitemradio"
-            aria-checked={!selectedChoice}
-            onClick={() => selectChoice(null)}
-          >
-            <span>All RPCs</span>
-          </button>
+      <Menu
+        id="rpc-filter-menu"
+        anchorEl={anchorEl}
+        open={open}
+        onClose={() => setAnchorEl(null)}
+        slotProps={{
+          list: {
+            'aria-labelledby': 'rpc-filter-trigger',
+            dense: true,
+          },
+          paper: {
+            sx: {
+              mt: 0.75,
+              minWidth: 190,
+              maxHeight: 'min(430px, calc(100vh - 120px))',
+            },
+          },
+        }}
+      >
+        <MenuItem
+          selected={!selectedChoice}
+          role="menuitemradio"
+          aria-checked={!selectedChoice}
+          onClick={() => selectChoice(null)}
+        >
+          <ListItemText
+            primary={
+              <Typography component="span" noWrap sx={{ fontSize: 13, fontWeight: 800 }}>
+                All RPCs
+              </Typography>
+            }
+          />
+        </MenuItem>
 
-          {choices.map((choice) => {
-            const selected = choice.id === selectedChoice?.id;
-            return (
-              <button
-                key={choice.id}
-                className={`rpc-filter-item ${selected ? 'is-selected' : ''}`}
-                type="button"
-                role="menuitemradio"
-                aria-checked={selected}
-                onClick={() => selectChoice(choice.id)}
-              >
-                <span>{displayServiceChoiceLabel(choice.label)}</span>
-              </button>
-            );
-          })}
-        </div>
-      ) : null}
-    </div>
+        {choices.map((choice) => {
+          const selected = choice.id === selectedChoice?.id;
+          return (
+            <MenuItem
+              key={choice.id}
+              selected={selected}
+              role="menuitemradio"
+              aria-checked={selected}
+              onClick={() => selectChoice(choice.id)}
+            >
+              <ListItemText
+                primary={
+                  <Typography component="span" noWrap sx={{ fontSize: 13, fontWeight: 800 }}>
+                    {displayServiceChoiceLabel(choice.label)}
+                  </Typography>
+                }
+              />
+            </MenuItem>
+          );
+        })}
+      </Menu>
+    </Box>
   );
 }
 
@@ -1243,134 +1321,133 @@ function ViewOptionsMenu({
   exportDisabled,
   pdfExportPending,
 }: ViewOptionsMenuProps) {
-  const menuRef = useRef<HTMLDivElement>(null);
-  const [open, setOpen] = useState(false);
-
-  useEffect(() => {
-    if (!open) {
-      return;
-    }
-
-    const closeOnOutsidePointer = (event: PointerEvent) => {
-      if (!menuRef.current?.contains(event.target as Node)) {
-        setOpen(false);
-      }
-    };
-    const closeOnEscape = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
-        setOpen(false);
-      }
-    };
-
-    document.addEventListener('pointerdown', closeOnOutsidePointer);
-    document.addEventListener('keydown', closeOnEscape);
-
-    return () => {
-      document.removeEventListener('pointerdown', closeOnOutsidePointer);
-      document.removeEventListener('keydown', closeOnEscape);
-    };
-  }, [open]);
+  const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
+  const open = Boolean(anchorEl);
 
   const fit = () => {
     onFit();
-    setOpen(false);
+    setAnchorEl(null);
   };
   const resetLayout = () => {
     onResetLayout();
-    setOpen(false);
+    setAnchorEl(null);
   };
   const exportPdf = () => {
     void onExportPdf();
-    setOpen(false);
+    setAnchorEl(null);
   };
   const exportSvg = () => {
     onExportSvg();
-    setOpen(false);
+    setAnchorEl(null);
   };
 
   return (
-    <div className="view-options" ref={menuRef}>
-      <button
-        className="tool-button view-options-trigger"
-        type="button"
-        aria-haspopup="menu"
-        aria-expanded={open}
-        aria-label="View options"
-        title="View options"
-        onClick={() => setOpen((currentOpen) => !currentOpen)}
+    <Box className="view-options">
+      <Tooltip title="View options">
+        <IconButton
+          id="view-options-trigger"
+          className="view-options-trigger"
+          aria-haspopup="menu"
+          aria-expanded={open}
+          aria-controls={open ? 'view-options-menu' : undefined}
+          aria-label="View options"
+          onClick={(event) => setAnchorEl((currentAnchor) => (currentAnchor ? null : event.currentTarget))}
+          sx={{
+            width: 38,
+            height: 38,
+            border: '1px solid var(--line)',
+            bgcolor: 'var(--panel)',
+            color: 'var(--ink)',
+            '&:hover': {
+              borderColor: 'var(--focus)',
+              bgcolor: 'var(--panel)',
+              color: 'var(--focus)',
+            },
+          }}
+        >
+          <SettingsOutlinedIcon sx={{ fontSize: 19 }} />
+        </IconButton>
+      </Tooltip>
+
+      <Menu
+        id="view-options-menu"
+        anchorEl={anchorEl}
+        open={open}
+        onClose={() => setAnchorEl(null)}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+        slotProps={{
+          list: {
+            'aria-labelledby': 'view-options-trigger',
+            dense: true,
+          },
+          paper: {
+            sx: {
+              mt: 0.75,
+              minWidth: 186,
+            },
+          },
+        }}
       >
-        <Settings size={16} aria-hidden="true" />
-      </button>
+        <MenuItem onClick={fit}>
+          <ListItemIcon>
+            <FitScreenOutlinedIcon fontSize="small" />
+          </ListItemIcon>
+          <ListItemText primary="Fit" />
+        </MenuItem>
 
-      {open ? (
-        <div className="view-options-popover" role="menu" aria-label="View options">
-          <button className="view-option-item" type="button" role="menuitem" onClick={fit}>
-            <Focus size={16} aria-hidden="true" />
-            <span>Fit</span>
-          </button>
+        <MenuItem onClick={resetLayout} disabled={layoutPending}>
+          <ListItemIcon>
+            <RestartAltIcon fontSize="small" />
+          </ListItemIcon>
+          <ListItemText primary="Reset" />
+        </MenuItem>
 
-          <button
-            className="view-option-item"
-            type="button"
-            role="menuitem"
-            onClick={resetLayout}
-            disabled={layoutPending}
-          >
-            <RotateCcw size={16} aria-hidden="true" />
-            <span>Reset</span>
-          </button>
+        <MenuItem
+          selected={showExtensions}
+          role="menuitemcheckbox"
+          aria-checked={showExtensions}
+          onClick={onToggleExtensions}
+          title="Show extension fields and extension-detail relationships."
+        >
+          <ListItemIcon>
+            <HubOutlinedIcon fontSize="small" />
+          </ListItemIcon>
+          <ListItemText primary="Extensions" />
+          {showExtensions ? <CheckIcon sx={{ fontSize: 16 }} /> : null}
+        </MenuItem>
 
-          <button
-            className={`view-option-item ${showExtensions ? 'is-active' : ''}`}
-            type="button"
-            role="menuitemcheckbox"
-            aria-checked={showExtensions}
-            onClick={onToggleExtensions}
-            title="Show extension fields and extension-detail relationships."
-          >
-            <GitBranch size={16} aria-hidden="true" />
-            <span>Extensions</span>
-          </button>
+        <MenuItem
+          selected={showDeprecated}
+          role="menuitemcheckbox"
+          aria-checked={showDeprecated}
+          onClick={onToggleDeprecated}
+          title="Show deprecated proto fields and deprecated message types."
+        >
+          <ListItemIcon>
+            <VisibilityOffOutlinedIcon fontSize="small" />
+          </ListItemIcon>
+          <ListItemText primary="Deprecated" />
+          {showDeprecated ? <CheckIcon sx={{ fontSize: 16 }} /> : null}
+        </MenuItem>
 
-          <button
-            className={`view-option-item ${showDeprecated ? 'is-active' : ''}`}
-            type="button"
-            role="menuitemcheckbox"
-            aria-checked={showDeprecated}
-            onClick={onToggleDeprecated}
-            title="Show deprecated proto fields and deprecated message types."
-          >
-            <EyeOff size={16} aria-hidden="true" />
-            <span>Deprecated</span>
-          </button>
+        <Divider sx={{ my: 0.5 }} />
 
-          <div className="view-options-separator" role="separator" />
+        <MenuItem onClick={exportPdf} disabled={exportDisabled} aria-busy={pdfExportPending}>
+          <ListItemIcon>
+            <PictureAsPdfOutlinedIcon fontSize="small" />
+          </ListItemIcon>
+          <ListItemText primary="Export PDF" />
+        </MenuItem>
 
-          <button
-            className="view-option-item"
-            type="button"
-            role="menuitem"
-            onClick={exportPdf}
-            disabled={exportDisabled}
-            aria-busy={pdfExportPending}
-          >
-            <FileDown size={16} aria-hidden="true" />
-            <span>Export PDF</span>
-          </button>
-
-          <button
-            className="view-option-item"
-            type="button"
-            role="menuitem"
-            onClick={exportSvg}
-            disabled={exportDisabled}
-          >
-            <FileCode2 size={16} aria-hidden="true" />
-            <span>Export SVG</span>
-          </button>
-        </div>
-      ) : null}
-    </div>
+        <MenuItem onClick={exportSvg} disabled={exportDisabled}>
+          <ListItemIcon>
+            <DataObjectOutlinedIcon fontSize="small" />
+          </ListItemIcon>
+          <ListItemText primary="Export SVG" />
+        </MenuItem>
+      </Menu>
+    </Box>
   );
 }
 
@@ -1415,12 +1492,12 @@ function SchemaNode({ data, selected }: NodeProps<MapNode>) {
         <div className="node-links nodrag nopan">
           {data.protoUrl ? (
             <a href={data.protoUrl} title="Proto definition" target="_blank" rel="noreferrer">
-              <FileCode2 size={14} aria-hidden="true" />
+              <CodeOutlinedIcon sx={{ fontSize: 14 }} aria-hidden="true" />
             </a>
           ) : null}
           {data.specUrl ? (
             <a href={data.specUrl} title="Service documentation" target="_blank" rel="noreferrer">
-              <BookOpen size={14} aria-hidden="true" />
+              <MenuBookOutlinedIcon sx={{ fontSize: 14 }} aria-hidden="true" />
             </a>
           ) : null}
         </div>
@@ -1858,38 +1935,60 @@ type InspectorProps = {
 function Inspector({ node, serviceLabel, serviceChoice, totalNodes, totalEdges }: InspectorProps) {
   if (!node) {
     return (
-      <aside className="inspector">
-        <span className="inspector-kicker">{serviceLabel}</span>
-        <h2>{totalNodes} nodes</h2>
-        <p>
+      <Paper component="aside" className="inspector" elevation={0} square>
+        <Typography className="inspector-kicker" component="span">
+          {serviceLabel}
+        </Typography>
+        <Typography variant="h6" component="h2">
+          {totalNodes} nodes
+        </Typography>
+        <Typography variant="body2" color="text.secondary">
           {totalEdges} relationships across {serviceChoice.label} RPCs, messages, enums, and
           external types.
-        </p>
-      </aside>
+        </Typography>
+      </Paper>
     );
   }
 
   return (
-    <aside className="inspector">
-      <span className="inspector-kicker">{node.data.kind}</span>
-      <h2>{node.data.label}</h2>
+    <Paper component="aside" className="inspector" elevation={0} square>
+      <Typography className="inspector-kicker" component="span">
+        {node.data.kind}
+      </Typography>
+      <Typography variant="h6" component="h2">
+        {node.data.label}
+      </Typography>
 
-      <div className="inspector-actions">
+      <Stack className="inspector-actions" direction="row" sx={{ flexWrap: 'wrap' }}>
         {node.data.protoUrl ? (
-          <a href={node.data.protoUrl} target="_blank" rel="noreferrer">
-            <FileCode2 size={15} aria-hidden="true" />
+          <Button
+            component="a"
+            href={node.data.protoUrl}
+            target="_blank"
+            rel="noreferrer"
+            size="small"
+            variant="outlined"
+            startIcon={<CodeOutlinedIcon fontSize="small" />}
+            endIcon={<OpenInNewIcon sx={{ fontSize: 14 }} />}
+          >
             Proto
-            <ExternalLink size={13} aria-hidden="true" />
-          </a>
+          </Button>
         ) : null}
         {node.data.specUrl ? (
-          <a href={node.data.specUrl} target="_blank" rel="noreferrer">
-            <BookOpen size={15} aria-hidden="true" />
+          <Button
+            component="a"
+            href={node.data.specUrl}
+            target="_blank"
+            rel="noreferrer"
+            size="small"
+            variant="outlined"
+            startIcon={<MenuBookOutlinedIcon fontSize="small" />}
+            endIcon={<OpenInNewIcon sx={{ fontSize: 14 }} />}
+          >
             Docs
-            <ExternalLink size={13} aria-hidden="true" />
-          </a>
+          </Button>
         ) : null}
-      </div>
+      </Stack>
 
       {node.data.fields?.length ? (
         <div className="inspector-fields">
@@ -1901,16 +2000,32 @@ function Inspector({ node, serviceLabel, serviceChoice, totalNodes, totalEdges }
           ))}
         </div>
       ) : (
-        <p>No fields.</p>
+        <Typography variant="body2" color="text.secondary">
+          No fields.
+        </Typography>
       )}
-    </aside>
+    </Paper>
   );
 }
 
 export default function App() {
+  const [themeMode, setThemeMode] = useState<ThemeMode>(getInitialTheme);
+  const muiTheme = useMemo(() => createAppTheme(themeMode), [themeMode]);
+  const toggleTheme = useCallback(() => {
+    setThemeMode((currentTheme) => (currentTheme === 'dark' ? 'light' : 'dark'));
+  }, []);
+
+  useEffect(() => {
+    document.documentElement.dataset.theme = themeMode;
+    window.localStorage.setItem(themeStorageKey, themeMode);
+  }, [themeMode]);
+
   return (
-    <ReactFlowProvider>
-      <AppShell />
-    </ReactFlowProvider>
+    <ThemeProvider theme={muiTheme}>
+      <CssBaseline enableColorScheme />
+      <ReactFlowProvider>
+        <AppShell themeMode={themeMode} onToggleTheme={toggleTheme} />
+      </ReactFlowProvider>
+    </ThemeProvider>
   );
 }
