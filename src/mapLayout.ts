@@ -527,10 +527,14 @@ function compactLaneRoute(
   const xMax = Math.max(firstBendX, lastBendX);
   const candidateBoxes = boxes.filter((box) => rangesOverlap(box.x, box.x + box.width, xMin, xMax));
   const yCandidates = uniqueSortedNumbers(
-    candidateBoxes.flatMap((box) => [
-      box.y - compactRoutePadding,
-      box.y + box.height + compactRoutePadding,
-    ]),
+    [
+      start.y,
+      end.y,
+      ...candidateBoxes.flatMap((box) => [
+        box.y - compactRoutePadding,
+        box.y + box.height + compactRoutePadding,
+      ]),
+    ],
   ).sort((first, second) => {
     const firstRoute = compactLaneRoutePoints(start, end, firstBendX, lastBendX, first);
     const secondRoute = compactLaneRoutePoints(start, end, firstBendX, lastBendX, second);
@@ -565,10 +569,14 @@ function compactLaneRoutePoints(
 }
 
 function routeCost(points: RoutePoint[]): number {
-  return routeSegments(points).reduce(
-    (distance, [start, end]) => distance + manhattanDistance(start, end),
+  const segments = routeSegments(points);
+  const distance = segments.reduce(
+    (totalDistance, [start, end]) => totalDistance + manhattanDistance(start, end),
     0,
   );
+  const bends = Math.max(0, segments.length - 1);
+
+  return distance + bends * routeBendPenalty;
 }
 
 function horizontalLaneBetween(left: number, right: number): number {
