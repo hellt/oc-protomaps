@@ -10,8 +10,8 @@ import {
   getGribiVisibleMap,
   gnoiMapSource,
   gnsiMapSource,
-  gribiMapNodes,
   gribiMapSource,
+  gribiMapVariants,
 } from './generatedServiceMaps';
 import type { VisibleMap, VisibleMapOptions } from './protoMapTypes';
 
@@ -21,6 +21,8 @@ export type ServiceMapChoice = {
   id: string;
   label: string;
   symbol: string;
+  focusNodeId?: string;
+  sourceTag?: string;
   version?: string;
 };
 
@@ -44,77 +46,92 @@ const gnmiServiceNodeId = 'service-gnmi';
 const gribiServiceNodeId = 'service-gribi-g-ribi';
 
 function generatedChoices(
-  services: Array<{ nodeId: string; name: string; symbol: string; version?: string }>,
+  services: Array<{
+    nodeId: string;
+    name: string;
+    symbol: string;
+    choiceId?: string;
+    focusNodeId?: string;
+    sourceTag?: string;
+    version?: string;
+  }>,
 ): ServiceMapChoice[] {
   return services.map((service) => ({
-    id: service.nodeId,
+    id: service.choiceId ?? service.nodeId,
     label: service.name,
     symbol: service.symbol,
+    focusNodeId: service.focusNodeId ?? service.nodeId,
+    ...(service.sourceTag ? { sourceTag: service.sourceTag } : {}),
     ...(service.version ? { version: service.version } : {}),
   }));
 }
 
-function rpcChoicesFromServiceNode(
-  nodes: MapNode[],
+function versionedRpcChoicesFromServiceVariants(
+  variants: Array<{ tag: string; nodes: MapNode[] }>,
   serviceNodeId: string,
-  allLabel: string,
 ): ServiceMapChoice[] {
-  const serviceNode = nodes.find((node) => node.id === serviceNodeId);
-  if (!serviceNode) {
-    return [];
-  }
+  const latestServiceNode = variants[0]?.nodes.find((node) => node.id === serviceNodeId);
+  const latestFields = latestServiceNode?.data.fields ?? [];
 
-  const serviceSymbol = serviceNode.data.sourceSymbol ?? serviceNode.data.label;
+  return latestFields
+    .filter((field) => field.ref)
+    .flatMap((field) =>
+      variants.flatMap((variant) => {
+        const serviceNode = variant.nodes.find((node) => node.id === serviceNodeId);
+        const variantField = serviceNode?.data.fields?.find(
+          (candidateField) => candidateField.ref === field.ref,
+        );
+        if (!serviceNode || !variantField?.ref) {
+          return [];
+        }
 
-  return [
-    {
-      id: serviceNodeId,
-      label: allLabel,
-      symbol: serviceSymbol,
-    },
-    ...(serviceNode.data.fields ?? [])
-      .filter((field) => field.ref)
-      .map((field) => ({
-        id: field.ref ?? field.id,
-        label: field.name,
-        symbol: `${serviceSymbol}.${field.name}`,
-      })),
-  ];
+        const serviceSymbol = serviceNode.data.sourceSymbol ?? serviceNode.data.label;
+        return {
+          id: `${variantField.ref}@${variant.tag}`,
+          label: variantField.name,
+          symbol: `${serviceSymbol}.${variantField.name}`,
+          focusNodeId: variantField.ref,
+          sourceTag: variant.tag,
+          version: variant.tag,
+        };
+      }),
+    );
 }
 
-const gnmiServiceChoices: ServiceMapChoice[] = [
+const gnmiRpcChoices: Array<Pick<ServiceMapChoice, 'focusNodeId' | 'label'>> = [
   {
-    id: gnmiServiceNodeId,
-    label: 'All RPCs',
-    symbol: 'gnmi.gNMI',
-  },
-  {
-    id: 'rpc-capabilities',
+    focusNodeId: 'rpc-capabilities',
     label: 'Capabilities',
-    symbol: 'gnmi.gNMI.Capabilities',
   },
   {
-    id: 'rpc-get',
+    focusNodeId: 'rpc-get',
     label: 'Get',
-    symbol: 'gnmi.gNMI.Get',
   },
   {
-    id: 'rpc-set',
+    focusNodeId: 'rpc-set',
     label: 'Set',
-    symbol: 'gnmi.gNMI.Set',
   },
   {
-    id: 'rpc-subscribe',
+    focusNodeId: 'rpc-subscribe',
     label: 'Subscribe',
-    symbol: 'gnmi.gNMI.Subscribe',
   },
 ];
+
+const gnmiServiceChoices: ServiceMapChoice[] = gnmiMapSource.services.flatMap((service) =>
+  gnmiRpcChoices.map((rpcChoice) => ({
+    id: `${rpcChoice.focusNodeId}@${service.version}`,
+    label: rpcChoice.label,
+    symbol: `${service.symbol}.${rpcChoice.label}`,
+    focusNodeId: rpcChoice.focusNodeId,
+    sourceTag: service.sourceTag,
+    version: service.version,
+  })),
+);
 const gnoiServiceChoices = generatedChoices(gnoiMapSource.services);
 const gnsiServiceChoices = generatedChoices(gnsiMapSource.services);
-const gribiServiceChoices = rpcChoicesFromServiceNode(
-  gribiMapNodes,
+const gribiServiceChoices = versionedRpcChoicesFromServiceVariants(
+  gribiMapVariants,
   gribiServiceNodeId,
-  'All RPCs',
 );
 
 export const serviceMaps: Record<ServiceId, ServiceMapDefinition> = {
@@ -129,7 +146,7 @@ export const serviceMaps: Record<ServiceId, ServiceMapDefinition> = {
     serviceVersion: gnmiMapSource.gnmiServiceVersion,
     pdfUrl: gnmiPdfUrl,
     serviceChoices: gnmiServiceChoices,
-    defaultServiceChoiceId: gnmiServiceNodeId,
+    defaultServiceChoiceId: gnmiServiceChoices[0].id,
     getVisibleMap: getFocusedGnmiVisibleMap,
   },
   gnoi: {
@@ -195,6 +212,7 @@ export function serviceChoiceForRoute(
     serviceMap.serviceChoices.find(
       (choice) =>
         choice.id.toLowerCase() === normalizedValue ||
+        choice.focusNodeId?.toLowerCase() === normalizedValue ||
         choice.label.toLowerCase() === normalizedValue ||
         choice.symbol.toLowerCase() === normalizedValue,
     ) ??
@@ -249,8 +267,8 @@ function getFocusedServiceRpcVisibleMap(
   serviceNodeId: string,
   options: VisibleMapOptions = {},
 ): VisibleMap {
-  const { focusNodeId, showDeprecated, showExtensions } = options;
-  const visibleMap = getVisibleMap({ showDeprecated, showExtensions });
+  const { focusNodeId, showDeprecated, showExtensions, sourceTag } = options;
+  const visibleMap = getVisibleMap({ showDeprecated, showExtensions, sourceTag });
   const serviceNode = visibleMap.nodes.find((node) => node.id === serviceNodeId);
   const focusedRpcField = serviceNode?.data.fields?.find((field) => field.ref === focusNodeId);
 

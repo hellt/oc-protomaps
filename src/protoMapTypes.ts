@@ -46,6 +46,7 @@ export type VisibleMapOptions = {
   showDeprecated?: boolean;
   showExtensions?: boolean;
   focusNodeId?: string | null;
+  sourceTag?: string | null;
 };
 
 export type VisibleMap = {

@@ -12,6 +12,23 @@ export type MapSource = {
   gnmiBase: string;
   extBase: string;
   specBase: string;
+  services: Array<{
+    nodeId: string;
+    name: string;
+    symbol: string;
+    choiceId: string;
+    focusNodeId: string;
+    sourceTag: string;
+    version: string;
+  }>;
+};
+
+export type GnmiMapVariant = {
+  tag: string;
+  serviceVersion: string;
+  nodes: MapNode[];
+  edges: MapEdge[];
+  bounds: MapBounds;
 };
 
 export type MapBounds = {
@@ -55,6 +72,7 @@ export type MapEdge = Edge<Record<string, never>, 'smoothstep'> & {
 export type VisibleMapOptions = {
   showDeprecated?: boolean;
   showExtensions?: boolean;
+  sourceTag?: string | null;
 };
 
 export type VisibleMap = {
@@ -67,2865 +85,7816 @@ export const mapSource: MapSource = {
   "gnmiServiceVersion": "0.10.0",
   "gnmiBase": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi/gnmi.proto",
   "extBase": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi_ext/gnmi_ext.proto",
-  "specBase": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md"
+  "specBase": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md",
+  "services": [
+    {
+      "nodeId": "service-gnmi",
+      "name": "gNMI",
+      "symbol": "gnmi.gNMI",
+      "choiceId": "service-gnmi@0.10.0",
+      "focusNodeId": "service-gnmi",
+      "sourceTag": "v0.14.1",
+      "version": "0.10.0"
+    },
+    {
+      "nodeId": "service-gnmi",
+      "name": "gNMI",
+      "symbol": "gnmi.gNMI",
+      "choiceId": "service-gnmi@0.9.0",
+      "focusNodeId": "service-gnmi",
+      "sourceTag": "v0.9.1",
+      "version": "0.9.0"
+    },
+    {
+      "nodeId": "service-gnmi",
+      "name": "gNMI",
+      "symbol": "gnmi.gNMI",
+      "choiceId": "service-gnmi@0.8.0",
+      "focusNodeId": "service-gnmi",
+      "sourceTag": "v0.8.0",
+      "version": "0.8.0"
+    }
+  ]
 };
 
-export const mapNodes: MapNode[] = [
+export const mapVariants: GnmiMapVariant[] = [
   {
-    "id": "service-gnmi",
-    "type": "schema",
-    "position": {
-      "x": 1240,
-      "y": 40
-    },
-    "style": {
-      "width": 360
-    },
-    "data": {
-      "id": "service-gnmi",
-      "kind": "service",
-      "label": "service gNMI 0.10.0",
-      "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi/gnmi.proto#L49",
-      "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#grpc-network-management-interface-gnmi",
-      "fields": [
-        {
-          "id": "capabilities",
-          "type": "rpc",
-          "name": "Capabilities",
-          "ref": "rpc-capabilities"
+    "tag": "v0.14.1",
+    "serviceVersion": "0.10.0",
+    "nodes": [
+      {
+        "id": "service-gnmi",
+        "type": "schema",
+        "position": {
+          "x": 1240,
+          "y": 40
         },
-        {
-          "id": "get",
-          "type": "rpc",
-          "name": "Get",
-          "ref": "rpc-get"
+        "style": {
+          "width": 360
         },
-        {
-          "id": "set",
-          "type": "rpc",
-          "name": "Set",
-          "ref": "rpc-set"
-        },
-        {
-          "id": "subscribe",
-          "type": "rpc",
-          "name": "Subscribe",
-          "ref": "rpc-subscribe",
-          "badge": "stream"
+        "data": {
+          "id": "service-gnmi",
+          "kind": "service",
+          "label": "service gNMI 0.10.0",
+          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi/gnmi.proto#L49",
+          "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#grpc-network-management-interface-gnmi",
+          "fields": [
+            {
+              "id": "capabilities",
+              "type": "rpc",
+              "name": "Capabilities",
+              "ref": "rpc-capabilities"
+            },
+            {
+              "id": "get",
+              "type": "rpc",
+              "name": "Get",
+              "ref": "rpc-get"
+            },
+            {
+              "id": "set",
+              "type": "rpc",
+              "name": "Set",
+              "ref": "rpc-set"
+            },
+            {
+              "id": "subscribe",
+              "type": "rpc",
+              "name": "Subscribe",
+              "ref": "rpc-subscribe",
+              "badge": "stream"
+            }
+          ]
         }
-      ]
-    }
-  },
-  {
-    "id": "rpc-set",
-    "type": "schema",
-    "position": {
-      "x": 80,
-      "y": 230
-    },
-    "style": {
-      "width": 250
-    },
-    "data": {
-      "id": "rpc-set",
-      "kind": "rpc",
-      "label": "rpc Set",
-      "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi/gnmi.proto#L67",
-      "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#34-modifying-state",
-      "fields": [
-        {
-          "id": "takes",
-          "type": "takes",
-          "name": "SetRequest",
-          "ref": "set-request"
+      },
+      {
+        "id": "rpc-set",
+        "type": "schema",
+        "position": {
+          "x": 80,
+          "y": 230
         },
-        {
-          "id": "returns",
-          "type": "returns",
-          "name": "SetResponse",
-          "ref": "set-response"
+        "style": {
+          "width": 250
+        },
+        "data": {
+          "id": "rpc-set",
+          "kind": "rpc",
+          "label": "rpc Set",
+          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi/gnmi.proto#L67",
+          "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#34-modifying-state",
+          "fields": [
+            {
+              "id": "takes",
+              "type": "takes",
+              "name": "SetRequest",
+              "ref": "set-request"
+            },
+            {
+              "id": "returns",
+              "type": "returns",
+              "name": "SetResponse",
+              "ref": "set-response"
+            }
+          ]
         }
-      ]
-    }
-  },
-  {
-    "id": "rpc-subscribe",
-    "type": "schema",
-    "position": {
-      "x": 780,
-      "y": 230
-    },
-    "style": {
-      "width": 290
-    },
-    "data": {
-      "id": "rpc-subscribe",
-      "kind": "rpc",
-      "label": "rpc Subscribe",
-      "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi/gnmi.proto#L73",
-      "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#35-subscribing-to-telemetry-updates",
-      "fields": [
-        {
-          "id": "takes",
-          "type": "takes stream",
-          "name": "SubscribeRequest",
-          "ref": "subscribe-request"
+      },
+      {
+        "id": "rpc-subscribe",
+        "type": "schema",
+        "position": {
+          "x": 780,
+          "y": 230
         },
-        {
-          "id": "returns",
-          "type": "returns stream",
-          "name": "SubscribeResponse",
-          "ref": "subscribe-response"
+        "style": {
+          "width": 290
+        },
+        "data": {
+          "id": "rpc-subscribe",
+          "kind": "rpc",
+          "label": "rpc Subscribe",
+          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi/gnmi.proto#L73",
+          "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#35-subscribing-to-telemetry-updates",
+          "fields": [
+            {
+              "id": "takes",
+              "type": "takes stream",
+              "name": "SubscribeRequest",
+              "ref": "subscribe-request"
+            },
+            {
+              "id": "returns",
+              "type": "returns stream",
+              "name": "SubscribeResponse",
+              "ref": "subscribe-response"
+            }
+          ]
         }
-      ]
-    }
-  },
-  {
-    "id": "rpc-get",
-    "type": "schema",
-    "position": {
-      "x": 1520,
-      "y": 230
-    },
-    "style": {
-      "width": 250
-    },
-    "data": {
-      "id": "rpc-get",
-      "kind": "rpc",
-      "label": "rpc Get",
-      "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi/gnmi.proto#L62",
-      "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#33-retrieving-snapshots-of-state-information",
-      "fields": [
-        {
-          "id": "takes",
-          "type": "takes",
-          "name": "GetRequest",
-          "ref": "get-request"
+      },
+      {
+        "id": "rpc-get",
+        "type": "schema",
+        "position": {
+          "x": 1520,
+          "y": 230
         },
-        {
-          "id": "returns",
-          "type": "returns",
-          "name": "GetResponse",
-          "ref": "get-response"
+        "style": {
+          "width": 250
+        },
+        "data": {
+          "id": "rpc-get",
+          "kind": "rpc",
+          "label": "rpc Get",
+          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi/gnmi.proto#L62",
+          "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#33-retrieving-snapshots-of-state-information",
+          "fields": [
+            {
+              "id": "takes",
+              "type": "takes",
+              "name": "GetRequest",
+              "ref": "get-request"
+            },
+            {
+              "id": "returns",
+              "type": "returns",
+              "name": "GetResponse",
+              "ref": "get-response"
+            }
+          ]
         }
-      ]
-    }
-  },
-  {
-    "id": "rpc-capabilities",
-    "type": "schema",
-    "position": {
-      "x": 2200,
-      "y": 230
-    },
-    "style": {
-      "width": 300
-    },
-    "data": {
-      "id": "rpc-capabilities",
-      "kind": "rpc",
-      "label": "rpc Capabilities",
-      "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi/gnmi.proto#L56",
-      "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#32-capability-discovery",
-      "fields": [
-        {
-          "id": "takes",
-          "type": "takes",
-          "name": "CapabilityRequest",
-          "ref": "capability-request"
+      },
+      {
+        "id": "rpc-capabilities",
+        "type": "schema",
+        "position": {
+          "x": 2200,
+          "y": 230
         },
-        {
-          "id": "returns",
-          "type": "returns",
-          "name": "CapabilityResponse",
-          "ref": "capability-response"
+        "style": {
+          "width": 300
+        },
+        "data": {
+          "id": "rpc-capabilities",
+          "kind": "rpc",
+          "label": "rpc Capabilities",
+          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi/gnmi.proto#L56",
+          "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#32-capability-discovery",
+          "fields": [
+            {
+              "id": "takes",
+              "type": "takes",
+              "name": "CapabilityRequest",
+              "ref": "capability-request"
+            },
+            {
+              "id": "returns",
+              "type": "returns",
+              "name": "CapabilityResponse",
+              "ref": "capability-response"
+            }
+          ]
         }
-      ]
-    }
-  },
-  {
-    "id": "set-request",
-    "type": "schema",
-    "position": {
-      "x": 20,
-      "y": 450
-    },
-    "style": {
-      "width": 340
-    },
-    "data": {
-      "id": "set-request",
-      "kind": "message",
-      "label": "SetRequest",
-      "sourceSymbol": "gnmi.SetRequest",
-      "deprecated": false,
-      "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi/gnmi.proto#L342",
-      "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#341-the-setrequest-message",
-      "fields": [
-        {
-          "id": "prefix",
-          "type": "Path",
-          "name": "prefix",
-          "ref": "path"
+      },
+      {
+        "id": "set-request",
+        "type": "schema",
+        "position": {
+          "x": 20,
+          "y": 450
         },
-        {
-          "id": "delete",
-          "type": "repeated Path",
-          "name": "delete",
-          "ref": "path"
+        "style": {
+          "width": 340
         },
-        {
-          "id": "replace",
-          "type": "repeated Update",
-          "name": "replace",
-          "ref": "update"
-        },
-        {
-          "id": "update",
-          "type": "repeated Update",
-          "name": "update",
-          "ref": "update"
-        },
-        {
-          "id": "union-replace",
-          "type": "repeated Update",
-          "name": "union_replace",
-          "ref": "update"
-        },
-        {
-          "id": "extension",
-          "type": "repeated gnmi_ext.Extension",
-          "name": "extension",
-          "ref": "extension",
-          "badge": "optional"
+        "data": {
+          "id": "set-request",
+          "kind": "message",
+          "label": "SetRequest",
+          "sourceSymbol": "gnmi.SetRequest",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi/gnmi.proto#L342",
+          "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#341-the-setrequest-message",
+          "fields": [
+            {
+              "id": "prefix",
+              "type": "Path",
+              "name": "prefix",
+              "ref": "path"
+            },
+            {
+              "id": "delete",
+              "type": "repeated Path",
+              "name": "delete",
+              "ref": "path"
+            },
+            {
+              "id": "replace",
+              "type": "repeated Update",
+              "name": "replace",
+              "ref": "update"
+            },
+            {
+              "id": "update",
+              "type": "repeated Update",
+              "name": "update",
+              "ref": "update"
+            },
+            {
+              "id": "union-replace",
+              "type": "repeated Update",
+              "name": "union_replace",
+              "ref": "update"
+            },
+            {
+              "id": "extension",
+              "type": "repeated gnmi_ext.Extension",
+              "name": "extension",
+              "ref": "extension",
+              "badge": "optional"
+            }
+          ]
         }
-      ]
-    }
-  },
-  {
-    "id": "set-response",
-    "type": "schema",
-    "position": {
-      "x": 390,
-      "y": 450
-    },
-    "style": {
-      "width": 360
-    },
-    "data": {
-      "id": "set-response",
-      "kind": "message",
-      "label": "SetResponse",
-      "sourceSymbol": "gnmi.SetResponse",
-      "deprecated": false,
-      "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi/gnmi.proto#L364",
-      "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#342-the-setresponse-message",
-      "fields": [
-        {
-          "id": "prefix",
-          "type": "Path",
-          "name": "prefix",
-          "ref": "path"
+      },
+      {
+        "id": "set-response",
+        "type": "schema",
+        "position": {
+          "x": 390,
+          "y": 450
         },
-        {
-          "id": "response",
-          "type": "repeated UpdateResult",
-          "name": "response",
-          "ref": "update-result"
+        "style": {
+          "width": 360
         },
-        {
-          "id": "message",
-          "type": "Error",
-          "name": "message",
-          "ref": "error",
-          "badge": "deprecated",
-          "deprecated": true
-        },
-        {
-          "id": "timestamp",
-          "type": "int64",
-          "name": "timestamp",
-          "ref": null
-        },
-        {
-          "id": "extension",
-          "type": "repeated gnmi_ext.Extension",
-          "name": "extension",
-          "ref": "extension",
-          "badge": "optional"
+        "data": {
+          "id": "set-response",
+          "kind": "message",
+          "label": "SetResponse",
+          "sourceSymbol": "gnmi.SetResponse",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi/gnmi.proto#L364",
+          "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#342-the-setresponse-message",
+          "fields": [
+            {
+              "id": "prefix",
+              "type": "Path",
+              "name": "prefix",
+              "ref": "path"
+            },
+            {
+              "id": "response",
+              "type": "repeated UpdateResult",
+              "name": "response",
+              "ref": "update-result"
+            },
+            {
+              "id": "message",
+              "type": "Error",
+              "name": "message",
+              "ref": "error",
+              "badge": "deprecated",
+              "deprecated": true
+            },
+            {
+              "id": "timestamp",
+              "type": "int64",
+              "name": "timestamp",
+              "ref": null
+            },
+            {
+              "id": "extension",
+              "type": "repeated gnmi_ext.Extension",
+              "name": "extension",
+              "ref": "extension",
+              "badge": "optional"
+            }
+          ]
         }
-      ]
-    }
-  },
-  {
-    "id": "subscribe-request",
-    "type": "schema",
-    "position": {
-      "x": 780,
-      "y": 450
-    },
-    "style": {
-      "width": 360
-    },
-    "data": {
-      "id": "subscribe-request",
-      "kind": "message",
-      "label": "SubscribeRequest",
-      "sourceSymbol": "gnmi.SubscribeRequest",
-      "deprecated": false,
-      "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi/gnmi.proto#L220",
-      "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#3511-the-subscriberequest-message",
-      "fields": [
-        {
-          "id": "subscribe",
-          "type": "SubscriptionList",
-          "name": "subscribe",
-          "ref": "subscription-list",
-          "group": "oneof request"
+      },
+      {
+        "id": "subscribe-request",
+        "type": "schema",
+        "position": {
+          "x": 780,
+          "y": 450
         },
-        {
+        "style": {
+          "width": 360
+        },
+        "data": {
+          "id": "subscribe-request",
+          "kind": "message",
+          "label": "SubscribeRequest",
+          "sourceSymbol": "gnmi.SubscribeRequest",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi/gnmi.proto#L220",
+          "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#3511-the-subscriberequest-message",
+          "fields": [
+            {
+              "id": "subscribe",
+              "type": "SubscriptionList",
+              "name": "subscribe",
+              "ref": "subscription-list",
+              "group": "oneof request"
+            },
+            {
+              "id": "poll",
+              "type": "Poll",
+              "name": "poll",
+              "ref": "poll",
+              "group": "oneof request"
+            },
+            {
+              "id": "extension",
+              "type": "repeated gnmi_ext.Extension",
+              "name": "extension",
+              "ref": "extension",
+              "badge": "optional"
+            },
+            {
+              "id": "reserved-aliases",
+              "type": "reserved",
+              "name": "aliases / 4",
+              "ref": null,
+              "badge": "reserved"
+            }
+          ]
+        }
+      },
+      {
+        "id": "subscribe-response",
+        "type": "schema",
+        "position": {
+          "x": 1180,
+          "y": 450
+        },
+        "style": {
+          "width": 360
+        },
+        "data": {
+          "id": "subscribe-response",
+          "kind": "message",
+          "label": "SubscribeResponse",
+          "sourceSymbol": "gnmi.SubscribeResponse",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi/gnmi.proto#L245",
+          "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#3514-the-subscriberesponse-message",
+          "fields": [
+            {
+              "id": "update",
+              "type": "Notification",
+              "name": "update",
+              "ref": "notification",
+              "group": "oneof response"
+            },
+            {
+              "id": "sync-response",
+              "type": "bool",
+              "name": "sync_response",
+              "ref": null,
+              "group": "oneof response"
+            },
+            {
+              "id": "error",
+              "type": "Error",
+              "name": "error",
+              "ref": "error",
+              "group": "oneof response",
+              "badge": "deprecated",
+              "deprecated": true
+            },
+            {
+              "id": "extension",
+              "type": "repeated gnmi_ext.Extension",
+              "name": "extension",
+              "ref": "extension",
+              "badge": "optional"
+            }
+          ]
+        }
+      },
+      {
+        "id": "get-request",
+        "type": "schema",
+        "position": {
+          "x": 1570,
+          "y": 450
+        },
+        "style": {
+          "width": 350
+        },
+        "data": {
+          "id": "get-request",
+          "kind": "message",
+          "label": "GetRequest",
+          "sourceSymbol": "gnmi.GetRequest",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi/gnmi.proto#L405",
+          "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#331-the-getrequest-message",
+          "fields": [
+            {
+              "id": "prefix",
+              "type": "Path",
+              "name": "prefix",
+              "ref": "path"
+            },
+            {
+              "id": "path",
+              "type": "repeated Path",
+              "name": "path",
+              "ref": "path"
+            },
+            {
+              "id": "type",
+              "type": "DataType",
+              "name": "type",
+              "ref": "data-type"
+            },
+            {
+              "id": "encoding",
+              "type": "Encoding",
+              "name": "encoding",
+              "ref": "encoding"
+            },
+            {
+              "id": "use-models",
+              "type": "repeated ModelData",
+              "name": "use_models",
+              "ref": "model-data"
+            },
+            {
+              "id": "extension",
+              "type": "repeated gnmi_ext.Extension",
+              "name": "extension",
+              "ref": "extension",
+              "badge": "optional"
+            }
+          ]
+        }
+      },
+      {
+        "id": "get-response",
+        "type": "schema",
+        "position": {
+          "x": 1960,
+          "y": 450
+        },
+        "style": {
+          "width": 350
+        },
+        "data": {
+          "id": "get-response",
+          "kind": "message",
+          "label": "GetResponse",
+          "sourceSymbol": "gnmi.GetResponse",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi/gnmi.proto#L430",
+          "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#332-the-getresponse-message",
+          "fields": [
+            {
+              "id": "notification",
+              "type": "repeated Notification",
+              "name": "notification",
+              "ref": "notification"
+            },
+            {
+              "id": "error",
+              "type": "Error",
+              "name": "error",
+              "ref": "error",
+              "badge": "deprecated",
+              "deprecated": true
+            },
+            {
+              "id": "extension",
+              "type": "repeated gnmi_ext.Extension",
+              "name": "extension",
+              "ref": "extension",
+              "badge": "optional"
+            }
+          ]
+        }
+      },
+      {
+        "id": "capability-request",
+        "type": "schema",
+        "position": {
+          "x": 2350,
+          "y": 450
+        },
+        "style": {
+          "width": 340
+        },
+        "data": {
+          "id": "capability-request",
+          "kind": "message",
+          "label": "CapabilityRequest",
+          "sourceSymbol": "gnmi.CapabilityRequest",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi/gnmi.proto#L441",
+          "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#321-the-capabilityrequest-message",
+          "fields": [
+            {
+              "id": "extension",
+              "type": "repeated gnmi_ext.Extension",
+              "name": "extension",
+              "ref": "extension",
+              "badge": "optional"
+            }
+          ]
+        }
+      },
+      {
+        "id": "capability-response",
+        "type": "schema",
+        "position": {
+          "x": 2730,
+          "y": 450
+        },
+        "style": {
+          "width": 370
+        },
+        "data": {
+          "id": "capability-response",
+          "kind": "message",
+          "label": "CapabilityResponse",
+          "sourceSymbol": "gnmi.CapabilityResponse",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi/gnmi.proto#L450",
+          "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#322-the-capabilityresponse-message",
+          "fields": [
+            {
+              "id": "supported-models",
+              "type": "repeated ModelData",
+              "name": "supported_models",
+              "ref": "model-data"
+            },
+            {
+              "id": "supported-encodings",
+              "type": "repeated Encoding",
+              "name": "supported_encodings",
+              "ref": "encoding"
+            },
+            {
+              "id": "g-nmi-version",
+              "type": "string",
+              "name": "gNMI_version",
+              "ref": null
+            },
+            {
+              "id": "extension",
+              "type": "repeated gnmi_ext.Extension",
+              "name": "extension",
+              "ref": "extension",
+              "badge": "optional"
+            }
+          ]
+        }
+      },
+      {
+        "id": "error",
+        "type": "schema",
+        "position": {
+          "x": 120,
+          "y": 850
+        },
+        "style": {
+          "width": 300
+        },
+        "data": {
+          "id": "error",
+          "kind": "message",
+          "label": "Error",
+          "sourceSymbol": "gnmi.Error",
+          "deprecated": true,
+          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi/gnmi.proto#L187",
+          "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#23-structured-data-types",
+          "badges": [
+            "deprecated"
+          ],
+          "fields": [
+            {
+              "id": "code",
+              "type": "uint32",
+              "name": "code",
+              "ref": null
+            },
+            {
+              "id": "message",
+              "type": "string",
+              "name": "message",
+              "ref": null
+            },
+            {
+              "id": "data",
+              "type": "google.protobuf.Any",
+              "name": "data",
+              "ref": "any"
+            }
+          ]
+        }
+      },
+      {
+        "id": "update-result",
+        "type": "schema",
+        "position": {
+          "x": 450,
+          "y": 820
+        },
+        "style": {
+          "width": 330
+        },
+        "data": {
+          "id": "update-result",
+          "kind": "message",
+          "label": "UpdateResult",
+          "sourceSymbol": "gnmi.UpdateResult",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi/gnmi.proto#L380",
+          "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#342-the-setresponse-message",
+          "fields": [
+            {
+              "id": "timestamp",
+              "type": "int64",
+              "name": "timestamp",
+              "ref": null,
+              "badge": "deprecated",
+              "deprecated": true
+            },
+            {
+              "id": "path",
+              "type": "Path",
+              "name": "path",
+              "ref": "path"
+            },
+            {
+              "id": "message",
+              "type": "Error",
+              "name": "message",
+              "ref": "error",
+              "badge": "deprecated",
+              "deprecated": true
+            },
+            {
+              "id": "op",
+              "type": "Operation",
+              "name": "op",
+              "ref": "operation"
+            }
+          ]
+        }
+      },
+      {
+        "id": "operation",
+        "type": "schema",
+        "position": {
+          "x": 430,
+          "y": 1120
+        },
+        "style": {
+          "width": 260
+        },
+        "data": {
+          "id": "operation",
+          "kind": "enum",
+          "label": "enum Operation",
+          "sourceSymbol": "gnmi.UpdateResult.Operation",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi/gnmi.proto#L382",
+          "fields": [
+            {
+              "id": "invalid",
+              "type": "0",
+              "name": "INVALID",
+              "ref": null
+            },
+            {
+              "id": "delete",
+              "type": "1",
+              "name": "DELETE",
+              "ref": null
+            },
+            {
+              "id": "replace",
+              "type": "2",
+              "name": "REPLACE",
+              "ref": null
+            },
+            {
+              "id": "update",
+              "type": "3",
+              "name": "UPDATE",
+              "ref": null
+            },
+            {
+              "id": "union-replace",
+              "type": "4",
+              "name": "UNION_REPLACE",
+              "ref": null
+            }
+          ]
+        }
+      },
+      {
+        "id": "poll",
+        "type": "schema",
+        "position": {
+          "x": 800,
+          "y": 780
+        },
+        "style": {
+          "width": 180
+        },
+        "data": {
           "id": "poll",
-          "type": "Poll",
-          "name": "poll",
-          "ref": "poll",
-          "group": "oneof request"
-        },
-        {
-          "id": "extension",
-          "type": "repeated gnmi_ext.Extension",
-          "name": "extension",
-          "ref": "extension",
-          "badge": "optional"
-        },
-        {
-          "id": "reserved-aliases",
-          "type": "reserved",
-          "name": "aliases / 4",
-          "ref": null,
-          "badge": "reserved"
+          "kind": "message",
+          "label": "Poll",
+          "sourceSymbol": "gnmi.Poll",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi/gnmi.proto#L237",
+          "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#35153-poll-subscriptions",
+          "fields": []
         }
-      ]
-    }
-  },
-  {
-    "id": "subscribe-response",
-    "type": "schema",
-    "position": {
-      "x": 1180,
-      "y": 450
-    },
-    "style": {
-      "width": 360
-    },
-    "data": {
-      "id": "subscribe-response",
-      "kind": "message",
-      "label": "SubscribeResponse",
-      "sourceSymbol": "gnmi.SubscribeResponse",
-      "deprecated": false,
-      "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi/gnmi.proto#L245",
-      "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#3514-the-subscriberesponse-message",
-      "fields": [
-        {
-          "id": "update",
-          "type": "Notification",
-          "name": "update",
-          "ref": "notification",
-          "group": "oneof response"
+      },
+      {
+        "id": "subscription-list",
+        "type": "schema",
+        "position": {
+          "x": 1050,
+          "y": 750
         },
-        {
-          "id": "sync-response",
-          "type": "bool",
-          "name": "sync_response",
-          "ref": null,
-          "group": "oneof response"
+        "style": {
+          "width": 390
         },
-        {
-          "id": "error",
-          "type": "Error",
-          "name": "error",
-          "ref": "error",
-          "group": "oneof response",
-          "badge": "deprecated",
-          "deprecated": true
-        },
-        {
-          "id": "extension",
-          "type": "repeated gnmi_ext.Extension",
-          "name": "extension",
-          "ref": "extension",
-          "badge": "optional"
+        "data": {
+          "id": "subscription-list",
+          "kind": "message",
+          "label": "SubscriptionList",
+          "sourceSymbol": "gnmi.SubscriptionList",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi/gnmi.proto#L264",
+          "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#3512-the-subscriptionlist-message",
+          "fields": [
+            {
+              "id": "prefix",
+              "type": "Path",
+              "name": "prefix",
+              "ref": "path"
+            },
+            {
+              "id": "subscription",
+              "type": "repeated Subscription",
+              "name": "subscription",
+              "ref": "subscription"
+            },
+            {
+              "id": "qos",
+              "type": "QOSMarking",
+              "name": "qos",
+              "ref": "qos-marking"
+            },
+            {
+              "id": "mode",
+              "type": "Mode",
+              "name": "mode",
+              "ref": "mode"
+            },
+            {
+              "id": "allow-aggregation",
+              "type": "bool",
+              "name": "allow_aggregation",
+              "ref": null
+            },
+            {
+              "id": "use-models",
+              "type": "repeated ModelData",
+              "name": "use_models",
+              "ref": "model-data"
+            },
+            {
+              "id": "encoding",
+              "type": "Encoding",
+              "name": "encoding",
+              "ref": "encoding"
+            },
+            {
+              "id": "updates-only",
+              "type": "bool",
+              "name": "updates_only",
+              "ref": null
+            },
+            {
+              "id": "reserved-use-aliases",
+              "type": "reserved",
+              "name": "use_aliases / 3",
+              "ref": null,
+              "badge": "reserved"
+            }
+          ]
         }
-      ]
-    }
-  },
-  {
-    "id": "get-request",
-    "type": "schema",
-    "position": {
-      "x": 1570,
-      "y": 450
-    },
-    "style": {
-      "width": 350
-    },
-    "data": {
-      "id": "get-request",
-      "kind": "message",
-      "label": "GetRequest",
-      "sourceSymbol": "gnmi.GetRequest",
-      "deprecated": false,
-      "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi/gnmi.proto#L405",
-      "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#331-the-getrequest-message",
-      "fields": [
-        {
-          "id": "prefix",
-          "type": "Path",
-          "name": "prefix",
-          "ref": "path"
+      },
+      {
+        "id": "qos-marking",
+        "type": "schema",
+        "position": {
+          "x": 990,
+          "y": 1210
         },
-        {
-          "id": "path",
-          "type": "repeated Path",
-          "name": "path",
-          "ref": "path"
+        "style": {
+          "width": 270
         },
-        {
-          "id": "type",
-          "type": "DataType",
-          "name": "type",
-          "ref": "data-type"
-        },
-        {
-          "id": "encoding",
-          "type": "Encoding",
-          "name": "encoding",
-          "ref": "encoding"
-        },
-        {
-          "id": "use-models",
-          "type": "repeated ModelData",
-          "name": "use_models",
-          "ref": "model-data"
-        },
-        {
-          "id": "extension",
-          "type": "repeated gnmi_ext.Extension",
-          "name": "extension",
-          "ref": "extension",
-          "badge": "optional"
+        "data": {
+          "id": "qos-marking",
+          "kind": "message",
+          "label": "QOSMarking",
+          "sourceSymbol": "gnmi.QOSMarking",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi/gnmi.proto#L331",
+          "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#3512-the-subscriptionlist-message",
+          "fields": [
+            {
+              "id": "marking",
+              "type": "uint32",
+              "name": "marking",
+              "ref": null
+            }
+          ]
         }
-      ]
-    }
-  },
-  {
-    "id": "get-response",
-    "type": "schema",
-    "position": {
-      "x": 1960,
-      "y": 450
-    },
-    "style": {
-      "width": 350
-    },
-    "data": {
-      "id": "get-response",
-      "kind": "message",
-      "label": "GetResponse",
-      "sourceSymbol": "gnmi.GetResponse",
-      "deprecated": false,
-      "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi/gnmi.proto#L430",
-      "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#332-the-getresponse-message",
-      "fields": [
-        {
-          "id": "notification",
-          "type": "repeated Notification",
-          "name": "notification",
-          "ref": "notification"
+      },
+      {
+        "id": "mode",
+        "type": "schema",
+        "position": {
+          "x": 990,
+          "y": 1390
         },
-        {
-          "id": "error",
-          "type": "Error",
-          "name": "error",
-          "ref": "error",
-          "badge": "deprecated",
-          "deprecated": true
+        "style": {
+          "width": 240
         },
-        {
-          "id": "extension",
-          "type": "repeated gnmi_ext.Extension",
-          "name": "extension",
-          "ref": "extension",
-          "badge": "optional"
+        "data": {
+          "id": "mode",
+          "kind": "enum",
+          "label": "enum Mode",
+          "sourceSymbol": "gnmi.SubscriptionList.Mode",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi/gnmi.proto#L269",
+          "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#3512-the-subscriptionlist-message",
+          "fields": [
+            {
+              "id": "stream",
+              "type": "0",
+              "name": "STREAM",
+              "ref": null
+            },
+            {
+              "id": "once",
+              "type": "1",
+              "name": "ONCE",
+              "ref": null
+            },
+            {
+              "id": "poll",
+              "type": "2",
+              "name": "POLL",
+              "ref": null
+            }
+          ]
         }
-      ]
-    }
-  },
-  {
-    "id": "capability-request",
-    "type": "schema",
-    "position": {
-      "x": 2350,
-      "y": 450
-    },
-    "style": {
-      "width": 340
-    },
-    "data": {
-      "id": "capability-request",
-      "kind": "message",
-      "label": "CapabilityRequest",
-      "sourceSymbol": "gnmi.CapabilityRequest",
-      "deprecated": false,
-      "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi/gnmi.proto#L441",
-      "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#321-the-capabilityrequest-message",
-      "fields": [
-        {
-          "id": "extension",
-          "type": "repeated gnmi_ext.Extension",
-          "name": "extension",
-          "ref": "extension",
-          "badge": "optional"
-        }
-      ]
-    }
-  },
-  {
-    "id": "capability-response",
-    "type": "schema",
-    "position": {
-      "x": 2730,
-      "y": 450
-    },
-    "style": {
-      "width": 370
-    },
-    "data": {
-      "id": "capability-response",
-      "kind": "message",
-      "label": "CapabilityResponse",
-      "sourceSymbol": "gnmi.CapabilityResponse",
-      "deprecated": false,
-      "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi/gnmi.proto#L450",
-      "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#322-the-capabilityresponse-message",
-      "fields": [
-        {
-          "id": "supported-models",
-          "type": "repeated ModelData",
-          "name": "supported_models",
-          "ref": "model-data"
+      },
+      {
+        "id": "subscription",
+        "type": "schema",
+        "position": {
+          "x": 1460,
+          "y": 920
         },
-        {
-          "id": "supported-encodings",
-          "type": "repeated Encoding",
-          "name": "supported_encodings",
-          "ref": "encoding"
+        "style": {
+          "width": 360
         },
-        {
-          "id": "g-nmi-version",
-          "type": "string",
-          "name": "gNMI_version",
-          "ref": null
-        },
-        {
-          "id": "extension",
-          "type": "repeated gnmi_ext.Extension",
-          "name": "extension",
-          "ref": "extension",
-          "badge": "optional"
-        }
-      ]
-    }
-  },
-  {
-    "id": "error",
-    "type": "schema",
-    "position": {
-      "x": 120,
-      "y": 850
-    },
-    "style": {
-      "width": 300
-    },
-    "data": {
-      "id": "error",
-      "kind": "message",
-      "label": "Error",
-      "sourceSymbol": "gnmi.Error",
-      "deprecated": true,
-      "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi/gnmi.proto#L187",
-      "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#23-structured-data-types",
-      "badges": [
-        "deprecated"
-      ],
-      "fields": [
-        {
-          "id": "code",
-          "type": "uint32",
-          "name": "code",
-          "ref": null
-        },
-        {
-          "id": "message",
-          "type": "string",
-          "name": "message",
-          "ref": null
-        },
-        {
-          "id": "data",
-          "type": "google.protobuf.Any",
-          "name": "data",
-          "ref": "any"
-        }
-      ]
-    }
-  },
-  {
-    "id": "update-result",
-    "type": "schema",
-    "position": {
-      "x": 450,
-      "y": 820
-    },
-    "style": {
-      "width": 330
-    },
-    "data": {
-      "id": "update-result",
-      "kind": "message",
-      "label": "UpdateResult",
-      "sourceSymbol": "gnmi.UpdateResult",
-      "deprecated": false,
-      "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi/gnmi.proto#L380",
-      "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#342-the-setresponse-message",
-      "fields": [
-        {
-          "id": "timestamp",
-          "type": "int64",
-          "name": "timestamp",
-          "ref": null,
-          "badge": "deprecated",
-          "deprecated": true
-        },
-        {
-          "id": "path",
-          "type": "Path",
-          "name": "path",
-          "ref": "path"
-        },
-        {
-          "id": "message",
-          "type": "Error",
-          "name": "message",
-          "ref": "error",
-          "badge": "deprecated",
-          "deprecated": true
-        },
-        {
-          "id": "op",
-          "type": "Operation",
-          "name": "op",
-          "ref": "operation"
-        }
-      ]
-    }
-  },
-  {
-    "id": "operation",
-    "type": "schema",
-    "position": {
-      "x": 430,
-      "y": 1120
-    },
-    "style": {
-      "width": 260
-    },
-    "data": {
-      "id": "operation",
-      "kind": "enum",
-      "label": "enum Operation",
-      "sourceSymbol": "gnmi.UpdateResult.Operation",
-      "deprecated": false,
-      "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi/gnmi.proto#L382",
-      "fields": [
-        {
-          "id": "invalid",
-          "type": "0",
-          "name": "INVALID",
-          "ref": null
-        },
-        {
-          "id": "delete",
-          "type": "1",
-          "name": "DELETE",
-          "ref": null
-        },
-        {
-          "id": "replace",
-          "type": "2",
-          "name": "REPLACE",
-          "ref": null
-        },
-        {
-          "id": "update",
-          "type": "3",
-          "name": "UPDATE",
-          "ref": null
-        },
-        {
-          "id": "union-replace",
-          "type": "4",
-          "name": "UNION_REPLACE",
-          "ref": null
-        }
-      ]
-    }
-  },
-  {
-    "id": "poll",
-    "type": "schema",
-    "position": {
-      "x": 800,
-      "y": 780
-    },
-    "style": {
-      "width": 180
-    },
-    "data": {
-      "id": "poll",
-      "kind": "message",
-      "label": "Poll",
-      "sourceSymbol": "gnmi.Poll",
-      "deprecated": false,
-      "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi/gnmi.proto#L237",
-      "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#35153-poll-subscriptions",
-      "fields": []
-    }
-  },
-  {
-    "id": "subscription-list",
-    "type": "schema",
-    "position": {
-      "x": 1050,
-      "y": 750
-    },
-    "style": {
-      "width": 390
-    },
-    "data": {
-      "id": "subscription-list",
-      "kind": "message",
-      "label": "SubscriptionList",
-      "sourceSymbol": "gnmi.SubscriptionList",
-      "deprecated": false,
-      "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi/gnmi.proto#L264",
-      "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#3512-the-subscriptionlist-message",
-      "fields": [
-        {
-          "id": "prefix",
-          "type": "Path",
-          "name": "prefix",
-          "ref": "path"
-        },
-        {
+        "data": {
           "id": "subscription",
-          "type": "repeated Subscription",
-          "name": "subscription",
-          "ref": "subscription"
+          "kind": "message",
+          "label": "Subscription",
+          "sourceSymbol": "gnmi.Subscription",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi/gnmi.proto#L300",
+          "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#3513-the-subscription-message",
+          "fields": [
+            {
+              "id": "path",
+              "type": "Path",
+              "name": "path",
+              "ref": "path"
+            },
+            {
+              "id": "mode",
+              "type": "SubscriptionMode",
+              "name": "mode",
+              "ref": "subscription-mode"
+            },
+            {
+              "id": "sample-interval",
+              "type": "uint64",
+              "name": "sample_interval",
+              "ref": null
+            },
+            {
+              "id": "suppress-redundant",
+              "type": "bool",
+              "name": "suppress_redundant",
+              "ref": null
+            },
+            {
+              "id": "heartbeat-interval",
+              "type": "uint64",
+              "name": "heartbeat_interval",
+              "ref": null
+            }
+          ]
+        }
+      },
+      {
+        "id": "subscription-mode",
+        "type": "schema",
+        "position": {
+          "x": 1460,
+          "y": 1250
         },
-        {
-          "id": "qos",
-          "type": "QOSMarking",
-          "name": "qos",
-          "ref": "qos-marking"
+        "style": {
+          "width": 310
         },
-        {
-          "id": "mode",
-          "type": "Mode",
-          "name": "mode",
-          "ref": "mode"
+        "data": {
+          "id": "subscription-mode",
+          "kind": "enum",
+          "label": "enum SubscriptionMode",
+          "sourceSymbol": "gnmi.SubscriptionMode",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi/gnmi.proto#L322",
+          "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#35152-stream-subscriptions",
+          "fields": [
+            {
+              "id": "target-defined",
+              "type": "0",
+              "name": "TARGET_DEFINED",
+              "ref": null
+            },
+            {
+              "id": "on-change",
+              "type": "1",
+              "name": "ON_CHANGE",
+              "ref": null
+            },
+            {
+              "id": "sample",
+              "type": "2",
+              "name": "SAMPLE",
+              "ref": null
+            }
+          ]
+        }
+      },
+      {
+        "id": "data-type",
+        "type": "schema",
+        "position": {
+          "x": 1660,
+          "y": 720
         },
-        {
-          "id": "allow-aggregation",
-          "type": "bool",
-          "name": "allow_aggregation",
-          "ref": null
+        "style": {
+          "width": 280
         },
-        {
-          "id": "use-models",
-          "type": "repeated ModelData",
-          "name": "use_models",
-          "ref": "model-data"
+        "data": {
+          "id": "data-type",
+          "kind": "enum",
+          "label": "enum DataType",
+          "sourceSymbol": "gnmi.GetRequest.DataType",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi/gnmi.proto#L409",
+          "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#331-the-getrequest-message",
+          "fields": [
+            {
+              "id": "all",
+              "type": "0",
+              "name": "ALL",
+              "ref": null
+            },
+            {
+              "id": "config",
+              "type": "1",
+              "name": "CONFIG",
+              "ref": null
+            },
+            {
+              "id": "state",
+              "type": "2",
+              "name": "STATE",
+              "ref": null
+            },
+            {
+              "id": "operational",
+              "type": "3",
+              "name": "OPERATIONAL",
+              "ref": null
+            }
+          ]
+        }
+      },
+      {
+        "id": "model-data",
+        "type": "schema",
+        "position": {
+          "x": 2410,
+          "y": 790
         },
-        {
+        "style": {
+          "width": 300
+        },
+        "data": {
+          "id": "model-data",
+          "kind": "message",
+          "label": "ModelData",
+          "sourceSymbol": "gnmi.ModelData",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi/gnmi.proto#L464",
+          "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#261-the-modeldata-message",
+          "fields": [
+            {
+              "id": "name",
+              "type": "string",
+              "name": "name",
+              "ref": null
+            },
+            {
+              "id": "organization",
+              "type": "string",
+              "name": "organization",
+              "ref": null
+            },
+            {
+              "id": "version",
+              "type": "string",
+              "name": "version",
+              "ref": null
+            }
+          ]
+        }
+      },
+      {
+        "id": "encoding",
+        "type": "schema",
+        "position": {
+          "x": 2380,
+          "y": 1120
+        },
+        "style": {
+          "width": 260
+        },
+        "data": {
           "id": "encoding",
-          "type": "Encoding",
-          "name": "encoding",
-          "ref": "encoding"
-        },
-        {
-          "id": "updates-only",
-          "type": "bool",
-          "name": "updates_only",
-          "ref": null
-        },
-        {
-          "id": "reserved-use-aliases",
-          "type": "reserved",
-          "name": "use_aliases / 3",
-          "ref": null,
-          "badge": "reserved"
+          "kind": "enum",
+          "label": "enum Encoding",
+          "sourceSymbol": "gnmi.Encoding",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi/gnmi.proto#L175",
+          "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#23-structured-data-types",
+          "fields": [
+            {
+              "id": "json",
+              "type": "0",
+              "name": "JSON",
+              "ref": null
+            },
+            {
+              "id": "bytes",
+              "type": "1",
+              "name": "BYTES",
+              "ref": null
+            },
+            {
+              "id": "proto",
+              "type": "2",
+              "name": "PROTO",
+              "ref": null
+            },
+            {
+              "id": "ascii",
+              "type": "3",
+              "name": "ASCII",
+              "ref": null
+            },
+            {
+              "id": "json-ietf",
+              "type": "4",
+              "name": "JSON_IETF",
+              "ref": null
+            }
+          ]
         }
-      ]
-    }
-  },
-  {
-    "id": "qos-marking",
-    "type": "schema",
-    "position": {
-      "x": 990,
-      "y": 1210
-    },
-    "style": {
-      "width": 270
-    },
-    "data": {
-      "id": "qos-marking",
-      "kind": "message",
-      "label": "QOSMarking",
-      "sourceSymbol": "gnmi.QOSMarking",
-      "deprecated": false,
-      "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi/gnmi.proto#L331",
-      "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#3512-the-subscriptionlist-message",
-      "fields": [
-        {
-          "id": "marking",
-          "type": "uint32",
-          "name": "marking",
-          "ref": null
+      },
+      {
+        "id": "notification",
+        "type": "schema",
+        "position": {
+          "x": 1740,
+          "y": 1160
+        },
+        "style": {
+          "width": 350
+        },
+        "data": {
+          "id": "notification",
+          "kind": "message",
+          "label": "Notification",
+          "sourceSymbol": "gnmi.Notification",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi/gnmi.proto#L84",
+          "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#21-reusable-notification-message-format",
+          "fields": [
+            {
+              "id": "timestamp",
+              "type": "int64",
+              "name": "timestamp",
+              "ref": null
+            },
+            {
+              "id": "prefix",
+              "type": "Path",
+              "name": "prefix",
+              "ref": "path"
+            },
+            {
+              "id": "update",
+              "type": "repeated Update",
+              "name": "update",
+              "ref": "update"
+            },
+            {
+              "id": "delete",
+              "type": "repeated Path",
+              "name": "delete",
+              "ref": "path"
+            },
+            {
+              "id": "atomic",
+              "type": "bool",
+              "name": "atomic",
+              "ref": null
+            },
+            {
+              "id": "reserved-alias",
+              "type": "reserved",
+              "name": "alias / 3",
+              "ref": null,
+              "badge": "reserved"
+            }
+          ]
         }
-      ]
-    }
-  },
-  {
-    "id": "mode",
-    "type": "schema",
-    "position": {
-      "x": 990,
-      "y": 1390
-    },
-    "style": {
-      "width": 240
-    },
-    "data": {
-      "id": "mode",
-      "kind": "enum",
-      "label": "enum Mode",
-      "sourceSymbol": "gnmi.SubscriptionList.Mode",
-      "deprecated": false,
-      "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi/gnmi.proto#L269",
-      "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#3512-the-subscriptionlist-message",
-      "fields": [
-        {
-          "id": "stream",
-          "type": "0",
-          "name": "STREAM",
-          "ref": null
+      },
+      {
+        "id": "update",
+        "type": "schema",
+        "position": {
+          "x": 1320,
+          "y": 1460
         },
-        {
-          "id": "once",
-          "type": "1",
-          "name": "ONCE",
-          "ref": null
+        "style": {
+          "width": 330
         },
-        {
-          "id": "poll",
-          "type": "2",
-          "name": "POLL",
-          "ref": null
-        }
-      ]
-    }
-  },
-  {
-    "id": "subscription",
-    "type": "schema",
-    "position": {
-      "x": 1460,
-      "y": 920
-    },
-    "style": {
-      "width": 360
-    },
-    "data": {
-      "id": "subscription",
-      "kind": "message",
-      "label": "Subscription",
-      "sourceSymbol": "gnmi.Subscription",
-      "deprecated": false,
-      "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi/gnmi.proto#L300",
-      "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#3513-the-subscription-message",
-      "fields": [
-        {
-          "id": "path",
-          "type": "Path",
-          "name": "path",
-          "ref": "path"
-        },
-        {
-          "id": "mode",
-          "type": "SubscriptionMode",
-          "name": "mode",
-          "ref": "subscription-mode"
-        },
-        {
-          "id": "sample-interval",
-          "type": "uint64",
-          "name": "sample_interval",
-          "ref": null
-        },
-        {
-          "id": "suppress-redundant",
-          "type": "bool",
-          "name": "suppress_redundant",
-          "ref": null
-        },
-        {
-          "id": "heartbeat-interval",
-          "type": "uint64",
-          "name": "heartbeat_interval",
-          "ref": null
-        }
-      ]
-    }
-  },
-  {
-    "id": "subscription-mode",
-    "type": "schema",
-    "position": {
-      "x": 1460,
-      "y": 1250
-    },
-    "style": {
-      "width": 310
-    },
-    "data": {
-      "id": "subscription-mode",
-      "kind": "enum",
-      "label": "enum SubscriptionMode",
-      "sourceSymbol": "gnmi.SubscriptionMode",
-      "deprecated": false,
-      "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi/gnmi.proto#L322",
-      "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#35152-stream-subscriptions",
-      "fields": [
-        {
-          "id": "target-defined",
-          "type": "0",
-          "name": "TARGET_DEFINED",
-          "ref": null
-        },
-        {
-          "id": "on-change",
-          "type": "1",
-          "name": "ON_CHANGE",
-          "ref": null
-        },
-        {
-          "id": "sample",
-          "type": "2",
-          "name": "SAMPLE",
-          "ref": null
-        }
-      ]
-    }
-  },
-  {
-    "id": "data-type",
-    "type": "schema",
-    "position": {
-      "x": 1660,
-      "y": 720
-    },
-    "style": {
-      "width": 280
-    },
-    "data": {
-      "id": "data-type",
-      "kind": "enum",
-      "label": "enum DataType",
-      "sourceSymbol": "gnmi.GetRequest.DataType",
-      "deprecated": false,
-      "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi/gnmi.proto#L409",
-      "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#331-the-getrequest-message",
-      "fields": [
-        {
-          "id": "all",
-          "type": "0",
-          "name": "ALL",
-          "ref": null
-        },
-        {
-          "id": "config",
-          "type": "1",
-          "name": "CONFIG",
-          "ref": null
-        },
-        {
-          "id": "state",
-          "type": "2",
-          "name": "STATE",
-          "ref": null
-        },
-        {
-          "id": "operational",
-          "type": "3",
-          "name": "OPERATIONAL",
-          "ref": null
-        }
-      ]
-    }
-  },
-  {
-    "id": "model-data",
-    "type": "schema",
-    "position": {
-      "x": 2410,
-      "y": 790
-    },
-    "style": {
-      "width": 300
-    },
-    "data": {
-      "id": "model-data",
-      "kind": "message",
-      "label": "ModelData",
-      "sourceSymbol": "gnmi.ModelData",
-      "deprecated": false,
-      "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi/gnmi.proto#L464",
-      "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#261-the-modeldata-message",
-      "fields": [
-        {
-          "id": "name",
-          "type": "string",
-          "name": "name",
-          "ref": null
-        },
-        {
-          "id": "organization",
-          "type": "string",
-          "name": "organization",
-          "ref": null
-        },
-        {
-          "id": "version",
-          "type": "string",
-          "name": "version",
-          "ref": null
-        }
-      ]
-    }
-  },
-  {
-    "id": "encoding",
-    "type": "schema",
-    "position": {
-      "x": 2380,
-      "y": 1120
-    },
-    "style": {
-      "width": 260
-    },
-    "data": {
-      "id": "encoding",
-      "kind": "enum",
-      "label": "enum Encoding",
-      "sourceSymbol": "gnmi.Encoding",
-      "deprecated": false,
-      "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi/gnmi.proto#L175",
-      "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#23-structured-data-types",
-      "fields": [
-        {
-          "id": "json",
-          "type": "0",
-          "name": "JSON",
-          "ref": null
-        },
-        {
-          "id": "bytes",
-          "type": "1",
-          "name": "BYTES",
-          "ref": null
-        },
-        {
-          "id": "proto",
-          "type": "2",
-          "name": "PROTO",
-          "ref": null
-        },
-        {
-          "id": "ascii",
-          "type": "3",
-          "name": "ASCII",
-          "ref": null
-        },
-        {
-          "id": "json-ietf",
-          "type": "4",
-          "name": "JSON_IETF",
-          "ref": null
-        }
-      ]
-    }
-  },
-  {
-    "id": "notification",
-    "type": "schema",
-    "position": {
-      "x": 1740,
-      "y": 1160
-    },
-    "style": {
-      "width": 350
-    },
-    "data": {
-      "id": "notification",
-      "kind": "message",
-      "label": "Notification",
-      "sourceSymbol": "gnmi.Notification",
-      "deprecated": false,
-      "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi/gnmi.proto#L84",
-      "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#21-reusable-notification-message-format",
-      "fields": [
-        {
-          "id": "timestamp",
-          "type": "int64",
-          "name": "timestamp",
-          "ref": null
-        },
-        {
-          "id": "prefix",
-          "type": "Path",
-          "name": "prefix",
-          "ref": "path"
-        },
-        {
+        "data": {
           "id": "update",
-          "type": "repeated Update",
-          "name": "update",
-          "ref": "update"
-        },
-        {
-          "id": "delete",
-          "type": "repeated Path",
-          "name": "delete",
-          "ref": "path"
-        },
-        {
-          "id": "atomic",
-          "type": "bool",
-          "name": "atomic",
-          "ref": null
-        },
-        {
-          "id": "reserved-alias",
-          "type": "reserved",
-          "name": "alias / 3",
-          "ref": null,
-          "badge": "reserved"
+          "kind": "message",
+          "label": "Update",
+          "sourceSymbol": "gnmi.Update",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi/gnmi.proto#L100",
+          "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#21-reusable-notification-message-format",
+          "fields": [
+            {
+              "id": "path",
+              "type": "Path",
+              "name": "path",
+              "ref": "path"
+            },
+            {
+              "id": "value",
+              "type": "Value",
+              "name": "value",
+              "ref": "value",
+              "badge": "deprecated",
+              "deprecated": true
+            },
+            {
+              "id": "val",
+              "type": "TypedValue",
+              "name": "val",
+              "ref": "typed-value"
+            },
+            {
+              "id": "duplicates",
+              "type": "uint32",
+              "name": "duplicates",
+              "ref": null
+            }
+          ]
         }
-      ]
-    }
-  },
-  {
-    "id": "update",
-    "type": "schema",
-    "position": {
-      "x": 1320,
-      "y": 1460
-    },
-    "style": {
-      "width": 330
-    },
-    "data": {
-      "id": "update",
-      "kind": "message",
-      "label": "Update",
-      "sourceSymbol": "gnmi.Update",
-      "deprecated": false,
-      "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi/gnmi.proto#L100",
-      "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#21-reusable-notification-message-format",
-      "fields": [
-        {
+      },
+      {
+        "id": "path",
+        "type": "schema",
+        "position": {
+          "x": 1780,
+          "y": 1530
+        },
+        "style": {
+          "width": 360
+        },
+        "data": {
           "id": "path",
-          "type": "Path",
-          "name": "path",
-          "ref": "path"
+          "kind": "message",
+          "label": "Path",
+          "sourceSymbol": "gnmi.Path",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi/gnmi.proto#L142",
+          "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#222-paths",
+          "fields": [
+            {
+              "id": "element",
+              "type": "repeated string",
+              "name": "element",
+              "ref": null,
+              "badge": "deprecated",
+              "deprecated": true
+            },
+            {
+              "id": "origin",
+              "type": "string",
+              "name": "origin",
+              "ref": null
+            },
+            {
+              "id": "elem",
+              "type": "repeated PathElem",
+              "name": "elem",
+              "ref": "path-elem"
+            },
+            {
+              "id": "target",
+              "type": "string",
+              "name": "target",
+              "ref": null
+            }
+          ]
+        }
+      },
+      {
+        "id": "path-elem",
+        "type": "schema",
+        "position": {
+          "x": 2210,
+          "y": 1600
         },
-        {
+        "style": {
+          "width": 330
+        },
+        "data": {
+          "id": "path-elem",
+          "kind": "message",
+          "label": "PathElem",
+          "sourceSymbol": "gnmi.PathElem",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi/gnmi.proto#L155",
+          "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#222-paths",
+          "fields": [
+            {
+              "id": "name",
+              "type": "string",
+              "name": "name",
+              "ref": null
+            },
+            {
+              "id": "key",
+              "type": "map<string,string>",
+              "name": "key",
+              "ref": null
+            }
+          ]
+        }
+      },
+      {
+        "id": "value",
+        "type": "schema",
+        "position": {
+          "x": 700,
+          "y": 1570
+        },
+        "style": {
+          "width": 300
+        },
+        "data": {
           "id": "value",
-          "type": "Value",
-          "name": "value",
-          "ref": "value",
-          "badge": "deprecated",
-          "deprecated": true
-        },
-        {
-          "id": "val",
-          "type": "TypedValue",
-          "name": "val",
-          "ref": "typed-value"
-        },
-        {
-          "id": "duplicates",
-          "type": "uint32",
-          "name": "duplicates",
-          "ref": null
+          "kind": "message",
+          "label": "Value",
+          "sourceSymbol": "gnmi.Value",
+          "deprecated": true,
+          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi/gnmi.proto#L163",
+          "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#223-node-values",
+          "badges": [
+            "deprecated"
+          ],
+          "fields": [
+            {
+              "id": "value",
+              "type": "bytes",
+              "name": "value",
+              "ref": null
+            },
+            {
+              "id": "type",
+              "type": "Encoding",
+              "name": "type",
+              "ref": "encoding"
+            }
+          ]
         }
-      ]
-    }
-  },
-  {
-    "id": "path",
-    "type": "schema",
-    "position": {
-      "x": 1780,
-      "y": 1530
-    },
-    "style": {
-      "width": 360
-    },
-    "data": {
-      "id": "path",
-      "kind": "message",
-      "label": "Path",
-      "sourceSymbol": "gnmi.Path",
-      "deprecated": false,
-      "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi/gnmi.proto#L142",
-      "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#222-paths",
-      "fields": [
-        {
-          "id": "element",
-          "type": "repeated string",
-          "name": "element",
-          "ref": null,
-          "badge": "deprecated",
-          "deprecated": true
+      },
+      {
+        "id": "typed-value",
+        "type": "schema",
+        "position": {
+          "x": 980,
+          "y": 1780
         },
-        {
-          "id": "origin",
-          "type": "string",
-          "name": "origin",
-          "ref": null
+        "style": {
+          "width": 390
         },
-        {
-          "id": "elem",
-          "type": "repeated PathElem",
-          "name": "elem",
-          "ref": "path-elem"
-        },
-        {
-          "id": "target",
-          "type": "string",
-          "name": "target",
-          "ref": null
+        "data": {
+          "id": "typed-value",
+          "kind": "message",
+          "label": "TypedValue",
+          "sourceSymbol": "gnmi.TypedValue",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi/gnmi.proto#L109",
+          "fields": [
+            {
+              "id": "string-val",
+              "type": "string",
+              "name": "string_val",
+              "ref": null,
+              "group": "oneof value"
+            },
+            {
+              "id": "int-val",
+              "type": "int64",
+              "name": "int_val",
+              "ref": null,
+              "group": "oneof value"
+            },
+            {
+              "id": "uint-val",
+              "type": "uint64",
+              "name": "uint_val",
+              "ref": null,
+              "group": "oneof value"
+            },
+            {
+              "id": "bool-val",
+              "type": "bool",
+              "name": "bool_val",
+              "ref": null,
+              "group": "oneof value"
+            },
+            {
+              "id": "bytes-val",
+              "type": "bytes",
+              "name": "bytes_val",
+              "ref": null,
+              "group": "oneof value"
+            },
+            {
+              "id": "float-val",
+              "type": "float",
+              "name": "float_val",
+              "ref": null,
+              "group": "oneof value",
+              "badge": "deprecated",
+              "deprecated": true
+            },
+            {
+              "id": "double-val",
+              "type": "double",
+              "name": "double_val",
+              "ref": null,
+              "group": "oneof value"
+            },
+            {
+              "id": "decimal-val",
+              "type": "Decimal64",
+              "name": "decimal_val",
+              "ref": "decimal64",
+              "group": "oneof value",
+              "badge": "deprecated",
+              "deprecated": true
+            },
+            {
+              "id": "leaflist-val",
+              "type": "ScalarArray",
+              "name": "leaflist_val",
+              "ref": "scalar-array",
+              "group": "oneof value"
+            },
+            {
+              "id": "any-val",
+              "type": "google.protobuf.Any",
+              "name": "any_val",
+              "ref": "any",
+              "group": "oneof value"
+            },
+            {
+              "id": "json-val",
+              "type": "bytes",
+              "name": "json_val",
+              "ref": null,
+              "group": "oneof value"
+            },
+            {
+              "id": "json-ietf-val",
+              "type": "bytes",
+              "name": "json_ietf_val",
+              "ref": null,
+              "group": "oneof value"
+            },
+            {
+              "id": "ascii-val",
+              "type": "string",
+              "name": "ascii_val",
+              "ref": null,
+              "group": "oneof value"
+            },
+            {
+              "id": "proto-bytes",
+              "type": "bytes",
+              "name": "proto_bytes",
+              "ref": null,
+              "group": "oneof value"
+            }
+          ]
         }
-      ]
-    }
-  },
-  {
-    "id": "path-elem",
-    "type": "schema",
-    "position": {
-      "x": 2210,
-      "y": 1600
-    },
-    "style": {
-      "width": 330
-    },
-    "data": {
-      "id": "path-elem",
-      "kind": "message",
-      "label": "PathElem",
-      "sourceSymbol": "gnmi.PathElem",
-      "deprecated": false,
-      "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi/gnmi.proto#L155",
-      "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#222-paths",
-      "fields": [
-        {
-          "id": "name",
-          "type": "string",
-          "name": "name",
-          "ref": null
+      },
+      {
+        "id": "decimal64",
+        "type": "schema",
+        "position": {
+          "x": 1430,
+          "y": 1780
         },
-        {
-          "id": "key",
-          "type": "map<string,string>",
-          "name": "key",
-          "ref": null
+        "style": {
+          "width": 280
+        },
+        "data": {
+          "id": "decimal64",
+          "kind": "message",
+          "label": "Decimal64",
+          "sourceSymbol": "gnmi.Decimal64",
+          "deprecated": true,
+          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi/gnmi.proto#L200",
+          "badges": [
+            "deprecated"
+          ],
+          "fields": [
+            {
+              "id": "digits",
+              "type": "int64",
+              "name": "digits",
+              "ref": null
+            },
+            {
+              "id": "precision",
+              "type": "uint32",
+              "name": "precision",
+              "ref": null
+            }
+          ]
         }
-      ]
-    }
-  },
-  {
-    "id": "value",
-    "type": "schema",
-    "position": {
-      "x": 700,
-      "y": 1570
-    },
-    "style": {
-      "width": 300
-    },
-    "data": {
-      "id": "value",
-      "kind": "message",
-      "label": "Value",
-      "sourceSymbol": "gnmi.Value",
-      "deprecated": true,
-      "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi/gnmi.proto#L163",
-      "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#223-node-values",
-      "badges": [
-        "deprecated"
-      ],
-      "fields": [
-        {
-          "id": "value",
-          "type": "bytes",
-          "name": "value",
-          "ref": null
+      },
+      {
+        "id": "scalar-array",
+        "type": "schema",
+        "position": {
+          "x": 1430,
+          "y": 1980
         },
-        {
-          "id": "type",
-          "type": "Encoding",
-          "name": "type",
-          "ref": "encoding"
+        "style": {
+          "width": 330
+        },
+        "data": {
+          "id": "scalar-array",
+          "kind": "message",
+          "label": "ScalarArray",
+          "sourceSymbol": "gnmi.ScalarArray",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi/gnmi.proto#L208",
+          "fields": [
+            {
+              "id": "element",
+              "type": "repeated TypedValue",
+              "name": "element",
+              "ref": "typed-value"
+            }
+          ]
         }
-      ]
-    }
-  },
-  {
-    "id": "typed-value",
-    "type": "schema",
-    "position": {
-      "x": 980,
-      "y": 1780
-    },
-    "style": {
-      "width": 390
-    },
-    "data": {
-      "id": "typed-value",
-      "kind": "message",
-      "label": "TypedValue",
-      "sourceSymbol": "gnmi.TypedValue",
-      "deprecated": false,
-      "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi/gnmi.proto#L109",
-      "fields": [
-        {
-          "id": "string-val",
-          "type": "string",
-          "name": "string_val",
-          "ref": null,
-          "group": "oneof value"
+      },
+      {
+        "id": "any",
+        "type": "schema",
+        "position": {
+          "x": 550,
+          "y": 1870
         },
-        {
-          "id": "int-val",
-          "type": "int64",
-          "name": "int_val",
-          "ref": null,
-          "group": "oneof value"
+        "style": {
+          "width": 330
         },
-        {
-          "id": "uint-val",
-          "type": "uint64",
-          "name": "uint_val",
-          "ref": null,
-          "group": "oneof value"
-        },
-        {
-          "id": "bool-val",
-          "type": "bool",
-          "name": "bool_val",
-          "ref": null,
-          "group": "oneof value"
-        },
-        {
-          "id": "bytes-val",
-          "type": "bytes",
-          "name": "bytes_val",
-          "ref": null,
-          "group": "oneof value"
-        },
-        {
-          "id": "float-val",
-          "type": "float",
-          "name": "float_val",
-          "ref": null,
-          "group": "oneof value",
-          "badge": "deprecated",
-          "deprecated": true
-        },
-        {
-          "id": "double-val",
-          "type": "double",
-          "name": "double_val",
-          "ref": null,
-          "group": "oneof value"
-        },
-        {
-          "id": "decimal-val",
-          "type": "Decimal64",
-          "name": "decimal_val",
-          "ref": "decimal64",
-          "group": "oneof value",
-          "badge": "deprecated",
-          "deprecated": true
-        },
-        {
-          "id": "leaflist-val",
-          "type": "ScalarArray",
-          "name": "leaflist_val",
-          "ref": "scalar-array",
-          "group": "oneof value"
-        },
-        {
-          "id": "any-val",
-          "type": "google.protobuf.Any",
-          "name": "any_val",
-          "ref": "any",
-          "group": "oneof value"
-        },
-        {
-          "id": "json-val",
-          "type": "bytes",
-          "name": "json_val",
-          "ref": null,
-          "group": "oneof value"
-        },
-        {
-          "id": "json-ietf-val",
-          "type": "bytes",
-          "name": "json_ietf_val",
-          "ref": null,
-          "group": "oneof value"
-        },
-        {
-          "id": "ascii-val",
-          "type": "string",
-          "name": "ascii_val",
-          "ref": null,
-          "group": "oneof value"
-        },
-        {
-          "id": "proto-bytes",
-          "type": "bytes",
-          "name": "proto_bytes",
-          "ref": null,
-          "group": "oneof value"
+        "data": {
+          "id": "any",
+          "kind": "external",
+          "label": "google.protobuf.Any",
+          "protoUrl": "https://github.com/protocolbuffers/protobuf/blob/master/src/google/protobuf/any.proto",
+          "fields": [
+            {
+              "id": "type-url",
+              "type": "string",
+              "name": "type_url"
+            },
+            {
+              "id": "value",
+              "type": "bytes",
+              "name": "value"
+            }
+          ]
         }
-      ]
-    }
-  },
-  {
-    "id": "decimal64",
-    "type": "schema",
-    "position": {
-      "x": 1430,
-      "y": 1780
-    },
-    "style": {
-      "width": 280
-    },
-    "data": {
-      "id": "decimal64",
-      "kind": "message",
-      "label": "Decimal64",
-      "sourceSymbol": "gnmi.Decimal64",
-      "deprecated": true,
-      "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi/gnmi.proto#L200",
-      "badges": [
-        "deprecated"
-      ],
-      "fields": [
-        {
-          "id": "digits",
-          "type": "int64",
-          "name": "digits",
-          "ref": null
+      },
+      {
+        "id": "extension",
+        "type": "schema",
+        "position": {
+          "x": 2020,
+          "y": 820
         },
-        {
-          "id": "precision",
-          "type": "uint32",
-          "name": "precision",
-          "ref": null
-        }
-      ]
-    }
-  },
-  {
-    "id": "scalar-array",
-    "type": "schema",
-    "position": {
-      "x": 1430,
-      "y": 1980
-    },
-    "style": {
-      "width": 330
-    },
-    "data": {
-      "id": "scalar-array",
-      "kind": "message",
-      "label": "ScalarArray",
-      "sourceSymbol": "gnmi.ScalarArray",
-      "deprecated": false,
-      "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi/gnmi.proto#L208",
-      "fields": [
-        {
-          "id": "element",
-          "type": "repeated TypedValue",
-          "name": "element",
-          "ref": "typed-value"
-        }
-      ]
-    }
-  },
-  {
-    "id": "any",
-    "type": "schema",
-    "position": {
-      "x": 550,
-      "y": 1870
-    },
-    "style": {
-      "width": 330
-    },
-    "data": {
-      "id": "any",
-      "kind": "external",
-      "label": "google.protobuf.Any",
-      "protoUrl": "https://github.com/protocolbuffers/protobuf/blob/master/src/google/protobuf/any.proto",
-      "fields": [
-        {
-          "id": "type-url",
-          "type": "string",
-          "name": "type_url"
+        "style": {
+          "width": 360
         },
-        {
-          "id": "value",
-          "type": "bytes",
-          "name": "value"
+        "data": {
+          "id": "extension",
+          "kind": "message",
+          "label": "gnmi_ext.Extension",
+          "sourceSymbol": "gnmi_ext.Extension",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi_ext/gnmi_ext.proto#L29",
+          "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#27-extensions-to-gnmi",
+          "fields": [
+            {
+              "id": "registered-ext",
+              "type": "RegisteredExtension",
+              "name": "registered_ext",
+              "ref": "registered-extension",
+              "group": "oneof ext"
+            },
+            {
+              "id": "master-arbitration",
+              "type": "MasterArbitration",
+              "name": "master_arbitration",
+              "ref": "master-arbitration",
+              "group": "oneof ext"
+            },
+            {
+              "id": "history",
+              "type": "History",
+              "name": "history",
+              "ref": "history",
+              "group": "oneof ext"
+            },
+            {
+              "id": "commit",
+              "type": "Commit",
+              "name": "commit",
+              "ref": "commit",
+              "group": "oneof ext"
+            },
+            {
+              "id": "depth",
+              "type": "Depth",
+              "name": "depth",
+              "ref": "depth",
+              "group": "oneof ext"
+            },
+            {
+              "id": "config-subscription",
+              "type": "ConfigSubscription",
+              "name": "config_subscription",
+              "ref": "config-subscription",
+              "group": "oneof ext"
+            }
+          ]
         }
-      ]
-    }
-  },
-  {
-    "id": "extension",
-    "type": "schema",
-    "position": {
-      "x": 2020,
-      "y": 820
-    },
-    "style": {
-      "width": 360
-    },
-    "data": {
-      "id": "extension",
-      "kind": "message",
-      "label": "gnmi_ext.Extension",
-      "sourceSymbol": "gnmi_ext.Extension",
-      "deprecated": false,
-      "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi_ext/gnmi_ext.proto#L29",
-      "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#27-extensions-to-gnmi",
-      "fields": [
-        {
-          "id": "registered-ext",
-          "type": "RegisteredExtension",
-          "name": "registered_ext",
-          "ref": "registered-extension",
-          "group": "oneof ext"
+      },
+      {
+        "id": "registered-extension",
+        "type": "schema",
+        "position": {
+          "x": 2510,
+          "y": 760
         },
-        {
+        "style": {
+          "width": 390
+        },
+        "data": {
+          "id": "registered-extension",
+          "kind": "message",
+          "label": "gnmi_ext.RegisteredExtension",
+          "sourceSymbol": "gnmi_ext.RegisteredExtension",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi_ext/gnmi_ext.proto#L43",
+          "fields": [
+            {
+              "id": "id",
+              "type": "ExtensionID",
+              "name": "id",
+              "ref": "extension-id"
+            },
+            {
+              "id": "msg",
+              "type": "bytes",
+              "name": "msg",
+              "ref": null
+            }
+          ]
+        }
+      },
+      {
+        "id": "extension-id",
+        "type": "schema",
+        "position": {
+          "x": 2940,
+          "y": 700
+        },
+        "style": {
+          "width": 310
+        },
+        "data": {
+          "id": "extension-id",
+          "kind": "enum",
+          "label": "enum gnmi_ext.ExtensionID",
+          "sourceSymbol": "gnmi_ext.ExtensionID",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi_ext/gnmi_ext.proto#L50",
+          "fields": [
+            {
+              "id": "unset",
+              "type": "0",
+              "name": "EID_UNSET",
+              "ref": null
+            },
+            {
+              "id": "experimental",
+              "type": "999",
+              "name": "EID_EXPERIMENTAL",
+              "ref": null
+            }
+          ]
+        }
+      },
+      {
+        "id": "master-arbitration",
+        "type": "schema",
+        "position": {
+          "x": 2510,
+          "y": 1010
+        },
+        "style": {
+          "width": 390
+        },
+        "data": {
           "id": "master-arbitration",
-          "type": "MasterArbitration",
-          "name": "master_arbitration",
-          "ref": "master-arbitration",
-          "group": "oneof ext"
-        },
-        {
-          "id": "history",
-          "type": "History",
-          "name": "history",
-          "ref": "history",
-          "group": "oneof ext"
-        },
-        {
-          "id": "commit",
-          "type": "Commit",
-          "name": "commit",
-          "ref": "commit",
-          "group": "oneof ext"
-        },
-        {
-          "id": "depth",
-          "type": "Depth",
-          "name": "depth",
-          "ref": "depth",
-          "group": "oneof ext"
-        },
-        {
-          "id": "config-subscription",
-          "type": "ConfigSubscription",
-          "name": "config_subscription",
-          "ref": "config-subscription",
-          "group": "oneof ext"
+          "kind": "message",
+          "label": "gnmi_ext.MasterArbitration",
+          "sourceSymbol": "gnmi_ext.MasterArbitration",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi_ext/gnmi_ext.proto#L65",
+          "fields": [
+            {
+              "id": "role",
+              "type": "Role",
+              "name": "role",
+              "ref": "role"
+            },
+            {
+              "id": "election-id",
+              "type": "Uint128",
+              "name": "election_id",
+              "ref": "uint128"
+            }
+          ]
         }
-      ]
-    }
-  },
-  {
-    "id": "registered-extension",
-    "type": "schema",
-    "position": {
-      "x": 2510,
-      "y": 760
-    },
-    "style": {
-      "width": 390
-    },
-    "data": {
-      "id": "registered-extension",
-      "kind": "message",
-      "label": "gnmi_ext.RegisteredExtension",
-      "sourceSymbol": "gnmi_ext.RegisteredExtension",
-      "deprecated": false,
-      "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi_ext/gnmi_ext.proto#L43",
-      "fields": [
-        {
-          "id": "id",
-          "type": "ExtensionID",
-          "name": "id",
-          "ref": "extension-id"
+      },
+      {
+        "id": "uint128",
+        "type": "schema",
+        "position": {
+          "x": 2940,
+          "y": 1040
         },
-        {
-          "id": "msg",
-          "type": "bytes",
-          "name": "msg",
-          "ref": null
-        }
-      ]
-    }
-  },
-  {
-    "id": "extension-id",
-    "type": "schema",
-    "position": {
-      "x": 2940,
-      "y": 700
-    },
-    "style": {
-      "width": 310
-    },
-    "data": {
-      "id": "extension-id",
-      "kind": "enum",
-      "label": "enum gnmi_ext.ExtensionID",
-      "sourceSymbol": "gnmi_ext.ExtensionID",
-      "deprecated": false,
-      "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi_ext/gnmi_ext.proto#L50",
-      "fields": [
-        {
-          "id": "unset",
-          "type": "0",
-          "name": "EID_UNSET",
-          "ref": null
+        "style": {
+          "width": 260
         },
-        {
-          "id": "experimental",
-          "type": "999",
-          "name": "EID_EXPERIMENTAL",
-          "ref": null
+        "data": {
+          "id": "uint128",
+          "kind": "message",
+          "label": "gnmi_ext.Uint128",
+          "sourceSymbol": "gnmi_ext.Uint128",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi_ext/gnmi_ext.proto#L71",
+          "fields": [
+            {
+              "id": "high",
+              "type": "uint64",
+              "name": "high",
+              "ref": null
+            },
+            {
+              "id": "low",
+              "type": "uint64",
+              "name": "low",
+              "ref": null
+            }
+          ]
         }
-      ]
-    }
-  },
-  {
-    "id": "master-arbitration",
-    "type": "schema",
-    "position": {
-      "x": 2510,
-      "y": 1010
-    },
-    "style": {
-      "width": 390
-    },
-    "data": {
-      "id": "master-arbitration",
-      "kind": "message",
-      "label": "gnmi_ext.MasterArbitration",
-      "sourceSymbol": "gnmi_ext.MasterArbitration",
-      "deprecated": false,
-      "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi_ext/gnmi_ext.proto#L65",
-      "fields": [
-        {
+      },
+      {
+        "id": "role",
+        "type": "schema",
+        "position": {
+          "x": 2940,
+          "y": 1210
+        },
+        "style": {
+          "width": 260
+        },
+        "data": {
           "id": "role",
-          "type": "Role",
-          "name": "role",
-          "ref": "role"
-        },
-        {
-          "id": "election-id",
-          "type": "Uint128",
-          "name": "election_id",
-          "ref": "uint128"
+          "kind": "message",
+          "label": "gnmi_ext.Role",
+          "sourceSymbol": "gnmi_ext.Role",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi_ext/gnmi_ext.proto#L77",
+          "fields": [
+            {
+              "id": "id",
+              "type": "string",
+              "name": "id",
+              "ref": null
+            }
+          ]
         }
-      ]
-    }
-  },
-  {
-    "id": "uint128",
-    "type": "schema",
-    "position": {
-      "x": 2940,
-      "y": 1040
-    },
-    "style": {
-      "width": 260
-    },
-    "data": {
-      "id": "uint128",
-      "kind": "message",
-      "label": "gnmi_ext.Uint128",
-      "sourceSymbol": "gnmi_ext.Uint128",
-      "deprecated": false,
-      "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi_ext/gnmi_ext.proto#L71",
-      "fields": [
-        {
-          "id": "high",
-          "type": "uint64",
-          "name": "high",
-          "ref": null
+      },
+      {
+        "id": "history",
+        "type": "schema",
+        "position": {
+          "x": 2510,
+          "y": 1260
         },
-        {
-          "id": "low",
-          "type": "uint64",
-          "name": "low",
-          "ref": null
-        }
-      ]
-    }
-  },
-  {
-    "id": "role",
-    "type": "schema",
-    "position": {
-      "x": 2940,
-      "y": 1210
-    },
-    "style": {
-      "width": 260
-    },
-    "data": {
-      "id": "role",
-      "kind": "message",
-      "label": "gnmi_ext.Role",
-      "sourceSymbol": "gnmi_ext.Role",
-      "deprecated": false,
-      "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi_ext/gnmi_ext.proto#L77",
-      "fields": [
-        {
-          "id": "id",
-          "type": "string",
-          "name": "id",
-          "ref": null
-        }
-      ]
-    }
-  },
-  {
-    "id": "history",
-    "type": "schema",
-    "position": {
-      "x": 2510,
-      "y": 1260
-    },
-    "style": {
-      "width": 330
-    },
-    "data": {
-      "id": "history",
-      "kind": "message",
-      "label": "gnmi_ext.History",
-      "sourceSymbol": "gnmi_ext.History",
-      "deprecated": false,
-      "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi_ext/gnmi_ext.proto#L86",
-      "fields": [
-        {
-          "id": "snapshot-time",
-          "type": "int64",
-          "name": "snapshot_time",
-          "ref": null,
-          "group": "oneof request"
+        "style": {
+          "width": 330
         },
-        {
-          "id": "range",
-          "type": "TimeRange",
-          "name": "range",
-          "ref": "time-range",
-          "group": "oneof request"
+        "data": {
+          "id": "history",
+          "kind": "message",
+          "label": "gnmi_ext.History",
+          "sourceSymbol": "gnmi_ext.History",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi_ext/gnmi_ext.proto#L86",
+          "fields": [
+            {
+              "id": "snapshot-time",
+              "type": "int64",
+              "name": "snapshot_time",
+              "ref": null,
+              "group": "oneof request"
+            },
+            {
+              "id": "range",
+              "type": "TimeRange",
+              "name": "range",
+              "ref": "time-range",
+              "group": "oneof request"
+            }
+          ]
         }
-      ]
-    }
-  },
-  {
-    "id": "time-range",
-    "type": "schema",
-    "position": {
-      "x": 2940,
-      "y": 1390
-    },
-    "style": {
-      "width": 270
-    },
-    "data": {
-      "id": "time-range",
-      "kind": "message",
-      "label": "gnmi_ext.TimeRange",
-      "sourceSymbol": "gnmi_ext.TimeRange",
-      "deprecated": false,
-      "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi_ext/gnmi_ext.proto#L93",
-      "fields": [
-        {
-          "id": "start",
-          "type": "int64",
-          "name": "start",
-          "ref": null
+      },
+      {
+        "id": "time-range",
+        "type": "schema",
+        "position": {
+          "x": 2940,
+          "y": 1390
         },
-        {
-          "id": "end",
-          "type": "int64",
-          "name": "end",
-          "ref": null
+        "style": {
+          "width": 270
+        },
+        "data": {
+          "id": "time-range",
+          "kind": "message",
+          "label": "gnmi_ext.TimeRange",
+          "sourceSymbol": "gnmi_ext.TimeRange",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi_ext/gnmi_ext.proto#L93",
+          "fields": [
+            {
+              "id": "start",
+              "type": "int64",
+              "name": "start",
+              "ref": null
+            },
+            {
+              "id": "end",
+              "type": "int64",
+              "name": "end",
+              "ref": null
+            }
+          ]
         }
-      ]
-    }
-  },
-  {
-    "id": "commit",
-    "type": "schema",
-    "position": {
-      "x": 2510,
-      "y": 1500
-    },
-    "style": {
-      "width": 390
-    },
-    "data": {
-      "id": "commit",
-      "kind": "message",
-      "label": "gnmi_ext.Commit",
-      "sourceSymbol": "gnmi_ext.Commit",
-      "deprecated": false,
-      "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi_ext/gnmi_ext.proto#L104",
-      "fields": [
-        {
-          "id": "id",
-          "type": "string",
-          "name": "id",
-          "ref": null
+      },
+      {
+        "id": "commit",
+        "type": "schema",
+        "position": {
+          "x": 2510,
+          "y": 1500
         },
-        {
+        "style": {
+          "width": 390
+        },
+        "data": {
           "id": "commit",
-          "type": "CommitRequest",
-          "name": "commit",
-          "ref": "commit-request",
-          "group": "oneof action"
-        },
-        {
-          "id": "confirm",
-          "type": "CommitConfirm",
-          "name": "confirm",
-          "ref": "commit-confirm",
-          "group": "oneof action"
-        },
-        {
-          "id": "cancel",
-          "type": "CommitCancel",
-          "name": "cancel",
-          "ref": "commit-cancel",
-          "group": "oneof action"
-        },
-        {
-          "id": "set-rollback-duration",
-          "type": "CommitSetRollbackDuration",
-          "name": "set_rollback_duration",
-          "ref": "commit-set-rollback-duration",
-          "group": "oneof action"
+          "kind": "message",
+          "label": "gnmi_ext.Commit",
+          "sourceSymbol": "gnmi_ext.Commit",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi_ext/gnmi_ext.proto#L104",
+          "fields": [
+            {
+              "id": "id",
+              "type": "string",
+              "name": "id",
+              "ref": null
+            },
+            {
+              "id": "commit",
+              "type": "CommitRequest",
+              "name": "commit",
+              "ref": "commit-request",
+              "group": "oneof action"
+            },
+            {
+              "id": "confirm",
+              "type": "CommitConfirm",
+              "name": "confirm",
+              "ref": "commit-confirm",
+              "group": "oneof action"
+            },
+            {
+              "id": "cancel",
+              "type": "CommitCancel",
+              "name": "cancel",
+              "ref": "commit-cancel",
+              "group": "oneof action"
+            },
+            {
+              "id": "set-rollback-duration",
+              "type": "CommitSetRollbackDuration",
+              "name": "set_rollback_duration",
+              "ref": "commit-set-rollback-duration",
+              "group": "oneof action"
+            }
+          ]
         }
-      ]
-    }
-  },
-  {
-    "id": "commit-request",
-    "type": "schema",
-    "position": {
-      "x": 2960,
-      "y": 1580
-    },
-    "style": {
-      "width": 360
-    },
-    "data": {
-      "id": "commit-request",
-      "kind": "message",
-      "label": "gnmi_ext.CommitRequest",
-      "sourceSymbol": "gnmi_ext.CommitRequest",
-      "deprecated": false,
-      "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi_ext/gnmi_ext.proto#L129",
-      "fields": [
-        {
-          "id": "rollback-duration",
-          "type": "google.protobuf.Duration",
-          "name": "rollback_duration",
-          "ref": "duration"
-        }
-      ]
-    }
-  },
-  {
-    "id": "commit-confirm",
-    "type": "schema",
-    "position": {
-      "x": 2960,
-      "y": 1760
-    },
-    "style": {
-      "width": 300
-    },
-    "data": {
-      "id": "commit-confirm",
-      "kind": "message",
-      "label": "gnmi_ext.CommitConfirm",
-      "sourceSymbol": "gnmi_ext.CommitConfirm",
-      "deprecated": false,
-      "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi_ext/gnmi_ext.proto#L136",
-      "fields": []
-    }
-  },
-  {
-    "id": "commit-cancel",
-    "type": "schema",
-    "position": {
-      "x": 2960,
-      "y": 1900
-    },
-    "style": {
-      "width": 300
-    },
-    "data": {
-      "id": "commit-cancel",
-      "kind": "message",
-      "label": "gnmi_ext.CommitCancel",
-      "sourceSymbol": "gnmi_ext.CommitCancel",
-      "deprecated": false,
-      "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi_ext/gnmi_ext.proto#L140",
-      "fields": []
-    }
-  },
-  {
-    "id": "commit-set-rollback-duration",
-    "type": "schema",
-    "position": {
-      "x": 2960,
-      "y": 2040
-    },
-    "style": {
-      "width": 400
-    },
-    "data": {
-      "id": "commit-set-rollback-duration",
-      "kind": "message",
-      "label": "gnmi_ext.CommitSetRollbackDuration",
-      "sourceSymbol": "gnmi_ext.CommitSetRollbackDuration",
-      "deprecated": false,
-      "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi_ext/gnmi_ext.proto#L144",
-      "fields": [
-        {
-          "id": "rollback-duration",
-          "type": "google.protobuf.Duration",
-          "name": "rollback_duration",
-          "ref": "duration"
-        }
-      ]
-    }
-  },
-  {
-    "id": "duration",
-    "type": "schema",
-    "position": {
-      "x": 3400,
-      "y": 1740
-    },
-    "style": {
-      "width": 300
-    },
-    "data": {
-      "id": "duration",
-      "kind": "external",
-      "label": "google.protobuf.Duration",
-      "protoUrl": "https://github.com/protocolbuffers/protobuf/blob/main/src/google/protobuf/duration.proto",
-      "fields": [
-        {
-          "id": "seconds",
-          "type": "int64",
-          "name": "seconds"
+      },
+      {
+        "id": "commit-request",
+        "type": "schema",
+        "position": {
+          "x": 2960,
+          "y": 1580
         },
-        {
-          "id": "nanos",
-          "type": "int32",
-          "name": "nanos"
+        "style": {
+          "width": 360
+        },
+        "data": {
+          "id": "commit-request",
+          "kind": "message",
+          "label": "gnmi_ext.CommitRequest",
+          "sourceSymbol": "gnmi_ext.CommitRequest",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi_ext/gnmi_ext.proto#L129",
+          "fields": [
+            {
+              "id": "rollback-duration",
+              "type": "google.protobuf.Duration",
+              "name": "rollback_duration",
+              "ref": "duration"
+            }
+          ]
         }
-      ]
+      },
+      {
+        "id": "commit-confirm",
+        "type": "schema",
+        "position": {
+          "x": 2960,
+          "y": 1760
+        },
+        "style": {
+          "width": 300
+        },
+        "data": {
+          "id": "commit-confirm",
+          "kind": "message",
+          "label": "gnmi_ext.CommitConfirm",
+          "sourceSymbol": "gnmi_ext.CommitConfirm",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi_ext/gnmi_ext.proto#L136",
+          "fields": []
+        }
+      },
+      {
+        "id": "commit-cancel",
+        "type": "schema",
+        "position": {
+          "x": 2960,
+          "y": 1900
+        },
+        "style": {
+          "width": 300
+        },
+        "data": {
+          "id": "commit-cancel",
+          "kind": "message",
+          "label": "gnmi_ext.CommitCancel",
+          "sourceSymbol": "gnmi_ext.CommitCancel",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi_ext/gnmi_ext.proto#L140",
+          "fields": []
+        }
+      },
+      {
+        "id": "commit-set-rollback-duration",
+        "type": "schema",
+        "position": {
+          "x": 2960,
+          "y": 2040
+        },
+        "style": {
+          "width": 400
+        },
+        "data": {
+          "id": "commit-set-rollback-duration",
+          "kind": "message",
+          "label": "gnmi_ext.CommitSetRollbackDuration",
+          "sourceSymbol": "gnmi_ext.CommitSetRollbackDuration",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi_ext/gnmi_ext.proto#L144",
+          "fields": [
+            {
+              "id": "rollback-duration",
+              "type": "google.protobuf.Duration",
+              "name": "rollback_duration",
+              "ref": "duration"
+            }
+          ]
+        }
+      },
+      {
+        "id": "duration",
+        "type": "schema",
+        "position": {
+          "x": 3400,
+          "y": 1740
+        },
+        "style": {
+          "width": 300
+        },
+        "data": {
+          "id": "duration",
+          "kind": "external",
+          "label": "google.protobuf.Duration",
+          "protoUrl": "https://github.com/protocolbuffers/protobuf/blob/main/src/google/protobuf/duration.proto",
+          "fields": [
+            {
+              "id": "seconds",
+              "type": "int64",
+              "name": "seconds"
+            },
+            {
+              "id": "nanos",
+              "type": "int32",
+              "name": "nanos"
+            }
+          ]
+        }
+      },
+      {
+        "id": "depth",
+        "type": "schema",
+        "position": {
+          "x": 3350,
+          "y": 850
+        },
+        "style": {
+          "width": 260
+        },
+        "data": {
+          "id": "depth",
+          "kind": "message",
+          "label": "gnmi_ext.Depth",
+          "sourceSymbol": "gnmi_ext.Depth",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi_ext/gnmi_ext.proto#L155",
+          "fields": [
+            {
+              "id": "level",
+              "type": "uint32",
+              "name": "level",
+              "ref": null
+            }
+          ]
+        }
+      },
+      {
+        "id": "config-subscription",
+        "type": "schema",
+        "position": {
+          "x": 3350,
+          "y": 1030
+        },
+        "style": {
+          "width": 400
+        },
+        "data": {
+          "id": "config-subscription",
+          "kind": "message",
+          "label": "gnmi_ext.ConfigSubscription",
+          "sourceSymbol": "gnmi_ext.ConfigSubscription",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi_ext/gnmi_ext.proto#L166",
+          "fields": [
+            {
+              "id": "start",
+              "type": "ConfigSubscriptionStart",
+              "name": "start",
+              "ref": "config-subscription-start",
+              "group": "oneof action"
+            },
+            {
+              "id": "sync-done",
+              "type": "ConfigSubscriptionSyncDone",
+              "name": "sync_done",
+              "ref": "config-subscription-sync-done",
+              "group": "oneof action"
+            }
+          ]
+        }
+      },
+      {
+        "id": "config-subscription-start",
+        "type": "schema",
+        "position": {
+          "x": 3810,
+          "y": 980
+        },
+        "style": {
+          "width": 360
+        },
+        "data": {
+          "id": "config-subscription-start",
+          "kind": "message",
+          "label": "gnmi_ext.ConfigSubscriptionStart",
+          "sourceSymbol": "gnmi_ext.ConfigSubscriptionStart",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi_ext/gnmi_ext.proto#L178",
+          "fields": []
+        }
+      },
+      {
+        "id": "config-subscription-sync-done",
+        "type": "schema",
+        "position": {
+          "x": 3810,
+          "y": 1130
+        },
+        "style": {
+          "width": 400
+        },
+        "data": {
+          "id": "config-subscription-sync-done",
+          "kind": "message",
+          "label": "gnmi_ext.ConfigSubscriptionSyncDone",
+          "sourceSymbol": "gnmi_ext.ConfigSubscriptionSyncDone",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi_ext/gnmi_ext.proto#L182",
+          "fields": [
+            {
+              "id": "commit-confirm-id",
+              "type": "string",
+              "name": "commit_confirm_id",
+              "ref": null
+            },
+            {
+              "id": "server-commit-id",
+              "type": "string",
+              "name": "server_commit_id",
+              "ref": null
+            },
+            {
+              "id": "done",
+              "type": "bool",
+              "name": "done",
+              "ref": null
+            }
+          ]
+        }
+      },
+      {
+        "id": "legend",
+        "type": "schema",
+        "position": {
+          "x": 2720,
+          "y": 1470
+        },
+        "style": {
+          "width": 410
+        },
+        "data": {
+          "id": "legend",
+          "kind": "legend",
+          "label": "Legend",
+          "fields": [
+            {
+              "id": "proto",
+              "type": "file icon",
+              "name": "proto definition link"
+            },
+            {
+              "id": "docs",
+              "type": "book icon",
+              "name": "documentation link"
+            },
+            {
+              "id": "extension-note",
+              "type": "toggle",
+              "name": "extension relationship edges"
+            },
+            {
+              "id": "pdf",
+              "type": "reference",
+              "name": "gnmi_0.7.0_map.pdf"
+            }
+          ]
+        }
+      }
+    ],
+    "edges": [
+      {
+        "id": "service-gnmi:capabilities->rpc-capabilities",
+        "source": "service-gnmi",
+        "sourceHandle": "capabilities",
+        "target": "rpc-capabilities",
+        "kind": "rpc",
+        "deprecated": false
+      },
+      {
+        "id": "service-gnmi:get->rpc-get",
+        "source": "service-gnmi",
+        "sourceHandle": "get",
+        "target": "rpc-get",
+        "kind": "rpc",
+        "deprecated": false
+      },
+      {
+        "id": "service-gnmi:set->rpc-set",
+        "source": "service-gnmi",
+        "sourceHandle": "set",
+        "target": "rpc-set",
+        "kind": "rpc",
+        "deprecated": false
+      },
+      {
+        "id": "service-gnmi:subscribe->rpc-subscribe",
+        "source": "service-gnmi",
+        "sourceHandle": "subscribe",
+        "target": "rpc-subscribe",
+        "kind": "rpc",
+        "deprecated": false
+      },
+      {
+        "id": "rpc-set:takes->set-request",
+        "source": "rpc-set",
+        "sourceHandle": "takes",
+        "target": "set-request",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "rpc-set:returns->set-response",
+        "source": "rpc-set",
+        "sourceHandle": "returns",
+        "target": "set-response",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "rpc-subscribe:takes->subscribe-request",
+        "source": "rpc-subscribe",
+        "sourceHandle": "takes",
+        "target": "subscribe-request",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "rpc-subscribe:returns->subscribe-response",
+        "source": "rpc-subscribe",
+        "sourceHandle": "returns",
+        "target": "subscribe-response",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "rpc-get:takes->get-request",
+        "source": "rpc-get",
+        "sourceHandle": "takes",
+        "target": "get-request",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "rpc-get:returns->get-response",
+        "source": "rpc-get",
+        "sourceHandle": "returns",
+        "target": "get-response",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "rpc-capabilities:takes->capability-request",
+        "source": "rpc-capabilities",
+        "sourceHandle": "takes",
+        "target": "capability-request",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "rpc-capabilities:returns->capability-response",
+        "source": "rpc-capabilities",
+        "sourceHandle": "returns",
+        "target": "capability-response",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "set-request:prefix->path",
+        "source": "set-request",
+        "sourceHandle": "prefix",
+        "target": "path",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "set-request:delete->path",
+        "source": "set-request",
+        "sourceHandle": "delete",
+        "target": "path",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "set-request:replace->update",
+        "source": "set-request",
+        "sourceHandle": "replace",
+        "target": "update",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "set-request:update->update",
+        "source": "set-request",
+        "sourceHandle": "update",
+        "target": "update",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "set-request:union-replace->update",
+        "source": "set-request",
+        "sourceHandle": "union-replace",
+        "target": "update",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "set-request:extension->extension",
+        "source": "set-request",
+        "sourceHandle": "extension",
+        "target": "extension",
+        "kind": "extension",
+        "deprecated": false
+      },
+      {
+        "id": "set-response:prefix->path",
+        "source": "set-response",
+        "sourceHandle": "prefix",
+        "target": "path",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "set-response:response->update-result",
+        "source": "set-response",
+        "sourceHandle": "response",
+        "target": "update-result",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "set-response:message->error",
+        "source": "set-response",
+        "sourceHandle": "message",
+        "target": "error",
+        "kind": "field",
+        "deprecated": true
+      },
+      {
+        "id": "set-response:extension->extension",
+        "source": "set-response",
+        "sourceHandle": "extension",
+        "target": "extension",
+        "kind": "extension",
+        "deprecated": false
+      },
+      {
+        "id": "subscribe-request:subscribe->subscription-list",
+        "source": "subscribe-request",
+        "sourceHandle": "subscribe",
+        "target": "subscription-list",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "subscribe-request:poll->poll",
+        "source": "subscribe-request",
+        "sourceHandle": "poll",
+        "target": "poll",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "subscribe-request:extension->extension",
+        "source": "subscribe-request",
+        "sourceHandle": "extension",
+        "target": "extension",
+        "kind": "extension",
+        "deprecated": false
+      },
+      {
+        "id": "subscribe-response:update->notification",
+        "source": "subscribe-response",
+        "sourceHandle": "update",
+        "target": "notification",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "subscribe-response:error->error",
+        "source": "subscribe-response",
+        "sourceHandle": "error",
+        "target": "error",
+        "kind": "field",
+        "deprecated": true
+      },
+      {
+        "id": "subscribe-response:extension->extension",
+        "source": "subscribe-response",
+        "sourceHandle": "extension",
+        "target": "extension",
+        "kind": "extension",
+        "deprecated": false
+      },
+      {
+        "id": "get-request:prefix->path",
+        "source": "get-request",
+        "sourceHandle": "prefix",
+        "target": "path",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "get-request:path->path",
+        "source": "get-request",
+        "sourceHandle": "path",
+        "target": "path",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "get-request:type->data-type",
+        "source": "get-request",
+        "sourceHandle": "type",
+        "target": "data-type",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "get-request:encoding->encoding",
+        "source": "get-request",
+        "sourceHandle": "encoding",
+        "target": "encoding",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "get-request:use-models->model-data",
+        "source": "get-request",
+        "sourceHandle": "use-models",
+        "target": "model-data",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "get-request:extension->extension",
+        "source": "get-request",
+        "sourceHandle": "extension",
+        "target": "extension",
+        "kind": "extension",
+        "deprecated": false
+      },
+      {
+        "id": "get-response:notification->notification",
+        "source": "get-response",
+        "sourceHandle": "notification",
+        "target": "notification",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "get-response:error->error",
+        "source": "get-response",
+        "sourceHandle": "error",
+        "target": "error",
+        "kind": "field",
+        "deprecated": true
+      },
+      {
+        "id": "get-response:extension->extension",
+        "source": "get-response",
+        "sourceHandle": "extension",
+        "target": "extension",
+        "kind": "extension",
+        "deprecated": false
+      },
+      {
+        "id": "capability-request:extension->extension",
+        "source": "capability-request",
+        "sourceHandle": "extension",
+        "target": "extension",
+        "kind": "extension",
+        "deprecated": false
+      },
+      {
+        "id": "capability-response:supported-models->model-data",
+        "source": "capability-response",
+        "sourceHandle": "supported-models",
+        "target": "model-data",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "capability-response:supported-encodings->encoding",
+        "source": "capability-response",
+        "sourceHandle": "supported-encodings",
+        "target": "encoding",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "capability-response:extension->extension",
+        "source": "capability-response",
+        "sourceHandle": "extension",
+        "target": "extension",
+        "kind": "extension",
+        "deprecated": false
+      },
+      {
+        "id": "error:data->any",
+        "source": "error",
+        "sourceHandle": "data",
+        "target": "any",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "update-result:path->path",
+        "source": "update-result",
+        "sourceHandle": "path",
+        "target": "path",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "update-result:message->error",
+        "source": "update-result",
+        "sourceHandle": "message",
+        "target": "error",
+        "kind": "field",
+        "deprecated": true
+      },
+      {
+        "id": "update-result:op->operation",
+        "source": "update-result",
+        "sourceHandle": "op",
+        "target": "operation",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "subscription-list:prefix->path",
+        "source": "subscription-list",
+        "sourceHandle": "prefix",
+        "target": "path",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "subscription-list:subscription->subscription",
+        "source": "subscription-list",
+        "sourceHandle": "subscription",
+        "target": "subscription",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "subscription-list:qos->qos-marking",
+        "source": "subscription-list",
+        "sourceHandle": "qos",
+        "target": "qos-marking",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "subscription-list:mode->mode",
+        "source": "subscription-list",
+        "sourceHandle": "mode",
+        "target": "mode",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "subscription-list:use-models->model-data",
+        "source": "subscription-list",
+        "sourceHandle": "use-models",
+        "target": "model-data",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "subscription-list:encoding->encoding",
+        "source": "subscription-list",
+        "sourceHandle": "encoding",
+        "target": "encoding",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "subscription:path->path",
+        "source": "subscription",
+        "sourceHandle": "path",
+        "target": "path",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "subscription:mode->subscription-mode",
+        "source": "subscription",
+        "sourceHandle": "mode",
+        "target": "subscription-mode",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "notification:prefix->path",
+        "source": "notification",
+        "sourceHandle": "prefix",
+        "target": "path",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "notification:update->update",
+        "source": "notification",
+        "sourceHandle": "update",
+        "target": "update",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "notification:delete->path",
+        "source": "notification",
+        "sourceHandle": "delete",
+        "target": "path",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "update:path->path",
+        "source": "update",
+        "sourceHandle": "path",
+        "target": "path",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "update:value->value",
+        "source": "update",
+        "sourceHandle": "value",
+        "target": "value",
+        "kind": "field",
+        "deprecated": true
+      },
+      {
+        "id": "update:val->typed-value",
+        "source": "update",
+        "sourceHandle": "val",
+        "target": "typed-value",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "path:elem->path-elem",
+        "source": "path",
+        "sourceHandle": "elem",
+        "target": "path-elem",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "value:type->encoding",
+        "source": "value",
+        "sourceHandle": "type",
+        "target": "encoding",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "typed-value:decimal-val->decimal64",
+        "source": "typed-value",
+        "sourceHandle": "decimal-val",
+        "target": "decimal64",
+        "kind": "field",
+        "deprecated": true
+      },
+      {
+        "id": "typed-value:leaflist-val->scalar-array",
+        "source": "typed-value",
+        "sourceHandle": "leaflist-val",
+        "target": "scalar-array",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "typed-value:any-val->any",
+        "source": "typed-value",
+        "sourceHandle": "any-val",
+        "target": "any",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "scalar-array:element->typed-value",
+        "source": "scalar-array",
+        "sourceHandle": "element",
+        "target": "typed-value",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "extension:registered-ext->registered-extension",
+        "source": "extension",
+        "sourceHandle": "registered-ext",
+        "target": "registered-extension",
+        "kind": "extension-detail",
+        "deprecated": false
+      },
+      {
+        "id": "extension:master-arbitration->master-arbitration",
+        "source": "extension",
+        "sourceHandle": "master-arbitration",
+        "target": "master-arbitration",
+        "kind": "extension-detail",
+        "deprecated": false
+      },
+      {
+        "id": "extension:history->history",
+        "source": "extension",
+        "sourceHandle": "history",
+        "target": "history",
+        "kind": "extension-detail",
+        "deprecated": false
+      },
+      {
+        "id": "extension:commit->commit",
+        "source": "extension",
+        "sourceHandle": "commit",
+        "target": "commit",
+        "kind": "extension-detail",
+        "deprecated": false
+      },
+      {
+        "id": "extension:depth->depth",
+        "source": "extension",
+        "sourceHandle": "depth",
+        "target": "depth",
+        "kind": "extension-detail",
+        "deprecated": false
+      },
+      {
+        "id": "extension:config-subscription->config-subscription",
+        "source": "extension",
+        "sourceHandle": "config-subscription",
+        "target": "config-subscription",
+        "kind": "extension-detail",
+        "deprecated": false
+      },
+      {
+        "id": "registered-extension:id->extension-id",
+        "source": "registered-extension",
+        "sourceHandle": "id",
+        "target": "extension-id",
+        "kind": "extension-detail",
+        "deprecated": false
+      },
+      {
+        "id": "master-arbitration:role->role",
+        "source": "master-arbitration",
+        "sourceHandle": "role",
+        "target": "role",
+        "kind": "extension-detail",
+        "deprecated": false
+      },
+      {
+        "id": "master-arbitration:election-id->uint128",
+        "source": "master-arbitration",
+        "sourceHandle": "election-id",
+        "target": "uint128",
+        "kind": "extension-detail",
+        "deprecated": false
+      },
+      {
+        "id": "history:range->time-range",
+        "source": "history",
+        "sourceHandle": "range",
+        "target": "time-range",
+        "kind": "extension-detail",
+        "deprecated": false
+      },
+      {
+        "id": "commit:commit->commit-request",
+        "source": "commit",
+        "sourceHandle": "commit",
+        "target": "commit-request",
+        "kind": "extension-detail",
+        "deprecated": false
+      },
+      {
+        "id": "commit:confirm->commit-confirm",
+        "source": "commit",
+        "sourceHandle": "confirm",
+        "target": "commit-confirm",
+        "kind": "extension-detail",
+        "deprecated": false
+      },
+      {
+        "id": "commit:cancel->commit-cancel",
+        "source": "commit",
+        "sourceHandle": "cancel",
+        "target": "commit-cancel",
+        "kind": "extension-detail",
+        "deprecated": false
+      },
+      {
+        "id": "commit:set-rollback-duration->commit-set-rollback-duration",
+        "source": "commit",
+        "sourceHandle": "set-rollback-duration",
+        "target": "commit-set-rollback-duration",
+        "kind": "extension-detail",
+        "deprecated": false
+      },
+      {
+        "id": "commit-request:rollback-duration->duration",
+        "source": "commit-request",
+        "sourceHandle": "rollback-duration",
+        "target": "duration",
+        "kind": "extension-detail",
+        "deprecated": false
+      },
+      {
+        "id": "commit-set-rollback-duration:rollback-duration->duration",
+        "source": "commit-set-rollback-duration",
+        "sourceHandle": "rollback-duration",
+        "target": "duration",
+        "kind": "extension-detail",
+        "deprecated": false
+      },
+      {
+        "id": "config-subscription:start->config-subscription-start",
+        "source": "config-subscription",
+        "sourceHandle": "start",
+        "target": "config-subscription-start",
+        "kind": "extension-detail",
+        "deprecated": false
+      },
+      {
+        "id": "config-subscription:sync-done->config-subscription-sync-done",
+        "source": "config-subscription",
+        "sourceHandle": "sync-done",
+        "target": "config-subscription-sync-done",
+        "kind": "extension-detail",
+        "deprecated": false
+      }
+    ],
+    "bounds": {
+      "width": 4260,
+      "height": 2250
     }
   },
   {
-    "id": "depth",
-    "type": "schema",
-    "position": {
-      "x": 3350,
-      "y": 850
-    },
-    "style": {
-      "width": 260
-    },
-    "data": {
-      "id": "depth",
-      "kind": "message",
-      "label": "gnmi_ext.Depth",
-      "sourceSymbol": "gnmi_ext.Depth",
-      "deprecated": false,
-      "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi_ext/gnmi_ext.proto#L155",
-      "fields": [
-        {
-          "id": "level",
-          "type": "uint32",
-          "name": "level",
-          "ref": null
+    "tag": "v0.9.1",
+    "serviceVersion": "0.9.0",
+    "nodes": [
+      {
+        "id": "service-gnmi",
+        "type": "schema",
+        "position": {
+          "x": 1240,
+          "y": 40
+        },
+        "style": {
+          "width": 360
+        },
+        "data": {
+          "id": "service-gnmi",
+          "kind": "service",
+          "label": "service gNMI 0.9.0",
+          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.9.1/proto/gnmi/gnmi.proto#L48",
+          "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#grpc-network-management-interface-gnmi",
+          "fields": [
+            {
+              "id": "capabilities",
+              "type": "rpc",
+              "name": "Capabilities",
+              "ref": "rpc-capabilities"
+            },
+            {
+              "id": "get",
+              "type": "rpc",
+              "name": "Get",
+              "ref": "rpc-get"
+            },
+            {
+              "id": "set",
+              "type": "rpc",
+              "name": "Set",
+              "ref": "rpc-set"
+            },
+            {
+              "id": "subscribe",
+              "type": "rpc",
+              "name": "Subscribe",
+              "ref": "rpc-subscribe",
+              "badge": "stream"
+            }
+          ]
         }
-      ]
+      },
+      {
+        "id": "rpc-set",
+        "type": "schema",
+        "position": {
+          "x": 80,
+          "y": 230
+        },
+        "style": {
+          "width": 250
+        },
+        "data": {
+          "id": "rpc-set",
+          "kind": "rpc",
+          "label": "rpc Set",
+          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.9.1/proto/gnmi/gnmi.proto#L66",
+          "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#34-modifying-state",
+          "fields": [
+            {
+              "id": "takes",
+              "type": "takes",
+              "name": "SetRequest",
+              "ref": "set-request"
+            },
+            {
+              "id": "returns",
+              "type": "returns",
+              "name": "SetResponse",
+              "ref": "set-response"
+            }
+          ]
+        }
+      },
+      {
+        "id": "rpc-subscribe",
+        "type": "schema",
+        "position": {
+          "x": 780,
+          "y": 230
+        },
+        "style": {
+          "width": 290
+        },
+        "data": {
+          "id": "rpc-subscribe",
+          "kind": "rpc",
+          "label": "rpc Subscribe",
+          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.9.1/proto/gnmi/gnmi.proto#L72",
+          "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#35-subscribing-to-telemetry-updates",
+          "fields": [
+            {
+              "id": "takes",
+              "type": "takes stream",
+              "name": "SubscribeRequest",
+              "ref": "subscribe-request"
+            },
+            {
+              "id": "returns",
+              "type": "returns stream",
+              "name": "SubscribeResponse",
+              "ref": "subscribe-response"
+            }
+          ]
+        }
+      },
+      {
+        "id": "rpc-get",
+        "type": "schema",
+        "position": {
+          "x": 1520,
+          "y": 230
+        },
+        "style": {
+          "width": 250
+        },
+        "data": {
+          "id": "rpc-get",
+          "kind": "rpc",
+          "label": "rpc Get",
+          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.9.1/proto/gnmi/gnmi.proto#L61",
+          "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#33-retrieving-snapshots-of-state-information",
+          "fields": [
+            {
+              "id": "takes",
+              "type": "takes",
+              "name": "GetRequest",
+              "ref": "get-request"
+            },
+            {
+              "id": "returns",
+              "type": "returns",
+              "name": "GetResponse",
+              "ref": "get-response"
+            }
+          ]
+        }
+      },
+      {
+        "id": "rpc-capabilities",
+        "type": "schema",
+        "position": {
+          "x": 2200,
+          "y": 230
+        },
+        "style": {
+          "width": 300
+        },
+        "data": {
+          "id": "rpc-capabilities",
+          "kind": "rpc",
+          "label": "rpc Capabilities",
+          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.9.1/proto/gnmi/gnmi.proto#L55",
+          "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#32-capability-discovery",
+          "fields": [
+            {
+              "id": "takes",
+              "type": "takes",
+              "name": "CapabilityRequest",
+              "ref": "capability-request"
+            },
+            {
+              "id": "returns",
+              "type": "returns",
+              "name": "CapabilityResponse",
+              "ref": "capability-response"
+            }
+          ]
+        }
+      },
+      {
+        "id": "set-request",
+        "type": "schema",
+        "position": {
+          "x": 20,
+          "y": 450
+        },
+        "style": {
+          "width": 340
+        },
+        "data": {
+          "id": "set-request",
+          "kind": "message",
+          "label": "SetRequest",
+          "sourceSymbol": "gnmi.SetRequest",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.9.1/proto/gnmi/gnmi.proto#L335",
+          "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#341-the-setrequest-message",
+          "fields": [
+            {
+              "id": "prefix",
+              "type": "Path",
+              "name": "prefix",
+              "ref": "path"
+            },
+            {
+              "id": "delete",
+              "type": "repeated Path",
+              "name": "delete",
+              "ref": "path"
+            },
+            {
+              "id": "replace",
+              "type": "repeated Update",
+              "name": "replace",
+              "ref": "update"
+            },
+            {
+              "id": "update",
+              "type": "repeated Update",
+              "name": "update",
+              "ref": "update"
+            },
+            {
+              "id": "extension",
+              "type": "repeated gnmi_ext.Extension",
+              "name": "extension",
+              "ref": "extension",
+              "badge": "optional"
+            }
+          ]
+        }
+      },
+      {
+        "id": "set-response",
+        "type": "schema",
+        "position": {
+          "x": 390,
+          "y": 450
+        },
+        "style": {
+          "width": 360
+        },
+        "data": {
+          "id": "set-response",
+          "kind": "message",
+          "label": "SetResponse",
+          "sourceSymbol": "gnmi.SetResponse",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.9.1/proto/gnmi/gnmi.proto#L352",
+          "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#342-the-setresponse-message",
+          "fields": [
+            {
+              "id": "prefix",
+              "type": "Path",
+              "name": "prefix",
+              "ref": "path"
+            },
+            {
+              "id": "response",
+              "type": "repeated UpdateResult",
+              "name": "response",
+              "ref": "update-result"
+            },
+            {
+              "id": "message",
+              "type": "Error",
+              "name": "message",
+              "ref": "error",
+              "badge": "deprecated",
+              "deprecated": true
+            },
+            {
+              "id": "timestamp",
+              "type": "int64",
+              "name": "timestamp",
+              "ref": null
+            },
+            {
+              "id": "extension",
+              "type": "repeated gnmi_ext.Extension",
+              "name": "extension",
+              "ref": "extension",
+              "badge": "optional"
+            }
+          ]
+        }
+      },
+      {
+        "id": "subscribe-request",
+        "type": "schema",
+        "position": {
+          "x": 780,
+          "y": 450
+        },
+        "style": {
+          "width": 360
+        },
+        "data": {
+          "id": "subscribe-request",
+          "kind": "message",
+          "label": "SubscribeRequest",
+          "sourceSymbol": "gnmi.SubscribeRequest",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.9.1/proto/gnmi/gnmi.proto#L219",
+          "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#3511-the-subscriberequest-message",
+          "fields": [
+            {
+              "id": "subscribe",
+              "type": "SubscriptionList",
+              "name": "subscribe",
+              "ref": "subscription-list",
+              "group": "oneof request"
+            },
+            {
+              "id": "poll",
+              "type": "Poll",
+              "name": "poll",
+              "ref": "poll",
+              "group": "oneof request"
+            },
+            {
+              "id": "extension",
+              "type": "repeated gnmi_ext.Extension",
+              "name": "extension",
+              "ref": "extension",
+              "badge": "optional"
+            },
+            {
+              "id": "reserved-aliases",
+              "type": "reserved",
+              "name": "aliases / 4",
+              "ref": null,
+              "badge": "reserved"
+            }
+          ]
+        }
+      },
+      {
+        "id": "subscribe-response",
+        "type": "schema",
+        "position": {
+          "x": 1180,
+          "y": 450
+        },
+        "style": {
+          "width": 360
+        },
+        "data": {
+          "id": "subscribe-response",
+          "kind": "message",
+          "label": "SubscribeResponse",
+          "sourceSymbol": "gnmi.SubscribeResponse",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.9.1/proto/gnmi/gnmi.proto#L244",
+          "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#3514-the-subscriberesponse-message",
+          "fields": [
+            {
+              "id": "update",
+              "type": "Notification",
+              "name": "update",
+              "ref": "notification",
+              "group": "oneof response"
+            },
+            {
+              "id": "sync-response",
+              "type": "bool",
+              "name": "sync_response",
+              "ref": null,
+              "group": "oneof response"
+            },
+            {
+              "id": "error",
+              "type": "Error",
+              "name": "error",
+              "ref": "error",
+              "group": "oneof response",
+              "badge": "deprecated",
+              "deprecated": true
+            },
+            {
+              "id": "extension",
+              "type": "repeated gnmi_ext.Extension",
+              "name": "extension",
+              "ref": "extension",
+              "badge": "optional"
+            }
+          ]
+        }
+      },
+      {
+        "id": "get-request",
+        "type": "schema",
+        "position": {
+          "x": 1570,
+          "y": 450
+        },
+        "style": {
+          "width": 350
+        },
+        "data": {
+          "id": "get-request",
+          "kind": "message",
+          "label": "GetRequest",
+          "sourceSymbol": "gnmi.GetRequest",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.9.1/proto/gnmi/gnmi.proto#L392",
+          "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#331-the-getrequest-message",
+          "fields": [
+            {
+              "id": "prefix",
+              "type": "Path",
+              "name": "prefix",
+              "ref": "path"
+            },
+            {
+              "id": "path",
+              "type": "repeated Path",
+              "name": "path",
+              "ref": "path"
+            },
+            {
+              "id": "type",
+              "type": "DataType",
+              "name": "type",
+              "ref": "data-type"
+            },
+            {
+              "id": "encoding",
+              "type": "Encoding",
+              "name": "encoding",
+              "ref": "encoding"
+            },
+            {
+              "id": "use-models",
+              "type": "repeated ModelData",
+              "name": "use_models",
+              "ref": "model-data"
+            },
+            {
+              "id": "extension",
+              "type": "repeated gnmi_ext.Extension",
+              "name": "extension",
+              "ref": "extension",
+              "badge": "optional"
+            }
+          ]
+        }
+      },
+      {
+        "id": "get-response",
+        "type": "schema",
+        "position": {
+          "x": 1960,
+          "y": 450
+        },
+        "style": {
+          "width": 350
+        },
+        "data": {
+          "id": "get-response",
+          "kind": "message",
+          "label": "GetResponse",
+          "sourceSymbol": "gnmi.GetResponse",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.9.1/proto/gnmi/gnmi.proto#L417",
+          "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#332-the-getresponse-message",
+          "fields": [
+            {
+              "id": "notification",
+              "type": "repeated Notification",
+              "name": "notification",
+              "ref": "notification"
+            },
+            {
+              "id": "error",
+              "type": "Error",
+              "name": "error",
+              "ref": "error",
+              "badge": "deprecated",
+              "deprecated": true
+            },
+            {
+              "id": "extension",
+              "type": "repeated gnmi_ext.Extension",
+              "name": "extension",
+              "ref": "extension",
+              "badge": "optional"
+            }
+          ]
+        }
+      },
+      {
+        "id": "capability-request",
+        "type": "schema",
+        "position": {
+          "x": 2350,
+          "y": 450
+        },
+        "style": {
+          "width": 340
+        },
+        "data": {
+          "id": "capability-request",
+          "kind": "message",
+          "label": "CapabilityRequest",
+          "sourceSymbol": "gnmi.CapabilityRequest",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.9.1/proto/gnmi/gnmi.proto#L428",
+          "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#321-the-capabilityrequest-message",
+          "fields": [
+            {
+              "id": "extension",
+              "type": "repeated gnmi_ext.Extension",
+              "name": "extension",
+              "ref": "extension",
+              "badge": "optional"
+            }
+          ]
+        }
+      },
+      {
+        "id": "capability-response",
+        "type": "schema",
+        "position": {
+          "x": 2730,
+          "y": 450
+        },
+        "style": {
+          "width": 370
+        },
+        "data": {
+          "id": "capability-response",
+          "kind": "message",
+          "label": "CapabilityResponse",
+          "sourceSymbol": "gnmi.CapabilityResponse",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.9.1/proto/gnmi/gnmi.proto#L437",
+          "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#322-the-capabilityresponse-message",
+          "fields": [
+            {
+              "id": "supported-models",
+              "type": "repeated ModelData",
+              "name": "supported_models",
+              "ref": "model-data"
+            },
+            {
+              "id": "supported-encodings",
+              "type": "repeated Encoding",
+              "name": "supported_encodings",
+              "ref": "encoding"
+            },
+            {
+              "id": "g-nmi-version",
+              "type": "string",
+              "name": "gNMI_version",
+              "ref": null
+            },
+            {
+              "id": "extension",
+              "type": "repeated gnmi_ext.Extension",
+              "name": "extension",
+              "ref": "extension",
+              "badge": "optional"
+            }
+          ]
+        }
+      },
+      {
+        "id": "error",
+        "type": "schema",
+        "position": {
+          "x": 120,
+          "y": 850
+        },
+        "style": {
+          "width": 300
+        },
+        "data": {
+          "id": "error",
+          "kind": "message",
+          "label": "Error",
+          "sourceSymbol": "gnmi.Error",
+          "deprecated": true,
+          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.9.1/proto/gnmi/gnmi.proto#L186",
+          "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#23-structured-data-types",
+          "badges": [
+            "deprecated"
+          ],
+          "fields": [
+            {
+              "id": "code",
+              "type": "uint32",
+              "name": "code",
+              "ref": null
+            },
+            {
+              "id": "message",
+              "type": "string",
+              "name": "message",
+              "ref": null
+            },
+            {
+              "id": "data",
+              "type": "google.protobuf.Any",
+              "name": "data",
+              "ref": "any"
+            }
+          ]
+        }
+      },
+      {
+        "id": "update-result",
+        "type": "schema",
+        "position": {
+          "x": 450,
+          "y": 820
+        },
+        "style": {
+          "width": 330
+        },
+        "data": {
+          "id": "update-result",
+          "kind": "message",
+          "label": "UpdateResult",
+          "sourceSymbol": "gnmi.UpdateResult",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.9.1/proto/gnmi/gnmi.proto#L368",
+          "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#342-the-setresponse-message",
+          "fields": [
+            {
+              "id": "timestamp",
+              "type": "int64",
+              "name": "timestamp",
+              "ref": null,
+              "badge": "deprecated",
+              "deprecated": true
+            },
+            {
+              "id": "path",
+              "type": "Path",
+              "name": "path",
+              "ref": "path"
+            },
+            {
+              "id": "message",
+              "type": "Error",
+              "name": "message",
+              "ref": "error",
+              "badge": "deprecated",
+              "deprecated": true
+            },
+            {
+              "id": "op",
+              "type": "Operation",
+              "name": "op",
+              "ref": "operation"
+            }
+          ]
+        }
+      },
+      {
+        "id": "operation",
+        "type": "schema",
+        "position": {
+          "x": 430,
+          "y": 1120
+        },
+        "style": {
+          "width": 260
+        },
+        "data": {
+          "id": "operation",
+          "kind": "enum",
+          "label": "enum Operation",
+          "sourceSymbol": "gnmi.UpdateResult.Operation",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.9.1/proto/gnmi/gnmi.proto#L370",
+          "fields": [
+            {
+              "id": "invalid",
+              "type": "0",
+              "name": "INVALID",
+              "ref": null
+            },
+            {
+              "id": "delete",
+              "type": "1",
+              "name": "DELETE",
+              "ref": null
+            },
+            {
+              "id": "replace",
+              "type": "2",
+              "name": "REPLACE",
+              "ref": null
+            },
+            {
+              "id": "update",
+              "type": "3",
+              "name": "UPDATE",
+              "ref": null
+            }
+          ]
+        }
+      },
+      {
+        "id": "poll",
+        "type": "schema",
+        "position": {
+          "x": 800,
+          "y": 780
+        },
+        "style": {
+          "width": 180
+        },
+        "data": {
+          "id": "poll",
+          "kind": "message",
+          "label": "Poll",
+          "sourceSymbol": "gnmi.Poll",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.9.1/proto/gnmi/gnmi.proto#L236",
+          "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#35153-poll-subscriptions",
+          "fields": []
+        }
+      },
+      {
+        "id": "subscription-list",
+        "type": "schema",
+        "position": {
+          "x": 1050,
+          "y": 750
+        },
+        "style": {
+          "width": 390
+        },
+        "data": {
+          "id": "subscription-list",
+          "kind": "message",
+          "label": "SubscriptionList",
+          "sourceSymbol": "gnmi.SubscriptionList",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.9.1/proto/gnmi/gnmi.proto#L263",
+          "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#3512-the-subscriptionlist-message",
+          "fields": [
+            {
+              "id": "prefix",
+              "type": "Path",
+              "name": "prefix",
+              "ref": "path"
+            },
+            {
+              "id": "subscription",
+              "type": "repeated Subscription",
+              "name": "subscription",
+              "ref": "subscription"
+            },
+            {
+              "id": "qos",
+              "type": "QOSMarking",
+              "name": "qos",
+              "ref": "qos-marking"
+            },
+            {
+              "id": "mode",
+              "type": "Mode",
+              "name": "mode",
+              "ref": "mode"
+            },
+            {
+              "id": "allow-aggregation",
+              "type": "bool",
+              "name": "allow_aggregation",
+              "ref": null
+            },
+            {
+              "id": "use-models",
+              "type": "repeated ModelData",
+              "name": "use_models",
+              "ref": "model-data"
+            },
+            {
+              "id": "encoding",
+              "type": "Encoding",
+              "name": "encoding",
+              "ref": "encoding"
+            },
+            {
+              "id": "updates-only",
+              "type": "bool",
+              "name": "updates_only",
+              "ref": null
+            },
+            {
+              "id": "reserved-use-aliases",
+              "type": "reserved",
+              "name": "use_aliases / 3",
+              "ref": null,
+              "badge": "reserved"
+            }
+          ]
+        }
+      },
+      {
+        "id": "qos-marking",
+        "type": "schema",
+        "position": {
+          "x": 990,
+          "y": 1210
+        },
+        "style": {
+          "width": 270
+        },
+        "data": {
+          "id": "qos-marking",
+          "kind": "message",
+          "label": "QOSMarking",
+          "sourceSymbol": "gnmi.QOSMarking",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.9.1/proto/gnmi/gnmi.proto#L324",
+          "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#3512-the-subscriptionlist-message",
+          "fields": [
+            {
+              "id": "marking",
+              "type": "uint32",
+              "name": "marking",
+              "ref": null
+            }
+          ]
+        }
+      },
+      {
+        "id": "mode",
+        "type": "schema",
+        "position": {
+          "x": 990,
+          "y": 1390
+        },
+        "style": {
+          "width": 240
+        },
+        "data": {
+          "id": "mode",
+          "kind": "enum",
+          "label": "enum Mode",
+          "sourceSymbol": "gnmi.SubscriptionList.Mode",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.9.1/proto/gnmi/gnmi.proto#L268",
+          "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#3512-the-subscriptionlist-message",
+          "fields": [
+            {
+              "id": "stream",
+              "type": "0",
+              "name": "STREAM",
+              "ref": null
+            },
+            {
+              "id": "once",
+              "type": "1",
+              "name": "ONCE",
+              "ref": null
+            },
+            {
+              "id": "poll",
+              "type": "2",
+              "name": "POLL",
+              "ref": null
+            }
+          ]
+        }
+      },
+      {
+        "id": "subscription",
+        "type": "schema",
+        "position": {
+          "x": 1460,
+          "y": 920
+        },
+        "style": {
+          "width": 360
+        },
+        "data": {
+          "id": "subscription",
+          "kind": "message",
+          "label": "Subscription",
+          "sourceSymbol": "gnmi.Subscription",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.9.1/proto/gnmi/gnmi.proto#L299",
+          "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#3513-the-subscription-message",
+          "fields": [
+            {
+              "id": "path",
+              "type": "Path",
+              "name": "path",
+              "ref": "path"
+            },
+            {
+              "id": "mode",
+              "type": "SubscriptionMode",
+              "name": "mode",
+              "ref": "subscription-mode"
+            },
+            {
+              "id": "sample-interval",
+              "type": "uint64",
+              "name": "sample_interval",
+              "ref": null
+            },
+            {
+              "id": "suppress-redundant",
+              "type": "bool",
+              "name": "suppress_redundant",
+              "ref": null
+            },
+            {
+              "id": "heartbeat-interval",
+              "type": "uint64",
+              "name": "heartbeat_interval",
+              "ref": null
+            }
+          ]
+        }
+      },
+      {
+        "id": "subscription-mode",
+        "type": "schema",
+        "position": {
+          "x": 1460,
+          "y": 1250
+        },
+        "style": {
+          "width": 310
+        },
+        "data": {
+          "id": "subscription-mode",
+          "kind": "enum",
+          "label": "enum SubscriptionMode",
+          "sourceSymbol": "gnmi.SubscriptionMode",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.9.1/proto/gnmi/gnmi.proto#L315",
+          "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#35152-stream-subscriptions",
+          "fields": [
+            {
+              "id": "target-defined",
+              "type": "0",
+              "name": "TARGET_DEFINED",
+              "ref": null
+            },
+            {
+              "id": "on-change",
+              "type": "1",
+              "name": "ON_CHANGE",
+              "ref": null
+            },
+            {
+              "id": "sample",
+              "type": "2",
+              "name": "SAMPLE",
+              "ref": null
+            }
+          ]
+        }
+      },
+      {
+        "id": "data-type",
+        "type": "schema",
+        "position": {
+          "x": 1660,
+          "y": 720
+        },
+        "style": {
+          "width": 280
+        },
+        "data": {
+          "id": "data-type",
+          "kind": "enum",
+          "label": "enum DataType",
+          "sourceSymbol": "gnmi.GetRequest.DataType",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.9.1/proto/gnmi/gnmi.proto#L396",
+          "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#331-the-getrequest-message",
+          "fields": [
+            {
+              "id": "all",
+              "type": "0",
+              "name": "ALL",
+              "ref": null
+            },
+            {
+              "id": "config",
+              "type": "1",
+              "name": "CONFIG",
+              "ref": null
+            },
+            {
+              "id": "state",
+              "type": "2",
+              "name": "STATE",
+              "ref": null
+            },
+            {
+              "id": "operational",
+              "type": "3",
+              "name": "OPERATIONAL",
+              "ref": null
+            }
+          ]
+        }
+      },
+      {
+        "id": "model-data",
+        "type": "schema",
+        "position": {
+          "x": 2410,
+          "y": 790
+        },
+        "style": {
+          "width": 300
+        },
+        "data": {
+          "id": "model-data",
+          "kind": "message",
+          "label": "ModelData",
+          "sourceSymbol": "gnmi.ModelData",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.9.1/proto/gnmi/gnmi.proto#L451",
+          "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#261-the-modeldata-message",
+          "fields": [
+            {
+              "id": "name",
+              "type": "string",
+              "name": "name",
+              "ref": null
+            },
+            {
+              "id": "organization",
+              "type": "string",
+              "name": "organization",
+              "ref": null
+            },
+            {
+              "id": "version",
+              "type": "string",
+              "name": "version",
+              "ref": null
+            }
+          ]
+        }
+      },
+      {
+        "id": "encoding",
+        "type": "schema",
+        "position": {
+          "x": 2380,
+          "y": 1120
+        },
+        "style": {
+          "width": 260
+        },
+        "data": {
+          "id": "encoding",
+          "kind": "enum",
+          "label": "enum Encoding",
+          "sourceSymbol": "gnmi.Encoding",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.9.1/proto/gnmi/gnmi.proto#L174",
+          "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#23-structured-data-types",
+          "fields": [
+            {
+              "id": "json",
+              "type": "0",
+              "name": "JSON",
+              "ref": null
+            },
+            {
+              "id": "bytes",
+              "type": "1",
+              "name": "BYTES",
+              "ref": null
+            },
+            {
+              "id": "proto",
+              "type": "2",
+              "name": "PROTO",
+              "ref": null
+            },
+            {
+              "id": "ascii",
+              "type": "3",
+              "name": "ASCII",
+              "ref": null
+            },
+            {
+              "id": "json-ietf",
+              "type": "4",
+              "name": "JSON_IETF",
+              "ref": null
+            }
+          ]
+        }
+      },
+      {
+        "id": "notification",
+        "type": "schema",
+        "position": {
+          "x": 1740,
+          "y": 1160
+        },
+        "style": {
+          "width": 350
+        },
+        "data": {
+          "id": "notification",
+          "kind": "message",
+          "label": "Notification",
+          "sourceSymbol": "gnmi.Notification",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.9.1/proto/gnmi/gnmi.proto#L83",
+          "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#21-reusable-notification-message-format",
+          "fields": [
+            {
+              "id": "timestamp",
+              "type": "int64",
+              "name": "timestamp",
+              "ref": null
+            },
+            {
+              "id": "prefix",
+              "type": "Path",
+              "name": "prefix",
+              "ref": "path"
+            },
+            {
+              "id": "update",
+              "type": "repeated Update",
+              "name": "update",
+              "ref": "update"
+            },
+            {
+              "id": "delete",
+              "type": "repeated Path",
+              "name": "delete",
+              "ref": "path"
+            },
+            {
+              "id": "atomic",
+              "type": "bool",
+              "name": "atomic",
+              "ref": null
+            },
+            {
+              "id": "reserved-alias",
+              "type": "reserved",
+              "name": "alias / 3",
+              "ref": null,
+              "badge": "reserved"
+            }
+          ]
+        }
+      },
+      {
+        "id": "update",
+        "type": "schema",
+        "position": {
+          "x": 1320,
+          "y": 1460
+        },
+        "style": {
+          "width": 330
+        },
+        "data": {
+          "id": "update",
+          "kind": "message",
+          "label": "Update",
+          "sourceSymbol": "gnmi.Update",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.9.1/proto/gnmi/gnmi.proto#L99",
+          "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#21-reusable-notification-message-format",
+          "fields": [
+            {
+              "id": "path",
+              "type": "Path",
+              "name": "path",
+              "ref": "path"
+            },
+            {
+              "id": "value",
+              "type": "Value",
+              "name": "value",
+              "ref": "value",
+              "badge": "deprecated",
+              "deprecated": true
+            },
+            {
+              "id": "val",
+              "type": "TypedValue",
+              "name": "val",
+              "ref": "typed-value"
+            },
+            {
+              "id": "duplicates",
+              "type": "uint32",
+              "name": "duplicates",
+              "ref": null
+            }
+          ]
+        }
+      },
+      {
+        "id": "path",
+        "type": "schema",
+        "position": {
+          "x": 1780,
+          "y": 1530
+        },
+        "style": {
+          "width": 360
+        },
+        "data": {
+          "id": "path",
+          "kind": "message",
+          "label": "Path",
+          "sourceSymbol": "gnmi.Path",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.9.1/proto/gnmi/gnmi.proto#L141",
+          "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#222-paths",
+          "fields": [
+            {
+              "id": "element",
+              "type": "repeated string",
+              "name": "element",
+              "ref": null,
+              "badge": "deprecated",
+              "deprecated": true
+            },
+            {
+              "id": "origin",
+              "type": "string",
+              "name": "origin",
+              "ref": null
+            },
+            {
+              "id": "elem",
+              "type": "repeated PathElem",
+              "name": "elem",
+              "ref": "path-elem"
+            },
+            {
+              "id": "target",
+              "type": "string",
+              "name": "target",
+              "ref": null
+            }
+          ]
+        }
+      },
+      {
+        "id": "path-elem",
+        "type": "schema",
+        "position": {
+          "x": 2210,
+          "y": 1600
+        },
+        "style": {
+          "width": 330
+        },
+        "data": {
+          "id": "path-elem",
+          "kind": "message",
+          "label": "PathElem",
+          "sourceSymbol": "gnmi.PathElem",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.9.1/proto/gnmi/gnmi.proto#L154",
+          "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#222-paths",
+          "fields": [
+            {
+              "id": "name",
+              "type": "string",
+              "name": "name",
+              "ref": null
+            },
+            {
+              "id": "key",
+              "type": "map<string,string>",
+              "name": "key",
+              "ref": null
+            }
+          ]
+        }
+      },
+      {
+        "id": "value",
+        "type": "schema",
+        "position": {
+          "x": 700,
+          "y": 1570
+        },
+        "style": {
+          "width": 300
+        },
+        "data": {
+          "id": "value",
+          "kind": "message",
+          "label": "Value",
+          "sourceSymbol": "gnmi.Value",
+          "deprecated": true,
+          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.9.1/proto/gnmi/gnmi.proto#L162",
+          "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#223-node-values",
+          "badges": [
+            "deprecated"
+          ],
+          "fields": [
+            {
+              "id": "value",
+              "type": "bytes",
+              "name": "value",
+              "ref": null
+            },
+            {
+              "id": "type",
+              "type": "Encoding",
+              "name": "type",
+              "ref": "encoding"
+            }
+          ]
+        }
+      },
+      {
+        "id": "typed-value",
+        "type": "schema",
+        "position": {
+          "x": 980,
+          "y": 1780
+        },
+        "style": {
+          "width": 390
+        },
+        "data": {
+          "id": "typed-value",
+          "kind": "message",
+          "label": "TypedValue",
+          "sourceSymbol": "gnmi.TypedValue",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.9.1/proto/gnmi/gnmi.proto#L108",
+          "fields": [
+            {
+              "id": "string-val",
+              "type": "string",
+              "name": "string_val",
+              "ref": null,
+              "group": "oneof value"
+            },
+            {
+              "id": "int-val",
+              "type": "int64",
+              "name": "int_val",
+              "ref": null,
+              "group": "oneof value"
+            },
+            {
+              "id": "uint-val",
+              "type": "uint64",
+              "name": "uint_val",
+              "ref": null,
+              "group": "oneof value"
+            },
+            {
+              "id": "bool-val",
+              "type": "bool",
+              "name": "bool_val",
+              "ref": null,
+              "group": "oneof value"
+            },
+            {
+              "id": "bytes-val",
+              "type": "bytes",
+              "name": "bytes_val",
+              "ref": null,
+              "group": "oneof value"
+            },
+            {
+              "id": "float-val",
+              "type": "float",
+              "name": "float_val",
+              "ref": null,
+              "group": "oneof value",
+              "badge": "deprecated",
+              "deprecated": true
+            },
+            {
+              "id": "double-val",
+              "type": "double",
+              "name": "double_val",
+              "ref": null,
+              "group": "oneof value"
+            },
+            {
+              "id": "decimal-val",
+              "type": "Decimal64",
+              "name": "decimal_val",
+              "ref": "decimal64",
+              "group": "oneof value",
+              "badge": "deprecated",
+              "deprecated": true
+            },
+            {
+              "id": "leaflist-val",
+              "type": "ScalarArray",
+              "name": "leaflist_val",
+              "ref": "scalar-array",
+              "group": "oneof value"
+            },
+            {
+              "id": "any-val",
+              "type": "google.protobuf.Any",
+              "name": "any_val",
+              "ref": "any",
+              "group": "oneof value"
+            },
+            {
+              "id": "json-val",
+              "type": "bytes",
+              "name": "json_val",
+              "ref": null,
+              "group": "oneof value"
+            },
+            {
+              "id": "json-ietf-val",
+              "type": "bytes",
+              "name": "json_ietf_val",
+              "ref": null,
+              "group": "oneof value"
+            },
+            {
+              "id": "ascii-val",
+              "type": "string",
+              "name": "ascii_val",
+              "ref": null,
+              "group": "oneof value"
+            },
+            {
+              "id": "proto-bytes",
+              "type": "bytes",
+              "name": "proto_bytes",
+              "ref": null,
+              "group": "oneof value"
+            }
+          ]
+        }
+      },
+      {
+        "id": "decimal64",
+        "type": "schema",
+        "position": {
+          "x": 1430,
+          "y": 1780
+        },
+        "style": {
+          "width": 280
+        },
+        "data": {
+          "id": "decimal64",
+          "kind": "message",
+          "label": "Decimal64",
+          "sourceSymbol": "gnmi.Decimal64",
+          "deprecated": true,
+          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.9.1/proto/gnmi/gnmi.proto#L199",
+          "badges": [
+            "deprecated"
+          ],
+          "fields": [
+            {
+              "id": "digits",
+              "type": "int64",
+              "name": "digits",
+              "ref": null
+            },
+            {
+              "id": "precision",
+              "type": "uint32",
+              "name": "precision",
+              "ref": null
+            }
+          ]
+        }
+      },
+      {
+        "id": "scalar-array",
+        "type": "schema",
+        "position": {
+          "x": 1430,
+          "y": 1980
+        },
+        "style": {
+          "width": 330
+        },
+        "data": {
+          "id": "scalar-array",
+          "kind": "message",
+          "label": "ScalarArray",
+          "sourceSymbol": "gnmi.ScalarArray",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.9.1/proto/gnmi/gnmi.proto#L207",
+          "fields": [
+            {
+              "id": "element",
+              "type": "repeated TypedValue",
+              "name": "element",
+              "ref": "typed-value"
+            }
+          ]
+        }
+      },
+      {
+        "id": "any",
+        "type": "schema",
+        "position": {
+          "x": 550,
+          "y": 1870
+        },
+        "style": {
+          "width": 330
+        },
+        "data": {
+          "id": "any",
+          "kind": "external",
+          "label": "google.protobuf.Any",
+          "protoUrl": "https://github.com/protocolbuffers/protobuf/blob/master/src/google/protobuf/any.proto",
+          "fields": [
+            {
+              "id": "type-url",
+              "type": "string",
+              "name": "type_url"
+            },
+            {
+              "id": "value",
+              "type": "bytes",
+              "name": "value"
+            }
+          ]
+        }
+      },
+      {
+        "id": "extension",
+        "type": "schema",
+        "position": {
+          "x": 2020,
+          "y": 820
+        },
+        "style": {
+          "width": 360
+        },
+        "data": {
+          "id": "extension",
+          "kind": "message",
+          "label": "gnmi_ext.Extension",
+          "sourceSymbol": "gnmi_ext.Extension",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.9.1/proto/gnmi_ext/gnmi_ext.proto#L27",
+          "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#27-extensions-to-gnmi",
+          "fields": [
+            {
+              "id": "registered-ext",
+              "type": "RegisteredExtension",
+              "name": "registered_ext",
+              "ref": "registered-extension",
+              "group": "oneof ext"
+            },
+            {
+              "id": "master-arbitration",
+              "type": "MasterArbitration",
+              "name": "master_arbitration",
+              "ref": "master-arbitration",
+              "group": "oneof ext"
+            },
+            {
+              "id": "history",
+              "type": "History",
+              "name": "history",
+              "ref": "history",
+              "group": "oneof ext"
+            }
+          ]
+        }
+      },
+      {
+        "id": "registered-extension",
+        "type": "schema",
+        "position": {
+          "x": 2510,
+          "y": 760
+        },
+        "style": {
+          "width": 390
+        },
+        "data": {
+          "id": "registered-extension",
+          "kind": "message",
+          "label": "gnmi_ext.RegisteredExtension",
+          "sourceSymbol": "gnmi_ext.RegisteredExtension",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.9.1/proto/gnmi_ext/gnmi_ext.proto#L38",
+          "fields": [
+            {
+              "id": "id",
+              "type": "ExtensionID",
+              "name": "id",
+              "ref": "extension-id"
+            },
+            {
+              "id": "msg",
+              "type": "bytes",
+              "name": "msg",
+              "ref": null
+            }
+          ]
+        }
+      },
+      {
+        "id": "extension-id",
+        "type": "schema",
+        "position": {
+          "x": 2940,
+          "y": 700
+        },
+        "style": {
+          "width": 310
+        },
+        "data": {
+          "id": "extension-id",
+          "kind": "enum",
+          "label": "enum gnmi_ext.ExtensionID",
+          "sourceSymbol": "gnmi_ext.ExtensionID",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.9.1/proto/gnmi_ext/gnmi_ext.proto#L45",
+          "fields": [
+            {
+              "id": "unset",
+              "type": "0",
+              "name": "EID_UNSET",
+              "ref": null
+            },
+            {
+              "id": "experimental",
+              "type": "999",
+              "name": "EID_EXPERIMENTAL",
+              "ref": null
+            }
+          ]
+        }
+      },
+      {
+        "id": "master-arbitration",
+        "type": "schema",
+        "position": {
+          "x": 2510,
+          "y": 1010
+        },
+        "style": {
+          "width": 390
+        },
+        "data": {
+          "id": "master-arbitration",
+          "kind": "message",
+          "label": "gnmi_ext.MasterArbitration",
+          "sourceSymbol": "gnmi_ext.MasterArbitration",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.9.1/proto/gnmi_ext/gnmi_ext.proto#L60",
+          "fields": [
+            {
+              "id": "role",
+              "type": "Role",
+              "name": "role",
+              "ref": "role"
+            },
+            {
+              "id": "election-id",
+              "type": "Uint128",
+              "name": "election_id",
+              "ref": "uint128"
+            }
+          ]
+        }
+      },
+      {
+        "id": "uint128",
+        "type": "schema",
+        "position": {
+          "x": 2940,
+          "y": 1040
+        },
+        "style": {
+          "width": 260
+        },
+        "data": {
+          "id": "uint128",
+          "kind": "message",
+          "label": "gnmi_ext.Uint128",
+          "sourceSymbol": "gnmi_ext.Uint128",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.9.1/proto/gnmi_ext/gnmi_ext.proto#L66",
+          "fields": [
+            {
+              "id": "high",
+              "type": "uint64",
+              "name": "high",
+              "ref": null
+            },
+            {
+              "id": "low",
+              "type": "uint64",
+              "name": "low",
+              "ref": null
+            }
+          ]
+        }
+      },
+      {
+        "id": "role",
+        "type": "schema",
+        "position": {
+          "x": 2940,
+          "y": 1210
+        },
+        "style": {
+          "width": 260
+        },
+        "data": {
+          "id": "role",
+          "kind": "message",
+          "label": "gnmi_ext.Role",
+          "sourceSymbol": "gnmi_ext.Role",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.9.1/proto/gnmi_ext/gnmi_ext.proto#L72",
+          "fields": [
+            {
+              "id": "id",
+              "type": "string",
+              "name": "id",
+              "ref": null
+            }
+          ]
+        }
+      },
+      {
+        "id": "history",
+        "type": "schema",
+        "position": {
+          "x": 2510,
+          "y": 1260
+        },
+        "style": {
+          "width": 330
+        },
+        "data": {
+          "id": "history",
+          "kind": "message",
+          "label": "gnmi_ext.History",
+          "sourceSymbol": "gnmi_ext.History",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.9.1/proto/gnmi_ext/gnmi_ext.proto#L81",
+          "fields": [
+            {
+              "id": "snapshot-time",
+              "type": "int64",
+              "name": "snapshot_time",
+              "ref": null,
+              "group": "oneof request"
+            },
+            {
+              "id": "range",
+              "type": "TimeRange",
+              "name": "range",
+              "ref": "time-range",
+              "group": "oneof request"
+            }
+          ]
+        }
+      },
+      {
+        "id": "time-range",
+        "type": "schema",
+        "position": {
+          "x": 2940,
+          "y": 1390
+        },
+        "style": {
+          "width": 270
+        },
+        "data": {
+          "id": "time-range",
+          "kind": "message",
+          "label": "gnmi_ext.TimeRange",
+          "sourceSymbol": "gnmi_ext.TimeRange",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.9.1/proto/gnmi_ext/gnmi_ext.proto#L88",
+          "fields": [
+            {
+              "id": "start",
+              "type": "int64",
+              "name": "start",
+              "ref": null
+            },
+            {
+              "id": "end",
+              "type": "int64",
+              "name": "end",
+              "ref": null
+            }
+          ]
+        }
+      },
+      {
+        "id": "duration",
+        "type": "schema",
+        "position": {
+          "x": 3400,
+          "y": 1740
+        },
+        "style": {
+          "width": 300
+        },
+        "data": {
+          "id": "duration",
+          "kind": "external",
+          "label": "google.protobuf.Duration",
+          "protoUrl": "https://github.com/protocolbuffers/protobuf/blob/main/src/google/protobuf/duration.proto",
+          "fields": [
+            {
+              "id": "seconds",
+              "type": "int64",
+              "name": "seconds"
+            },
+            {
+              "id": "nanos",
+              "type": "int32",
+              "name": "nanos"
+            }
+          ]
+        }
+      },
+      {
+        "id": "legend",
+        "type": "schema",
+        "position": {
+          "x": 2720,
+          "y": 1470
+        },
+        "style": {
+          "width": 410
+        },
+        "data": {
+          "id": "legend",
+          "kind": "legend",
+          "label": "Legend",
+          "fields": [
+            {
+              "id": "proto",
+              "type": "file icon",
+              "name": "proto definition link"
+            },
+            {
+              "id": "docs",
+              "type": "book icon",
+              "name": "documentation link"
+            },
+            {
+              "id": "extension-note",
+              "type": "toggle",
+              "name": "extension relationship edges"
+            },
+            {
+              "id": "pdf",
+              "type": "reference",
+              "name": "gnmi_0.7.0_map.pdf"
+            }
+          ]
+        }
+      }
+    ],
+    "edges": [
+      {
+        "id": "service-gnmi:capabilities->rpc-capabilities",
+        "source": "service-gnmi",
+        "sourceHandle": "capabilities",
+        "target": "rpc-capabilities",
+        "kind": "rpc",
+        "deprecated": false
+      },
+      {
+        "id": "service-gnmi:get->rpc-get",
+        "source": "service-gnmi",
+        "sourceHandle": "get",
+        "target": "rpc-get",
+        "kind": "rpc",
+        "deprecated": false
+      },
+      {
+        "id": "service-gnmi:set->rpc-set",
+        "source": "service-gnmi",
+        "sourceHandle": "set",
+        "target": "rpc-set",
+        "kind": "rpc",
+        "deprecated": false
+      },
+      {
+        "id": "service-gnmi:subscribe->rpc-subscribe",
+        "source": "service-gnmi",
+        "sourceHandle": "subscribe",
+        "target": "rpc-subscribe",
+        "kind": "rpc",
+        "deprecated": false
+      },
+      {
+        "id": "rpc-set:takes->set-request",
+        "source": "rpc-set",
+        "sourceHandle": "takes",
+        "target": "set-request",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "rpc-set:returns->set-response",
+        "source": "rpc-set",
+        "sourceHandle": "returns",
+        "target": "set-response",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "rpc-subscribe:takes->subscribe-request",
+        "source": "rpc-subscribe",
+        "sourceHandle": "takes",
+        "target": "subscribe-request",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "rpc-subscribe:returns->subscribe-response",
+        "source": "rpc-subscribe",
+        "sourceHandle": "returns",
+        "target": "subscribe-response",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "rpc-get:takes->get-request",
+        "source": "rpc-get",
+        "sourceHandle": "takes",
+        "target": "get-request",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "rpc-get:returns->get-response",
+        "source": "rpc-get",
+        "sourceHandle": "returns",
+        "target": "get-response",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "rpc-capabilities:takes->capability-request",
+        "source": "rpc-capabilities",
+        "sourceHandle": "takes",
+        "target": "capability-request",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "rpc-capabilities:returns->capability-response",
+        "source": "rpc-capabilities",
+        "sourceHandle": "returns",
+        "target": "capability-response",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "set-request:prefix->path",
+        "source": "set-request",
+        "sourceHandle": "prefix",
+        "target": "path",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "set-request:delete->path",
+        "source": "set-request",
+        "sourceHandle": "delete",
+        "target": "path",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "set-request:replace->update",
+        "source": "set-request",
+        "sourceHandle": "replace",
+        "target": "update",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "set-request:update->update",
+        "source": "set-request",
+        "sourceHandle": "update",
+        "target": "update",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "set-request:extension->extension",
+        "source": "set-request",
+        "sourceHandle": "extension",
+        "target": "extension",
+        "kind": "extension",
+        "deprecated": false
+      },
+      {
+        "id": "set-response:prefix->path",
+        "source": "set-response",
+        "sourceHandle": "prefix",
+        "target": "path",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "set-response:response->update-result",
+        "source": "set-response",
+        "sourceHandle": "response",
+        "target": "update-result",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "set-response:message->error",
+        "source": "set-response",
+        "sourceHandle": "message",
+        "target": "error",
+        "kind": "field",
+        "deprecated": true
+      },
+      {
+        "id": "set-response:extension->extension",
+        "source": "set-response",
+        "sourceHandle": "extension",
+        "target": "extension",
+        "kind": "extension",
+        "deprecated": false
+      },
+      {
+        "id": "subscribe-request:subscribe->subscription-list",
+        "source": "subscribe-request",
+        "sourceHandle": "subscribe",
+        "target": "subscription-list",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "subscribe-request:poll->poll",
+        "source": "subscribe-request",
+        "sourceHandle": "poll",
+        "target": "poll",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "subscribe-request:extension->extension",
+        "source": "subscribe-request",
+        "sourceHandle": "extension",
+        "target": "extension",
+        "kind": "extension",
+        "deprecated": false
+      },
+      {
+        "id": "subscribe-response:update->notification",
+        "source": "subscribe-response",
+        "sourceHandle": "update",
+        "target": "notification",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "subscribe-response:error->error",
+        "source": "subscribe-response",
+        "sourceHandle": "error",
+        "target": "error",
+        "kind": "field",
+        "deprecated": true
+      },
+      {
+        "id": "subscribe-response:extension->extension",
+        "source": "subscribe-response",
+        "sourceHandle": "extension",
+        "target": "extension",
+        "kind": "extension",
+        "deprecated": false
+      },
+      {
+        "id": "get-request:prefix->path",
+        "source": "get-request",
+        "sourceHandle": "prefix",
+        "target": "path",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "get-request:path->path",
+        "source": "get-request",
+        "sourceHandle": "path",
+        "target": "path",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "get-request:type->data-type",
+        "source": "get-request",
+        "sourceHandle": "type",
+        "target": "data-type",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "get-request:encoding->encoding",
+        "source": "get-request",
+        "sourceHandle": "encoding",
+        "target": "encoding",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "get-request:use-models->model-data",
+        "source": "get-request",
+        "sourceHandle": "use-models",
+        "target": "model-data",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "get-request:extension->extension",
+        "source": "get-request",
+        "sourceHandle": "extension",
+        "target": "extension",
+        "kind": "extension",
+        "deprecated": false
+      },
+      {
+        "id": "get-response:notification->notification",
+        "source": "get-response",
+        "sourceHandle": "notification",
+        "target": "notification",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "get-response:error->error",
+        "source": "get-response",
+        "sourceHandle": "error",
+        "target": "error",
+        "kind": "field",
+        "deprecated": true
+      },
+      {
+        "id": "get-response:extension->extension",
+        "source": "get-response",
+        "sourceHandle": "extension",
+        "target": "extension",
+        "kind": "extension",
+        "deprecated": false
+      },
+      {
+        "id": "capability-request:extension->extension",
+        "source": "capability-request",
+        "sourceHandle": "extension",
+        "target": "extension",
+        "kind": "extension",
+        "deprecated": false
+      },
+      {
+        "id": "capability-response:supported-models->model-data",
+        "source": "capability-response",
+        "sourceHandle": "supported-models",
+        "target": "model-data",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "capability-response:supported-encodings->encoding",
+        "source": "capability-response",
+        "sourceHandle": "supported-encodings",
+        "target": "encoding",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "capability-response:extension->extension",
+        "source": "capability-response",
+        "sourceHandle": "extension",
+        "target": "extension",
+        "kind": "extension",
+        "deprecated": false
+      },
+      {
+        "id": "error:data->any",
+        "source": "error",
+        "sourceHandle": "data",
+        "target": "any",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "update-result:path->path",
+        "source": "update-result",
+        "sourceHandle": "path",
+        "target": "path",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "update-result:message->error",
+        "source": "update-result",
+        "sourceHandle": "message",
+        "target": "error",
+        "kind": "field",
+        "deprecated": true
+      },
+      {
+        "id": "update-result:op->operation",
+        "source": "update-result",
+        "sourceHandle": "op",
+        "target": "operation",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "subscription-list:prefix->path",
+        "source": "subscription-list",
+        "sourceHandle": "prefix",
+        "target": "path",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "subscription-list:subscription->subscription",
+        "source": "subscription-list",
+        "sourceHandle": "subscription",
+        "target": "subscription",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "subscription-list:qos->qos-marking",
+        "source": "subscription-list",
+        "sourceHandle": "qos",
+        "target": "qos-marking",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "subscription-list:mode->mode",
+        "source": "subscription-list",
+        "sourceHandle": "mode",
+        "target": "mode",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "subscription-list:use-models->model-data",
+        "source": "subscription-list",
+        "sourceHandle": "use-models",
+        "target": "model-data",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "subscription-list:encoding->encoding",
+        "source": "subscription-list",
+        "sourceHandle": "encoding",
+        "target": "encoding",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "subscription:path->path",
+        "source": "subscription",
+        "sourceHandle": "path",
+        "target": "path",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "subscription:mode->subscription-mode",
+        "source": "subscription",
+        "sourceHandle": "mode",
+        "target": "subscription-mode",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "notification:prefix->path",
+        "source": "notification",
+        "sourceHandle": "prefix",
+        "target": "path",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "notification:update->update",
+        "source": "notification",
+        "sourceHandle": "update",
+        "target": "update",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "notification:delete->path",
+        "source": "notification",
+        "sourceHandle": "delete",
+        "target": "path",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "update:path->path",
+        "source": "update",
+        "sourceHandle": "path",
+        "target": "path",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "update:value->value",
+        "source": "update",
+        "sourceHandle": "value",
+        "target": "value",
+        "kind": "field",
+        "deprecated": true
+      },
+      {
+        "id": "update:val->typed-value",
+        "source": "update",
+        "sourceHandle": "val",
+        "target": "typed-value",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "path:elem->path-elem",
+        "source": "path",
+        "sourceHandle": "elem",
+        "target": "path-elem",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "value:type->encoding",
+        "source": "value",
+        "sourceHandle": "type",
+        "target": "encoding",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "typed-value:decimal-val->decimal64",
+        "source": "typed-value",
+        "sourceHandle": "decimal-val",
+        "target": "decimal64",
+        "kind": "field",
+        "deprecated": true
+      },
+      {
+        "id": "typed-value:leaflist-val->scalar-array",
+        "source": "typed-value",
+        "sourceHandle": "leaflist-val",
+        "target": "scalar-array",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "typed-value:any-val->any",
+        "source": "typed-value",
+        "sourceHandle": "any-val",
+        "target": "any",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "scalar-array:element->typed-value",
+        "source": "scalar-array",
+        "sourceHandle": "element",
+        "target": "typed-value",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "extension:registered-ext->registered-extension",
+        "source": "extension",
+        "sourceHandle": "registered-ext",
+        "target": "registered-extension",
+        "kind": "extension-detail",
+        "deprecated": false
+      },
+      {
+        "id": "extension:master-arbitration->master-arbitration",
+        "source": "extension",
+        "sourceHandle": "master-arbitration",
+        "target": "master-arbitration",
+        "kind": "extension-detail",
+        "deprecated": false
+      },
+      {
+        "id": "extension:history->history",
+        "source": "extension",
+        "sourceHandle": "history",
+        "target": "history",
+        "kind": "extension-detail",
+        "deprecated": false
+      },
+      {
+        "id": "registered-extension:id->extension-id",
+        "source": "registered-extension",
+        "sourceHandle": "id",
+        "target": "extension-id",
+        "kind": "extension-detail",
+        "deprecated": false
+      },
+      {
+        "id": "master-arbitration:role->role",
+        "source": "master-arbitration",
+        "sourceHandle": "role",
+        "target": "role",
+        "kind": "extension-detail",
+        "deprecated": false
+      },
+      {
+        "id": "master-arbitration:election-id->uint128",
+        "source": "master-arbitration",
+        "sourceHandle": "election-id",
+        "target": "uint128",
+        "kind": "extension-detail",
+        "deprecated": false
+      },
+      {
+        "id": "history:range->time-range",
+        "source": "history",
+        "sourceHandle": "range",
+        "target": "time-range",
+        "kind": "extension-detail",
+        "deprecated": false
+      }
+    ],
+    "bounds": {
+      "width": 4260,
+      "height": 2250
     }
   },
   {
-    "id": "config-subscription",
-    "type": "schema",
-    "position": {
-      "x": 3350,
-      "y": 1030
-    },
-    "style": {
-      "width": 400
-    },
-    "data": {
-      "id": "config-subscription",
-      "kind": "message",
-      "label": "gnmi_ext.ConfigSubscription",
-      "sourceSymbol": "gnmi_ext.ConfigSubscription",
-      "deprecated": false,
-      "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi_ext/gnmi_ext.proto#L166",
-      "fields": [
-        {
-          "id": "start",
-          "type": "ConfigSubscriptionStart",
-          "name": "start",
-          "ref": "config-subscription-start",
-          "group": "oneof action"
+    "tag": "v0.8.0",
+    "serviceVersion": "0.8.0",
+    "nodes": [
+      {
+        "id": "service-gnmi",
+        "type": "schema",
+        "position": {
+          "x": 1240,
+          "y": 40
         },
-        {
-          "id": "sync-done",
-          "type": "ConfigSubscriptionSyncDone",
-          "name": "sync_done",
-          "ref": "config-subscription-sync-done",
-          "group": "oneof action"
+        "style": {
+          "width": 360
+        },
+        "data": {
+          "id": "service-gnmi",
+          "kind": "service",
+          "label": "service gNMI 0.8.0",
+          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.8.0/proto/gnmi/gnmi.proto#L48",
+          "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#grpc-network-management-interface-gnmi",
+          "fields": [
+            {
+              "id": "capabilities",
+              "type": "rpc",
+              "name": "Capabilities",
+              "ref": "rpc-capabilities"
+            },
+            {
+              "id": "get",
+              "type": "rpc",
+              "name": "Get",
+              "ref": "rpc-get"
+            },
+            {
+              "id": "set",
+              "type": "rpc",
+              "name": "Set",
+              "ref": "rpc-set"
+            },
+            {
+              "id": "subscribe",
+              "type": "rpc",
+              "name": "Subscribe",
+              "ref": "rpc-subscribe",
+              "badge": "stream"
+            }
+          ]
         }
-      ]
-    }
-  },
-  {
-    "id": "config-subscription-start",
-    "type": "schema",
-    "position": {
-      "x": 3810,
-      "y": 980
-    },
-    "style": {
-      "width": 360
-    },
-    "data": {
-      "id": "config-subscription-start",
-      "kind": "message",
-      "label": "gnmi_ext.ConfigSubscriptionStart",
-      "sourceSymbol": "gnmi_ext.ConfigSubscriptionStart",
-      "deprecated": false,
-      "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi_ext/gnmi_ext.proto#L178",
-      "fields": []
-    }
-  },
-  {
-    "id": "config-subscription-sync-done",
-    "type": "schema",
-    "position": {
-      "x": 3810,
-      "y": 1130
-    },
-    "style": {
-      "width": 400
-    },
-    "data": {
-      "id": "config-subscription-sync-done",
-      "kind": "message",
-      "label": "gnmi_ext.ConfigSubscriptionSyncDone",
-      "sourceSymbol": "gnmi_ext.ConfigSubscriptionSyncDone",
-      "deprecated": false,
-      "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi_ext/gnmi_ext.proto#L182",
-      "fields": [
-        {
-          "id": "commit-confirm-id",
-          "type": "string",
-          "name": "commit_confirm_id",
-          "ref": null
+      },
+      {
+        "id": "rpc-set",
+        "type": "schema",
+        "position": {
+          "x": 80,
+          "y": 230
         },
-        {
-          "id": "server-commit-id",
-          "type": "string",
-          "name": "server_commit_id",
-          "ref": null
+        "style": {
+          "width": 250
         },
-        {
-          "id": "done",
-          "type": "bool",
-          "name": "done",
-          "ref": null
+        "data": {
+          "id": "rpc-set",
+          "kind": "rpc",
+          "label": "rpc Set",
+          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.8.0/proto/gnmi/gnmi.proto#L66",
+          "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#34-modifying-state",
+          "fields": [
+            {
+              "id": "takes",
+              "type": "takes",
+              "name": "SetRequest",
+              "ref": "set-request"
+            },
+            {
+              "id": "returns",
+              "type": "returns",
+              "name": "SetResponse",
+              "ref": "set-response"
+            }
+          ]
         }
-      ]
-    }
-  },
-  {
-    "id": "legend",
-    "type": "schema",
-    "position": {
-      "x": 2720,
-      "y": 1470
-    },
-    "style": {
-      "width": 410
-    },
-    "data": {
-      "id": "legend",
-      "kind": "legend",
-      "label": "Legend",
-      "fields": [
-        {
-          "id": "proto",
-          "type": "file icon",
-          "name": "proto definition link"
+      },
+      {
+        "id": "rpc-subscribe",
+        "type": "schema",
+        "position": {
+          "x": 780,
+          "y": 230
         },
-        {
-          "id": "docs",
-          "type": "book icon",
-          "name": "documentation link"
+        "style": {
+          "width": 290
         },
-        {
-          "id": "extension-note",
-          "type": "toggle",
-          "name": "extension relationship edges"
-        },
-        {
-          "id": "pdf",
-          "type": "reference",
-          "name": "gnmi_0.7.0_map.pdf"
+        "data": {
+          "id": "rpc-subscribe",
+          "kind": "rpc",
+          "label": "rpc Subscribe",
+          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.8.0/proto/gnmi/gnmi.proto#L72",
+          "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#35-subscribing-to-telemetry-updates",
+          "fields": [
+            {
+              "id": "takes",
+              "type": "takes stream",
+              "name": "SubscribeRequest",
+              "ref": "subscribe-request"
+            },
+            {
+              "id": "returns",
+              "type": "returns stream",
+              "name": "SubscribeResponse",
+              "ref": "subscribe-response"
+            }
+          ]
         }
-      ]
+      },
+      {
+        "id": "rpc-get",
+        "type": "schema",
+        "position": {
+          "x": 1520,
+          "y": 230
+        },
+        "style": {
+          "width": 250
+        },
+        "data": {
+          "id": "rpc-get",
+          "kind": "rpc",
+          "label": "rpc Get",
+          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.8.0/proto/gnmi/gnmi.proto#L61",
+          "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#33-retrieving-snapshots-of-state-information",
+          "fields": [
+            {
+              "id": "takes",
+              "type": "takes",
+              "name": "GetRequest",
+              "ref": "get-request"
+            },
+            {
+              "id": "returns",
+              "type": "returns",
+              "name": "GetResponse",
+              "ref": "get-response"
+            }
+          ]
+        }
+      },
+      {
+        "id": "rpc-capabilities",
+        "type": "schema",
+        "position": {
+          "x": 2200,
+          "y": 230
+        },
+        "style": {
+          "width": 300
+        },
+        "data": {
+          "id": "rpc-capabilities",
+          "kind": "rpc",
+          "label": "rpc Capabilities",
+          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.8.0/proto/gnmi/gnmi.proto#L55",
+          "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#32-capability-discovery",
+          "fields": [
+            {
+              "id": "takes",
+              "type": "takes",
+              "name": "CapabilityRequest",
+              "ref": "capability-request"
+            },
+            {
+              "id": "returns",
+              "type": "returns",
+              "name": "CapabilityResponse",
+              "ref": "capability-response"
+            }
+          ]
+        }
+      },
+      {
+        "id": "set-request",
+        "type": "schema",
+        "position": {
+          "x": 20,
+          "y": 450
+        },
+        "style": {
+          "width": 340
+        },
+        "data": {
+          "id": "set-request",
+          "kind": "message",
+          "label": "SetRequest",
+          "sourceSymbol": "gnmi.SetRequest",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.8.0/proto/gnmi/gnmi.proto#L332",
+          "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#341-the-setrequest-message",
+          "fields": [
+            {
+              "id": "prefix",
+              "type": "Path",
+              "name": "prefix",
+              "ref": "path"
+            },
+            {
+              "id": "delete",
+              "type": "repeated Path",
+              "name": "delete",
+              "ref": "path"
+            },
+            {
+              "id": "replace",
+              "type": "repeated Update",
+              "name": "replace",
+              "ref": "update"
+            },
+            {
+              "id": "update",
+              "type": "repeated Update",
+              "name": "update",
+              "ref": "update"
+            },
+            {
+              "id": "extension",
+              "type": "repeated gnmi_ext.Extension",
+              "name": "extension",
+              "ref": "extension",
+              "badge": "optional"
+            }
+          ]
+        }
+      },
+      {
+        "id": "set-response",
+        "type": "schema",
+        "position": {
+          "x": 390,
+          "y": 450
+        },
+        "style": {
+          "width": 360
+        },
+        "data": {
+          "id": "set-response",
+          "kind": "message",
+          "label": "SetResponse",
+          "sourceSymbol": "gnmi.SetResponse",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.8.0/proto/gnmi/gnmi.proto#L349",
+          "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#342-the-setresponse-message",
+          "fields": [
+            {
+              "id": "prefix",
+              "type": "Path",
+              "name": "prefix",
+              "ref": "path"
+            },
+            {
+              "id": "response",
+              "type": "repeated UpdateResult",
+              "name": "response",
+              "ref": "update-result"
+            },
+            {
+              "id": "message",
+              "type": "Error",
+              "name": "message",
+              "ref": "error",
+              "badge": "deprecated",
+              "deprecated": true
+            },
+            {
+              "id": "timestamp",
+              "type": "int64",
+              "name": "timestamp",
+              "ref": null
+            },
+            {
+              "id": "extension",
+              "type": "repeated gnmi_ext.Extension",
+              "name": "extension",
+              "ref": "extension",
+              "badge": "optional"
+            }
+          ]
+        }
+      },
+      {
+        "id": "subscribe-request",
+        "type": "schema",
+        "position": {
+          "x": 780,
+          "y": 450
+        },
+        "style": {
+          "width": 360
+        },
+        "data": {
+          "id": "subscribe-request",
+          "kind": "message",
+          "label": "SubscribeRequest",
+          "sourceSymbol": "gnmi.SubscribeRequest",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.8.0/proto/gnmi/gnmi.proto#L215",
+          "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#3511-the-subscriberequest-message",
+          "fields": [
+            {
+              "id": "subscribe",
+              "type": "SubscriptionList",
+              "name": "subscribe",
+              "ref": "subscription-list",
+              "group": "oneof request"
+            },
+            {
+              "id": "poll",
+              "type": "Poll",
+              "name": "poll",
+              "ref": "poll",
+              "group": "oneof request"
+            },
+            {
+              "id": "extension",
+              "type": "repeated gnmi_ext.Extension",
+              "name": "extension",
+              "ref": "extension",
+              "badge": "optional"
+            },
+            {
+              "id": "reserved-aliases",
+              "type": "reserved",
+              "name": "aliases / 4",
+              "ref": null,
+              "badge": "reserved"
+            }
+          ]
+        }
+      },
+      {
+        "id": "subscribe-response",
+        "type": "schema",
+        "position": {
+          "x": 1180,
+          "y": 450
+        },
+        "style": {
+          "width": 360
+        },
+        "data": {
+          "id": "subscribe-response",
+          "kind": "message",
+          "label": "SubscribeResponse",
+          "sourceSymbol": "gnmi.SubscribeResponse",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.8.0/proto/gnmi/gnmi.proto#L241",
+          "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#3514-the-subscriberesponse-message",
+          "fields": [
+            {
+              "id": "update",
+              "type": "Notification",
+              "name": "update",
+              "ref": "notification",
+              "group": "oneof response"
+            },
+            {
+              "id": "sync-response",
+              "type": "bool",
+              "name": "sync_response",
+              "ref": null,
+              "group": "oneof response"
+            },
+            {
+              "id": "error",
+              "type": "Error",
+              "name": "error",
+              "ref": "error",
+              "group": "oneof response",
+              "badge": "deprecated",
+              "deprecated": true
+            },
+            {
+              "id": "extension",
+              "type": "repeated gnmi_ext.Extension",
+              "name": "extension",
+              "ref": "extension",
+              "badge": "optional"
+            }
+          ]
+        }
+      },
+      {
+        "id": "get-request",
+        "type": "schema",
+        "position": {
+          "x": 1570,
+          "y": 450
+        },
+        "style": {
+          "width": 350
+        },
+        "data": {
+          "id": "get-request",
+          "kind": "message",
+          "label": "GetRequest",
+          "sourceSymbol": "gnmi.GetRequest",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.8.0/proto/gnmi/gnmi.proto#L388",
+          "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#331-the-getrequest-message",
+          "fields": [
+            {
+              "id": "prefix",
+              "type": "Path",
+              "name": "prefix",
+              "ref": "path"
+            },
+            {
+              "id": "path",
+              "type": "repeated Path",
+              "name": "path",
+              "ref": "path"
+            },
+            {
+              "id": "type",
+              "type": "DataType",
+              "name": "type",
+              "ref": "data-type"
+            },
+            {
+              "id": "encoding",
+              "type": "Encoding",
+              "name": "encoding",
+              "ref": "encoding"
+            },
+            {
+              "id": "use-models",
+              "type": "repeated ModelData",
+              "name": "use_models",
+              "ref": "model-data"
+            },
+            {
+              "id": "extension",
+              "type": "repeated gnmi_ext.Extension",
+              "name": "extension",
+              "ref": "extension",
+              "badge": "optional"
+            }
+          ]
+        }
+      },
+      {
+        "id": "get-response",
+        "type": "schema",
+        "position": {
+          "x": 1960,
+          "y": 450
+        },
+        "style": {
+          "width": 350
+        },
+        "data": {
+          "id": "get-response",
+          "kind": "message",
+          "label": "GetResponse",
+          "sourceSymbol": "gnmi.GetResponse",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.8.0/proto/gnmi/gnmi.proto#L413",
+          "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#332-the-getresponse-message",
+          "fields": [
+            {
+              "id": "notification",
+              "type": "repeated Notification",
+              "name": "notification",
+              "ref": "notification"
+            },
+            {
+              "id": "error",
+              "type": "Error",
+              "name": "error",
+              "ref": "error",
+              "badge": "deprecated",
+              "deprecated": true
+            },
+            {
+              "id": "extension",
+              "type": "repeated gnmi_ext.Extension",
+              "name": "extension",
+              "ref": "extension",
+              "badge": "optional"
+            }
+          ]
+        }
+      },
+      {
+        "id": "capability-request",
+        "type": "schema",
+        "position": {
+          "x": 2350,
+          "y": 450
+        },
+        "style": {
+          "width": 340
+        },
+        "data": {
+          "id": "capability-request",
+          "kind": "message",
+          "label": "CapabilityRequest",
+          "sourceSymbol": "gnmi.CapabilityRequest",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.8.0/proto/gnmi/gnmi.proto#L424",
+          "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#321-the-capabilityrequest-message",
+          "fields": [
+            {
+              "id": "extension",
+              "type": "repeated gnmi_ext.Extension",
+              "name": "extension",
+              "ref": "extension",
+              "badge": "optional"
+            }
+          ]
+        }
+      },
+      {
+        "id": "capability-response",
+        "type": "schema",
+        "position": {
+          "x": 2730,
+          "y": 450
+        },
+        "style": {
+          "width": 370
+        },
+        "data": {
+          "id": "capability-response",
+          "kind": "message",
+          "label": "CapabilityResponse",
+          "sourceSymbol": "gnmi.CapabilityResponse",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.8.0/proto/gnmi/gnmi.proto#L433",
+          "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#322-the-capabilityresponse-message",
+          "fields": [
+            {
+              "id": "supported-models",
+              "type": "repeated ModelData",
+              "name": "supported_models",
+              "ref": "model-data"
+            },
+            {
+              "id": "supported-encodings",
+              "type": "repeated Encoding",
+              "name": "supported_encodings",
+              "ref": "encoding"
+            },
+            {
+              "id": "g-nmi-version",
+              "type": "string",
+              "name": "gNMI_version",
+              "ref": null
+            },
+            {
+              "id": "extension",
+              "type": "repeated gnmi_ext.Extension",
+              "name": "extension",
+              "ref": "extension",
+              "badge": "optional"
+            }
+          ]
+        }
+      },
+      {
+        "id": "error",
+        "type": "schema",
+        "position": {
+          "x": 120,
+          "y": 850
+        },
+        "style": {
+          "width": 300
+        },
+        "data": {
+          "id": "error",
+          "kind": "message",
+          "label": "Error",
+          "sourceSymbol": "gnmi.Error",
+          "deprecated": true,
+          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.8.0/proto/gnmi/gnmi.proto#L184",
+          "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#23-structured-data-types",
+          "badges": [
+            "deprecated"
+          ],
+          "fields": [
+            {
+              "id": "code",
+              "type": "uint32",
+              "name": "code",
+              "ref": null
+            },
+            {
+              "id": "message",
+              "type": "string",
+              "name": "message",
+              "ref": null
+            },
+            {
+              "id": "data",
+              "type": "google.protobuf.Any",
+              "name": "data",
+              "ref": "any"
+            }
+          ]
+        }
+      },
+      {
+        "id": "update-result",
+        "type": "schema",
+        "position": {
+          "x": 450,
+          "y": 820
+        },
+        "style": {
+          "width": 330
+        },
+        "data": {
+          "id": "update-result",
+          "kind": "message",
+          "label": "UpdateResult",
+          "sourceSymbol": "gnmi.UpdateResult",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.8.0/proto/gnmi/gnmi.proto#L364",
+          "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#342-the-setresponse-message",
+          "fields": [
+            {
+              "id": "timestamp",
+              "type": "int64",
+              "name": "timestamp",
+              "ref": null,
+              "badge": "deprecated",
+              "deprecated": true
+            },
+            {
+              "id": "path",
+              "type": "Path",
+              "name": "path",
+              "ref": "path"
+            },
+            {
+              "id": "message",
+              "type": "Error",
+              "name": "message",
+              "ref": "error",
+              "badge": "deprecated",
+              "deprecated": true
+            },
+            {
+              "id": "op",
+              "type": "Operation",
+              "name": "op",
+              "ref": "operation"
+            }
+          ]
+        }
+      },
+      {
+        "id": "operation",
+        "type": "schema",
+        "position": {
+          "x": 430,
+          "y": 1120
+        },
+        "style": {
+          "width": 260
+        },
+        "data": {
+          "id": "operation",
+          "kind": "enum",
+          "label": "enum Operation",
+          "sourceSymbol": "gnmi.UpdateResult.Operation",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.8.0/proto/gnmi/gnmi.proto#L366",
+          "fields": [
+            {
+              "id": "invalid",
+              "type": "0",
+              "name": "INVALID",
+              "ref": null
+            },
+            {
+              "id": "delete",
+              "type": "1",
+              "name": "DELETE",
+              "ref": null
+            },
+            {
+              "id": "replace",
+              "type": "2",
+              "name": "REPLACE",
+              "ref": null
+            },
+            {
+              "id": "update",
+              "type": "3",
+              "name": "UPDATE",
+              "ref": null
+            }
+          ]
+        }
+      },
+      {
+        "id": "poll",
+        "type": "schema",
+        "position": {
+          "x": 800,
+          "y": 780
+        },
+        "style": {
+          "width": 180
+        },
+        "data": {
+          "id": "poll",
+          "kind": "message",
+          "label": "Poll",
+          "sourceSymbol": "gnmi.Poll",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.8.0/proto/gnmi/gnmi.proto#L232",
+          "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#35153-poll-subscriptions",
+          "fields": []
+        }
+      },
+      {
+        "id": "subscription-list",
+        "type": "schema",
+        "position": {
+          "x": 1050,
+          "y": 750
+        },
+        "style": {
+          "width": 390
+        },
+        "data": {
+          "id": "subscription-list",
+          "kind": "message",
+          "label": "SubscriptionList",
+          "sourceSymbol": "gnmi.SubscriptionList",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.8.0/proto/gnmi/gnmi.proto#L260",
+          "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#3512-the-subscriptionlist-message",
+          "fields": [
+            {
+              "id": "prefix",
+              "type": "Path",
+              "name": "prefix",
+              "ref": "path"
+            },
+            {
+              "id": "subscription",
+              "type": "repeated Subscription",
+              "name": "subscription",
+              "ref": "subscription"
+            },
+            {
+              "id": "qos",
+              "type": "QOSMarking",
+              "name": "qos",
+              "ref": "qos-marking"
+            },
+            {
+              "id": "mode",
+              "type": "Mode",
+              "name": "mode",
+              "ref": "mode"
+            },
+            {
+              "id": "allow-aggregation",
+              "type": "bool",
+              "name": "allow_aggregation",
+              "ref": null
+            },
+            {
+              "id": "use-models",
+              "type": "repeated ModelData",
+              "name": "use_models",
+              "ref": "model-data"
+            },
+            {
+              "id": "encoding",
+              "type": "Encoding",
+              "name": "encoding",
+              "ref": "encoding"
+            },
+            {
+              "id": "updates-only",
+              "type": "bool",
+              "name": "updates_only",
+              "ref": null
+            },
+            {
+              "id": "reserved-use-aliases",
+              "type": "reserved",
+              "name": "use_aliases / 3",
+              "ref": null,
+              "badge": "reserved"
+            }
+          ]
+        }
+      },
+      {
+        "id": "qos-marking",
+        "type": "schema",
+        "position": {
+          "x": 990,
+          "y": 1210
+        },
+        "style": {
+          "width": 270
+        },
+        "data": {
+          "id": "qos-marking",
+          "kind": "message",
+          "label": "QOSMarking",
+          "sourceSymbol": "gnmi.QOSMarking",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.8.0/proto/gnmi/gnmi.proto#L321",
+          "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#3512-the-subscriptionlist-message",
+          "fields": [
+            {
+              "id": "marking",
+              "type": "uint32",
+              "name": "marking",
+              "ref": null
+            }
+          ]
+        }
+      },
+      {
+        "id": "mode",
+        "type": "schema",
+        "position": {
+          "x": 990,
+          "y": 1390
+        },
+        "style": {
+          "width": 240
+        },
+        "data": {
+          "id": "mode",
+          "kind": "enum",
+          "label": "enum Mode",
+          "sourceSymbol": "gnmi.SubscriptionList.Mode",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.8.0/proto/gnmi/gnmi.proto#L265",
+          "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#3512-the-subscriptionlist-message",
+          "fields": [
+            {
+              "id": "stream",
+              "type": "0",
+              "name": "STREAM",
+              "ref": null
+            },
+            {
+              "id": "once",
+              "type": "1",
+              "name": "ONCE",
+              "ref": null
+            },
+            {
+              "id": "poll",
+              "type": "2",
+              "name": "POLL",
+              "ref": null
+            }
+          ]
+        }
+      },
+      {
+        "id": "subscription",
+        "type": "schema",
+        "position": {
+          "x": 1460,
+          "y": 920
+        },
+        "style": {
+          "width": 360
+        },
+        "data": {
+          "id": "subscription",
+          "kind": "message",
+          "label": "Subscription",
+          "sourceSymbol": "gnmi.Subscription",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.8.0/proto/gnmi/gnmi.proto#L296",
+          "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#3513-the-subscription-message",
+          "fields": [
+            {
+              "id": "path",
+              "type": "Path",
+              "name": "path",
+              "ref": "path"
+            },
+            {
+              "id": "mode",
+              "type": "SubscriptionMode",
+              "name": "mode",
+              "ref": "subscription-mode"
+            },
+            {
+              "id": "sample-interval",
+              "type": "uint64",
+              "name": "sample_interval",
+              "ref": null
+            },
+            {
+              "id": "suppress-redundant",
+              "type": "bool",
+              "name": "suppress_redundant",
+              "ref": null
+            },
+            {
+              "id": "heartbeat-interval",
+              "type": "uint64",
+              "name": "heartbeat_interval",
+              "ref": null
+            }
+          ]
+        }
+      },
+      {
+        "id": "subscription-mode",
+        "type": "schema",
+        "position": {
+          "x": 1460,
+          "y": 1250
+        },
+        "style": {
+          "width": 310
+        },
+        "data": {
+          "id": "subscription-mode",
+          "kind": "enum",
+          "label": "enum SubscriptionMode",
+          "sourceSymbol": "gnmi.SubscriptionMode",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.8.0/proto/gnmi/gnmi.proto#L312",
+          "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#35152-stream-subscriptions",
+          "fields": [
+            {
+              "id": "target-defined",
+              "type": "0",
+              "name": "TARGET_DEFINED",
+              "ref": null
+            },
+            {
+              "id": "on-change",
+              "type": "1",
+              "name": "ON_CHANGE",
+              "ref": null
+            },
+            {
+              "id": "sample",
+              "type": "2",
+              "name": "SAMPLE",
+              "ref": null
+            }
+          ]
+        }
+      },
+      {
+        "id": "data-type",
+        "type": "schema",
+        "position": {
+          "x": 1660,
+          "y": 720
+        },
+        "style": {
+          "width": 280
+        },
+        "data": {
+          "id": "data-type",
+          "kind": "enum",
+          "label": "enum DataType",
+          "sourceSymbol": "gnmi.GetRequest.DataType",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.8.0/proto/gnmi/gnmi.proto#L392",
+          "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#331-the-getrequest-message",
+          "fields": [
+            {
+              "id": "all",
+              "type": "0",
+              "name": "ALL",
+              "ref": null
+            },
+            {
+              "id": "config",
+              "type": "1",
+              "name": "CONFIG",
+              "ref": null
+            },
+            {
+              "id": "state",
+              "type": "2",
+              "name": "STATE",
+              "ref": null
+            },
+            {
+              "id": "operational",
+              "type": "3",
+              "name": "OPERATIONAL",
+              "ref": null
+            }
+          ]
+        }
+      },
+      {
+        "id": "model-data",
+        "type": "schema",
+        "position": {
+          "x": 2410,
+          "y": 790
+        },
+        "style": {
+          "width": 300
+        },
+        "data": {
+          "id": "model-data",
+          "kind": "message",
+          "label": "ModelData",
+          "sourceSymbol": "gnmi.ModelData",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.8.0/proto/gnmi/gnmi.proto#L447",
+          "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#261-the-modeldata-message",
+          "fields": [
+            {
+              "id": "name",
+              "type": "string",
+              "name": "name",
+              "ref": null
+            },
+            {
+              "id": "organization",
+              "type": "string",
+              "name": "organization",
+              "ref": null
+            },
+            {
+              "id": "version",
+              "type": "string",
+              "name": "version",
+              "ref": null
+            }
+          ]
+        }
+      },
+      {
+        "id": "encoding",
+        "type": "schema",
+        "position": {
+          "x": 2380,
+          "y": 1120
+        },
+        "style": {
+          "width": 260
+        },
+        "data": {
+          "id": "encoding",
+          "kind": "enum",
+          "label": "enum Encoding",
+          "sourceSymbol": "gnmi.Encoding",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.8.0/proto/gnmi/gnmi.proto#L172",
+          "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#23-structured-data-types",
+          "fields": [
+            {
+              "id": "json",
+              "type": "0",
+              "name": "JSON",
+              "ref": null
+            },
+            {
+              "id": "bytes",
+              "type": "1",
+              "name": "BYTES",
+              "ref": null
+            },
+            {
+              "id": "proto",
+              "type": "2",
+              "name": "PROTO",
+              "ref": null
+            },
+            {
+              "id": "ascii",
+              "type": "3",
+              "name": "ASCII",
+              "ref": null
+            },
+            {
+              "id": "json-ietf",
+              "type": "4",
+              "name": "JSON_IETF",
+              "ref": null
+            }
+          ]
+        }
+      },
+      {
+        "id": "notification",
+        "type": "schema",
+        "position": {
+          "x": 1740,
+          "y": 1160
+        },
+        "style": {
+          "width": 350
+        },
+        "data": {
+          "id": "notification",
+          "kind": "message",
+          "label": "Notification",
+          "sourceSymbol": "gnmi.Notification",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.8.0/proto/gnmi/gnmi.proto#L83",
+          "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#21-reusable-notification-message-format",
+          "fields": [
+            {
+              "id": "timestamp",
+              "type": "int64",
+              "name": "timestamp",
+              "ref": null
+            },
+            {
+              "id": "prefix",
+              "type": "Path",
+              "name": "prefix",
+              "ref": "path"
+            },
+            {
+              "id": "update",
+              "type": "repeated Update",
+              "name": "update",
+              "ref": "update"
+            },
+            {
+              "id": "delete",
+              "type": "repeated Path",
+              "name": "delete",
+              "ref": "path"
+            },
+            {
+              "id": "atomic",
+              "type": "bool",
+              "name": "atomic",
+              "ref": null
+            },
+            {
+              "id": "reserved-alias",
+              "type": "reserved",
+              "name": "alias / 3",
+              "ref": null,
+              "badge": "reserved"
+            }
+          ]
+        }
+      },
+      {
+        "id": "update",
+        "type": "schema",
+        "position": {
+          "x": 1320,
+          "y": 1460
+        },
+        "style": {
+          "width": 330
+        },
+        "data": {
+          "id": "update",
+          "kind": "message",
+          "label": "Update",
+          "sourceSymbol": "gnmi.Update",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.8.0/proto/gnmi/gnmi.proto#L99",
+          "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#21-reusable-notification-message-format",
+          "fields": [
+            {
+              "id": "path",
+              "type": "Path",
+              "name": "path",
+              "ref": "path"
+            },
+            {
+              "id": "value",
+              "type": "Value",
+              "name": "value",
+              "ref": "value",
+              "badge": "deprecated",
+              "deprecated": true
+            },
+            {
+              "id": "val",
+              "type": "TypedValue",
+              "name": "val",
+              "ref": "typed-value"
+            },
+            {
+              "id": "duplicates",
+              "type": "uint32",
+              "name": "duplicates",
+              "ref": null
+            }
+          ]
+        }
+      },
+      {
+        "id": "path",
+        "type": "schema",
+        "position": {
+          "x": 1780,
+          "y": 1530
+        },
+        "style": {
+          "width": 360
+        },
+        "data": {
+          "id": "path",
+          "kind": "message",
+          "label": "Path",
+          "sourceSymbol": "gnmi.Path",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.8.0/proto/gnmi/gnmi.proto#L140",
+          "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#222-paths",
+          "fields": [
+            {
+              "id": "element",
+              "type": "repeated string",
+              "name": "element",
+              "ref": null,
+              "badge": "deprecated",
+              "deprecated": true
+            },
+            {
+              "id": "origin",
+              "type": "string",
+              "name": "origin",
+              "ref": null
+            },
+            {
+              "id": "elem",
+              "type": "repeated PathElem",
+              "name": "elem",
+              "ref": "path-elem"
+            },
+            {
+              "id": "target",
+              "type": "string",
+              "name": "target",
+              "ref": null
+            }
+          ]
+        }
+      },
+      {
+        "id": "path-elem",
+        "type": "schema",
+        "position": {
+          "x": 2210,
+          "y": 1600
+        },
+        "style": {
+          "width": 330
+        },
+        "data": {
+          "id": "path-elem",
+          "kind": "message",
+          "label": "PathElem",
+          "sourceSymbol": "gnmi.PathElem",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.8.0/proto/gnmi/gnmi.proto#L153",
+          "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#222-paths",
+          "fields": [
+            {
+              "id": "name",
+              "type": "string",
+              "name": "name",
+              "ref": null
+            },
+            {
+              "id": "key",
+              "type": "map<string,string>",
+              "name": "key",
+              "ref": null
+            }
+          ]
+        }
+      },
+      {
+        "id": "value",
+        "type": "schema",
+        "position": {
+          "x": 700,
+          "y": 1570
+        },
+        "style": {
+          "width": 300
+        },
+        "data": {
+          "id": "value",
+          "kind": "message",
+          "label": "Value",
+          "sourceSymbol": "gnmi.Value",
+          "deprecated": true,
+          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.8.0/proto/gnmi/gnmi.proto#L161",
+          "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#223-node-values",
+          "badges": [
+            "deprecated"
+          ],
+          "fields": [
+            {
+              "id": "value",
+              "type": "bytes",
+              "name": "value",
+              "ref": null
+            },
+            {
+              "id": "type",
+              "type": "Encoding",
+              "name": "type",
+              "ref": "encoding"
+            }
+          ]
+        }
+      },
+      {
+        "id": "typed-value",
+        "type": "schema",
+        "position": {
+          "x": 980,
+          "y": 1780
+        },
+        "style": {
+          "width": 390
+        },
+        "data": {
+          "id": "typed-value",
+          "kind": "message",
+          "label": "TypedValue",
+          "sourceSymbol": "gnmi.TypedValue",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.8.0/proto/gnmi/gnmi.proto#L108",
+          "fields": [
+            {
+              "id": "string-val",
+              "type": "string",
+              "name": "string_val",
+              "ref": null,
+              "group": "oneof value"
+            },
+            {
+              "id": "int-val",
+              "type": "int64",
+              "name": "int_val",
+              "ref": null,
+              "group": "oneof value"
+            },
+            {
+              "id": "uint-val",
+              "type": "uint64",
+              "name": "uint_val",
+              "ref": null,
+              "group": "oneof value"
+            },
+            {
+              "id": "bool-val",
+              "type": "bool",
+              "name": "bool_val",
+              "ref": null,
+              "group": "oneof value"
+            },
+            {
+              "id": "bytes-val",
+              "type": "bytes",
+              "name": "bytes_val",
+              "ref": null,
+              "group": "oneof value"
+            },
+            {
+              "id": "float-val",
+              "type": "float",
+              "name": "float_val",
+              "ref": null,
+              "group": "oneof value",
+              "badge": "deprecated",
+              "deprecated": true
+            },
+            {
+              "id": "double-val",
+              "type": "double",
+              "name": "double_val",
+              "ref": null,
+              "group": "oneof value"
+            },
+            {
+              "id": "decimal-val",
+              "type": "Decimal64",
+              "name": "decimal_val",
+              "ref": "decimal64",
+              "group": "oneof value",
+              "badge": "deprecated",
+              "deprecated": true
+            },
+            {
+              "id": "leaflist-val",
+              "type": "ScalarArray",
+              "name": "leaflist_val",
+              "ref": "scalar-array",
+              "group": "oneof value"
+            },
+            {
+              "id": "any-val",
+              "type": "google.protobuf.Any",
+              "name": "any_val",
+              "ref": "any",
+              "group": "oneof value"
+            },
+            {
+              "id": "json-val",
+              "type": "bytes",
+              "name": "json_val",
+              "ref": null,
+              "group": "oneof value"
+            },
+            {
+              "id": "json-ietf-val",
+              "type": "bytes",
+              "name": "json_ietf_val",
+              "ref": null,
+              "group": "oneof value"
+            },
+            {
+              "id": "ascii-val",
+              "type": "string",
+              "name": "ascii_val",
+              "ref": null,
+              "group": "oneof value"
+            },
+            {
+              "id": "proto-bytes",
+              "type": "bytes",
+              "name": "proto_bytes",
+              "ref": null,
+              "group": "oneof value"
+            }
+          ]
+        }
+      },
+      {
+        "id": "decimal64",
+        "type": "schema",
+        "position": {
+          "x": 1430,
+          "y": 1780
+        },
+        "style": {
+          "width": 280
+        },
+        "data": {
+          "id": "decimal64",
+          "kind": "message",
+          "label": "Decimal64",
+          "sourceSymbol": "gnmi.Decimal64",
+          "deprecated": true,
+          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.8.0/proto/gnmi/gnmi.proto#L196",
+          "badges": [
+            "deprecated"
+          ],
+          "fields": [
+            {
+              "id": "digits",
+              "type": "int64",
+              "name": "digits",
+              "ref": null
+            },
+            {
+              "id": "precision",
+              "type": "uint32",
+              "name": "precision",
+              "ref": null
+            }
+          ]
+        }
+      },
+      {
+        "id": "scalar-array",
+        "type": "schema",
+        "position": {
+          "x": 1430,
+          "y": 1980
+        },
+        "style": {
+          "width": 330
+        },
+        "data": {
+          "id": "scalar-array",
+          "kind": "message",
+          "label": "ScalarArray",
+          "sourceSymbol": "gnmi.ScalarArray",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.8.0/proto/gnmi/gnmi.proto#L203",
+          "fields": [
+            {
+              "id": "element",
+              "type": "repeated TypedValue",
+              "name": "element",
+              "ref": "typed-value"
+            }
+          ]
+        }
+      },
+      {
+        "id": "any",
+        "type": "schema",
+        "position": {
+          "x": 550,
+          "y": 1870
+        },
+        "style": {
+          "width": 330
+        },
+        "data": {
+          "id": "any",
+          "kind": "external",
+          "label": "google.protobuf.Any",
+          "protoUrl": "https://github.com/protocolbuffers/protobuf/blob/master/src/google/protobuf/any.proto",
+          "fields": [
+            {
+              "id": "type-url",
+              "type": "string",
+              "name": "type_url"
+            },
+            {
+              "id": "value",
+              "type": "bytes",
+              "name": "value"
+            }
+          ]
+        }
+      },
+      {
+        "id": "extension",
+        "type": "schema",
+        "position": {
+          "x": 2020,
+          "y": 820
+        },
+        "style": {
+          "width": 360
+        },
+        "data": {
+          "id": "extension",
+          "kind": "message",
+          "label": "gnmi_ext.Extension",
+          "sourceSymbol": "gnmi_ext.Extension",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.8.0/proto/gnmi_ext/gnmi_ext.proto#L27",
+          "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#27-extensions-to-gnmi",
+          "fields": [
+            {
+              "id": "registered-ext",
+              "type": "RegisteredExtension",
+              "name": "registered_ext",
+              "ref": "registered-extension",
+              "group": "oneof ext"
+            },
+            {
+              "id": "master-arbitration",
+              "type": "MasterArbitration",
+              "name": "master_arbitration",
+              "ref": "master-arbitration",
+              "group": "oneof ext"
+            },
+            {
+              "id": "history",
+              "type": "History",
+              "name": "history",
+              "ref": "history",
+              "group": "oneof ext"
+            }
+          ]
+        }
+      },
+      {
+        "id": "registered-extension",
+        "type": "schema",
+        "position": {
+          "x": 2510,
+          "y": 760
+        },
+        "style": {
+          "width": 390
+        },
+        "data": {
+          "id": "registered-extension",
+          "kind": "message",
+          "label": "gnmi_ext.RegisteredExtension",
+          "sourceSymbol": "gnmi_ext.RegisteredExtension",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.8.0/proto/gnmi_ext/gnmi_ext.proto#L38",
+          "fields": [
+            {
+              "id": "id",
+              "type": "ExtensionID",
+              "name": "id",
+              "ref": "extension-id"
+            },
+            {
+              "id": "msg",
+              "type": "bytes",
+              "name": "msg",
+              "ref": null
+            }
+          ]
+        }
+      },
+      {
+        "id": "extension-id",
+        "type": "schema",
+        "position": {
+          "x": 2940,
+          "y": 700
+        },
+        "style": {
+          "width": 310
+        },
+        "data": {
+          "id": "extension-id",
+          "kind": "enum",
+          "label": "enum gnmi_ext.ExtensionID",
+          "sourceSymbol": "gnmi_ext.ExtensionID",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.8.0/proto/gnmi_ext/gnmi_ext.proto#L45",
+          "fields": [
+            {
+              "id": "unset",
+              "type": "0",
+              "name": "EID_UNSET",
+              "ref": null
+            },
+            {
+              "id": "experimental",
+              "type": "999",
+              "name": "EID_EXPERIMENTAL",
+              "ref": null
+            }
+          ]
+        }
+      },
+      {
+        "id": "master-arbitration",
+        "type": "schema",
+        "position": {
+          "x": 2510,
+          "y": 1010
+        },
+        "style": {
+          "width": 390
+        },
+        "data": {
+          "id": "master-arbitration",
+          "kind": "message",
+          "label": "gnmi_ext.MasterArbitration",
+          "sourceSymbol": "gnmi_ext.MasterArbitration",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.8.0/proto/gnmi_ext/gnmi_ext.proto#L60",
+          "fields": [
+            {
+              "id": "role",
+              "type": "Role",
+              "name": "role",
+              "ref": "role"
+            },
+            {
+              "id": "election-id",
+              "type": "Uint128",
+              "name": "election_id",
+              "ref": "uint128"
+            }
+          ]
+        }
+      },
+      {
+        "id": "uint128",
+        "type": "schema",
+        "position": {
+          "x": 2940,
+          "y": 1040
+        },
+        "style": {
+          "width": 260
+        },
+        "data": {
+          "id": "uint128",
+          "kind": "message",
+          "label": "gnmi_ext.Uint128",
+          "sourceSymbol": "gnmi_ext.Uint128",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.8.0/proto/gnmi_ext/gnmi_ext.proto#L66",
+          "fields": [
+            {
+              "id": "high",
+              "type": "uint64",
+              "name": "high",
+              "ref": null
+            },
+            {
+              "id": "low",
+              "type": "uint64",
+              "name": "low",
+              "ref": null
+            }
+          ]
+        }
+      },
+      {
+        "id": "role",
+        "type": "schema",
+        "position": {
+          "x": 2940,
+          "y": 1210
+        },
+        "style": {
+          "width": 260
+        },
+        "data": {
+          "id": "role",
+          "kind": "message",
+          "label": "gnmi_ext.Role",
+          "sourceSymbol": "gnmi_ext.Role",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.8.0/proto/gnmi_ext/gnmi_ext.proto#L72",
+          "fields": [
+            {
+              "id": "id",
+              "type": "string",
+              "name": "id",
+              "ref": null
+            }
+          ]
+        }
+      },
+      {
+        "id": "history",
+        "type": "schema",
+        "position": {
+          "x": 2510,
+          "y": 1260
+        },
+        "style": {
+          "width": 330
+        },
+        "data": {
+          "id": "history",
+          "kind": "message",
+          "label": "gnmi_ext.History",
+          "sourceSymbol": "gnmi_ext.History",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.8.0/proto/gnmi_ext/gnmi_ext.proto#L81",
+          "fields": [
+            {
+              "id": "snapshot-time",
+              "type": "int64",
+              "name": "snapshot_time",
+              "ref": null,
+              "group": "oneof request"
+            },
+            {
+              "id": "range",
+              "type": "TimeRange",
+              "name": "range",
+              "ref": "time-range",
+              "group": "oneof request"
+            }
+          ]
+        }
+      },
+      {
+        "id": "time-range",
+        "type": "schema",
+        "position": {
+          "x": 2940,
+          "y": 1390
+        },
+        "style": {
+          "width": 270
+        },
+        "data": {
+          "id": "time-range",
+          "kind": "message",
+          "label": "gnmi_ext.TimeRange",
+          "sourceSymbol": "gnmi_ext.TimeRange",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.8.0/proto/gnmi_ext/gnmi_ext.proto#L88",
+          "fields": [
+            {
+              "id": "start",
+              "type": "int64",
+              "name": "start",
+              "ref": null
+            },
+            {
+              "id": "end",
+              "type": "int64",
+              "name": "end",
+              "ref": null
+            }
+          ]
+        }
+      },
+      {
+        "id": "duration",
+        "type": "schema",
+        "position": {
+          "x": 3400,
+          "y": 1740
+        },
+        "style": {
+          "width": 300
+        },
+        "data": {
+          "id": "duration",
+          "kind": "external",
+          "label": "google.protobuf.Duration",
+          "protoUrl": "https://github.com/protocolbuffers/protobuf/blob/main/src/google/protobuf/duration.proto",
+          "fields": [
+            {
+              "id": "seconds",
+              "type": "int64",
+              "name": "seconds"
+            },
+            {
+              "id": "nanos",
+              "type": "int32",
+              "name": "nanos"
+            }
+          ]
+        }
+      },
+      {
+        "id": "legend",
+        "type": "schema",
+        "position": {
+          "x": 2720,
+          "y": 1470
+        },
+        "style": {
+          "width": 410
+        },
+        "data": {
+          "id": "legend",
+          "kind": "legend",
+          "label": "Legend",
+          "fields": [
+            {
+              "id": "proto",
+              "type": "file icon",
+              "name": "proto definition link"
+            },
+            {
+              "id": "docs",
+              "type": "book icon",
+              "name": "documentation link"
+            },
+            {
+              "id": "extension-note",
+              "type": "toggle",
+              "name": "extension relationship edges"
+            },
+            {
+              "id": "pdf",
+              "type": "reference",
+              "name": "gnmi_0.7.0_map.pdf"
+            }
+          ]
+        }
+      }
+    ],
+    "edges": [
+      {
+        "id": "service-gnmi:capabilities->rpc-capabilities",
+        "source": "service-gnmi",
+        "sourceHandle": "capabilities",
+        "target": "rpc-capabilities",
+        "kind": "rpc",
+        "deprecated": false
+      },
+      {
+        "id": "service-gnmi:get->rpc-get",
+        "source": "service-gnmi",
+        "sourceHandle": "get",
+        "target": "rpc-get",
+        "kind": "rpc",
+        "deprecated": false
+      },
+      {
+        "id": "service-gnmi:set->rpc-set",
+        "source": "service-gnmi",
+        "sourceHandle": "set",
+        "target": "rpc-set",
+        "kind": "rpc",
+        "deprecated": false
+      },
+      {
+        "id": "service-gnmi:subscribe->rpc-subscribe",
+        "source": "service-gnmi",
+        "sourceHandle": "subscribe",
+        "target": "rpc-subscribe",
+        "kind": "rpc",
+        "deprecated": false
+      },
+      {
+        "id": "rpc-set:takes->set-request",
+        "source": "rpc-set",
+        "sourceHandle": "takes",
+        "target": "set-request",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "rpc-set:returns->set-response",
+        "source": "rpc-set",
+        "sourceHandle": "returns",
+        "target": "set-response",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "rpc-subscribe:takes->subscribe-request",
+        "source": "rpc-subscribe",
+        "sourceHandle": "takes",
+        "target": "subscribe-request",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "rpc-subscribe:returns->subscribe-response",
+        "source": "rpc-subscribe",
+        "sourceHandle": "returns",
+        "target": "subscribe-response",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "rpc-get:takes->get-request",
+        "source": "rpc-get",
+        "sourceHandle": "takes",
+        "target": "get-request",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "rpc-get:returns->get-response",
+        "source": "rpc-get",
+        "sourceHandle": "returns",
+        "target": "get-response",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "rpc-capabilities:takes->capability-request",
+        "source": "rpc-capabilities",
+        "sourceHandle": "takes",
+        "target": "capability-request",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "rpc-capabilities:returns->capability-response",
+        "source": "rpc-capabilities",
+        "sourceHandle": "returns",
+        "target": "capability-response",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "set-request:prefix->path",
+        "source": "set-request",
+        "sourceHandle": "prefix",
+        "target": "path",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "set-request:delete->path",
+        "source": "set-request",
+        "sourceHandle": "delete",
+        "target": "path",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "set-request:replace->update",
+        "source": "set-request",
+        "sourceHandle": "replace",
+        "target": "update",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "set-request:update->update",
+        "source": "set-request",
+        "sourceHandle": "update",
+        "target": "update",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "set-request:extension->extension",
+        "source": "set-request",
+        "sourceHandle": "extension",
+        "target": "extension",
+        "kind": "extension",
+        "deprecated": false
+      },
+      {
+        "id": "set-response:prefix->path",
+        "source": "set-response",
+        "sourceHandle": "prefix",
+        "target": "path",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "set-response:response->update-result",
+        "source": "set-response",
+        "sourceHandle": "response",
+        "target": "update-result",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "set-response:message->error",
+        "source": "set-response",
+        "sourceHandle": "message",
+        "target": "error",
+        "kind": "field",
+        "deprecated": true
+      },
+      {
+        "id": "set-response:extension->extension",
+        "source": "set-response",
+        "sourceHandle": "extension",
+        "target": "extension",
+        "kind": "extension",
+        "deprecated": false
+      },
+      {
+        "id": "subscribe-request:subscribe->subscription-list",
+        "source": "subscribe-request",
+        "sourceHandle": "subscribe",
+        "target": "subscription-list",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "subscribe-request:poll->poll",
+        "source": "subscribe-request",
+        "sourceHandle": "poll",
+        "target": "poll",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "subscribe-request:extension->extension",
+        "source": "subscribe-request",
+        "sourceHandle": "extension",
+        "target": "extension",
+        "kind": "extension",
+        "deprecated": false
+      },
+      {
+        "id": "subscribe-response:update->notification",
+        "source": "subscribe-response",
+        "sourceHandle": "update",
+        "target": "notification",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "subscribe-response:error->error",
+        "source": "subscribe-response",
+        "sourceHandle": "error",
+        "target": "error",
+        "kind": "field",
+        "deprecated": true
+      },
+      {
+        "id": "subscribe-response:extension->extension",
+        "source": "subscribe-response",
+        "sourceHandle": "extension",
+        "target": "extension",
+        "kind": "extension",
+        "deprecated": false
+      },
+      {
+        "id": "get-request:prefix->path",
+        "source": "get-request",
+        "sourceHandle": "prefix",
+        "target": "path",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "get-request:path->path",
+        "source": "get-request",
+        "sourceHandle": "path",
+        "target": "path",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "get-request:type->data-type",
+        "source": "get-request",
+        "sourceHandle": "type",
+        "target": "data-type",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "get-request:encoding->encoding",
+        "source": "get-request",
+        "sourceHandle": "encoding",
+        "target": "encoding",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "get-request:use-models->model-data",
+        "source": "get-request",
+        "sourceHandle": "use-models",
+        "target": "model-data",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "get-request:extension->extension",
+        "source": "get-request",
+        "sourceHandle": "extension",
+        "target": "extension",
+        "kind": "extension",
+        "deprecated": false
+      },
+      {
+        "id": "get-response:notification->notification",
+        "source": "get-response",
+        "sourceHandle": "notification",
+        "target": "notification",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "get-response:error->error",
+        "source": "get-response",
+        "sourceHandle": "error",
+        "target": "error",
+        "kind": "field",
+        "deprecated": true
+      },
+      {
+        "id": "get-response:extension->extension",
+        "source": "get-response",
+        "sourceHandle": "extension",
+        "target": "extension",
+        "kind": "extension",
+        "deprecated": false
+      },
+      {
+        "id": "capability-request:extension->extension",
+        "source": "capability-request",
+        "sourceHandle": "extension",
+        "target": "extension",
+        "kind": "extension",
+        "deprecated": false
+      },
+      {
+        "id": "capability-response:supported-models->model-data",
+        "source": "capability-response",
+        "sourceHandle": "supported-models",
+        "target": "model-data",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "capability-response:supported-encodings->encoding",
+        "source": "capability-response",
+        "sourceHandle": "supported-encodings",
+        "target": "encoding",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "capability-response:extension->extension",
+        "source": "capability-response",
+        "sourceHandle": "extension",
+        "target": "extension",
+        "kind": "extension",
+        "deprecated": false
+      },
+      {
+        "id": "error:data->any",
+        "source": "error",
+        "sourceHandle": "data",
+        "target": "any",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "update-result:path->path",
+        "source": "update-result",
+        "sourceHandle": "path",
+        "target": "path",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "update-result:message->error",
+        "source": "update-result",
+        "sourceHandle": "message",
+        "target": "error",
+        "kind": "field",
+        "deprecated": true
+      },
+      {
+        "id": "update-result:op->operation",
+        "source": "update-result",
+        "sourceHandle": "op",
+        "target": "operation",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "subscription-list:prefix->path",
+        "source": "subscription-list",
+        "sourceHandle": "prefix",
+        "target": "path",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "subscription-list:subscription->subscription",
+        "source": "subscription-list",
+        "sourceHandle": "subscription",
+        "target": "subscription",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "subscription-list:qos->qos-marking",
+        "source": "subscription-list",
+        "sourceHandle": "qos",
+        "target": "qos-marking",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "subscription-list:mode->mode",
+        "source": "subscription-list",
+        "sourceHandle": "mode",
+        "target": "mode",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "subscription-list:use-models->model-data",
+        "source": "subscription-list",
+        "sourceHandle": "use-models",
+        "target": "model-data",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "subscription-list:encoding->encoding",
+        "source": "subscription-list",
+        "sourceHandle": "encoding",
+        "target": "encoding",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "subscription:path->path",
+        "source": "subscription",
+        "sourceHandle": "path",
+        "target": "path",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "subscription:mode->subscription-mode",
+        "source": "subscription",
+        "sourceHandle": "mode",
+        "target": "subscription-mode",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "notification:prefix->path",
+        "source": "notification",
+        "sourceHandle": "prefix",
+        "target": "path",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "notification:update->update",
+        "source": "notification",
+        "sourceHandle": "update",
+        "target": "update",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "notification:delete->path",
+        "source": "notification",
+        "sourceHandle": "delete",
+        "target": "path",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "update:path->path",
+        "source": "update",
+        "sourceHandle": "path",
+        "target": "path",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "update:value->value",
+        "source": "update",
+        "sourceHandle": "value",
+        "target": "value",
+        "kind": "field",
+        "deprecated": true
+      },
+      {
+        "id": "update:val->typed-value",
+        "source": "update",
+        "sourceHandle": "val",
+        "target": "typed-value",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "path:elem->path-elem",
+        "source": "path",
+        "sourceHandle": "elem",
+        "target": "path-elem",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "value:type->encoding",
+        "source": "value",
+        "sourceHandle": "type",
+        "target": "encoding",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "typed-value:decimal-val->decimal64",
+        "source": "typed-value",
+        "sourceHandle": "decimal-val",
+        "target": "decimal64",
+        "kind": "field",
+        "deprecated": true
+      },
+      {
+        "id": "typed-value:leaflist-val->scalar-array",
+        "source": "typed-value",
+        "sourceHandle": "leaflist-val",
+        "target": "scalar-array",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "typed-value:any-val->any",
+        "source": "typed-value",
+        "sourceHandle": "any-val",
+        "target": "any",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "scalar-array:element->typed-value",
+        "source": "scalar-array",
+        "sourceHandle": "element",
+        "target": "typed-value",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "extension:registered-ext->registered-extension",
+        "source": "extension",
+        "sourceHandle": "registered-ext",
+        "target": "registered-extension",
+        "kind": "extension-detail",
+        "deprecated": false
+      },
+      {
+        "id": "extension:master-arbitration->master-arbitration",
+        "source": "extension",
+        "sourceHandle": "master-arbitration",
+        "target": "master-arbitration",
+        "kind": "extension-detail",
+        "deprecated": false
+      },
+      {
+        "id": "extension:history->history",
+        "source": "extension",
+        "sourceHandle": "history",
+        "target": "history",
+        "kind": "extension-detail",
+        "deprecated": false
+      },
+      {
+        "id": "registered-extension:id->extension-id",
+        "source": "registered-extension",
+        "sourceHandle": "id",
+        "target": "extension-id",
+        "kind": "extension-detail",
+        "deprecated": false
+      },
+      {
+        "id": "master-arbitration:role->role",
+        "source": "master-arbitration",
+        "sourceHandle": "role",
+        "target": "role",
+        "kind": "extension-detail",
+        "deprecated": false
+      },
+      {
+        "id": "master-arbitration:election-id->uint128",
+        "source": "master-arbitration",
+        "sourceHandle": "election-id",
+        "target": "uint128",
+        "kind": "extension-detail",
+        "deprecated": false
+      },
+      {
+        "id": "history:range->time-range",
+        "source": "history",
+        "sourceHandle": "range",
+        "target": "time-range",
+        "kind": "extension-detail",
+        "deprecated": false
+      }
+    ],
+    "bounds": {
+      "width": 4260,
+      "height": 2250
     }
   }
 ];
 
-export const mapEdges: MapEdge[] = [
-  {
-    "id": "service-gnmi:capabilities->rpc-capabilities",
-    "source": "service-gnmi",
-    "sourceHandle": "capabilities",
-    "target": "rpc-capabilities",
-    "kind": "rpc",
-    "deprecated": false
-  },
-  {
-    "id": "service-gnmi:get->rpc-get",
-    "source": "service-gnmi",
-    "sourceHandle": "get",
-    "target": "rpc-get",
-    "kind": "rpc",
-    "deprecated": false
-  },
-  {
-    "id": "service-gnmi:set->rpc-set",
-    "source": "service-gnmi",
-    "sourceHandle": "set",
-    "target": "rpc-set",
-    "kind": "rpc",
-    "deprecated": false
-  },
-  {
-    "id": "service-gnmi:subscribe->rpc-subscribe",
-    "source": "service-gnmi",
-    "sourceHandle": "subscribe",
-    "target": "rpc-subscribe",
-    "kind": "rpc",
-    "deprecated": false
-  },
-  {
-    "id": "rpc-set:takes->set-request",
-    "source": "rpc-set",
-    "sourceHandle": "takes",
-    "target": "set-request",
-    "kind": "field",
-    "deprecated": false
-  },
-  {
-    "id": "rpc-set:returns->set-response",
-    "source": "rpc-set",
-    "sourceHandle": "returns",
-    "target": "set-response",
-    "kind": "field",
-    "deprecated": false
-  },
-  {
-    "id": "rpc-subscribe:takes->subscribe-request",
-    "source": "rpc-subscribe",
-    "sourceHandle": "takes",
-    "target": "subscribe-request",
-    "kind": "field",
-    "deprecated": false
-  },
-  {
-    "id": "rpc-subscribe:returns->subscribe-response",
-    "source": "rpc-subscribe",
-    "sourceHandle": "returns",
-    "target": "subscribe-response",
-    "kind": "field",
-    "deprecated": false
-  },
-  {
-    "id": "rpc-get:takes->get-request",
-    "source": "rpc-get",
-    "sourceHandle": "takes",
-    "target": "get-request",
-    "kind": "field",
-    "deprecated": false
-  },
-  {
-    "id": "rpc-get:returns->get-response",
-    "source": "rpc-get",
-    "sourceHandle": "returns",
-    "target": "get-response",
-    "kind": "field",
-    "deprecated": false
-  },
-  {
-    "id": "rpc-capabilities:takes->capability-request",
-    "source": "rpc-capabilities",
-    "sourceHandle": "takes",
-    "target": "capability-request",
-    "kind": "field",
-    "deprecated": false
-  },
-  {
-    "id": "rpc-capabilities:returns->capability-response",
-    "source": "rpc-capabilities",
-    "sourceHandle": "returns",
-    "target": "capability-response",
-    "kind": "field",
-    "deprecated": false
-  },
-  {
-    "id": "set-request:prefix->path",
-    "source": "set-request",
-    "sourceHandle": "prefix",
-    "target": "path",
-    "kind": "field",
-    "deprecated": false
-  },
-  {
-    "id": "set-request:delete->path",
-    "source": "set-request",
-    "sourceHandle": "delete",
-    "target": "path",
-    "kind": "field",
-    "deprecated": false
-  },
-  {
-    "id": "set-request:replace->update",
-    "source": "set-request",
-    "sourceHandle": "replace",
-    "target": "update",
-    "kind": "field",
-    "deprecated": false
-  },
-  {
-    "id": "set-request:update->update",
-    "source": "set-request",
-    "sourceHandle": "update",
-    "target": "update",
-    "kind": "field",
-    "deprecated": false
-  },
-  {
-    "id": "set-request:union-replace->update",
-    "source": "set-request",
-    "sourceHandle": "union-replace",
-    "target": "update",
-    "kind": "field",
-    "deprecated": false
-  },
-  {
-    "id": "set-request:extension->extension",
-    "source": "set-request",
-    "sourceHandle": "extension",
-    "target": "extension",
-    "kind": "extension",
-    "deprecated": false
-  },
-  {
-    "id": "set-response:prefix->path",
-    "source": "set-response",
-    "sourceHandle": "prefix",
-    "target": "path",
-    "kind": "field",
-    "deprecated": false
-  },
-  {
-    "id": "set-response:response->update-result",
-    "source": "set-response",
-    "sourceHandle": "response",
-    "target": "update-result",
-    "kind": "field",
-    "deprecated": false
-  },
-  {
-    "id": "set-response:message->error",
-    "source": "set-response",
-    "sourceHandle": "message",
-    "target": "error",
-    "kind": "field",
-    "deprecated": true
-  },
-  {
-    "id": "set-response:extension->extension",
-    "source": "set-response",
-    "sourceHandle": "extension",
-    "target": "extension",
-    "kind": "extension",
-    "deprecated": false
-  },
-  {
-    "id": "subscribe-request:subscribe->subscription-list",
-    "source": "subscribe-request",
-    "sourceHandle": "subscribe",
-    "target": "subscription-list",
-    "kind": "field",
-    "deprecated": false
-  },
-  {
-    "id": "subscribe-request:poll->poll",
-    "source": "subscribe-request",
-    "sourceHandle": "poll",
-    "target": "poll",
-    "kind": "field",
-    "deprecated": false
-  },
-  {
-    "id": "subscribe-request:extension->extension",
-    "source": "subscribe-request",
-    "sourceHandle": "extension",
-    "target": "extension",
-    "kind": "extension",
-    "deprecated": false
-  },
-  {
-    "id": "subscribe-response:update->notification",
-    "source": "subscribe-response",
-    "sourceHandle": "update",
-    "target": "notification",
-    "kind": "field",
-    "deprecated": false
-  },
-  {
-    "id": "subscribe-response:error->error",
-    "source": "subscribe-response",
-    "sourceHandle": "error",
-    "target": "error",
-    "kind": "field",
-    "deprecated": true
-  },
-  {
-    "id": "subscribe-response:extension->extension",
-    "source": "subscribe-response",
-    "sourceHandle": "extension",
-    "target": "extension",
-    "kind": "extension",
-    "deprecated": false
-  },
-  {
-    "id": "get-request:prefix->path",
-    "source": "get-request",
-    "sourceHandle": "prefix",
-    "target": "path",
-    "kind": "field",
-    "deprecated": false
-  },
-  {
-    "id": "get-request:path->path",
-    "source": "get-request",
-    "sourceHandle": "path",
-    "target": "path",
-    "kind": "field",
-    "deprecated": false
-  },
-  {
-    "id": "get-request:type->data-type",
-    "source": "get-request",
-    "sourceHandle": "type",
-    "target": "data-type",
-    "kind": "field",
-    "deprecated": false
-  },
-  {
-    "id": "get-request:encoding->encoding",
-    "source": "get-request",
-    "sourceHandle": "encoding",
-    "target": "encoding",
-    "kind": "field",
-    "deprecated": false
-  },
-  {
-    "id": "get-request:use-models->model-data",
-    "source": "get-request",
-    "sourceHandle": "use-models",
-    "target": "model-data",
-    "kind": "field",
-    "deprecated": false
-  },
-  {
-    "id": "get-request:extension->extension",
-    "source": "get-request",
-    "sourceHandle": "extension",
-    "target": "extension",
-    "kind": "extension",
-    "deprecated": false
-  },
-  {
-    "id": "get-response:notification->notification",
-    "source": "get-response",
-    "sourceHandle": "notification",
-    "target": "notification",
-    "kind": "field",
-    "deprecated": false
-  },
-  {
-    "id": "get-response:error->error",
-    "source": "get-response",
-    "sourceHandle": "error",
-    "target": "error",
-    "kind": "field",
-    "deprecated": true
-  },
-  {
-    "id": "get-response:extension->extension",
-    "source": "get-response",
-    "sourceHandle": "extension",
-    "target": "extension",
-    "kind": "extension",
-    "deprecated": false
-  },
-  {
-    "id": "capability-request:extension->extension",
-    "source": "capability-request",
-    "sourceHandle": "extension",
-    "target": "extension",
-    "kind": "extension",
-    "deprecated": false
-  },
-  {
-    "id": "capability-response:supported-models->model-data",
-    "source": "capability-response",
-    "sourceHandle": "supported-models",
-    "target": "model-data",
-    "kind": "field",
-    "deprecated": false
-  },
-  {
-    "id": "capability-response:supported-encodings->encoding",
-    "source": "capability-response",
-    "sourceHandle": "supported-encodings",
-    "target": "encoding",
-    "kind": "field",
-    "deprecated": false
-  },
-  {
-    "id": "capability-response:extension->extension",
-    "source": "capability-response",
-    "sourceHandle": "extension",
-    "target": "extension",
-    "kind": "extension",
-    "deprecated": false
-  },
-  {
-    "id": "error:data->any",
-    "source": "error",
-    "sourceHandle": "data",
-    "target": "any",
-    "kind": "field",
-    "deprecated": false
-  },
-  {
-    "id": "update-result:path->path",
-    "source": "update-result",
-    "sourceHandle": "path",
-    "target": "path",
-    "kind": "field",
-    "deprecated": false
-  },
-  {
-    "id": "update-result:message->error",
-    "source": "update-result",
-    "sourceHandle": "message",
-    "target": "error",
-    "kind": "field",
-    "deprecated": true
-  },
-  {
-    "id": "update-result:op->operation",
-    "source": "update-result",
-    "sourceHandle": "op",
-    "target": "operation",
-    "kind": "field",
-    "deprecated": false
-  },
-  {
-    "id": "subscription-list:prefix->path",
-    "source": "subscription-list",
-    "sourceHandle": "prefix",
-    "target": "path",
-    "kind": "field",
-    "deprecated": false
-  },
-  {
-    "id": "subscription-list:subscription->subscription",
-    "source": "subscription-list",
-    "sourceHandle": "subscription",
-    "target": "subscription",
-    "kind": "field",
-    "deprecated": false
-  },
-  {
-    "id": "subscription-list:qos->qos-marking",
-    "source": "subscription-list",
-    "sourceHandle": "qos",
-    "target": "qos-marking",
-    "kind": "field",
-    "deprecated": false
-  },
-  {
-    "id": "subscription-list:mode->mode",
-    "source": "subscription-list",
-    "sourceHandle": "mode",
-    "target": "mode",
-    "kind": "field",
-    "deprecated": false
-  },
-  {
-    "id": "subscription-list:use-models->model-data",
-    "source": "subscription-list",
-    "sourceHandle": "use-models",
-    "target": "model-data",
-    "kind": "field",
-    "deprecated": false
-  },
-  {
-    "id": "subscription-list:encoding->encoding",
-    "source": "subscription-list",
-    "sourceHandle": "encoding",
-    "target": "encoding",
-    "kind": "field",
-    "deprecated": false
-  },
-  {
-    "id": "subscription:path->path",
-    "source": "subscription",
-    "sourceHandle": "path",
-    "target": "path",
-    "kind": "field",
-    "deprecated": false
-  },
-  {
-    "id": "subscription:mode->subscription-mode",
-    "source": "subscription",
-    "sourceHandle": "mode",
-    "target": "subscription-mode",
-    "kind": "field",
-    "deprecated": false
-  },
-  {
-    "id": "notification:prefix->path",
-    "source": "notification",
-    "sourceHandle": "prefix",
-    "target": "path",
-    "kind": "field",
-    "deprecated": false
-  },
-  {
-    "id": "notification:update->update",
-    "source": "notification",
-    "sourceHandle": "update",
-    "target": "update",
-    "kind": "field",
-    "deprecated": false
-  },
-  {
-    "id": "notification:delete->path",
-    "source": "notification",
-    "sourceHandle": "delete",
-    "target": "path",
-    "kind": "field",
-    "deprecated": false
-  },
-  {
-    "id": "update:path->path",
-    "source": "update",
-    "sourceHandle": "path",
-    "target": "path",
-    "kind": "field",
-    "deprecated": false
-  },
-  {
-    "id": "update:value->value",
-    "source": "update",
-    "sourceHandle": "value",
-    "target": "value",
-    "kind": "field",
-    "deprecated": true
-  },
-  {
-    "id": "update:val->typed-value",
-    "source": "update",
-    "sourceHandle": "val",
-    "target": "typed-value",
-    "kind": "field",
-    "deprecated": false
-  },
-  {
-    "id": "path:elem->path-elem",
-    "source": "path",
-    "sourceHandle": "elem",
-    "target": "path-elem",
-    "kind": "field",
-    "deprecated": false
-  },
-  {
-    "id": "value:type->encoding",
-    "source": "value",
-    "sourceHandle": "type",
-    "target": "encoding",
-    "kind": "field",
-    "deprecated": false
-  },
-  {
-    "id": "typed-value:decimal-val->decimal64",
-    "source": "typed-value",
-    "sourceHandle": "decimal-val",
-    "target": "decimal64",
-    "kind": "field",
-    "deprecated": true
-  },
-  {
-    "id": "typed-value:leaflist-val->scalar-array",
-    "source": "typed-value",
-    "sourceHandle": "leaflist-val",
-    "target": "scalar-array",
-    "kind": "field",
-    "deprecated": false
-  },
-  {
-    "id": "typed-value:any-val->any",
-    "source": "typed-value",
-    "sourceHandle": "any-val",
-    "target": "any",
-    "kind": "field",
-    "deprecated": false
-  },
-  {
-    "id": "scalar-array:element->typed-value",
-    "source": "scalar-array",
-    "sourceHandle": "element",
-    "target": "typed-value",
-    "kind": "field",
-    "deprecated": false
-  },
-  {
-    "id": "extension:registered-ext->registered-extension",
-    "source": "extension",
-    "sourceHandle": "registered-ext",
-    "target": "registered-extension",
-    "kind": "extension-detail",
-    "deprecated": false
-  },
-  {
-    "id": "extension:master-arbitration->master-arbitration",
-    "source": "extension",
-    "sourceHandle": "master-arbitration",
-    "target": "master-arbitration",
-    "kind": "extension-detail",
-    "deprecated": false
-  },
-  {
-    "id": "extension:history->history",
-    "source": "extension",
-    "sourceHandle": "history",
-    "target": "history",
-    "kind": "extension-detail",
-    "deprecated": false
-  },
-  {
-    "id": "extension:commit->commit",
-    "source": "extension",
-    "sourceHandle": "commit",
-    "target": "commit",
-    "kind": "extension-detail",
-    "deprecated": false
-  },
-  {
-    "id": "extension:depth->depth",
-    "source": "extension",
-    "sourceHandle": "depth",
-    "target": "depth",
-    "kind": "extension-detail",
-    "deprecated": false
-  },
-  {
-    "id": "extension:config-subscription->config-subscription",
-    "source": "extension",
-    "sourceHandle": "config-subscription",
-    "target": "config-subscription",
-    "kind": "extension-detail",
-    "deprecated": false
-  },
-  {
-    "id": "registered-extension:id->extension-id",
-    "source": "registered-extension",
-    "sourceHandle": "id",
-    "target": "extension-id",
-    "kind": "extension-detail",
-    "deprecated": false
-  },
-  {
-    "id": "master-arbitration:role->role",
-    "source": "master-arbitration",
-    "sourceHandle": "role",
-    "target": "role",
-    "kind": "extension-detail",
-    "deprecated": false
-  },
-  {
-    "id": "master-arbitration:election-id->uint128",
-    "source": "master-arbitration",
-    "sourceHandle": "election-id",
-    "target": "uint128",
-    "kind": "extension-detail",
-    "deprecated": false
-  },
-  {
-    "id": "history:range->time-range",
-    "source": "history",
-    "sourceHandle": "range",
-    "target": "time-range",
-    "kind": "extension-detail",
-    "deprecated": false
-  },
-  {
-    "id": "commit:commit->commit-request",
-    "source": "commit",
-    "sourceHandle": "commit",
-    "target": "commit-request",
-    "kind": "extension-detail",
-    "deprecated": false
-  },
-  {
-    "id": "commit:confirm->commit-confirm",
-    "source": "commit",
-    "sourceHandle": "confirm",
-    "target": "commit-confirm",
-    "kind": "extension-detail",
-    "deprecated": false
-  },
-  {
-    "id": "commit:cancel->commit-cancel",
-    "source": "commit",
-    "sourceHandle": "cancel",
-    "target": "commit-cancel",
-    "kind": "extension-detail",
-    "deprecated": false
-  },
-  {
-    "id": "commit:set-rollback-duration->commit-set-rollback-duration",
-    "source": "commit",
-    "sourceHandle": "set-rollback-duration",
-    "target": "commit-set-rollback-duration",
-    "kind": "extension-detail",
-    "deprecated": false
-  },
-  {
-    "id": "commit-request:rollback-duration->duration",
-    "source": "commit-request",
-    "sourceHandle": "rollback-duration",
-    "target": "duration",
-    "kind": "extension-detail",
-    "deprecated": false
-  },
-  {
-    "id": "commit-set-rollback-duration:rollback-duration->duration",
-    "source": "commit-set-rollback-duration",
-    "sourceHandle": "rollback-duration",
-    "target": "duration",
-    "kind": "extension-detail",
-    "deprecated": false
-  },
-  {
-    "id": "config-subscription:start->config-subscription-start",
-    "source": "config-subscription",
-    "sourceHandle": "start",
-    "target": "config-subscription-start",
-    "kind": "extension-detail",
-    "deprecated": false
-  },
-  {
-    "id": "config-subscription:sync-done->config-subscription-sync-done",
-    "source": "config-subscription",
-    "sourceHandle": "sync-done",
-    "target": "config-subscription-sync-done",
-    "kind": "extension-detail",
-    "deprecated": false
-  }
-];
+export const mapNodes: MapNode[] = mapVariants[0].nodes;
 
-export const mapBounds: MapBounds = {
-  "width": 4260,
-  "height": 2250
-};
+export const mapEdges: MapEdge[] = mapVariants[0].edges;
+
+export const mapBounds: MapBounds = mapVariants[0].bounds;
+
+function mapVariantForSourceTag(sourceTag: string | null | undefined): GnmiMapVariant {
+  return mapVariants.find((variant) => variant.tag === sourceTag) ?? mapVariants[0];
+}
 
 export function getVisibleMap({
   showDeprecated = false,
   showExtensions = true,
+  sourceTag = null,
 }: VisibleMapOptions = {}): VisibleMap {
-  const visibleNodes = mapNodes
+  const variant = mapVariantForSourceTag(sourceTag);
+  const visibleNodes = variant.nodes
     .filter((node) => node.data.kind !== 'legend')
     .filter((node) => showDeprecated || !node.data.deprecated)
     .map((node) => ({
@@ -2941,7 +7910,7 @@ export function getVisibleMap({
       (node.data.fields ?? []).map((field) => `${node.id}:${field.id}`),
     ),
   );
-  const visibleEdges = mapEdges.filter((edge) => {
+  const visibleEdges = variant.edges.filter((edge) => {
     if (!showExtensions && edge.kind === 'extension') {
       return false;
     }

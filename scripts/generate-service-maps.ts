@@ -41,6 +41,7 @@ type SourceLocation = {
 type SourceFile = {
   path: string;
   text: string;
+  serviceVersion?: string;
   definitionLines: Map<string, number>;
   methodLines: Map<string, number>;
 };
@@ -48,6 +49,7 @@ type ServiceFamilyConfig = {
   id: ServiceFamilyId;
   label: string;
   repository: `openconfig/${string}`;
+  versionSource: 'service-option' | 'repository-tag';
 };
 type GeneratedFamily = {
   id: ServiceFamilyId;
@@ -57,15 +59,30 @@ type GeneratedFamily = {
   githubBase: string;
   rawBase: string;
   protoFiles: string[];
-  services: Array<{
-    nodeId: string;
-    name: string;
-    symbol: string;
-    version?: string;
-  }>;
+  services: ServiceSummary[];
   nodes: MapNode[];
   edges: MapEdge[];
   bounds: MapBounds;
+  variants: GeneratedFamilyVariant[];
+};
+type GeneratedFamilyVariant = {
+  tag: string;
+  githubBase: string;
+  rawBase: string;
+  protoFiles: string[];
+  services: ServiceSummary[];
+  nodes: MapNode[];
+  edges: MapEdge[];
+  bounds: MapBounds;
+};
+type ServiceSummary = {
+  nodeId: string;
+  name: string;
+  symbol: string;
+  choiceId?: string;
+  focusNodeId?: string;
+  sourceTag?: string;
+  version?: string;
 };
 type ExternalNodeInput = {
   id: string;
@@ -79,10 +96,26 @@ const GITHUB_WEB_BASE = 'https://github.com';
 const GITHUB_RAW_BASE = 'https://raw.githubusercontent.com';
 
 const serviceFamilies: ServiceFamilyConfig[] = [
-  { id: 'gnoi', label: 'gNOI', repository: 'openconfig/gnoi' },
-  { id: 'gnsi', label: 'gNSI', repository: 'openconfig/gnsi' },
-  { id: 'gribi', label: 'gRIBI', repository: 'openconfig/gribi' },
+  {
+    id: 'gnoi',
+    label: 'gNOI',
+    repository: 'openconfig/gnoi',
+    versionSource: 'service-option',
+  },
+  {
+    id: 'gnsi',
+    label: 'gNSI',
+    repository: 'openconfig/gnsi',
+    versionSource: 'repository-tag',
+  },
+  {
+    id: 'gribi',
+    label: 'gRIBI',
+    repository: 'openconfig/gribi',
+    versionSource: 'repository-tag',
+  },
 ];
+const githubToken = process.env.GITHUB_TOKEN ?? process.env.GH_TOKEN;
 
 const SCALAR_TYPES = new Set<string>([
   'bool',
@@ -120,8 +153,13 @@ const EXTERNAL_PROTO_URLS = new Map<string, string>([
 ]);
 
 async function fetchJson<T>(url: string): Promise<T> {
+  const headers: Record<string, string> = { Accept: 'application/vnd.github+json' };
+  if (githubToken) {
+    headers.Authorization = `Bearer ${githubToken}`;
+  }
+
   const response = await fetch(url, {
-    headers: { Accept: 'application/vnd.github+json' },
+    headers,
   });
   if (!response.ok) {
     throw new Error(`Failed to fetch ${url}: ${response.status} ${response.statusText}`);
@@ -164,16 +202,20 @@ function compareSemver(first: string, second: string): number {
 }
 
 async function latestTag(repository: string): Promise<string> {
-  const tags = await fetchJson<GitHubTag[]>(`${GITHUB_API_BASE}/${repository}/tags?per_page=100`);
-  const latest = tags
-    .map((tag) => tag.name)
-    .filter((tag) => semverTuple(tag))
-    .sort(compareSemver)
-    .at(-1);
+  const latest = (await semverTags(repository)).at(0);
   if (!latest) {
     throw new Error(`Could not resolve a semantic version tag for ${repository}`);
   }
   return latest;
+}
+
+async function semverTags(repository: string): Promise<string[]> {
+  const tags = await fetchJson<GitHubTag[]>(`${GITHUB_API_BASE}/${repository}/tags?per_page=100`);
+  return tags
+    .map((tag) => tag.name)
+    .filter((tag) => semverTuple(tag))
+    .sort(compareSemver)
+    .reverse();
 }
 
 async function protoPaths(repository: string, tag: string): Promise<string[]> {
@@ -462,22 +504,23 @@ function protoUrl(baseUrl: string, source?: SourceLocation): string | undefined 
   return source ? `${baseUrl}/${source.path}#L${source.line}` : undefined;
 }
 
-function versionFromOptions(options: Record<string, unknown> | undefined): string | undefined {
-  if (!options) {
-    return undefined;
-  }
-
-  const versionEntry = Object.entries(options).find(
-    ([key, value]) =>
-      typeof value === 'string' && key !== 'go_package' && /version|service/i.test(key),
+function serviceVersionFromText(protoText: string): string | undefined {
+  const match = protoText.match(
+    /option\s+\((?:[A-Za-z0-9_.]+\.)?(?:gnoi_version|gnmi_service)\)\s*=\s*"([^"]+)"/,
   );
-  return typeof versionEntry?.[1] === 'string' ? versionEntry[1] : undefined;
+  return match?.[1];
 }
 
-function namespaceOptions(root: protobuf.Root, symbol: string): Record<string, unknown> | undefined {
-  const namespace = symbol.split('.').slice(0, -1).join('.');
-  const lookup = root.lookup(namespace);
-  return lookup?.options;
+function serviceVersionForSymbol(
+  symbol: string,
+  definitionSource: Map<string, SourceLocation>,
+  filesByPath: Map<string, SourceFile>,
+): string | undefined {
+  const source = definitionSource.get(symbol);
+  if (!source) {
+    return undefined;
+  }
+  return filesByPath.get(source.path)?.serviceVersion;
 }
 
 function fieldData(
@@ -602,6 +645,7 @@ async function sourceFiles(repository: string, tag: string): Promise<SourceFile[
       return {
         path: protoPath,
         text,
+        serviceVersion: serviceVersionFromText(text),
         definitionLines: definitionLines(text),
         methodLines: methodLines(text),
       };
@@ -610,9 +654,12 @@ async function sourceFiles(repository: string, tag: string): Promise<SourceFile[
   return files;
 }
 
-async function generateFamily(config: ServiceFamilyConfig): Promise<GeneratedFamily> {
-  const tag = await latestTag(config.repository);
+async function generateFamilyVariant(
+  config: ServiceFamilyConfig,
+  tag: string,
+): Promise<GeneratedFamilyVariant> {
   const files = await sourceFiles(config.repository, tag);
+  const filesByPath = new Map(files.map((file) => [file.path, file] as const));
   const root = new protobuf.Root();
 
   for (const file of files) {
@@ -641,7 +688,10 @@ async function generateFamily(config: ServiceFamilyConfig): Promise<GeneratedFam
   };
   const serviceNodes: MapNode[] = services.map((service, index) => {
     const symbol = service.fullName.replace(/^\./, '');
-    const version = versionFromOptions(namespaceOptions(root, symbol));
+    const version =
+      config.versionSource === 'repository-tag'
+        ? tag
+        : serviceVersionForSymbol(symbol, definitionSource, filesByPath);
 
     return {
       id: serviceNodeId(symbol),
@@ -744,7 +794,10 @@ async function generateFamily(config: ServiceFamilyConfig): Promise<GeneratedFam
   const nodes = [...serviceNodes, ...rpcNodes, ...definitionNodes, ...externalMapNodes];
   const serviceSummaries = services.map((service) => {
     const symbol = service.fullName.replace(/^\./, '');
-    const version = versionFromOptions(namespaceOptions(root, symbol));
+    const version =
+      config.versionSource === 'repository-tag'
+        ? tag
+        : serviceVersionForSymbol(symbol, definitionSource, filesByPath);
     return {
       nodeId: serviceNodeId(symbol),
       name: service.name,
@@ -754,9 +807,6 @@ async function generateFamily(config: ServiceFamilyConfig): Promise<GeneratedFam
   });
 
   return {
-    id: config.id,
-    label: config.label,
-    repository: config.repository,
     tag,
     githubBase: githubBaseUrl,
     rawBase: rawBase(config.repository, tag),
@@ -765,6 +815,80 @@ async function generateFamily(config: ServiceFamilyConfig): Promise<GeneratedFam
     nodes,
     edges: buildEdges(nodes),
     bounds: mapBounds(nodes),
+  };
+}
+
+function versionChoiceId(service: ServiceSummary): string {
+  return service.version ? `${service.nodeId}@${service.version}` : service.nodeId;
+}
+
+function serviceChoiceFromVariant(service: ServiceSummary, tag: string): ServiceSummary {
+  return {
+    ...service,
+    choiceId: versionChoiceId(service),
+    focusNodeId: service.nodeId,
+    sourceTag: tag,
+  };
+}
+
+function familyServiceChoices(
+  latestVariant: GeneratedFamilyVariant,
+  variants: GeneratedFamilyVariant[],
+): ServiceSummary[] {
+  const choices: ServiceSummary[] = [];
+  const seenChoiceIds = new Set<string>();
+
+  for (const latestService of latestVariant.services) {
+    for (const variant of variants) {
+      const service = variant.services.find(
+        (variantService) => variantService.symbol === latestService.symbol,
+      );
+      if (!service) {
+        continue;
+      }
+
+      const choiceId = versionChoiceId(service);
+      if (seenChoiceIds.has(choiceId)) {
+        continue;
+      }
+
+      seenChoiceIds.add(choiceId);
+      choices.push(service.version ? serviceChoiceFromVariant(service, variant.tag) : service);
+    }
+  }
+
+  return choices;
+}
+
+async function generateFamily(config: ServiceFamilyConfig): Promise<GeneratedFamily> {
+  const tags = await semverTags(config.repository);
+  if (!tags.length) {
+    throw new Error(`Could not resolve a semantic version tag for ${config.repository}`);
+  }
+  const scannedVariants = await Promise.all(
+    tags.map((tag) => generateFamilyVariant(config, tag)),
+  );
+  const latestVariant = scannedVariants[0];
+  const services = familyServiceChoices(latestVariant, scannedVariants);
+  const variantTags = new Set([
+    latestVariant.tag,
+    ...services.map((service) => service.sourceTag).filter(Boolean),
+  ]);
+  const variants = scannedVariants.filter((variant) => variantTags.has(variant.tag));
+
+  return {
+    id: config.id,
+    label: config.label,
+    repository: config.repository,
+    tag: latestVariant.tag,
+    githubBase: latestVariant.githubBase,
+    rawBase: latestVariant.rawBase,
+    protoFiles: latestVariant.protoFiles,
+    services,
+    nodes: latestVariant.nodes,
+    edges: latestVariant.edges,
+    bounds: latestVariant.bounds,
+    variants,
   };
 }
 
@@ -786,22 +910,14 @@ function generatedSource(families: GeneratedFamily[]): string {
       services: family.services,
     };
 
-    return `export const ${family.id}MapSource = ${JSON.stringify(source, null, 2)};\n\nexport const ${family.id}MapNodes: MapNode[] = ${JSON.stringify(
-      family.nodes,
+    return `export const ${family.id}MapSource = ${JSON.stringify(source, null, 2)};\n\nexport const ${family.id}MapVariants: GeneratedServiceMapVariant[] = ${JSON.stringify(
+      family.variants,
       null,
       2,
-    )};\n\nexport const ${family.id}MapEdges: MapEdge[] = ${JSON.stringify(
-      family.edges,
-      null,
-      2,
-    )};\n\nexport const ${family.id}MapBounds: MapBounds = ${JSON.stringify(
-      family.bounds,
-      null,
-      2,
-    )};\n\nexport function get${prefix}VisibleMap(options?: VisibleMapOptions): VisibleMap {\n  return visibleProtoMap(${family.id}MapNodes, ${family.id}MapEdges, options);\n}\n`;
+    )};\n\nexport const ${family.id}MapNodes: MapNode[] = ${family.id}MapVariants[0].nodes;\n\nexport const ${family.id}MapEdges: MapEdge[] = ${family.id}MapVariants[0].edges;\n\nexport const ${family.id}MapBounds: MapBounds = ${family.id}MapVariants[0].bounds;\n\nexport function get${prefix}VisibleMap(options: VisibleMapOptions = {}): VisibleMap {\n  const variant = mapVariantForSourceTag(${family.id}MapVariants, options.sourceTag);\n  return visibleProtoMap(variant.nodes, variant.edges, options);\n}\n`;
   });
 
-  return `// Generated by scripts/generate-service-maps.ts. Do not edit by hand.\n\nimport type { MapBounds, MapEdge, MapNode, VisibleMap, VisibleMapOptions } from './protoMapTypes';\nimport { visibleProtoMap } from './protoMapTypes';\n\n${chunks.join('\n')}`;
+  return `// Generated by scripts/generate-service-maps.ts. Do not edit by hand.\n\nimport type { MapBounds, MapEdge, MapNode, VisibleMap, VisibleMapOptions } from './protoMapTypes';\nimport { visibleProtoMap } from './protoMapTypes';\n\ntype GeneratedServiceMapVariant = {\n  tag: string;\n  githubBase: string;\n  rawBase: string;\n  protoFiles: string[];\n  services: Array<{\n    nodeId: string;\n    name: string;\n    symbol: string;\n    choiceId?: string;\n    focusNodeId?: string;\n    sourceTag?: string;\n    version?: string;\n  }>;\n  nodes: MapNode[];\n  edges: MapEdge[];\n  bounds: MapBounds;\n};\n\nfunction mapVariantForSourceTag(\n  variants: GeneratedServiceMapVariant[],\n  sourceTag: string | null | undefined,\n): GeneratedServiceMapVariant {\n  return variants.find((variant) => variant.tag === sourceTag) ?? variants[0];\n}\n\n${chunks.join('\n')}`;
 }
 
 async function main() {

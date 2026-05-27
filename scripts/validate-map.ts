@@ -100,13 +100,15 @@ function validateServiceRegistryMaps(): void {
     validateEdges(fullMap.nodes, fullMap.edges, `${serviceId} full map`);
 
     for (const serviceChoice of serviceMap.serviceChoices) {
+      const focusNodeId = serviceChoice.focusNodeId ?? serviceChoice.id;
       const focusedMap = serviceMap.getVisibleMap({
         showDeprecated: true,
         showExtensions: true,
-        focusNodeId: serviceChoice.id,
+        focusNodeId,
+        sourceTag: serviceChoice.sourceTag,
       });
       assert(
-        focusedMap.nodes.some((node) => node.id === serviceChoice.id),
+        focusedMap.nodes.some((node) => node.id === focusNodeId),
         `${serviceId}/${serviceChoice.label}: focused map must include selected service node`,
       );
       assert(
@@ -193,28 +195,35 @@ async function main(): Promise<void> {
   await validateReadableLayout(deprecatedMap.nodes, deprecatedMap.edges, 'deprecated layout');
   await validateReadableLayout(fullMap.nodes, fullMap.edges, 'full layout');
 
-  for (const [serviceId, serviceChoiceIds] of [
-    ['gnmi', ['rpc-capabilities', 'rpc-get', 'rpc-set', 'rpc-subscribe']],
+  for (const [serviceId, serviceChoices] of [
+    [
+      'gnmi',
+      ['rpc-capabilities', 'rpc-get', 'rpc-set', 'rpc-subscribe'].map((focusNodeId) => ({
+        id: focusNodeId,
+        focusNodeId,
+      })),
+    ],
     [
       'gribi',
-      serviceMaps.gribi.serviceChoices
-        .filter((choice) => choice.id !== serviceMaps.gribi.defaultServiceChoiceId)
-        .map((choice) => choice.id),
+      serviceMaps.gribi.serviceChoices.filter(
+        (choice) => choice.id !== serviceMaps.gribi.defaultServiceChoiceId,
+      ),
     ],
   ] as const) {
-    for (const serviceChoiceId of serviceChoiceIds) {
+    for (const serviceChoice of serviceChoices) {
       for (const options of [
         { showDeprecated: false, showExtensions: false },
         { showDeprecated: true, showExtensions: true },
       ]) {
         const focusedMap = serviceMaps[serviceId].getVisibleMap({
           ...options,
-          focusNodeId: serviceChoiceId,
+          focusNodeId: serviceChoice.focusNodeId ?? serviceChoice.id,
+          sourceTag: 'sourceTag' in serviceChoice ? serviceChoice.sourceTag : undefined,
         });
         await validateReadableLayout(
           focusedMap.nodes,
           focusedMap.edges,
-          `${serviceId} ${serviceChoiceId} compact layout`,
+          `${serviceId} ${serviceChoice.id} compact layout`,
           { compact: true },
         );
       }

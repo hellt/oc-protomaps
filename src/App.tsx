@@ -19,6 +19,8 @@ import {
 import '@xyflow/react/dist/style.css';
 import {
   BookOpen,
+  ChevronDown,
+  ChevronRight,
   ExternalLink,
   EyeOff,
   FileCode2,
@@ -181,6 +183,91 @@ function serviceSubtitle(serviceMap: ServiceMapDefinition): string {
     : `${serviceMap.label} service family`;
 }
 
+type ServiceChoiceGroup = {
+  key: string;
+  label: string;
+  displayLabel: string;
+  choices: ServiceMapChoice[];
+};
+
+function displayServiceChoiceLabel(label: string): string {
+  if (/^g[A-Z0-9]+$/.test(label) || /^[A-Z0-9]+$/.test(label)) {
+    return label;
+  }
+
+  return label
+    .replace(/([A-Z]+)([A-Z][a-z])/g, '$1 $2')
+    .replace(/([a-z0-9])([A-Z])/g, '$1 $2');
+}
+
+function versionParts(version: string | undefined): number[] | null {
+  if (!version) {
+    return null;
+  }
+
+  const match = version.match(/^v?(\d+)(?:\.(\d+))?(?:\.(\d+))?/);
+  if (!match) {
+    return null;
+  }
+
+  return [Number(match[1]), Number(match[2] ?? 0), Number(match[3] ?? 0)];
+}
+
+function compareVersionsDescending(
+  first: string | undefined,
+  second: string | undefined,
+): number {
+  if (!first && !second) {
+    return 0;
+  }
+  if (!first) {
+    return 1;
+  }
+  if (!second) {
+    return -1;
+  }
+
+  const firstParts = versionParts(first);
+  const secondParts = versionParts(second);
+  if (!firstParts || !secondParts) {
+    return second.localeCompare(first, undefined, { numeric: true, sensitivity: 'base' });
+  }
+
+  return (
+    secondParts[0] - firstParts[0] ||
+    secondParts[1] - firstParts[1] ||
+    secondParts[2] - firstParts[2]
+  );
+}
+
+function groupedServiceChoices(serviceChoices: ServiceMapChoice[]): ServiceChoiceGroup[] {
+  const groups = new Map<string, ServiceChoiceGroup>();
+
+  for (const choice of serviceChoices) {
+    const key = choice.version ? choice.label : `${choice.label}:${choice.symbol}:${choice.id}`;
+    const group = groups.get(key);
+
+    if (group) {
+      group.choices.push(choice);
+      continue;
+    }
+
+    groups.set(key, {
+      key,
+      label: choice.label,
+      displayLabel: displayServiceChoiceLabel(choice.label),
+      choices: [choice],
+    });
+  }
+
+  return [...groups.values()].map((group) => ({
+    ...group,
+    choices: [...group.choices].sort((first, second) =>
+      compareVersionsDescending(first.version, second.version),
+    ),
+  }));
+}
+
 function searchableText(node: MapNode): string {
   const fieldText = node.data.fields
     ?.map((field) => `${field.type} ${field.name} ${field.group ?? ''} ${field.badge ?? ''}`)
@@ -231,7 +318,18 @@ function AppShell() {
     serviceChoiceForRoute(activeService, serviceChoiceIds[activeServiceId]) ??
     activeService.serviceChoices[0];
   const activeServiceChoiceId = activeServiceChoice.id;
-  const compactLayout = activeServiceChoiceId !== activeService.defaultServiceChoiceId;
+  const activeFocusNodeId = activeServiceChoice.focusNodeId ?? activeServiceChoice.id;
+  const activeSourceTag = activeServiceChoice.sourceTag ?? null;
+  const defaultServiceChoice = serviceChoiceForRoute(
+    activeService,
+    activeService.defaultServiceChoiceId,
+  );
+  const defaultFocusNodeId = defaultServiceChoice.focusNodeId ?? defaultServiceChoice.id;
+  const rpcFocusedChoice = activeFocusNodeId.startsWith('rpc-');
+  const compactLayout =
+    rpcFocusedChoice ||
+    activeServiceChoiceId !== activeService.defaultServiceChoiceId ||
+    activeFocusNodeId !== defaultFocusNodeId;
   const layoutCacheKey = `${activeServiceId}:${activeServiceChoiceId}:${compactLayout ? 'compact' : 'regular'}`;
   const query = queryValue.trim().toLowerCase();
   const darkMode = theme === 'dark';
@@ -240,18 +338,20 @@ function AppShell() {
       activeService.getVisibleMap({
         showDeprecated,
         showExtensions,
-        focusNodeId: activeServiceChoiceId,
+        focusNodeId: activeFocusNodeId,
+        sourceTag: activeSourceTag,
       }),
-    [activeService, activeServiceChoiceId, showDeprecated, showExtensions],
+    [activeFocusNodeId, activeService, activeSourceTag, showDeprecated, showExtensions],
   );
   const layoutSourceMap = useMemo(
     () =>
       activeService.getVisibleMap({
         showDeprecated: true,
         showExtensions: true,
-        focusNodeId: activeServiceChoiceId,
+        focusNodeId: activeFocusNodeId,
+        sourceTag: activeSourceTag,
       }),
-    [activeService, activeServiceChoiceId],
+    [activeFocusNodeId, activeService, activeSourceTag],
   );
   const fallbackLayoutNodes = useMemo(() => improveNodeLayout(visibleMap.nodes), [visibleMap.nodes]);
 
@@ -340,7 +440,10 @@ function AppShell() {
     [layoutNodes, routingPositions],
   );
   const readableLayout = useMemo(
-    () => routeReadableLayout(routedLayoutNodes, visibleMap.edges, { compact: compactLayout }),
+    () =>
+      routeReadableLayout(routedLayoutNodes, visibleMap.edges, {
+        compact: compactLayout,
+      }),
     [compactLayout, routedLayoutNodes, visibleMap.edges],
   );
   const displayedLayoutNodes = useMemo(
@@ -606,7 +709,7 @@ function AppShell() {
 
         <ServiceNav activeServiceId={activeServiceId} onSelect={setActiveServiceId} />
 
-        <ServiceChoiceSelect
+        <ServiceChoiceMenu
           serviceMap={activeService}
           value={activeServiceChoiceId}
           onSelect={selectServiceChoice}
@@ -772,30 +875,175 @@ function ServiceNav({ activeServiceId, onSelect }: ServiceNavProps) {
   );
 }
 
-type ServiceChoiceSelectProps = {
+type ServiceChoiceMenuProps = {
   serviceMap: ServiceMapDefinition;
   value: string;
   onSelect: (serviceChoiceId: string) => void;
 };
 
-function ServiceChoiceSelect({ serviceMap, value, onSelect }: ServiceChoiceSelectProps) {
+function ServiceChoiceMenu({ serviceMap, value, onSelect }: ServiceChoiceMenuProps) {
+  const menuRef = useRef<HTMLDivElement>(null);
+  const groups = useMemo(
+    () => groupedServiceChoices(serviceMap.serviceChoices),
+    [serviceMap.serviceChoices],
+  );
+  const selectedChoice = serviceChoiceForRoute(serviceMap, value);
+  const selectedGroup =
+    groups.find((group) => group.choices.some((choice) => choice.id === selectedChoice.id)) ??
+    groups[0];
+  const [open, setOpen] = useState(false);
+  const [activeGroupKey, setActiveGroupKey] = useState<string | null>(
+    selectedGroup?.key ?? null,
+  );
+  const activeGroup =
+    groups.find((group) => group.key === activeGroupKey) ?? selectedGroup ?? groups[0];
+
+  useEffect(() => {
+    setOpen(false);
+    setActiveGroupKey(selectedGroup?.key ?? null);
+  }, [selectedGroup?.key, serviceMap.id]);
+
+  useEffect(() => {
+    if (!open) {
+      return;
+    }
+
+    const closeOnOutsidePointer = (event: PointerEvent) => {
+      if (!menuRef.current?.contains(event.target as Node)) {
+        setOpen(false);
+      }
+    };
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setOpen(false);
+      }
+    };
+
+    document.addEventListener('pointerdown', closeOnOutsidePointer);
+    document.addEventListener('keydown', closeOnEscape);
+
+    return () => {
+      document.removeEventListener('pointerdown', closeOnOutsidePointer);
+      document.removeEventListener('keydown', closeOnEscape);
+    };
+  }, [open]);
+
   if (serviceMap.serviceChoices.length <= 1) {
     return null;
   }
 
+  const selectedDisplayLabel = displayServiceChoiceLabel(selectedChoice.label);
+  const activeGroupHasVersion = activeGroup?.choices.some((choice) => choice.version);
+  const activeGroupSelectedChoice = activeGroup?.choices.find(
+    (choice) => choice.id === selectedChoice.id,
+  );
+  const activeGroupPreselectedChoice =
+    activeGroupSelectedChoice ?? (activeGroupHasVersion ? activeGroup?.choices[0] : undefined);
+
+  const selectChoice = (serviceChoiceId: string) => {
+    onSelect(serviceChoiceId);
+    setOpen(false);
+  };
+
   return (
-    <label className="service-choice">
-      <span>{serviceMap.label} service</span>
-      <select value={value} onChange={(event) => onSelect(event.target.value)}>
-        {serviceMap.serviceChoices.map((serviceChoice) => (
-          <option key={serviceChoice.id} value={serviceChoice.id}>
-            {serviceChoice.version
-              ? `${serviceChoice.label} ${serviceChoice.version}`
-              : serviceChoice.label}
-          </option>
-        ))}
-      </select>
-    </label>
+    <div className="service-choice" ref={menuRef}>
+      <button
+        className="service-choice-trigger"
+        type="button"
+        aria-haspopup="menu"
+        aria-expanded={open}
+        aria-label={`${serviceMap.label} service`}
+        onClick={() => {
+          setOpen((currentOpen) => !currentOpen);
+          setActiveGroupKey(selectedGroup?.key ?? groups[0]?.key ?? null);
+        }}
+      >
+        <span className="service-choice-current">
+          <span className="service-choice-name">{selectedDisplayLabel}</span>
+          {selectedChoice.version ? (
+            <span className="service-choice-version">{selectedChoice.version}</span>
+          ) : null}
+        </span>
+        <ChevronDown size={15} aria-hidden="true" />
+      </button>
+
+      {open ? (
+        <div className="service-choice-popover" role="menu" aria-label={`${serviceMap.label} maps`}>
+          <div className="service-choice-list">
+            {groups.map((group) => {
+              const groupSelected = group.choices.some(
+                (choice) => choice.id === selectedChoice.id,
+              );
+              const groupHasVersion = group.choices.some((choice) => choice.version);
+              const itemClassName = [
+                'service-choice-item',
+                group.key === activeGroup?.key ? 'is-active' : '',
+                groupSelected ? 'is-selected' : '',
+              ]
+                .filter(Boolean)
+                .join(' ');
+
+              return (
+                <button
+                  key={group.key}
+                  className={itemClassName}
+                  type="button"
+                  role="menuitem"
+                  aria-haspopup={groupHasVersion ? 'menu' : undefined}
+                  aria-expanded={groupHasVersion ? group.key === activeGroup?.key : undefined}
+                  aria-current={groupSelected ? 'true' : undefined}
+                  onClick={() => {
+                    if (groupHasVersion) {
+                      selectChoice(group.choices[0].id);
+                    } else {
+                      selectChoice(group.choices[0].id);
+                    }
+                  }}
+                  onFocus={() => setActiveGroupKey(group.key)}
+                  onMouseEnter={() => setActiveGroupKey(group.key)}
+                >
+                  <span className="service-choice-name">{group.displayLabel}</span>
+                  {groupHasVersion ? <ChevronRight size={14} aria-hidden="true" /> : null}
+                </button>
+              );
+            })}
+          </div>
+
+          {activeGroup && activeGroupHasVersion ? (
+            <div
+              className="service-choice-submenu"
+              role="menu"
+              aria-label={`${activeGroup.displayLabel} versions`}
+            >
+              {activeGroup.choices.map((choice) => {
+                const selected = choice.id === selectedChoice.id;
+                const preselected = choice.id === activeGroupPreselectedChoice?.id;
+                const versionItemClassName = [
+                  'service-choice-version-item',
+                  selected ? 'is-selected' : '',
+                  !selected && preselected ? 'is-preselected' : '',
+                ]
+                  .filter(Boolean)
+                  .join(' ');
+
+                return (
+                  <button
+                    key={choice.id}
+                    className={versionItemClassName}
+                    type="button"
+                    role="menuitemradio"
+                    aria-checked={selected}
+                    onClick={() => selectChoice(choice.id)}
+                  >
+                    <span>{choice.version ?? 'Current'}</span>
+                  </button>
+                );
+              })}
+            </div>
+          ) : null}
+        </div>
+      ) : null}
+    </div>
   );
 }
 
