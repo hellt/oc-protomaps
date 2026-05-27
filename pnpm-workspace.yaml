@@ -1,3 +1,8 @@
 allowBuilds:
   esbuild: true
   protobufjs: true
+  sharp: true
+  workerd: true
+minimumReleaseAgeExclude:
+  - miniflare@4.20260526.0
+  - wrangler@4.95.0
