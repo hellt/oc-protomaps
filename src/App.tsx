@@ -741,6 +741,7 @@ function FieldRow({
     <div
       className={[
         'field-row',
+        field.group || field.badge ? 'is-detail' : '',
         field.ref ? 'has-ref' : '',
         highlighted ? 'is-highlighted' : '',
         edgeHighlighted ? 'is-edge-highlighted' : '',
@@ -799,7 +800,7 @@ function RoutedEdge({
 }: EdgeProps<RoutedMapEdge>) {
   const routePoints =
     data?.routePoints?.length && data.routePoints.length > 1
-      ? data.routePoints
+      ? alignRouteEndpoints(data.routePoints, { x: sourceX, y: sourceY }, { x: targetX, y: targetY })
       : [
         { x: sourceX, y: sourceY },
         { x: targetX, y: targetY },
@@ -842,6 +843,25 @@ function RoutedEdge({
       })}
     </>
   );
+}
+
+function alignRouteEndpoints(
+  routePoints: RoutePoint[],
+  source: RoutePoint,
+  target: RoutePoint,
+): RoutePoint[] {
+  const alignedPoints = routePoints.map((point) => ({ ...point }));
+  const lastIndex = alignedPoints.length - 1;
+
+  alignedPoints[0] = { ...alignedPoints[0], y: source.y };
+  alignedPoints[lastIndex] = { ...alignedPoints[lastIndex], y: target.y };
+
+  if (alignedPoints.length > 2) {
+    alignedPoints[1] = { ...alignedPoints[1], y: source.y };
+    alignedPoints[lastIndex - 1] = { ...alignedPoints[lastIndex - 1], y: target.y };
+  }
+
+  return alignedPoints;
 }
 
 function roundedRoutePath(points: RoutePoint[], radius = 18): string {

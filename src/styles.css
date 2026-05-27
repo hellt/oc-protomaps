@@ -540,14 +540,19 @@ a {
   position: relative;
   display: grid;
   grid-template-columns: minmax(86px, 0.9fr) minmax(84px, 1fr);
+  align-content: center;
   align-items: center;
   column-gap: 8px;
   row-gap: 5px;
-  min-height: 30px;
+  height: 32px;
   padding: 6px 9px;
   border-radius: 6px;
   font-size: 12px;
   line-height: 1.25;
+}
+
+.field-row.is-detail {
+  height: 52px;
 }
 
 .field-row:nth-child(odd) {
