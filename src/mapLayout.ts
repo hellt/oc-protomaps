@@ -344,8 +344,8 @@ function targetHandles(
   edges: MapEdge[],
   boxes: Map<string, LayoutBox>,
 ): Map<string, TargetHandleLayout[]> {
-  const nodesById = new Map(nodes.map((node) => [node.id, node]));
   const incoming = new Map<string, MapEdge[]>();
+  const targetHeaderY = Math.round(nodeHeaderHeight / 2);
 
   for (const edge of edges) {
     incoming.set(edge.target, [...(incoming.get(edge.target) ?? []), edge]);
@@ -354,9 +354,8 @@ function targetHandles(
   const handles = new Map<string, TargetHandleLayout[]>();
 
   for (const [nodeId, nodeEdges] of incoming) {
-    const node = nodesById.get(nodeId);
     const box = boxes.get(nodeId);
-    if (!node || !box) {
+    if (!box) {
       continue;
     }
 
@@ -370,20 +369,14 @@ function targetHandles(
       const yDiff = boxCenterY(firstSource) - boxCenterY(secondSource);
       return yDiff || firstSource.x - secondSource.x || first.id.localeCompare(second.id);
     });
-    const nodeHeight = estimatedMapNodeHeight(node);
-    const top = Math.min(nodeHeaderHeight + 18, nodeHeight / 2);
-    const bottom = Math.max(top + 1, nodeHeight - 18);
 
     handles.set(
       nodeId,
-      sortedEdges.map((edge, index) => {
-        const ratio = sortedEdges.length === 1 ? 0.5 : (index + 1) / (sortedEdges.length + 1);
-        return {
-          id: targetHandleId(edge),
-          edgeId: edge.id,
-          y: Math.round(top + (bottom - top) * ratio),
-        };
-      }),
+      sortedEdges.map((edge) => ({
+        id: targetHandleId(edge),
+        edgeId: edge.id,
+        y: targetHeaderY,
+      })),
     );
   }
 
@@ -605,7 +598,7 @@ function routeState(pointIndex: number, direction: number): number {
 function fallbackRoute(start: RoutePoint, end: RoutePoint, bounds: LayoutBounds): RoutePoint[] {
   const y =
     Math.abs(start.y - (bounds.y - routeOuterMargin)) <
-    Math.abs(start.y - (bounds.y + bounds.height + routeOuterMargin))
+      Math.abs(start.y - (bounds.y + bounds.height + routeOuterMargin))
       ? bounds.y + bounds.height + routeOuterMargin
       : bounds.y - routeOuterMargin;
 
