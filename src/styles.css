@@ -233,32 +233,32 @@ a {
   padding: 14px 14px 12px;
   border-radius: 17px 17px 0 0;
   color: var(--ctp-base);
-  background: linear-gradient(135deg, var(--ctp-surface2), var(--ctp-text));
+  background: var(--ctp-text);
 }
 
 .gnmi-node--service .gnmi-node__header {
-  background: linear-gradient(135deg, var(--ctp-teal), color-mix(in srgb, var(--ctp-teal) 55%, var(--ctp-crust)));
+  background: var(--ctp-teal);
 }
 
 .gnmi-node--rpc .gnmi-node__header {
-  background: linear-gradient(135deg, var(--ctp-blue), color-mix(in srgb, var(--ctp-blue) 55%, var(--ctp-crust)));
+  background: var(--ctp-blue);
 }
 
 .gnmi-node--enum .gnmi-node__header,
 .gnmi-node--oneof .gnmi-node__header {
-  background: linear-gradient(135deg, var(--ctp-mauve), color-mix(in srgb, var(--ctp-mauve) 55%, var(--ctp-crust)));
+  background: var(--ctp-mauve);
 }
 
 .gnmi-node--embedded .gnmi-node__header {
-  background: linear-gradient(135deg, var(--ctp-green), color-mix(in srgb, var(--ctp-green) 55%, var(--ctp-crust)));
+  background: var(--ctp-green);
 }
 
 .gnmi-node--extension .gnmi-node__header {
-  background: linear-gradient(135deg, var(--ctp-peach), color-mix(in srgb, var(--ctp-peach) 55%, var(--ctp-crust)));
+  background: var(--ctp-peach);
 }
 
 .gnmi-node--deprecated .gnmi-node__header {
-  background: linear-gradient(135deg, var(--ctp-red), color-mix(in srgb, var(--ctp-red) 55%, var(--ctp-crust)));
+  background: var(--ctp-red);
 }
 
 .gnmi-node__header h2 {
