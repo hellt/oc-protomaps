@@ -283,6 +283,26 @@ function AppShell() {
       selectedEdge ? new Set([selectedEdge.source, selectedEdge.target]) : new Set<string>(),
     [selectedEdge],
   );
+  const selectedNodeConnections = useMemo(() => {
+    const edgeIds = new Set<string>();
+    const nodeIds = new Set<string>();
+
+    if (!selectedId) {
+      return { edgeIds, nodeIds };
+    }
+
+    for (const edge of visibleMap.edges) {
+      if (edge.source !== selectedId && edge.target !== selectedId) {
+        continue;
+      }
+
+      edgeIds.add(edge.id);
+      nodeIds.add(edge.source);
+      nodeIds.add(edge.target);
+    }
+
+    return { edgeIds, nodeIds };
+  }, [selectedId, visibleMap.edges]);
   const edgeIdBySourceHandle = useMemo(
     () =>
       new Map(
@@ -298,8 +318,14 @@ function AppShell() {
   const nodes = useMemo(
     () =>
       displayedLayoutNodes.map((currentNode) => {
-        const active = !query || nodeMatches.has(currentNode.id);
-        const edgeEndpoint = selectedEdgeEndpointIds.has(currentNode.id);
+        const selectedNodeRelated = selectedNodeConnections.nodeIds.has(currentNode.id);
+        const edgeEndpoint =
+          selectedEdgeEndpointIds.has(currentNode.id) ||
+          (selectedNodeRelated && currentNode.id !== selectedId);
+        const selectionActive = Boolean(selectedId || selectedEdge);
+        const active = selectionActive
+          ? selectedNodeRelated || selectedEdgeEndpointIds.has(currentNode.id)
+          : !query || nodeMatches.has(currentNode.id);
         const fieldConnectionIds = Object.fromEntries(
           (currentNode.data.fields ?? [])
             .map((field) => [
@@ -314,7 +340,7 @@ function AppShell() {
           selected: selectedId === currentNode.id,
           data: {
             ...currentNode.data,
-            active: active || edgeEndpoint,
+            active: active || edgeEndpoint || currentNode.id === selectedId,
             edgeEndpoint,
             activeEdgeSourceHandle:
               selectedEdge?.source === currentNode.id ? selectedEdge.sourceHandle : null,
@@ -334,6 +360,7 @@ function AppShell() {
       selectedEdge,
       selectedEdgeEndpointIds,
       selectedId,
+      selectedNodeConnections,
       showExtensions,
     ],
   );
@@ -350,12 +377,15 @@ function AppShell() {
           !query || nodeMatches.has(edge.source) || nodeMatches.has(edge.target);
         const style = edgeStyleByKind[edge.kind] ?? edgeStyleByKind.field;
         const selected = selectedEdge?.id === edge.id;
-        const selectionDimmed = Boolean(selectedEdge) && !selected;
-        const opacity = connectedToMatch ? (selectionDimmed ? 0.24 : 1) : 0.14;
-        const stroke = selected ? 'var(--edge-selected)' : style.stroke;
+        const connectedToSelectedNode = selectedNodeConnections.edgeIds.has(edge.id);
+        const highlighted = selected || connectedToSelectedNode;
+        const selectionDimmed =
+          (Boolean(selectedEdge) && !selected) || (Boolean(selectedId) && !connectedToSelectedNode);
+        const opacity = highlighted ? 1 : connectedToMatch ? (selectionDimmed ? 0.18 : 1) : 0.14;
+        const stroke = highlighted ? 'var(--edge-selected)' : style.stroke;
         const strokeWidth =
           typeof style.strokeWidth === 'number'
-            ? style.strokeWidth + (selected ? 1.8 : 0)
+            ? style.strokeWidth + (highlighted ? 1.8 : 0)
             : style.strokeWidth;
 
         return {
@@ -363,12 +393,12 @@ function AppShell() {
           type: 'routed',
           targetHandle,
           selected,
-          zIndex: selected ? 12 : 1,
+          zIndex: highlighted ? 12 : 1,
           interactionWidth: 28,
           className: [
             'flow-edge',
             `flow-edge-${edge.kind}`,
-            selected ? 'is-selected' : '',
+            highlighted ? 'is-selected' : '',
             selectionDimmed ? 'is-dimmed' : '',
           ]
             .filter(Boolean)
@@ -383,7 +413,15 @@ function AppShell() {
           },
         } satisfies RoutedMapEdge;
       }),
-    [nodeMatches, query, readableLayout.edges, routeBridgesByEdge, selectedEdge],
+    [
+      nodeMatches,
+      query,
+      readableLayout.edges,
+      routeBridgesByEdge,
+      selectedEdge,
+      selectedId,
+      selectedNodeConnections,
+    ],
   );
 
   const selectedNode = useMemo(
