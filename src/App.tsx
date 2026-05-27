@@ -394,6 +394,8 @@ function GnmiMap() {
           fitView
           minZoom={0.18}
           maxZoom={1.7}
+          snapToGrid
+          snapGrid={[10, 10]}
           onNodesChange={onNodesChange}
           onNodeClick={onNodeClick}
           onNodeDragStart={onNodeDragStart}

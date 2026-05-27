@@ -108,9 +108,7 @@ const edge = (
   target,
   sourceHandle: findSourceHandle(source, target, relation),
   targetHandle: HEADER_TARGET_HANDLE,
-  label: relation,
   type: 'smart',
-  animated: kind === 'rpc',
   data: { relation },
   className: `edge-${kind}`,
 });
