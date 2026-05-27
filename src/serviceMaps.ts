@@ -31,14 +31,10 @@ export type ServiceMapDefinition = {
   sourceRepository: string;
   sourceTag?: string;
   serviceVersion?: string;
-  pdfUrl?: string;
   serviceChoices: ServiceMapChoice[];
   defaultServiceChoiceId: string;
   getVisibleMap: (options?: VisibleMapOptions) => VisibleMap;
 };
-
-const baseUrl = import.meta.env?.BASE_URL ?? '/';
-const gnmiPdfUrl = `${baseUrl}gnmi_0.10.0_map.pdf`;
 
 function generatedChoices(
   services: Array<{
@@ -76,7 +72,6 @@ export const serviceMaps: Record<ServiceId, ServiceMapDefinition> = {
     sourceRepository: 'openconfig/gnmi',
     sourceTag: gnmiMapSource.gnmiTag,
     serviceVersion: gnmiMapSource.gnmiServiceVersion,
-    pdfUrl: gnmiPdfUrl,
     serviceChoices: gnmiServiceChoices,
     defaultServiceChoiceId: gnmiServiceChoices[0].id,
     getVisibleMap: getFocusedGnmiVisibleMap,

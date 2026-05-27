@@ -57,6 +57,7 @@ import {
   type ServiceMapChoice,
   type ServiceMapDefinition,
 } from './serviceMaps';
+import { downloadMapPdf, downloadMapSvg, type MapExportInput } from './mapExport';
 
 const edgeStyleByKind: Record<MapEdgeKind, CSSProperties> = {
   rpc: { stroke: 'var(--edge-rpc)', strokeWidth: 2.2 },
@@ -325,6 +326,7 @@ function AppShell() {
   const [theme, setTheme] = useState<ThemeMode>(getInitialTheme);
   const [layoutResetCount, setLayoutResetCount] = useState(0);
   const [layoutPending, setLayoutPending] = useState(false);
+  const [pdfExportPending, setPdfExportPending] = useState(false);
   const [elkLayoutPositions, setElkLayoutPositions] =
     useState<Record<string, NodePosition> | null>(null);
   const [queryValue, setQueryValue] = useState('');
@@ -670,6 +672,29 @@ function AppShell() {
     () => nodes.find((currentNode) => currentNode.id === selectedId),
     [nodes, selectedId],
   );
+  const exportInput = useMemo<MapExportInput>(
+    () => ({
+      layout: readableLayout,
+      serviceLabel: activeService.label,
+      serviceTitle: activeService.title,
+      serviceChoiceLabel: displayServiceChoiceLabel(activeServiceChoice.label),
+      serviceChoiceVersion: activeServiceChoice.version ?? activeService.serviceVersion,
+      rpcFilterLabel: activeRpcFilterChoice?.label ?? null,
+      sourceRepository: activeService.sourceRepository,
+      sourceTag: activeSourceTag ?? activeService.sourceTag ?? null,
+      showDeprecated,
+      showExtensions,
+    }),
+    [
+      activeRpcFilterChoice,
+      activeService,
+      activeServiceChoice,
+      activeSourceTag,
+      readableLayout,
+      showDeprecated,
+      showExtensions,
+    ],
+  );
 
   const fit = useCallback(() => {
     fitView({ padding: 0.12, duration: 450 });
@@ -742,6 +767,19 @@ function AppShell() {
     setRoutingPositions({});
     setLayoutResetCount((count) => count + 1);
   }, []);
+  const exportSvg = useCallback(() => {
+    downloadMapSvg(exportInput);
+  }, [exportInput]);
+  const exportPdf = useCallback(async () => {
+    setPdfExportPending(true);
+    try {
+      await downloadMapPdf(exportInput);
+    } catch (error) {
+      console.error('Failed to export PDF', error);
+    } finally {
+      setPdfExportPending(false);
+    }
+  }, [exportInput]);
   const selectServiceChoice = useCallback(
     (serviceChoiceId: string) => {
       setServiceChoiceIds((currentChoices) => ({
@@ -765,6 +803,7 @@ function AppShell() {
     },
     [rpcFilterKey],
   );
+  const exportDisabled = layoutPending || pdfExportPending;
 
   return (
     <div className="app-shell">
@@ -823,20 +862,11 @@ function AppShell() {
             onToggleExtensions={() => setShowExtensions((value) => !value)}
             showDeprecated={showDeprecated}
             onToggleDeprecated={() => setShowDeprecated((value) => !value)}
+            onExportPdf={exportPdf}
+            onExportSvg={exportSvg}
+            exportDisabled={exportDisabled}
+            pdfExportPending={pdfExportPending}
           />
-
-          {activeService.pdfUrl ? (
-            <a
-              className="tool-button"
-              href={activeService.pdfUrl}
-              target="_blank"
-              rel="noreferrer"
-              title="Download PDF"
-            >
-              <FileDown size={16} aria-hidden="true" />
-              <span className="tool-label">PDF</span>
-            </a>
-          ) : null}
         </div>
       </header>
 
@@ -1198,6 +1228,10 @@ type ViewOptionsMenuProps = {
   onToggleExtensions: () => void;
   showDeprecated: boolean;
   onToggleDeprecated: () => void;
+  onExportPdf: () => Promise<void>;
+  onExportSvg: () => void;
+  exportDisabled: boolean;
+  pdfExportPending: boolean;
 };
 
 function ViewOptionsMenu({
@@ -1208,6 +1242,10 @@ function ViewOptionsMenu({
   onToggleExtensions,
   showDeprecated,
   onToggleDeprecated,
+  onExportPdf,
+  onExportSvg,
+  exportDisabled,
+  pdfExportPending,
 }: ViewOptionsMenuProps) {
   const menuRef = useRef<HTMLDivElement>(null);
   const [open, setOpen] = useState(false);
@@ -1245,6 +1283,14 @@ function ViewOptionsMenu({
     onResetLayout();
     setOpen(false);
   };
+  const exportPdf = () => {
+    void onExportPdf();
+    setOpen(false);
+  };
+  const exportSvg = () => {
+    onExportSvg();
+    setOpen(false);
+  };
 
   return (
     <div className="view-options" ref={menuRef}>
@@ -1253,12 +1299,11 @@ function ViewOptionsMenu({
         type="button"
         aria-haspopup="menu"
         aria-expanded={open}
+        aria-label="View options"
         title="View options"
         onClick={() => setOpen((currentOpen) => !currentOpen)}
       >
         <Settings size={16} aria-hidden="true" />
-        <span className="tool-label">View options</span>
-        <ChevronDown className="view-options-chevron" size={14} aria-hidden="true" />
       </button>
 
       {open ? (
@@ -1301,6 +1346,31 @@ function ViewOptionsMenu({
           >
             <EyeOff size={16} aria-hidden="true" />
             <span>Deprecated</span>
+          </button>
+
+          <div className="view-options-separator" role="separator" />
+
+          <button
+            className="view-option-item"
+            type="button"
+            role="menuitem"
+            onClick={exportPdf}
+            disabled={exportDisabled}
+            aria-busy={pdfExportPending}
+          >
+            <FileDown size={16} aria-hidden="true" />
+            <span>Export PDF</span>
+          </button>
+
+          <button
+            className="view-option-item"
+            type="button"
+            role="menuitem"
+            onClick={exportSvg}
+            disabled={exportDisabled}
+          >
+            <FileCode2 size={16} aria-hidden="true" />
+            <span>Export SVG</span>
           </button>
         </div>
       ) : null}

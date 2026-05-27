@@ -677,11 +677,8 @@ a {
 }
 
 .view-options-trigger {
-  white-space: nowrap;
-}
-
-.view-options-chevron {
-  margin-left: -2px;
+  width: 38px;
+  padding: 0;
 }
 
 .view-options-popover {
@@ -697,6 +694,12 @@ a {
   border-radius: 8px;
   background: var(--panel);
   box-shadow: 0 16px 36px rgba(17, 17, 27, 0.18);
+}
+
+.view-options-separator {
+  height: 1px;
+  margin: 4px 5px;
+  background: var(--line);
 }
 
 .view-option-item {
@@ -811,10 +814,6 @@ a {
   .tool-button {
     width: 38px;
     padding-inline: 0;
-  }
-
-  .view-options-chevron {
-    display: none;
   }
 
   .tool-label {
@@ -1294,11 +1293,11 @@ a {
   }
 
   .view-options {
-    flex: 1 1 160px;
+    flex: 0 0 auto;
   }
 
   .view-options-trigger {
-    width: 100%;
+    width: 38px;
   }
 
   .view-options-popover {
@@ -1309,6 +1308,11 @@ a {
 
   .tool-button {
     flex: 1 1 120px;
+  }
+
+  .view-options .view-options-trigger {
+    flex: 0 0 38px;
+    width: 38px;
   }
 
   .map-stage {
