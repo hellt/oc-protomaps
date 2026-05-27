@@ -25,8 +25,10 @@ import {
   FileDown,
   Focus,
   GitBranch,
+  Moon,
   RotateCcw,
   Search,
+  Sun,
 } from 'lucide-react';
 import {
   getVisibleMap,
@@ -46,14 +48,14 @@ import {
 } from './mapLayout';
 
 const edgeStyleByKind: Record<MapEdgeKind, CSSProperties> = {
-  rpc: { stroke: '#0b4b8f', strokeWidth: 2.2 },
-  field: { stroke: '#5b708a', strokeWidth: 1.6 },
+  rpc: { stroke: 'var(--edge-rpc)', strokeWidth: 2.2 },
+  field: { stroke: 'var(--edge-field)', strokeWidth: 1.6 },
   extension: {
-    stroke: '#8a6a1f',
+    stroke: 'var(--edge-extension)',
     strokeWidth: 1.4,
     strokeDasharray: '7 6',
   },
-  'extension-detail': { stroke: '#b47a18', strokeWidth: 1.5 },
+  'extension-detail': { stroke: 'var(--edge-extension-detail)', strokeWidth: 1.5 },
 };
 
 const nodeTypes: NodeTypes = {
@@ -65,6 +67,9 @@ const edgeTypes: EdgeTypes = {
 };
 
 const pdfMapUrl = `${import.meta.env.BASE_URL}gnmi_0.10.0_map.pdf`;
+const themeStorageKey = 'gnmi-map-theme';
+
+type ThemeMode = 'light' | 'dark';
 
 type NodePosition = {
   x: number;
@@ -101,6 +106,19 @@ type RouteSegment = {
   to: number;
 };
 
+function isThemeMode(value: string | null): value is ThemeMode {
+  return value === 'light' || value === 'dark';
+}
+
+function getInitialTheme(): ThemeMode {
+  const savedTheme = window.localStorage.getItem(themeStorageKey);
+  if (isThemeMode(savedTheme)) {
+    return savedTheme;
+  }
+
+  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+}
+
 function searchableText(node: MapNode): string {
   const fieldText = node.data.fields
     ?.map((field) => `${field.type} ${field.name} ${field.group ?? ''} ${field.badge ?? ''}`)
@@ -121,6 +139,7 @@ function fieldMatches(field: MapField, query: string): boolean {
 
 function AppShell() {
   const { fitView } = useReactFlow<MapNode, RoutedMapEdge>();
+  const [theme, setTheme] = useState<ThemeMode>(getInitialTheme);
   const [queryValue, setQueryValue] = useState('');
   const [showExtensions, setShowExtensions] = useState(false);
   const [showDeprecated, setShowDeprecated] = useState(false);
@@ -130,12 +149,18 @@ function AppShell() {
   const [routingPositions, setRoutingPositions] = useState<Record<string, NodePosition>>({});
 
   const query = queryValue.trim().toLowerCase();
+  const darkMode = theme === 'dark';
   const visibleMap = useMemo(
     () => getVisibleMap({ showDeprecated, showExtensions }),
     [showDeprecated, showExtensions],
   );
   const fallbackLayoutNodes = useMemo(() => improveNodeLayout(visibleMap.nodes), [visibleMap.nodes]);
   const [elkLayoutNodes, setElkLayoutNodes] = useState<MapNode[] | null>(null);
+
+  useEffect(() => {
+    document.documentElement.dataset.theme = theme;
+    window.localStorage.setItem(themeStorageKey, theme);
+  }, [theme]);
 
   useEffect(() => {
     let cancelled = false;
@@ -278,7 +303,7 @@ function AppShell() {
         const selected = selectedEdge?.id === edge.id;
         const selectionDimmed = Boolean(selectedEdge) && !selected;
         const opacity = connectedToMatch ? (selectionDimmed ? 0.24 : 1) : 0.14;
-        const stroke = selected ? '#d21f3c' : style.stroke;
+        const stroke = selected ? 'var(--edge-selected)' : style.stroke;
         const strokeWidth =
           typeof style.strokeWidth === 'number'
             ? style.strokeWidth + (selected ? 1.8 : 0)
@@ -321,6 +346,10 @@ function AppShell() {
   const fit = useCallback(() => {
     fitView({ padding: 0.12, duration: 450 });
   }, [fitView]);
+
+  const toggleTheme = useCallback(() => {
+    setTheme((currentTheme) => (currentTheme === 'dark' ? 'light' : 'dark'));
+  }, []);
 
   const onNodesChange = useCallback((changes: NodeChange<MapNode>[]) => {
     setManualPositions((currentPositions) => {
@@ -407,6 +436,22 @@ function AppShell() {
             />
           </label>
 
+          <button
+            className="theme-switch"
+            type="button"
+            role="switch"
+            aria-checked={darkMode}
+            aria-label={`Switch to ${darkMode ? 'light' : 'dark'} mode`}
+            title={`Switch to ${darkMode ? 'light' : 'dark'} mode`}
+            onClick={toggleTheme}
+          >
+            <span className="theme-switch-track" aria-hidden="true">
+              <Sun className="theme-switch-icon theme-switch-icon-sun" size={15} />
+              <Moon className="theme-switch-icon theme-switch-icon-moon" size={15} />
+              <span className="theme-switch-thumb" />
+            </span>
+          </button>
+
           <button className="tool-button" type="button" onClick={fit}>
             <Focus size={16} aria-hidden="true" />
             Fit
@@ -487,7 +532,7 @@ function AppShell() {
           }}
           proOptions={{ hideAttribution: true }}
         >
-          <Background color="#c4ced9" gap={34} size={1.1} />
+          <Background color="var(--background-pattern)" gap={34} size={1.1} />
           <Controls position="bottom-left" />
         </ReactFlow>
 
@@ -672,11 +717,11 @@ function RoutedEdge({
     data?.routePoints?.length && data.routePoints.length > 1
       ? data.routePoints
       : [
-          { x: sourceX, y: sourceY },
-          { x: targetX, y: targetY },
-        ];
+        { x: sourceX, y: sourceY },
+        { x: targetX, y: targetY },
+      ];
   const routeBridges = data?.routeBridges ?? [];
-  const stroke = typeof style?.stroke === 'string' ? style.stroke : '#5b708a';
+  const stroke = typeof style?.stroke === 'string' ? style.stroke : 'var(--edge-field)';
   const strokeWidth = typeof style?.strokeWidth === 'number' ? style.strokeWidth : 1.6;
   const path = roundedRoutePath(routePoints);
 
