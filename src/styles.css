@@ -841,7 +841,7 @@ a {
   column-gap: 8px;
   row-gap: 5px;
   height: 32px;
-  padding: 6px 9px;
+  padding: 6px 18px 6px 9px;
   border-radius: 6px;
   font-size: 12px;
   line-height: 1.25;
@@ -853,10 +853,6 @@ a {
 
 .field-row:nth-child(odd) {
   background: var(--panel-soft);
-}
-
-.field-row.has-ref {
-  padding-right: 18px;
 }
 
 .field-row.is-highlighted {
