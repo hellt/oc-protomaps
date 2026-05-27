@@ -392,6 +392,99 @@ a {
   color: var(--focus);
 }
 
+.rpc-filter {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-width: 170px;
+  height: 38px;
+}
+
+.rpc-filter-trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  min-width: 0;
+  width: 100%;
+  height: 38px;
+  padding: 0 10px;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  background: var(--panel);
+  color: var(--ink);
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 800;
+  outline: none;
+}
+
+.rpc-filter-trigger:hover,
+.rpc-filter-trigger:focus-visible {
+  border-color: var(--focus);
+}
+
+.rpc-filter-current {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.rpc-filter-popover {
+  position: absolute;
+  z-index: 30;
+  top: calc(100% + 6px);
+  left: 0;
+  display: grid;
+  align-content: start;
+  gap: 1px;
+  min-width: 190px;
+  max-height: min(430px, calc(100vh - 120px));
+  overflow-y: auto;
+  padding: 4px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel);
+  box-shadow: 0 16px 36px rgba(17, 17, 27, 0.18);
+  scrollbar-color: color-mix(in srgb, var(--muted) 44%, transparent) transparent;
+  scrollbar-gutter: stable;
+  scrollbar-width: thin;
+}
+
+.rpc-filter-item {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  min-width: 0;
+  height: 29px;
+  padding: 0 8px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 800;
+  outline: none;
+  text-align: left;
+}
+
+.rpc-filter-item span {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.rpc-filter-item:hover,
+.rpc-filter-item:focus-visible,
+.rpc-filter-item.is-selected {
+  background: var(--panel-soft);
+  color: var(--focus);
+}
+
 .toolbar {
   display: flex;
   flex: 1 1 auto;
@@ -577,6 +670,68 @@ a {
   opacity: 0.56;
 }
 
+.view-options {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.view-options-trigger {
+  white-space: nowrap;
+}
+
+.view-options-chevron {
+  margin-left: -2px;
+}
+
+.view-options-popover {
+  position: absolute;
+  z-index: 30;
+  top: calc(100% + 6px);
+  right: 0;
+  display: grid;
+  gap: 2px;
+  min-width: 178px;
+  padding: 5px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel);
+  box-shadow: 0 16px 36px rgba(17, 17, 27, 0.18);
+}
+
+.view-option-item {
+  display: grid;
+  grid-template-columns: 18px minmax(0, 1fr);
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  min-width: 0;
+  height: 32px;
+  padding: 0 9px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--ink);
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 800;
+  outline: none;
+  text-align: left;
+}
+
+.view-option-item:hover,
+.view-option-item:focus-visible,
+.view-option-item.is-active {
+  background: var(--panel-soft);
+  color: var(--focus);
+}
+
+.view-option-item:disabled {
+  color: var(--muted);
+  cursor: not-allowed;
+  opacity: 0.56;
+}
+
 @media (max-width: 1500px) and (min-width: 761px) {
   .topbar {
     gap: 9px;
@@ -610,9 +765,15 @@ a {
     min-width: 156px;
   }
 
+  .rpc-filter {
+    min-width: 146px;
+  }
+
   .service-choice-trigger,
   .service-choice-item,
-  .service-choice-version-item {
+  .service-choice-version-item,
+  .rpc-filter-trigger,
+  .rpc-filter-item {
     font-size: 12px;
   }
 
@@ -650,6 +811,10 @@ a {
   .tool-button {
     width: 38px;
     padding-inline: 0;
+  }
+
+  .view-options-chevron {
+    display: none;
   }
 
   .tool-label {
@@ -1098,6 +1263,10 @@ a {
     width: 100%;
   }
 
+  .rpc-filter {
+    width: 100%;
+  }
+
   .service-choice-popover {
     flex-direction: column;
     width: 100%;
@@ -1122,6 +1291,20 @@ a {
 
   .search-box {
     width: 100%;
+  }
+
+  .view-options {
+    flex: 1 1 160px;
+  }
+
+  .view-options-trigger {
+    width: 100%;
+  }
+
+  .view-options-popover {
+    right: auto;
+    left: 0;
+    width: min(100%, 230px);
   }
 
   .tool-button {

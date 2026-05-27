@@ -25,11 +25,13 @@ import {
   EyeOff,
   FileCode2,
   FileDown,
+  Filter,
   Focus,
   GitBranch,
   Moon,
   RotateCcw,
   Search,
+  Settings,
   Sun,
 } from 'lucide-react';
 import {
@@ -190,6 +192,13 @@ type ServiceChoiceGroup = {
   choices: ServiceMapChoice[];
 };
 
+type RpcFilterChoice = {
+  id: string;
+  label: string;
+};
+
+const allRpcFilterId = '__all-rpcs__';
+
 function displayServiceChoiceLabel(label: string): string {
   if (/^g[A-Z0-9]+$/.test(label) || /^[A-Z0-9]+$/.test(label)) {
     return label;
@@ -268,6 +277,20 @@ function groupedServiceChoices(serviceChoices: ServiceMapChoice[]): ServiceChoic
   }));
 }
 
+function rpcFilterChoicesForService(
+  visibleMap: { nodes: MapNode[] },
+  serviceNodeId: string,
+): RpcFilterChoice[] {
+  const serviceNode = visibleMap.nodes.find((node) => node.id === serviceNodeId);
+
+  return (serviceNode?.data.fields ?? [])
+    .filter((field) => field.type === 'rpc' && field.ref)
+    .map((field) => ({
+      id: field.ref as string,
+      label: field.name,
+    }));
+}
+
 function searchableText(node: MapNode): string {
   const fieldText = node.data.fields
     ?.map((field) => `${field.type} ${field.name} ${field.group ?? ''} ${field.badge ?? ''}`)
@@ -307,6 +330,7 @@ function AppShell() {
   const [queryValue, setQueryValue] = useState('');
   const [showExtensions, setShowExtensions] = useState(false);
   const [showDeprecated, setShowDeprecated] = useState(false);
+  const [rpcFilterIds, setRpcFilterIds] = useState<Record<string, string>>({});
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [selectedEdgeId, setSelectedEdgeId] = useState<string | null>(null);
   const [manualPositions, setManualPositions] = useState<Record<string, NodePosition>>({});
@@ -318,19 +342,39 @@ function AppShell() {
     serviceChoiceForRoute(activeService, serviceChoiceIds[activeServiceId]) ??
     activeService.serviceChoices[0];
   const activeServiceChoiceId = activeServiceChoice.id;
-  const activeFocusNodeId = activeServiceChoice.focusNodeId ?? activeServiceChoice.id;
+  const activeServiceFocusNodeId = activeServiceChoice.focusNodeId ?? activeServiceChoice.id;
   const activeSourceTag = activeServiceChoice.sourceTag ?? null;
+  const serviceScopedMap = useMemo(
+    () =>
+      activeService.getVisibleMap({
+        showDeprecated: true,
+        showExtensions: true,
+        focusNodeId: activeServiceFocusNodeId,
+        sourceTag: activeSourceTag,
+      }),
+    [activeService, activeServiceFocusNodeId, activeSourceTag],
+  );
+  const rpcFilterChoices = useMemo(
+    () => rpcFilterChoicesForService(serviceScopedMap, activeServiceFocusNodeId),
+    [activeServiceFocusNodeId, serviceScopedMap],
+  );
+  const rpcFilterKey = `${activeServiceId}:${activeServiceChoiceId}`;
+  const selectedRpcFilterId = rpcFilterIds[rpcFilterKey] ?? allRpcFilterId;
+  const activeRpcFilterChoice =
+    selectedRpcFilterId === allRpcFilterId
+      ? null
+      : rpcFilterChoices.find((choice) => choice.id === selectedRpcFilterId) ?? null;
+  const activeRpcFocusNodeId = activeRpcFilterChoice?.id ?? null;
   const defaultServiceChoice = serviceChoiceForRoute(
     activeService,
     activeService.defaultServiceChoiceId,
   );
   const defaultFocusNodeId = defaultServiceChoice.focusNodeId ?? defaultServiceChoice.id;
-  const rpcFocusedChoice = activeFocusNodeId.startsWith('rpc-');
   const compactLayout =
-    rpcFocusedChoice ||
+    Boolean(activeRpcFocusNodeId) ||
     activeServiceChoiceId !== activeService.defaultServiceChoiceId ||
-    activeFocusNodeId !== defaultFocusNodeId;
-  const layoutCacheKey = `${activeServiceId}:${activeServiceChoiceId}:${compactLayout ? 'compact' : 'regular'}`;
+    activeServiceFocusNodeId !== defaultFocusNodeId;
+  const layoutCacheKey = `${activeServiceId}:${activeServiceChoiceId}:${activeRpcFocusNodeId ?? 'all-rpcs'}:${compactLayout ? 'compact' : 'regular'}`;
   const query = queryValue.trim().toLowerCase();
   const darkMode = theme === 'dark';
   const visibleMap = useMemo(
@@ -338,20 +382,29 @@ function AppShell() {
       activeService.getVisibleMap({
         showDeprecated,
         showExtensions,
-        focusNodeId: activeFocusNodeId,
+        focusNodeId: activeServiceFocusNodeId,
+        rpcFocusNodeId: activeRpcFocusNodeId,
         sourceTag: activeSourceTag,
       }),
-    [activeFocusNodeId, activeService, activeSourceTag, showDeprecated, showExtensions],
+    [
+      activeRpcFocusNodeId,
+      activeService,
+      activeServiceFocusNodeId,
+      activeSourceTag,
+      showDeprecated,
+      showExtensions,
+    ],
   );
   const layoutSourceMap = useMemo(
     () =>
       activeService.getVisibleMap({
         showDeprecated: true,
         showExtensions: true,
-        focusNodeId: activeFocusNodeId,
+        focusNodeId: activeServiceFocusNodeId,
+        rpcFocusNodeId: activeRpcFocusNodeId,
         sourceTag: activeSourceTag,
       }),
-    [activeFocusNodeId, activeService, activeSourceTag],
+    [activeRpcFocusNodeId, activeService, activeServiceFocusNodeId, activeSourceTag],
   );
   const fallbackLayoutNodes = useMemo(() => improveNodeLayout(visibleMap.nodes), [visibleMap.nodes]);
 
@@ -698,6 +751,20 @@ function AppShell() {
     },
     [activeServiceId],
   );
+  const selectRpcFilter = useCallback(
+    (rpcFilterId: string | null) => {
+      setRpcFilterIds((currentFilterIds) => {
+        const nextFilterIds = { ...currentFilterIds };
+        if (!rpcFilterId || rpcFilterId === allRpcFilterId) {
+          delete nextFilterIds[rpcFilterKey];
+        } else {
+          nextFilterIds[rpcFilterKey] = rpcFilterId;
+        }
+        return nextFilterIds;
+      });
+    },
+    [rpcFilterKey],
+  );
 
   return (
     <div className="app-shell">
@@ -713,6 +780,12 @@ function AppShell() {
           serviceMap={activeService}
           value={activeServiceChoiceId}
           onSelect={selectServiceChoice}
+        />
+
+        <RpcFilterMenu
+          choices={rpcFilterChoices}
+          value={activeRpcFocusNodeId}
+          onSelect={selectRpcFilter}
         />
 
         <div className="toolbar" role="toolbar" aria-label="Map controls">
@@ -742,45 +815,15 @@ function AppShell() {
             </span>
           </button>
 
-          <button className="tool-button" type="button" onClick={fit} title="Fit map">
-            <Focus size={16} aria-hidden="true" />
-            <span className="tool-label">Fit</span>
-          </button>
-
-          <button
-            className="tool-button"
-            type="button"
-            onClick={resetLayout}
-            disabled={layoutPending}
-            title="Reset layout"
-          >
-            <RotateCcw size={16} aria-hidden="true" />
-            <span className="tool-label">Reset</span>
-          </button>
-
-          <button
-            className={`tool-button ${showExtensions ? 'is-active' : ''}`}
-            type="button"
-            onClick={() => setShowExtensions((value) => !value)}
-            aria-pressed={showExtensions}
-            data-tooltip="Show extension fields and extension-detail relationships."
-            title="Show extension fields and extension-detail relationships."
-          >
-            <GitBranch size={16} aria-hidden="true" />
-            <span className="tool-label">Extensions</span>
-          </button>
-
-          <button
-            className={`tool-button ${showDeprecated ? 'is-active' : ''}`}
-            type="button"
-            onClick={() => setShowDeprecated((value) => !value)}
-            aria-pressed={showDeprecated}
-            data-tooltip="Show deprecated proto fields and deprecated message types."
-            title="Show deprecated proto fields and deprecated message types."
-          >
-            <EyeOff size={16} aria-hidden="true" />
-            <span className="tool-label">Deprecated</span>
-          </button>
+          <ViewOptionsMenu
+            onFit={fit}
+            onResetLayout={resetLayout}
+            layoutPending={layoutPending}
+            showExtensions={showExtensions}
+            onToggleExtensions={() => setShowExtensions((value) => !value)}
+            showDeprecated={showDeprecated}
+            onToggleDeprecated={() => setShowDeprecated((value) => !value)}
+          />
 
           {activeService.pdfUrl ? (
             <a
@@ -1041,6 +1084,224 @@ function ServiceChoiceMenu({ serviceMap, value, onSelect }: ServiceChoiceMenuPro
               })}
             </div>
           ) : null}
+        </div>
+      ) : null}
+    </div>
+  );
+}
+
+type RpcFilterMenuProps = {
+  choices: RpcFilterChoice[];
+  value: string | null;
+  onSelect: (rpcFilterId: string | null) => void;
+};
+
+function RpcFilterMenu({ choices, value, onSelect }: RpcFilterMenuProps) {
+  const menuRef = useRef<HTMLDivElement>(null);
+  const [open, setOpen] = useState(false);
+  const selectedChoice = choices.find((choice) => choice.id === value) ?? null;
+  const selectedLabel = selectedChoice
+    ? displayServiceChoiceLabel(selectedChoice.label)
+    : 'All RPCs';
+
+  useEffect(() => {
+    setOpen(false);
+  }, [choices, value]);
+
+  useEffect(() => {
+    if (!open) {
+      return;
+    }
+
+    const closeOnOutsidePointer = (event: PointerEvent) => {
+      if (!menuRef.current?.contains(event.target as Node)) {
+        setOpen(false);
+      }
+    };
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setOpen(false);
+      }
+    };
+
+    document.addEventListener('pointerdown', closeOnOutsidePointer);
+    document.addEventListener('keydown', closeOnEscape);
+
+    return () => {
+      document.removeEventListener('pointerdown', closeOnOutsidePointer);
+      document.removeEventListener('keydown', closeOnEscape);
+    };
+  }, [open]);
+
+  if (!choices.length) {
+    return null;
+  }
+
+  const selectChoice = (rpcFilterId: string | null) => {
+    onSelect(rpcFilterId);
+    setOpen(false);
+  };
+
+  return (
+    <div className="rpc-filter" ref={menuRef}>
+      <button
+        className="rpc-filter-trigger"
+        type="button"
+        aria-haspopup="menu"
+        aria-expanded={open}
+        aria-label="RPC filter"
+        onClick={() => setOpen((currentOpen) => !currentOpen)}
+      >
+        <Filter size={15} aria-hidden="true" />
+        <span className="rpc-filter-current">{selectedLabel}</span>
+        <ChevronDown size={15} aria-hidden="true" />
+      </button>
+
+      {open ? (
+        <div className="rpc-filter-popover" role="menu" aria-label="RPC filter">
+          <button
+            className={`rpc-filter-item ${selectedChoice ? '' : 'is-selected'}`}
+            type="button"
+            role="menuitemradio"
+            aria-checked={!selectedChoice}
+            onClick={() => selectChoice(null)}
+          >
+            <span>All RPCs</span>
+          </button>
+
+          {choices.map((choice) => {
+            const selected = choice.id === selectedChoice?.id;
+            return (
+              <button
+                key={choice.id}
+                className={`rpc-filter-item ${selected ? 'is-selected' : ''}`}
+                type="button"
+                role="menuitemradio"
+                aria-checked={selected}
+                onClick={() => selectChoice(choice.id)}
+              >
+                <span>{displayServiceChoiceLabel(choice.label)}</span>
+              </button>
+            );
+          })}
+        </div>
+      ) : null}
+    </div>
+  );
+}
+
+type ViewOptionsMenuProps = {
+  onFit: () => void;
+  onResetLayout: () => void;
+  layoutPending: boolean;
+  showExtensions: boolean;
+  onToggleExtensions: () => void;
+  showDeprecated: boolean;
+  onToggleDeprecated: () => void;
+};
+
+function ViewOptionsMenu({
+  onFit,
+  onResetLayout,
+  layoutPending,
+  showExtensions,
+  onToggleExtensions,
+  showDeprecated,
+  onToggleDeprecated,
+}: ViewOptionsMenuProps) {
+  const menuRef = useRef<HTMLDivElement>(null);
+  const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    if (!open) {
+      return;
+    }
+
+    const closeOnOutsidePointer = (event: PointerEvent) => {
+      if (!menuRef.current?.contains(event.target as Node)) {
+        setOpen(false);
+      }
+    };
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setOpen(false);
+      }
+    };
+
+    document.addEventListener('pointerdown', closeOnOutsidePointer);
+    document.addEventListener('keydown', closeOnEscape);
+
+    return () => {
+      document.removeEventListener('pointerdown', closeOnOutsidePointer);
+      document.removeEventListener('keydown', closeOnEscape);
+    };
+  }, [open]);
+
+  const fit = () => {
+    onFit();
+    setOpen(false);
+  };
+  const resetLayout = () => {
+    onResetLayout();
+    setOpen(false);
+  };
+
+  return (
+    <div className="view-options" ref={menuRef}>
+      <button
+        className="tool-button view-options-trigger"
+        type="button"
+        aria-haspopup="menu"
+        aria-expanded={open}
+        title="View options"
+        onClick={() => setOpen((currentOpen) => !currentOpen)}
+      >
+        <Settings size={16} aria-hidden="true" />
+        <span className="tool-label">View options</span>
+        <ChevronDown className="view-options-chevron" size={14} aria-hidden="true" />
+      </button>
+
+      {open ? (
+        <div className="view-options-popover" role="menu" aria-label="View options">
+          <button className="view-option-item" type="button" role="menuitem" onClick={fit}>
+            <Focus size={16} aria-hidden="true" />
+            <span>Fit</span>
+          </button>
+
+          <button
+            className="view-option-item"
+            type="button"
+            role="menuitem"
+            onClick={resetLayout}
+            disabled={layoutPending}
+          >
+            <RotateCcw size={16} aria-hidden="true" />
+            <span>Reset</span>
+          </button>
+
+          <button
+            className={`view-option-item ${showExtensions ? 'is-active' : ''}`}
+            type="button"
+            role="menuitemcheckbox"
+            aria-checked={showExtensions}
+            onClick={onToggleExtensions}
+            title="Show extension fields and extension-detail relationships."
+          >
+            <GitBranch size={16} aria-hidden="true" />
+            <span>Extensions</span>
+          </button>
+
+          <button
+            className={`view-option-item ${showDeprecated ? 'is-active' : ''}`}
+            type="button"
+            role="menuitemcheckbox"
+            aria-checked={showDeprecated}
+            onClick={onToggleDeprecated}
+            title="Show deprecated proto fields and deprecated message types."
+          >
+            <EyeOff size={16} aria-hidden="true" />
+            <span>Deprecated</span>
+          </button>
         </div>
       ) : null}
     </div>
