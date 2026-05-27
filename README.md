@@ -16,14 +16,14 @@ This repository now includes a React Flow recreation of the latest tagged upstre
 The React app is structured around a gNxI service registry. gNMI uses the curated legacy map, while gNOI, gNSI, and gRIBI are generated from the latest tagged OpenConfig protobufs and are selectable from the top navigation. Multi-service families render one concrete service at a time through the service selector, keeping large families such as gNOI responsive.
 
 ```bash
-npm install
-npm run dev
+pnpm install
+pnpm run dev
 ```
 
 Open the dev-server URL printed by Vite. For a production build:
 
 ```bash
-npm run build
+pnpm run build
 ```
 
 ## GitHub Pages
@@ -42,9 +42,9 @@ The workflow builds the Vite app into `dist/` and uses the Pages base path when 
 To refresh the generated React Flow map from the latest `openconfig/gnmi` tag:
 
 ```bash
-npm run build:map
-npm run build:service-maps
-npm run test:map
+pnpm run build:map
+pnpm run build:service-maps
+pnpm run test:map
 ```
 
 Proto links are pinned to the latest gNMI tag. Specification links track `openconfig/reference` `master`, since that repository does not publish tags.
@@ -52,7 +52,7 @@ Proto links are pinned to the latest gNMI tag. Specification links track `openco
 To refresh the generated PDF map from the default non-deprecated view:
 
 ```bash
-npm run build:pdf
+pnpm run build:pdf
 ```
 
 ## Usage
