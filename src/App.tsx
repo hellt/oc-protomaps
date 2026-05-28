@@ -100,7 +100,14 @@ import {
 import { downloadMapPdf, downloadMapSvg, type MapExportInput } from './mapExport';
 import { buildProtoMapDiff, type ProtoMapDiffResult } from './mapDiff';
 import { createAppTheme, type ThemeMode } from './theme';
-import { HotkeysDialog } from './hotkeysDialog.tsx';
+import { HotkeysDialog } from './hotkeysDialog';
+import {
+  replaceCurrentUrlHash,
+  resolveSelectionHash,
+  selectionHashForSelection,
+  selectionHashForTarget,
+  type FieldSelection,
+} from './permalinks';
 
 const edgeStyleByKind: Record<MapEdgeKind, CSSProperties> = {
   rpc: { stroke: 'var(--edge-field)', strokeWidth: 2.2 },
@@ -144,10 +151,6 @@ type RoutedMapEdge = Edge<RoutedEdgeData, 'routed'> & {
 };
 
 type FieldConnectionIds = Record<string, string>;
-type FieldSelection = {
-  nodeId: string;
-  fieldId: string;
-};
 type FieldSelectHandler = (fieldId: string, edgeId?: string) => void;
 
 type SelectedFieldDetails = {
@@ -542,6 +545,7 @@ function AppShell({ themeMode, onToggleTheme }: AppShellProps) {
   const appliedLayoutResetCount = useRef(0);
   const searchInputRef = useRef<HTMLInputElement>(null);
   const lastSelectionFitKeyRef = useRef<string | null>(null);
+  const restoredSelectionHashRef = useRef<string | null>(null);
   const inspectorFitFramesRef = useRef<{ first: number | null; second: number | null }>({
     first: null,
     second: null,
@@ -660,6 +664,9 @@ function AppShell({ themeMode, onToggleTheme }: AppShellProps) {
   }, [layoutCacheKey]);
 
   useEffect(() => {
+    const currentSelectionHash = selectionHashForTarget(
+      resolveSelectionHash(window.location.hash, visibleMap.nodes, visibleMap.edges),
+    );
     const nextUrl = `${serviceRoutePath(
       {
         serviceId: activeServiceId,
@@ -667,12 +674,78 @@ function AppShell({ themeMode, onToggleTheme }: AppShellProps) {
         rpcFilterId: activeRpcFocusNodeId,
       },
       routeBasePath,
-    )}${window.location.search}`;
+    )}${window.location.search}${currentSelectionHash}`;
     const currentUrl = `${window.location.pathname}${window.location.search}${window.location.hash}`;
     if (currentUrl !== nextUrl) {
       window.history.replaceState(null, '', nextUrl);
     }
-  }, [activeRpcFocusNodeId, activeServiceChoiceId, activeServiceId]);
+  }, [
+    activeRpcFocusNodeId,
+    activeServiceChoiceId,
+    activeServiceId,
+    visibleMap.edges,
+    visibleMap.nodes,
+  ]);
+
+  const applySelectionHash = useCallback(
+    (hash: string) => {
+      if (!hash) {
+        restoredSelectionHashRef.current = '';
+        setSelectedId(null);
+        setSelectedEdgeId(null);
+        setSelectedField(null);
+        return;
+      }
+
+      const target = resolveSelectionHash(hash, visibleMap.nodes, visibleMap.edges);
+      if (!target) {
+        return;
+      }
+
+      restoredSelectionHashRef.current = selectionHashForTarget(target);
+      if (target.kind === 'node') {
+        setSelectedId(target.nodeId);
+        setSelectedEdgeId(null);
+        setSelectedField(null);
+        return;
+      }
+
+      setSelectedId(null);
+      setSelectedField({ nodeId: target.nodeId, fieldId: target.fieldId });
+      setSelectedEdgeId(target.edgeId);
+    },
+    [visibleMap.edges, visibleMap.nodes],
+  );
+
+  useEffect(() => {
+    applySelectionHash(window.location.hash);
+
+    const handleHashChange = () => {
+      applySelectionHash(window.location.hash);
+    };
+
+    window.addEventListener('hashchange', handleHashChange);
+
+    return () => {
+      window.removeEventListener('hashchange', handleHashChange);
+    };
+  }, [applySelectionHash]);
+
+  const selectedSelectionHash = useMemo(
+    () => selectionHashForSelection(selectedId, selectedField, visibleMap.nodes),
+    [selectedField, selectedId, visibleMap.nodes],
+  );
+
+  useEffect(() => {
+    if (restoredSelectionHashRef.current !== null) {
+      if (selectedSelectionHash !== restoredSelectionHashRef.current) {
+        return;
+      }
+      restoredSelectionHashRef.current = null;
+    }
+
+    replaceCurrentUrlHash(selectedSelectionHash);
+  }, [selectedSelectionHash]);
 
   useEffect(() => {
     const handleGlobalSearchKeys = (event: KeyboardEvent) => {
