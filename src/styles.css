@@ -662,6 +662,10 @@ a {
   white-space: nowrap;
 }
 
+.field-type-accent {
+  color: var(--sapphire);
+}
+
 .field-name {
   min-width: 0;
   overflow: hidden;

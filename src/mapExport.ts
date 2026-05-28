@@ -102,6 +102,7 @@ const colors = {
   deprecated: '#fee2df',
   deprecatedText: '#9b1c15',
   handle: '#2d6f97',
+  stream: '#209fb5',
 };
 
 const headerColors: Record<MapNodeKind, string> = {
@@ -393,11 +394,7 @@ function drawSvgFieldRow(
   }
 
   parts.push(
-    svgText(trimSvgText(field.type, typeMaxWidth, 8.5, false, true), x + 14, y + 18, {
-      fill: '#526071',
-      size: 8.5,
-      weight: 800,
-    }),
+    drawSvgFieldType(field, x + 14, y + 18, typeMaxWidth),
     svgText(trimSvgText(field.name, nameMaxWidth, 8.5, true, true), nameX, y + 18, {
       fill: colors.text,
       size: 8.5,
@@ -413,7 +410,9 @@ function drawSvgFieldRow(
     );
   }
 
-  if (field.group || field.badge) {
+  const detailBadge = field.badge === 'stream' ? null : field.badge;
+
+  if (field.group || detailBadge) {
     const detailY = y + 28;
     let badgeX = x + 14;
     if (field.group) {
@@ -422,10 +421,10 @@ function drawSvgFieldRow(
       badgeX += badgeSvg.width + 6;
     }
 
-    if (field.badge) {
-      const fill = field.badge === 'reserved' ? colors.reserved : colors.deprecated;
-      const textColor = field.badge === 'reserved' ? colors.gray : colors.deprecatedText;
-      parts.push(drawSvgBadge(field.badge, badgeX, detailY, textColor, fill).svg);
+    if (detailBadge) {
+      const fill = detailBadge === 'reserved' ? colors.reserved : colors.deprecated;
+      const textColor = detailBadge === 'reserved' ? colors.gray : colors.deprecatedText;
+      parts.push(drawSvgBadge(detailBadge, badgeX, detailY, textColor, fill).svg);
     }
   }
 
@@ -434,6 +433,24 @@ function drawSvgFieldRow(
   }
 
   return parts.join('\n');
+}
+
+function drawSvgFieldType(field: MapField, x: number, y: number, maxWidth: number): string {
+  const typeLabel = trimSvgText(inlineFieldType(field), maxWidth, 8.5, false, true);
+  let cursor = x;
+
+  return fieldTypeParts(typeLabel)
+    .map((part) => {
+      const isStream = part.toLowerCase() === 'stream';
+      const text = svgText(part, cursor, y, {
+        fill: isStream ? colors.stream : '#526071',
+        size: 8.5,
+        weight: 800,
+      });
+      cursor += approximateTextWidth(part, 8.5, false, true);
+      return text;
+    })
+    .join('\n');
 }
 
 function drawSvgBadge(
@@ -627,14 +644,7 @@ function drawPdfFieldRow(
       .restore();
   }
 
-  doc
-    .font('Helvetica-Bold')
-    .fontSize(8.5)
-    .fillColor('#526071')
-    .text(trimPdfText(doc, field.type, typeMaxWidth), x + 14, y + 8, {
-      width: typeMaxWidth,
-      lineBreak: false,
-    });
+  drawPdfFieldType(doc, field, x + 14, y + 8, typeMaxWidth);
 
   doc
     .font('Courier-Bold')
@@ -657,22 +667,43 @@ function drawPdfFieldRow(
       .restore();
   }
 
-  if (field.group || field.badge) {
+  const detailBadge = field.badge === 'stream' ? null : field.badge;
+
+  if (field.group || detailBadge) {
     const detailY = y + 28;
     let badgeX = x + 14;
     if (field.group) {
       badgeX += drawPdfBadge(doc, field.group, badgeX, detailY, '#164675', colors.blueSoft) + 6;
     }
 
-    if (field.badge) {
-      const fill = field.badge === 'reserved' ? colors.reserved : colors.deprecated;
-      const textColor = field.badge === 'reserved' ? colors.gray : colors.deprecatedText;
-      drawPdfBadge(doc, field.badge, badgeX, detailY, textColor, fill);
+    if (detailBadge) {
+      const fill = detailBadge === 'reserved' ? colors.reserved : colors.deprecated;
+      const textColor = detailBadge === 'reserved' ? colors.gray : colors.deprecatedText;
+      drawPdfBadge(doc, detailBadge, badgeX, detailY, textColor, fill);
     }
   }
 
   if (context.connectedHandles.has(fieldHandleKey(node, field))) {
     drawPdfHandle(doc, x + width + handleOffset, y + rowHeight / 2, handleFill(node));
+  }
+}
+
+function drawPdfFieldType(
+  doc: PdfDocument,
+  field: MapField,
+  x: number,
+  y: number,
+  maxWidth: number,
+): void {
+  doc.font('Helvetica-Bold').fontSize(8.5);
+  const typeLabel = trimPdfText(doc, inlineFieldType(field), maxWidth);
+  let cursor = x;
+
+  for (const part of fieldTypeParts(typeLabel)) {
+    doc.fillColor(part.toLowerCase() === 'stream' ? colors.stream : '#526071').text(part, cursor, y, {
+      lineBreak: false,
+    });
+    cursor += doc.widthOfString(part);
   }
 }
 
@@ -901,6 +932,22 @@ function roundedRoutePath(points: Point[], radius = edgeBendRadius): string {
 
 function distance(first: Point, second: Point): number {
   return Math.hypot(second.x - first.x, second.y - first.y);
+}
+
+function inlineFieldType(field: MapField): string {
+  if (field.badge === 'stream' && !fieldTypeIncludesStream(field.type)) {
+    return `${field.type} stream`;
+  }
+
+  return field.type;
+}
+
+function fieldTypeIncludesStream(value: string): boolean {
+  return /\bstream\b/i.test(value);
+}
+
+function fieldTypeParts(value: string): string[] {
+  return value.split(/(\bstream\b)/i).filter(Boolean);
 }
 
 function trimPdfText(doc: PdfDocument, value: string, maxWidth: number): string {
