@@ -25,7 +25,6 @@
   --tooltip-ink: #eff1f5;
   --node-border: #acb0be;
   --node-shadow: rgba(76, 79, 105, 0.12);
-  --node-selected-shadow: rgba(30, 102, 245, 0.16);
   --edge-rpc: #7c7f93;
   --edge-field: #7c7f93;
   --edge-extension: #7c7f93;
@@ -92,7 +91,6 @@
   --tooltip-ink: #cdd6f4;
   --node-border: #45475a;
   --node-shadow: rgba(17, 17, 27, 0.42);
-  --node-selected-shadow: rgba(137, 180, 250, 0.22);
   --edge-rpc: #a6adc8;
   --edge-field: #a6adc8;
   --edge-extension: #a6adc8;
@@ -495,20 +493,6 @@ a {
     transform 160ms ease;
 }
 
-.schema-node.is-selected {
-  border-color: var(--focus);
-  box-shadow:
-    0 0 0 3px var(--node-selected-shadow),
-    0 10px 28px var(--node-shadow);
-}
-
-.schema-node.is-edge-endpoint {
-  border-color: var(--edge-selected);
-  box-shadow:
-    0 0 0 3px color-mix(in srgb, var(--edge-selected) 16%, transparent),
-    0 10px 28px var(--node-shadow);
-}
-
 .schema-node.is-dimmed {
   opacity: 0.22;
 }
@@ -523,6 +507,13 @@ a {
 
 .schema-node.diff-removed {
   border-color: var(--diff-removed);
+}
+
+.schema-node.is-selected {
+  border-color: var(--red);
+  box-shadow:
+    0 0 0 3px color-mix(in srgb, var(--red) 16%, transparent),
+    0 10px 28px var(--node-shadow);
 }
 
 .schema-node.diff-added::after,
