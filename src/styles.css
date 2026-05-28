@@ -41,6 +41,12 @@
   --badge-danger-ink: #d20f39;
   --badge-reserved-bg: #dce0e8;
   --badge-warning-ink: #df8e1d;
+  --diff-added: #40a02b;
+  --diff-added-bg: color-mix(in srgb, #40a02b 13%, var(--panel));
+  --diff-changed: #df8e1d;
+  --diff-changed-bg: color-mix(in srgb, #df8e1d 16%, var(--panel));
+  --diff-removed: #d20f39;
+  --diff-removed-bg: color-mix(in srgb, #d20f39 13%, var(--panel));
   --field-group-ink: #1e66f5;
   --field-highlight-bg: color-mix(in srgb, #f9e2af 60%, var(--panel));
   --field-highlight-line: #df8e1d;
@@ -102,6 +108,12 @@
   --badge-danger-ink: #f38ba8;
   --badge-reserved-bg: #313244;
   --badge-warning-ink: #f9e2af;
+  --diff-added: #a6e3a1;
+  --diff-added-bg: color-mix(in srgb, #a6e3a1 15%, var(--panel));
+  --diff-changed: #f9e2af;
+  --diff-changed-bg: color-mix(in srgb, #f9e2af 16%, var(--panel));
+  --diff-removed: #f38ba8;
+  --diff-removed-bg: color-mix(in srgb, #f38ba8 16%, var(--panel));
   --field-group-ink: #89b4fa;
   --field-highlight-bg: color-mix(in srgb, #f9e2af 22%, var(--panel));
   --field-highlight-line: #f9e2af;
@@ -290,7 +302,16 @@ a {
   height: 38px;
 }
 
-.rpc-filter-current {
+.diff-filter {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-width: 144px;
+  height: 38px;
+}
+
+.rpc-filter-current,
+.diff-filter-current {
   min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -347,6 +368,10 @@ a {
 
   .rpc-filter {
     min-width: 146px;
+  }
+
+  .diff-filter {
+    min-width: 116px;
   }
 
   .service-choice-popover {
@@ -489,6 +514,42 @@ a {
   opacity: 0.22;
 }
 
+.schema-node.diff-added {
+  border-color: var(--diff-added);
+}
+
+.schema-node.diff-changed {
+  border-color: var(--diff-changed);
+}
+
+.schema-node.diff-removed {
+  border-color: var(--diff-removed);
+}
+
+.schema-node.diff-added::after,
+.schema-node.diff-changed::after,
+.schema-node.diff-removed::after {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 5px;
+  content: "";
+  pointer-events: none;
+}
+
+.schema-node.diff-added::after {
+  background: var(--diff-added);
+}
+
+.schema-node.diff-changed::after {
+  background: var(--diff-changed);
+}
+
+.schema-node.diff-removed::after {
+  background: var(--diff-removed);
+}
+
 .node-header {
   display: grid;
   grid-template-columns: auto minmax(0, 1fr) auto;
@@ -605,6 +666,27 @@ a {
   color: var(--muted);
 }
 
+.diff-badge.diff-added,
+.inspector-diff-chip.diff-added,
+.inspector-diff-grid .diff-added {
+  background: var(--diff-added-bg);
+  color: var(--diff-added);
+}
+
+.diff-badge.diff-changed,
+.inspector-diff-chip.diff-changed,
+.inspector-diff-grid .diff-changed {
+  background: var(--diff-changed-bg);
+  color: var(--diff-changed);
+}
+
+.diff-badge.diff-removed,
+.inspector-diff-chip.diff-removed,
+.inspector-diff-grid .diff-removed {
+  background: var(--diff-removed-bg);
+  color: var(--diff-removed);
+}
+
 .field-group {
   background: var(--blue-soft);
   color: var(--field-group-ink);
@@ -673,8 +755,28 @@ a {
   box-shadow: inset 0 0 0 1px var(--field-edge-line);
 }
 
+.field-row.diff-added {
+  padding-right: 78px;
+  background: var(--diff-added-bg);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--diff-added) 42%, transparent);
+}
+
+.field-row.diff-changed {
+  padding-right: 78px;
+  background: var(--diff-changed-bg);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--diff-changed) 42%, transparent);
+}
+
+.field-row.diff-removed {
+  padding-right: 78px;
+  background: var(--diff-removed-bg);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--diff-removed) 42%, transparent);
+}
+
 .field-row.is-deprecated .field-type,
-.field-row.is-deprecated .field-name {
+.field-row.is-deprecated .field-name,
+.field-row.diff-removed .field-type,
+.field-row.diff-removed .field-name {
   text-decoration: line-through;
   text-decoration-color: color-mix(in srgb, var(--badge-danger-ink) 55%, transparent);
 }
@@ -710,6 +812,13 @@ a {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.field-row .diff-badge {
+  position: absolute;
+  top: 50%;
+  right: 18px;
+  transform: translateY(-50%);
 }
 
 .empty-field {
@@ -877,6 +986,128 @@ a {
   color: var(--muted);
   font-size: 11px;
   font-weight: 800;
+  line-height: 1.2;
+}
+
+.inspector-diff-chip {
+  display: inline-flex;
+  align-items: center;
+  align-self: flex-start;
+  min-height: 24px;
+  margin-top: 8px;
+  padding: 3px 8px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 900;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.inspector-diff-summary {
+  display: grid;
+  gap: 10px;
+  margin-top: 16px;
+  padding: 12px;
+  border: 1px solid color-mix(in srgb, var(--diff-changed) 38%, var(--line));
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--diff-changed-bg) 52%, transparent);
+}
+
+.inspector-diff-title {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--ink);
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.inspector-diff-grid,
+.inspector-diff-changes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.inspector-diff-grid span,
+.inspector-diff-changes span {
+  display: inline-flex;
+  align-items: center;
+  min-height: 22px;
+  padding: 3px 7px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--panel-soft) 72%, transparent);
+  color: var(--muted);
+  font-size: 10px;
+  font-weight: 900;
+  line-height: 1.1;
+}
+
+.inspector-diff-changes {
+  margin-top: 12px;
+}
+
+.inspector-diff-list {
+  display: grid;
+  gap: 6px;
+  max-height: min(38vh, 420px);
+  margin-top: 12px;
+  overflow: auto;
+  padding-right: 2px;
+}
+
+.inspector-diff-list p {
+  margin: 0;
+}
+
+.inspector-diff-list button {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 9px;
+  align-items: center;
+  width: 100%;
+  padding: 8px;
+  border: 1px solid color-mix(in srgb, var(--line) 60%, transparent);
+  border-radius: 7px;
+  background: color-mix(in srgb, var(--panel-soft) 42%, transparent);
+  color: var(--ink);
+  cursor: pointer;
+  font: inherit;
+  text-align: left;
+}
+
+.inspector-diff-list button:hover,
+.inspector-diff-list button:focus-visible {
+  border-color: color-mix(in srgb, var(--focus) 54%, var(--line));
+  background: var(--field-hover-bg);
+  outline: none;
+}
+
+.inspector-diff-list .inspector-diff-chip {
+  margin-top: 0;
+}
+
+.inspector-diff-item-text {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.inspector-diff-item-text strong,
+.inspector-diff-item-text span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.inspector-diff-item-text strong {
+  font-size: 12px;
+  line-height: 1.2;
+}
+
+.inspector-diff-item-text span {
+  color: var(--muted);
+  font-size: 11px;
   line-height: 1.2;
 }
 
@@ -1109,6 +1340,10 @@ a {
   }
 
   .rpc-filter {
+    width: 100%;
+  }
+
+  .diff-filter {
     width: 100%;
   }
 

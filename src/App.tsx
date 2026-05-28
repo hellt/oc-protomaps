@@ -51,6 +51,7 @@ import CheckIcon from '@mui/icons-material/Check';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import CloseIcon from '@mui/icons-material/Close';
+import CompareArrowsIcon from '@mui/icons-material/CompareArrows';
 import CodeOutlinedIcon from '@mui/icons-material/CodeOutlined';
 import DarkModeOutlinedIcon from '@mui/icons-material/DarkModeOutlined';
 import DataObjectOutlinedIcon from '@mui/icons-material/DataObjectOutlined';
@@ -71,8 +72,10 @@ import WbSunnyOutlinedIcon from '@mui/icons-material/WbSunnyOutlined';
 import {
   type MapEdge,
   type MapEdgeKind,
+  type MapDiffStatus,
   type MapField,
   type MapNode,
+  type VisibleMap,
 } from './protoMapTypes';
 import {
   applyManualPositions,
@@ -95,6 +98,7 @@ import {
   type ServiceMapDefinition,
 } from './serviceMaps';
 import { downloadMapPdf, downloadMapSvg, type MapExportInput } from './mapExport';
+import { buildProtoMapDiff, type ProtoMapDiffResult } from './mapDiff';
 import { createAppTheme, type ThemeMode } from './theme';
 import { HotkeysDialog } from './hotkeysDialog.tsx';
 
@@ -150,6 +154,17 @@ type SelectedFieldDetails = {
   node: MapNode;
   field: MapField;
   refNode?: MapNode;
+};
+
+type DiffListItem = {
+  id: string;
+  status: MapDiffStatus;
+  label: string;
+  detail: string;
+  nodeId?: string;
+  fieldId?: string;
+  edgeId?: string;
+  focusNodeIds: string[];
 };
 
 function isThemeMode(value: string | null): value is ThemeMode {
@@ -365,10 +380,13 @@ function rpcFilterChoicesForService(
 
 function searchableText(node: MapNode): string {
   const fieldText = node.data.fields
-    ?.map((field) => `${field.type} ${field.name} ${field.group ?? ''} ${field.badge ?? ''}`)
+    ?.map(
+      (field) =>
+        `${field.type} ${field.name} ${field.group ?? ''} ${field.badge ?? ''} ${field.diffStatus ?? ''}`,
+    )
     .join(' ');
 
-  return `${node.data.kind} ${node.data.label} ${fieldText ?? ''}`.toLowerCase();
+  return `${node.data.kind} ${node.data.label} ${node.data.diffStatus ?? ''} ${fieldText ?? ''}`.toLowerCase();
 }
 
 function fieldMatches(field: MapField, query: string): boolean {
@@ -376,9 +394,95 @@ function fieldMatches(field: MapField, query: string): boolean {
     return false;
   }
 
-  return `${field.type} ${field.name} ${field.group ?? ''} ${field.badge ?? ''}`
+  return `${field.type} ${field.name} ${field.group ?? ''} ${field.badge ?? ''} ${field.diffStatus ?? ''}`
     .toLowerCase()
     .includes(query);
+}
+
+function isMapDiffStatus(value: unknown): value is MapDiffStatus {
+  return value === 'added' || value === 'changed' || value === 'removed';
+}
+
+function diffStatusFromData(data: MapNode['data']): MapDiffStatus | null {
+  return isMapDiffStatus(data.diffStatus) ? data.diffStatus : null;
+}
+
+function diffStatusLabel(status: MapDiffStatus): string {
+  switch (status) {
+    case 'added':
+      return 'Added';
+    case 'changed':
+      return 'Changed';
+    case 'removed':
+      return 'Removed';
+  }
+}
+
+function diffStatusColor(status: MapDiffStatus): string {
+  return `var(--diff-${status})`;
+}
+
+function serviceChoiceComparisonCandidates(
+  serviceMap: ServiceMapDefinition,
+  activeChoice: ServiceMapChoice,
+): ServiceMapChoice[] {
+  return serviceMap.serviceChoices
+    .filter((choice) => choice.id !== activeChoice.id && choice.symbol === activeChoice.symbol)
+    .sort((first, second) => compareVersionsDescending(first.version, second.version));
+}
+
+function diffItemsForMap(visibleMap: VisibleMap): DiffListItem[] {
+  const items: DiffListItem[] = [];
+
+  for (const node of visibleMap.nodes) {
+    const nodeStatus = diffStatusFromData(node.data);
+    const hasOnlyFieldChanges =
+      nodeStatus === 'changed' && node.data.diffChanges?.every((change) => change === 'Field changes');
+
+    if (nodeStatus && !hasOnlyFieldChanges) {
+      items.push({
+        id: `node:${node.id}`,
+        status: nodeStatus,
+        label: node.data.label,
+        detail: `${node.data.kind} node`,
+        nodeId: node.id,
+        focusNodeIds: [node.id],
+      });
+    }
+
+    for (const field of node.data.fields ?? []) {
+      if (!field.diffStatus) {
+        continue;
+      }
+
+      items.push({
+        id: `field:${node.id}:${field.id}`,
+        status: field.diffStatus,
+        label: field.name,
+        detail: `${field.type} in ${node.data.label}`,
+        nodeId: node.id,
+        fieldId: field.id,
+        focusNodeIds: [node.id],
+      });
+    }
+  }
+
+  for (const edge of visibleMap.edges) {
+    if (!edge.diffStatus) {
+      continue;
+    }
+
+    items.push({
+      id: `edge:${edge.id}`,
+      status: edge.diffStatus,
+      label: edge.sourceHandle,
+      detail: `${edge.source} to ${edge.target}`,
+      edgeId: edge.id,
+      focusNodeIds: [edge.source, edge.target],
+    });
+  }
+
+  return items;
 }
 
 function isTextEditingTarget(target: EventTarget | null): boolean {
@@ -428,6 +532,7 @@ function AppShell({ themeMode, onToggleTheme }: AppShellProps) {
       }
       : {},
   );
+  const [diffBaseChoiceIds, setDiffBaseChoiceIds] = useState<Record<string, string | null>>({});
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [selectedEdgeId, setSelectedEdgeId] = useState<string | null>(null);
   const [selectedField, setSelectedField] = useState<FieldSelection | null>(null);
@@ -449,6 +554,14 @@ function AppShell({ themeMode, onToggleTheme }: AppShellProps) {
   const activeServiceChoiceId = activeServiceChoice.id;
   const activeServiceFocusNodeId = activeServiceChoice.focusNodeId ?? activeServiceChoice.id;
   const activeSourceTag = activeServiceChoice.sourceTag ?? null;
+  const diffChoiceKey = `${activeServiceId}:${activeServiceChoiceId}`;
+  const diffCandidates = useMemo(
+    () => serviceChoiceComparisonCandidates(activeService, activeServiceChoice),
+    [activeService, activeServiceChoice],
+  );
+  const selectedDiffBaseChoiceId = diffBaseChoiceIds[diffChoiceKey] ?? null;
+  const diffBaseChoice =
+    diffCandidates.find((choice) => choice.id === selectedDiffBaseChoiceId) ?? null;
   const serviceScopedMap = useMemo(
     () =>
       activeService.getVisibleMap({
@@ -479,10 +592,10 @@ function AppShell({ themeMode, onToggleTheme }: AppShellProps) {
     Boolean(activeRpcFocusNodeId) ||
     activeServiceChoiceId !== activeService.defaultServiceChoiceId ||
     activeServiceFocusNodeId !== defaultFocusNodeId;
-  const layoutCacheKey = `${activeServiceId}:${activeServiceChoiceId}:${activeRpcFocusNodeId ?? 'all-rpcs'}:${compactLayout ? 'compact' : 'regular'}`;
+  const layoutCacheKey = `${activeServiceId}:${activeServiceChoiceId}:${activeRpcFocusNodeId ?? 'all-rpcs'}:${selectedDiffBaseChoiceId ?? 'no-diff'}:${compactLayout ? 'compact' : 'regular'}`;
   const query = queryValue.trim().toLowerCase();
   const darkMode = themeMode === 'dark';
-  const visibleMap = useMemo(
+  const currentVisibleMap = useMemo(
     () =>
       activeService.getVisibleMap({
         showDeprecated,
@@ -500,16 +613,39 @@ function AppShell({ themeMode, onToggleTheme }: AppShellProps) {
       showExtensions,
     ],
   );
-  const layoutSourceMap = useMemo(
+  const diffBaseMap = useMemo(
     () =>
-      activeService.getVisibleMap({
+      diffBaseChoice
+        ? activeService.getVisibleMap({
+          showDeprecated,
+          showExtensions,
+          focusNodeId: diffBaseChoice.focusNodeId ?? diffBaseChoice.id,
+          rpcFocusNodeId: activeRpcFocusNodeId,
+          sourceTag: diffBaseChoice.sourceTag ?? null,
+        })
+        : null,
+    [activeRpcFocusNodeId, activeService, diffBaseChoice, showDeprecated, showExtensions],
+  );
+  const diffResult = useMemo<ProtoMapDiffResult | null>(
+    () => (diffBaseMap ? buildProtoMapDiff(currentVisibleMap, diffBaseMap) : null),
+    [currentVisibleMap, diffBaseMap],
+  );
+  const visibleMap = diffResult?.map ?? currentVisibleMap;
+  const layoutSourceMap = useMemo(
+    () => {
+      if (diffResult) {
+        return diffResult.map;
+      }
+
+      return activeService.getVisibleMap({
         showDeprecated: true,
         showExtensions: true,
         focusNodeId: activeServiceFocusNodeId,
         rpcFocusNodeId: activeRpcFocusNodeId,
         sourceTag: activeSourceTag,
-      }),
-    [activeRpcFocusNodeId, activeService, activeServiceFocusNodeId, activeSourceTag],
+      });
+    },
+    [activeRpcFocusNodeId, activeService, activeServiceFocusNodeId, activeSourceTag, diffResult],
   );
   const fallbackLayoutNodes = useMemo(() => improveNodeLayout(visibleMap.nodes), [visibleMap.nodes]);
 
@@ -745,6 +881,50 @@ function AppShell({ themeMode, onToggleTheme }: AppShellProps) {
       showExtensions,
     ],
   );
+  const diffItems = useMemo(
+    () => (diffResult ? diffItemsForMap(diffResult.map) : []),
+    [diffResult],
+  );
+  const fitFocusNodeIds = useCallback(
+    (nodeIds: string[]) => {
+      const focusNodes = nodes.filter((currentNode) => nodeIds.includes(currentNode.id));
+      if (!focusNodes.length) {
+        return;
+      }
+
+      const frame = window.requestAnimationFrame(() => {
+        void fitBounds(mapNodesBounds(focusNodes), {
+          padding: 0.28,
+          duration: 350,
+        });
+      });
+
+      return () => window.cancelAnimationFrame(frame);
+    },
+    [fitBounds, nodes],
+  );
+  const selectDiffItem = useCallback(
+    (item: DiffListItem) => {
+      if (item.fieldId && item.nodeId) {
+        selectField(
+          item.nodeId,
+          item.fieldId,
+          edgeIdBySourceHandle.get(`${item.nodeId}:${item.fieldId}`),
+        );
+      } else if (item.edgeId) {
+        setSelectedId(null);
+        setSelectedField(null);
+        setSelectedEdgeId(item.edgeId);
+      } else if (item.nodeId) {
+        setSelectedField(null);
+        setSelectedEdgeId(null);
+        setSelectedId(item.nodeId);
+      }
+
+      fitFocusNodeIds(item.focusNodeIds);
+    },
+    [edgeIdBySourceHandle, fitFocusNodeIds, selectField],
+  );
 
   const matchedNodes = useMemo(
     () => (query ? nodes.filter((currentNode) => nodeMatches.has(currentNode.id)) : []),
@@ -862,6 +1042,7 @@ function AppShell({ themeMode, onToggleTheme }: AppShellProps) {
         const connectedToMatch =
           !query || nodeMatches.has(edge.source) || nodeMatches.has(edge.target);
         const style = edgeStyleByKind[edge.kind] ?? edgeStyleByKind.field;
+        const diffStatus = edge.diffStatus;
         const selected = selectedEdge?.id === edge.id;
         const connectedToSelectedNode = selectedNodeConnections.edgeIds.has(edge.id);
         const highlighted = selected || connectedToSelectedNode;
@@ -870,7 +1051,8 @@ function AppShell({ themeMode, onToggleTheme }: AppShellProps) {
           (Boolean(selectedId) && !connectedToSelectedNode) ||
           (selectedField !== null && !selectedEdge);
         const opacity = highlighted ? 1 : connectedToMatch ? (selectionDimmed ? 0.18 : 1) : 0.14;
-        const stroke = highlighted ? 'var(--edge-selected)' : 'var(--edge-field)';
+        const diffStroke = diffStatus ? diffStatusColor(diffStatus) : null;
+        const stroke = highlighted ? 'var(--edge-selected)' : (diffStroke ?? 'var(--edge-field)');
         return {
           ...edge,
           type: 'routed',
@@ -880,6 +1062,7 @@ function AppShell({ themeMode, onToggleTheme }: AppShellProps) {
           interactionWidth: 28,
           className: [
             'flow-edge',
+            diffStatus ? `diff-${diffStatus}` : '',
             highlighted ? 'is-selected' : '',
             selectionDimmed ? 'is-dimmed' : '',
           ]
@@ -891,6 +1074,11 @@ function AppShell({ themeMode, onToggleTheme }: AppShellProps) {
             ...style,
             opacity,
             stroke,
+            strokeWidth:
+              diffStatus && diffStatus !== 'removed'
+                ? Number(style.strokeWidth ?? 1.6) + 0.4
+                : style.strokeWidth,
+            strokeDasharray: diffStatus === 'removed' ? '5 5' : style.strokeDasharray,
           },
         } satisfies RoutedMapEdge;
       }),
@@ -1162,6 +1350,15 @@ function AppShell({ themeMode, onToggleTheme }: AppShellProps) {
     },
     [rpcFilterKey],
   );
+  const selectDiffBaseChoice = useCallback(
+    (serviceChoiceId: string | null) => {
+      setDiffBaseChoiceIds((currentChoiceIds) => ({
+        ...currentChoiceIds,
+        [diffChoiceKey]: serviceChoiceId,
+      }));
+    },
+    [diffChoiceKey],
+  );
   const exportDisabled = layoutPending || pdfExportPending;
 
   return (
@@ -1184,6 +1381,13 @@ function AppShell({ themeMode, onToggleTheme }: AppShellProps) {
           choices={rpcFilterChoices}
           value={activeRpcFocusNodeId}
           onSelect={selectRpcFilter}
+        />
+
+        <DiffModeMenu
+          activeChoice={activeServiceChoice}
+          choices={diffCandidates}
+          value={diffBaseChoice?.id ?? null}
+          onSelect={selectDiffBaseChoice}
         />
 
         <Stack className="toolbar" direction="row" role="toolbar" aria-label="Map controls">
@@ -1375,6 +1579,10 @@ function AppShell({ themeMode, onToggleTheme }: AppShellProps) {
               service={activeService}
               serviceLabel={activeService.label}
               serviceChoice={activeServiceChoice}
+              diffBaseChoice={diffBaseChoice}
+              diffResult={diffResult}
+              diffItems={diffItems}
+              onSelectDiffItem={selectDiffItem}
               serviceNode={activeServiceNode}
               totalNodes={visibleMap.nodes.length}
               totalEdges={visibleMap.edges.length}
@@ -1720,6 +1928,138 @@ function RpcFilterMenu({ choices, value, onSelect }: RpcFilterMenuProps) {
   );
 }
 
+type DiffModeMenuProps = {
+  activeChoice: ServiceMapChoice;
+  choices: ServiceMapChoice[];
+  value: string | null;
+  onSelect: (serviceChoiceId: string | null) => void;
+};
+
+function DiffModeMenu({ activeChoice, choices, value, onSelect }: DiffModeMenuProps) {
+  const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
+  const selectedChoice = choices.find((choice) => choice.id === value) ?? null;
+  const open = Boolean(anchorEl);
+
+  useEffect(() => {
+    setAnchorEl(null);
+  }, [activeChoice.id, choices, value]);
+
+  if (!choices.length) {
+    return null;
+  }
+
+  const selectedLabel = selectedChoice
+    ? `Diff ${selectedChoice.version ?? selectedChoice.sourceTag ?? displayServiceChoiceLabel(selectedChoice.label)}`
+    : 'Diff';
+  const activeLabel = activeChoice.version ?? activeChoice.sourceTag ?? displayServiceChoiceLabel(activeChoice.label);
+  const selectChoice = (serviceChoiceId: string | null) => {
+    onSelect(serviceChoiceId);
+    setAnchorEl(null);
+  };
+
+  return (
+    <Box className="diff-filter">
+      <Button
+        id="diff-mode-trigger"
+        variant="outlined"
+        color="inherit"
+        aria-haspopup="menu"
+        aria-expanded={open}
+        aria-controls={open ? 'diff-mode-menu' : undefined}
+        aria-label="Diff mode"
+        startIcon={<CompareArrowsIcon sx={{ fontSize: 18 }} />}
+        endIcon={<ExpandMoreIcon sx={{ fontSize: 18 }} />}
+        onClick={(event) => setAnchorEl((currentAnchor) => (currentAnchor ? null : event.currentTarget))}
+        sx={{
+          justifyContent: 'space-between',
+          width: '100%',
+          height: 38,
+          minWidth: 0,
+          px: 1.25,
+          borderColor: selectedChoice ? 'var(--diff-changed)' : 'var(--line)',
+          bgcolor: selectedChoice ? 'var(--diff-changed-bg)' : 'var(--panel)',
+          color: 'var(--ink)',
+          '& .MuiButton-startIcon': { mr: 0.75 },
+          '& .MuiButton-endIcon': { ml: 0.75 },
+          '&:hover': {
+            borderColor: selectedChoice ? 'var(--diff-changed)' : 'var(--focus)',
+            bgcolor: selectedChoice ? 'var(--diff-changed-bg)' : 'var(--panel)',
+          },
+        }}
+      >
+        <Box className="diff-filter-current" component="span">
+          {selectedLabel}
+        </Box>
+      </Button>
+
+      <Menu
+        id="diff-mode-menu"
+        anchorEl={anchorEl}
+        open={open}
+        onClose={() => setAnchorEl(null)}
+        slotProps={{
+          list: {
+            'aria-labelledby': 'diff-mode-trigger',
+            dense: true,
+          },
+          paper: {
+            sx: {
+              mt: 0.75,
+              minWidth: 214,
+              maxHeight: 'min(430px, calc(100vh - 120px))',
+            },
+          },
+        }}
+      >
+        <MenuItem
+          selected={!selectedChoice}
+          role="menuitemradio"
+          aria-checked={!selectedChoice}
+          onClick={() => selectChoice(null)}
+        >
+          <ListItemIcon>
+            <CompareArrowsIcon fontSize="small" />
+          </ListItemIcon>
+          <ListItemText
+            primary={
+              <Typography component="span" noWrap sx={{ fontSize: 13, fontWeight: 800 }}>
+                Off
+              </Typography>
+            }
+            secondary={`Current ${activeLabel}`}
+          />
+        </MenuItem>
+
+        <Divider sx={{ my: 0.5 }} />
+
+        {choices.map((choice) => {
+          const selected = choice.id === selectedChoice?.id;
+          const label = choice.version ?? choice.sourceTag ?? displayServiceChoiceLabel(choice.label);
+          return (
+            <MenuItem
+              key={choice.id}
+              selected={selected}
+              role="menuitemradio"
+              aria-checked={selected}
+              onClick={() => selectChoice(choice.id)}
+            >
+              <ListItemText
+                primary={
+                  <Typography component="span" noWrap sx={{ fontSize: 13, fontWeight: 800 }}>
+                    Compare to {label}
+                  </Typography>
+                }
+                secondary={choice.sourceTag ?? choice.symbol}
+              />
+              {selected ? <CheckIcon sx={{ fontSize: 16 }} /> : null}
+            </MenuItem>
+          );
+        })}
+      </Menu>
+    </Box>
+  );
+}
+
 type ViewOptionsMenuProps = {
   onFit: () => void;
   onResetLayout: () => void;
@@ -1896,6 +2236,7 @@ function ViewOptionsMenu({
 function SchemaNode({ data, selected }: NodeProps<MapNode>) {
   const fields = data.fields ?? [];
   const dimmed = data.active === false;
+  const diffStatus = diffStatusFromData(data);
   const targetHandles = targetHandlesFromData(data);
   const fieldConnectionIds = fieldConnectionIdsFromData(data);
   const onFieldSelect = fieldSelectHandlerFromData(data);
@@ -1905,6 +2246,7 @@ function SchemaNode({ data, selected }: NodeProps<MapNode>) {
   const className = [
     'schema-node',
     `kind-${data.kind}`,
+    diffStatus ? `diff-${diffStatus}` : '',
     selected ? 'is-selected' : '',
     data.edgeEndpoint ? 'is-edge-endpoint' : '',
     dimmed ? 'is-dimmed' : '',
@@ -2024,6 +2366,7 @@ function FieldRow({
   const visibleExtensionHandle = !isExtension || showExtensions;
   const clickable = Boolean(onFieldSelect);
   const inlineBadge = field.badge === 'stream';
+  const diffStatus = field.diffStatus;
   const fieldTitle = [field.type, field.name, field.group, field.badge]
     .filter(Boolean)
     .join(' ');
@@ -2042,6 +2385,7 @@ function FieldRow({
         highlighted ? 'is-highlighted' : '',
         edgeHighlighted ? 'is-edge-highlighted' : '',
         selected ? 'is-selected' : '',
+        diffStatus ? `diff-${diffStatus}` : '',
         clickable ? 'is-clickable nodrag nopan' : '',
         field.badge === 'deprecated' ? 'is-deprecated' : '',
       ]
@@ -2072,6 +2416,11 @@ function FieldRow({
       {field.group ? <span className="field-group">{field.group}</span> : null}
       {field.badge && !inlineBadge ? (
         <span className={`field-badge badge-${field.badge}`}>{field.badge}</span>
+      ) : null}
+      {diffStatus ? (
+        <span className={`field-badge diff-badge diff-${diffStatus}`}>
+          {diffStatusLabel(diffStatus)}
+        </span>
       ) : null}
       {field.ref && visibleExtensionHandle ? (
         <Handle
@@ -2413,6 +2762,10 @@ type InspectorProps = {
   service: ServiceMapDefinition;
   serviceLabel: string;
   serviceChoice: ServiceMapChoice;
+  diffBaseChoice?: ServiceMapChoice | null;
+  diffResult?: ProtoMapDiffResult | null;
+  diffItems?: DiffListItem[];
+  onSelectDiffItem?: (item: DiffListItem) => void;
   serviceNode?: MapNode;
   totalNodes: number;
   totalEdges: number;
@@ -2425,12 +2778,95 @@ type InspectorDocumentationLink = {
   icon: ReactNode;
 };
 
+function DiffStatusChip({ status }: { status: MapDiffStatus }) {
+  return <span className={`inspector-diff-chip diff-${status}`}>{diffStatusLabel(status)}</span>;
+}
+
+function DiffChanges({ changes }: { changes?: string[] }) {
+  if (!changes?.length) {
+    return null;
+  }
+
+  return (
+    <div className="inspector-diff-changes">
+      {changes.map((change) => (
+        <span key={change}>{change}</span>
+      ))}
+    </div>
+  );
+}
+
+function DiffSummary({
+  activeChoice,
+  baseChoice,
+  diffResult,
+}: {
+  activeChoice: ServiceMapChoice;
+  baseChoice: ServiceMapChoice;
+  diffResult: ProtoMapDiffResult;
+}) {
+  const activeLabel = activeChoice.version ?? activeChoice.sourceTag ?? displayServiceChoiceLabel(activeChoice.label);
+  const baseLabel = baseChoice.version ?? baseChoice.sourceTag ?? displayServiceChoiceLabel(baseChoice.label);
+  const { summary } = diffResult;
+
+  return (
+    <div className="inspector-diff-summary" aria-label="Diff summary">
+      <div className="inspector-diff-title">
+        <CompareArrowsIcon sx={{ fontSize: 16 }} />
+        <span>{baseLabel} to {activeLabel}</span>
+      </div>
+      <div className="inspector-diff-grid">
+        <span className="diff-added">{summary.addedNodes + summary.addedFields + summary.addedEdges} added</span>
+        <span className="diff-changed">{summary.changedNodes + summary.changedFields + summary.changedEdges} changed</span>
+        <span className="diff-removed">{summary.removedNodes + summary.removedFields + summary.removedEdges} removed</span>
+        <span>{summary.breakingChanges} upgrade-impact</span>
+      </div>
+    </div>
+  );
+}
+
+function DiffChangeList({
+  items,
+  onSelect,
+}: {
+  items: DiffListItem[];
+  onSelect: (item: DiffListItem) => void;
+}) {
+  if (!items.length) {
+    return (
+      <div className="inspector-diff-list">
+        <p>No schema changes in this comparison.</p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="inspector-diff-list" aria-label="Changed schema elements">
+      {items.map((item) => (
+        <button key={item.id} type="button" onClick={() => onSelect(item)}>
+          <span className={`inspector-diff-chip diff-${item.status}`}>
+            {diffStatusLabel(item.status)}
+          </span>
+          <span className="inspector-diff-item-text">
+            <strong>{item.label}</strong>
+            <span>{item.detail}</span>
+          </span>
+        </button>
+      ))}
+    </div>
+  );
+}
+
 function Inspector({
   node,
   selectedField,
   service,
   serviceLabel,
   serviceChoice,
+  diffBaseChoice,
+  diffResult,
+  diffItems = [],
+  onSelectDiffItem,
   serviceNode,
   totalNodes,
   totalEdges,
@@ -2447,9 +2883,11 @@ function Inspector({
         <Typography variant="h6" component="h2">
           {field.name}
         </Typography>
+        {field.diffStatus ? <DiffStatusChip status={field.diffStatus} /> : null}
         <Typography variant="body2" color="text.secondary">
           {field.type} in {parentNode.data.label}
         </Typography>
+        <DiffChanges changes={field.diffChanges} />
 
         <Stack className="inspector-actions" direction="row" sx={{ flexWrap: 'wrap' }}>
           {parentNode.data.protoUrl ? (
@@ -2581,6 +3019,18 @@ function Inspector({
           {service.description}
         </Typography>
 
+        {diffResult && diffBaseChoice ? (
+          <DiffSummary
+            activeChoice={serviceChoice}
+            baseChoice={diffBaseChoice}
+            diffResult={diffResult}
+          />
+        ) : null}
+
+        {diffResult && onSelectDiffItem ? (
+          <DiffChangeList items={diffItems} onSelect={onSelectDiffItem} />
+        ) : null}
+
         <div className="inspector-summary" aria-label="Current map summary">
           {version ? <span>Version {version}</span> : null}
           {sourceTag ? <span>{sourceTag}</span> : null}
@@ -2614,6 +3064,9 @@ function Inspector({
       <Typography variant="h6" component="h2">
         {node.data.label}
       </Typography>
+      {diffStatusFromData(node.data) ? (
+        <DiffStatusChip status={diffStatusFromData(node.data) as MapDiffStatus} />
+      ) : null}
 
       <Stack className="inspector-actions" direction="row" sx={{ flexWrap: 'wrap' }}>
         {node.data.protoUrl ? (
@@ -2653,6 +3106,7 @@ function Inspector({
           specUrl={node.data.specUrl}
         />
       ) : null}
+      <DiffChanges changes={node.data.diffChanges} />
 
       {node.data.fields?.length ? (
         <div className="inspector-fields">

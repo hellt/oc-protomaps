@@ -10,7 +10,7 @@ import {
   type RoutedLayoutEdge,
   type TargetHandleLayout,
 } from './mapLayout';
-import type { MapEdgeKind, MapField, MapNode, MapNodeKind } from './protoMapTypes';
+import type { MapDiffStatus, MapEdgeKind, MapField, MapNode, MapNodeKind } from './protoMapTypes';
 
 export type MapExportInput = {
   layout: ReadableLayout;
@@ -101,6 +101,12 @@ const colors = {
   reserved: '#e7ebf0',
   deprecated: '#fee2df',
   deprecatedText: '#9b1c15',
+  diffAdded: '#2f7d32',
+  diffAddedSoft: '#e0f2df',
+  diffChanged: '#a15c03',
+  diffChangedSoft: '#fbebd3',
+  diffRemoved: '#9b1c15',
+  diffRemovedSoft: '#fee2df',
   handle: '#2d6f97',
   stream: '#209fb5',
 };
@@ -120,6 +126,32 @@ const edgeStyles: Record<MapEdgeKind, EdgeStyle> = {
   extension: { color: '#8a6a1f', width: 1.4, dash: [7, 6] },
   'extension-detail': { color: '#b47a18', width: 1.5 },
 };
+
+const diffEdgeColors: Record<MapDiffStatus, string> = {
+  added: colors.diffAdded,
+  changed: colors.diffChanged,
+  removed: colors.diffRemoved,
+};
+
+const diffSoftColors: Record<MapDiffStatus, string> = {
+  added: colors.diffAddedSoft,
+  changed: colors.diffChangedSoft,
+  removed: colors.diffRemovedSoft,
+};
+
+function edgeExportStyle(kind: MapEdgeKind, diffStatus?: MapDiffStatus): EdgeStyle {
+  const style = edgeStyles[kind] ?? edgeStyles.field;
+  if (!diffStatus) {
+    return style;
+  }
+
+  return {
+    ...style,
+    color: diffEdgeColors[diffStatus],
+    width: diffStatus === 'removed' ? style.width : style.width + 0.4,
+    dash: diffStatus === 'removed' ? [5, 5] : style.dash,
+  };
+}
 
 export function downloadMapSvg(input: MapExportInput): void {
   downloadBlob(
@@ -241,6 +273,13 @@ function svgDefinitions(): string {
         '</marker>',
       ].join(''),
     ),
+    ...Object.entries(diffEdgeColors).map(([status, color]) =>
+      [
+        `<marker id="${arrowMarkerId('field', status as MapDiffStatus)}" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto" markerUnits="strokeWidth">`,
+        `<path d="M 0 0 L 10 5 L 0 10 z" fill="${color}" />`,
+        '</marker>',
+      ].join(''),
+    ),
     '</defs>',
   ].join('\n');
 }
@@ -251,11 +290,11 @@ function drawSvgEdge(routedEdge: RoutedLayoutEdge, context: DrawContext): string
   }
 
   const edge = routedEdge.edge;
-  const style = edgeStyles[edge.kind] ?? edgeStyles.field;
+  const style = edgeExportStyle(edge.kind, edge.diffStatus);
   const dash = style.dash ? ` stroke-dasharray="${style.dash.join(' ')}"` : '';
   const points = routedEdge.routePoints.map((point) => toExportPoint(point, context));
 
-  return `<path d="${roundedRoutePath(points)}" fill="none" stroke="${style.color}" stroke-width="${style.width}" stroke-linecap="round" stroke-linejoin="round"${dash} marker-end="url(#${arrowMarkerId(edge.kind)})" />`;
+  return `<path d="${roundedRoutePath(points)}" fill="none" stroke="${style.color}" stroke-width="${style.width}" stroke-linecap="round" stroke-linejoin="round"${dash} marker-end="url(#${arrowMarkerId(edge.kind, edge.diffStatus)})" />`;
 }
 
 function drawSvgNode(node: MapNode, context: DrawContext): string {
@@ -266,9 +305,10 @@ function drawSvgNode(node: MapNode, context: DrawContext): string {
   const height = nodeHeight(node);
   const fields = node.data.fields ?? [];
   const headerColor = headerColors[node.data.kind] ?? colors.teal;
+  const nodeStroke = node.data.diffStatus ? diffEdgeColors[node.data.diffStatus] : colors.border;
   const parts = [
     `<g id="${escapeAttribute(`node-${node.id}`)}">`,
-    `<rect x="${formatNumber(x)}" y="${formatNumber(y)}" width="${formatNumber(width)}" height="${formatNumber(height)}" rx="8" fill="${colors.panel}" stroke="${colors.border}" stroke-width="1" />`,
+    `<rect x="${formatNumber(x)}" y="${formatNumber(y)}" width="${formatNumber(width)}" height="${formatNumber(height)}" rx="8" fill="${colors.panel}" stroke="${nodeStroke}" stroke-width="${node.data.diffStatus ? 2 : 1}" />`,
     `<rect x="${formatNumber(x)}" y="${formatNumber(y)}" width="${formatNumber(width)}" height="${nodeHeaderHeight}" rx="8" fill="${headerColor}" />`,
     `<rect x="${formatNumber(x)}" y="${formatNumber(y + nodeHeaderHeight - 8)}" width="${formatNumber(width)}" height="8" fill="${headerColor}" />`,
   ];
@@ -382,14 +422,17 @@ function drawSvgFieldRow(
 ): string {
   const rowHeight = mapFieldRowHeight(field);
   const nameX = x + Math.floor(width * 0.46);
-  const rowRightPadding = context.connectedHandles.has(fieldHandleKey(node, field)) ? 30 : 18;
+  const rowRightPadding =
+    (context.connectedHandles.has(fieldHandleKey(node, field)) ? 30 : 18) +
+    (field.diffStatus ? 72 : 0);
   const typeMaxWidth = nameX - x - 26;
   const nameMaxWidth = width - (nameX - x) - rowRightPadding;
   const parts: string[] = [];
+  const rowFill = field.diffStatus ? diffSoftColors[field.diffStatus] : rowIndex % 2 === 0 ? colors.panelSoft : null;
 
-  if (rowIndex % 2 === 0) {
+  if (rowFill) {
     parts.push(
-      `<rect x="${formatNumber(x + 8)}" y="${formatNumber(y)}" width="${formatNumber(width - 16)}" height="${formatNumber(rowHeight - 2)}" rx="6" fill="${colors.panelSoft}" />`,
+      `<rect x="${formatNumber(x + 8)}" y="${formatNumber(y)}" width="${formatNumber(width - 16)}" height="${formatNumber(rowHeight - 2)}" rx="6" fill="${rowFill}" />`,
     );
   }
 
@@ -408,6 +451,11 @@ function drawSvgFieldRow(
     parts.push(
       `<line x1="${formatNumber(x + 14)}" y1="${formatNumber(y + 15)}" x2="${formatNumber(nameX + lineWidth)}" y2="${formatNumber(y + 15)}" stroke="${colors.deprecatedText}" stroke-width="0.6" opacity="0.55" />`,
     );
+  }
+
+  if (field.diffStatus) {
+    const badge = drawSvgBadge(field.diffStatus, x + width - 70, y + 7, diffEdgeColors[field.diffStatus], diffSoftColors[field.diffStatus]);
+    parts.push(badge.svg);
   }
 
   const detailBadge = field.badge === 'stream' ? null : field.badge;
@@ -509,7 +557,7 @@ function drawPdfEdge(
   }
 
   const edge = routedEdge.edge;
-  const style = edgeStyles[edge.kind] ?? edgeStyles.field;
+  const style = edgeExportStyle(edge.kind, edge.diffStatus);
   const points = routedEdge.routePoints;
   const end = toExportPoint(points[points.length - 1], context);
   const beforeEnd = toExportPoint(points[points.length - 2], context);
@@ -538,14 +586,15 @@ function drawPdfNode(doc: PdfDocument, node: MapNode, context: DrawContext): voi
   const height = nodeHeight(node);
   const fields = node.data.fields ?? [];
   const headerColor = headerColors[node.data.kind] ?? colors.teal;
+  const nodeStroke = node.data.diffStatus ? diffEdgeColors[node.data.diffStatus] : colors.border;
 
   doc
     .save()
     .fillColor(colors.panel)
     .roundedRect(x, y, width, height, 8)
     .fill()
-    .lineWidth(1)
-    .strokeColor(colors.border)
+    .lineWidth(node.data.diffStatus ? 2 : 1)
+    .strokeColor(nodeStroke)
     .roundedRect(x, y, width, height, 8)
     .stroke()
     .restore();
@@ -631,14 +680,17 @@ function drawPdfFieldRow(
 ): void {
   const rowHeight = mapFieldRowHeight(field);
   const nameX = x + Math.floor(width * 0.46);
-  const rowRightPadding = context.connectedHandles.has(fieldHandleKey(node, field)) ? 30 : 18;
+  const rowRightPadding =
+    (context.connectedHandles.has(fieldHandleKey(node, field)) ? 30 : 18) +
+    (field.diffStatus ? 72 : 0);
   const typeMaxWidth = nameX - x - 26;
   const nameMaxWidth = width - (nameX - x) - rowRightPadding;
+  const rowFill = field.diffStatus ? diffSoftColors[field.diffStatus] : rowIndex % 2 === 0 ? colors.panelSoft : null;
 
-  if (rowIndex % 2 === 0) {
+  if (rowFill) {
     doc
       .save()
-      .fillColor(colors.panelSoft)
+      .fillColor(rowFill)
       .roundedRect(x + 8, y, width - 16, rowHeight - 2, 6)
       .fill()
       .restore();
@@ -665,6 +717,17 @@ function drawPdfFieldRow(
       .opacity(0.55)
       .stroke()
       .restore();
+  }
+
+  if (field.diffStatus) {
+    drawPdfBadge(
+      doc,
+      field.diffStatus,
+      x + width - 70,
+      y + 7,
+      diffEdgeColors[field.diffStatus],
+      diffSoftColors[field.diffStatus],
+    );
   }
 
   const detailBadge = field.badge === 'stream' ? null : field.badge;
@@ -1042,7 +1105,11 @@ function sanitizeFilePart(value: string): string {
     .replace(/^-+|-+$/g, '');
 }
 
-function arrowMarkerId(kind: MapEdgeKind): string {
+function arrowMarkerId(kind: MapEdgeKind, diffStatus?: MapDiffStatus): string {
+  if (diffStatus) {
+    return `arrow-diff-${diffStatus}`;
+  }
+
   return `arrow-${kind}`;
 }
 
