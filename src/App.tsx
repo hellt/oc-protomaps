@@ -48,6 +48,7 @@ import {
   Typography,
 } from '@mui/material';
 import CheckIcon from '@mui/icons-material/Check';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import CloseIcon from '@mui/icons-material/Close';
 import CodeOutlinedIcon from '@mui/icons-material/CodeOutlined';
@@ -57,6 +58,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import FitScreenOutlinedIcon from '@mui/icons-material/FitScreenOutlined';
 import HubOutlinedIcon from '@mui/icons-material/HubOutlined';
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import MenuBookOutlinedIcon from '@mui/icons-material/MenuBookOutlined';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import PictureAsPdfOutlinedIcon from '@mui/icons-material/PictureAsPdfOutlined';
@@ -429,6 +431,7 @@ function AppShell({ themeMode, onToggleTheme }: AppShellProps) {
   const [selectedField, setSelectedField] = useState<FieldSelection | null>(null);
   const [manualPositions, setManualPositions] = useState<Record<string, NodePosition>>({});
   const [routingPositions, setRoutingPositions] = useState<Record<string, NodePosition>>({});
+  const [inspectorCollapsed, setInspectorCollapsed] = useState(false);
   const appliedLayoutResetCount = useRef(0);
   const searchInputRef = useRef<HTMLInputElement>(null);
   const lastSelectionFitKeyRef = useRef<string | null>(null);
@@ -1205,7 +1208,7 @@ function AppShell({ themeMode, onToggleTheme }: AppShellProps) {
         </Stack>
       </Box>
 
-      <main className="map-stage">
+      <main className={`map-stage${inspectorCollapsed ? ' is-inspector-collapsed' : ''}`}>
         <ReactFlow<MapNode, RoutedMapEdge>
           nodes={nodes}
           edges={edges}
@@ -1248,16 +1251,40 @@ function AppShell({ themeMode, onToggleTheme }: AppShellProps) {
           <Controls position="bottom-left" />
         </ReactFlow>
 
-        <Inspector
-          node={selectedNode}
-          selectedField={selectedFieldDetails}
-          service={activeService}
-          serviceLabel={activeService.label}
-          serviceChoice={activeServiceChoice}
-          serviceNode={activeServiceNode}
-          totalNodes={visibleMap.nodes.length}
-          totalEdges={visibleMap.edges.length}
-        />
+        <div className="inspector-shell" role="complementary" aria-label="Details panel">
+          {inspectorCollapsed ? (
+            <span className="inspector-collapsed-icon" aria-hidden="true">
+              <InfoOutlinedIcon sx={{ fontSize: 18 }} />
+            </span>
+          ) : null}
+
+          <button
+            className="inspector-toggle"
+            type="button"
+            aria-label={inspectorCollapsed ? 'Show details panel' : 'Hide details panel'}
+            aria-expanded={!inspectorCollapsed}
+            onClick={() => setInspectorCollapsed((collapsed) => !collapsed)}
+          >
+            {inspectorCollapsed ? (
+              <ChevronLeftIcon sx={{ fontSize: 18 }} />
+            ) : (
+              <ChevronRightIcon sx={{ fontSize: 18 }} />
+            )}
+          </button>
+
+          {!inspectorCollapsed ? (
+            <Inspector
+              node={selectedNode}
+              selectedField={selectedFieldDetails}
+              service={activeService}
+              serviceLabel={activeService.label}
+              serviceChoice={activeServiceChoice}
+              serviceNode={activeServiceNode}
+              totalNodes={visibleMap.nodes.length}
+              totalEdges={visibleMap.edges.length}
+            />
+          ) : null}
+        </div>
       </main>
     </Box>
   );

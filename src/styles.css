@@ -392,6 +392,10 @@ a {
   min-height: 0;
 }
 
+.map-stage.is-inspector-collapsed {
+  grid-template-columns: minmax(0, 1fr) 36px;
+}
+
 .react-flow {
   width: 100%;
   height: 100%;
@@ -700,18 +704,75 @@ a {
   background: var(--panel-soft);
 }
 
-.inspector {
+.inspector-shell {
   position: relative;
   z-index: 4;
+  min-width: 0;
+  min-height: 0;
+  overflow: visible;
+  border-left: 1px solid var(--line);
+  background: var(--topbar-bg);
+  box-shadow: -8px 0 20px var(--node-shadow);
+}
+
+.map-stage.is-inspector-collapsed .inspector-shell {
+  background: var(--topbar-bg);
+  box-shadow: none;
+}
+
+.inspector-collapsed-icon {
+  position: absolute;
+  top: 14px;
+  left: 50%;
+  z-index: 5;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--muted);
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+.inspector-toggle {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  z-index: 5;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--panel);
+  color: var(--muted);
+  cursor: pointer;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 6px 16px var(--node-shadow);
+}
+
+.inspector-toggle:hover,
+.inspector-toggle:focus-visible {
+  background: color-mix(in srgb, var(--blue) 12%, var(--panel-soft));
+  color: var(--focus);
+  outline: none;
+}
+
+.inspector-toggle:focus-visible {
+  box-shadow: inset 0 0 0 2px color-mix(in srgb, var(--focus) 58%, transparent);
+}
+
+.inspector {
+  position: relative;
   width: auto;
   max-height: none;
   overflow: auto;
   padding: 20px;
   border: 0;
-  border-left: 1px solid var(--line);
   border-radius: 0;
   background: var(--topbar-bg);
-  box-shadow: -8px 0 20px var(--node-shadow);
 }
 
 .inspector p {
@@ -1016,6 +1077,28 @@ a {
   .map-stage {
     grid-template-columns: 1fr;
     grid-template-rows: minmax(420px, 1fr) auto;
+  }
+
+  .map-stage.is-inspector-collapsed {
+    grid-template-columns: 1fr;
+    grid-template-rows: minmax(420px, 1fr) 36px;
+  }
+
+  .inspector-shell {
+    border-top: 1px solid var(--line);
+    border-left: 0;
+    box-shadow: 0 -8px 20px var(--node-shadow);
+  }
+
+  .inspector-toggle {
+    top: 0;
+    left: 50%;
+  }
+
+  .inspector-collapsed-icon {
+    top: 50%;
+    left: 14px;
+    transform: translateY(-50%);
   }
 
   .inspector {
