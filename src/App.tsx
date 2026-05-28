@@ -1218,7 +1218,9 @@ function AppShell({ themeMode, onToggleTheme }: AppShellProps) {
               [node.id]: node.position,
             }));
           }}
-          nodesDraggable
+          nodesDraggable={false}
+          nodesConnectable={false}
+          elementsSelectable={false}
           minZoom={0.18}
           maxZoom={1.7}
           defaultViewport={{ x: 70, y: 40, zoom: 0.42 }}
