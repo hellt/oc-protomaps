@@ -422,10 +422,7 @@ a {
 .react-flow {
   width: 100%;
   height: 100%;
-  background:
-    linear-gradient(90deg, color-mix(in srgb, var(--blue) 8%, transparent), transparent 36%),
-    linear-gradient(0deg, color-mix(in srgb, var(--teal) 8%, transparent), transparent 42%),
-    var(--page-bg);
+  background: var(--page-bg);
 }
 
 .map-attribution {
@@ -889,7 +886,6 @@ a {
   overflow: visible;
   border-left: 1px solid var(--line);
   background: var(--topbar-bg);
-  box-shadow: -8px 0 20px var(--node-shadow);
 }
 
 .map-stage.is-inspector-collapsed .inspector-shell {
