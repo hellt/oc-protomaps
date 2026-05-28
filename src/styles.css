@@ -637,7 +637,18 @@ a {
 }
 
 .field-row:nth-child(odd) {
-  background: var(--panel-soft);
+  background: transparent;
+}
+
+.field-row+.field-row::before {
+  position: absolute;
+  top: 0;
+  right: 9px;
+  left: 9px;
+  height: 1px;
+  background: color-mix(in srgb, var(--line) 48%, transparent);
+  content: "";
+  pointer-events: none;
 }
 
 .field-row.is-highlighted {
