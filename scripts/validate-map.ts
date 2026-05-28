@@ -95,24 +95,20 @@ function validateDeprecatedVisibility(): void {
 
 function validateGnmiServiceVersionRefs(): void {
   assert(mapSource.gnmiServiceVersion === '0.10.0', 'gNMI latest service version must be 0.10.0');
-  assert(mapSource.gnmiTag === 'v0.10.0', 'gNMI latest canonical source tag must be v0.10.0');
+  assert(mapSource.gnmiTag === 'v0.14.1', 'gNMI latest source tag must be v0.14.1');
   assert(
-    mapSource.gnmiBase.includes('/v0.10.0/'),
-    'gNMI latest proto base must use canonical v0.10.0 ref',
+    mapSource.gnmiBase.includes('/v0.14.1/'),
+    'gNMI latest proto base must use latest v0.14.1 ref',
   );
 
   const latestChoice = mapSource.services.find((service) => service.version === '0.10.0');
-  assert(latestChoice?.sourceTag === 'v0.10.0', 'gNMI 0.10.0 must use source tag v0.10.0');
+  assert(latestChoice?.sourceTag === 'v0.14.1', 'gNMI 0.10.0 must use source tag v0.14.1');
 
   const previousChoice = mapSource.services.find((service) => service.version === '0.9.0');
-  assert(previousChoice?.sourceTag === 'v0.9.0', 'gNMI 0.9.0 must use source tag v0.9.0');
+  assert(previousChoice?.sourceTag === 'v0.9.1', 'gNMI 0.9.0 must use source tag v0.9.1');
   assert(
     mapSource.services.every((service) => service.version !== '0.9.1'),
     'gNMI service version 0.9.1 must not be generated',
-  );
-  assert(
-    mapSource.services.every((service) => service.sourceTag !== 'v0.9.1'),
-    'gNMI source tag v0.9.1 must not be used for service versions',
   );
 
   for (const service of mapSource.services) {
