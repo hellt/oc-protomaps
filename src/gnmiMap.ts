@@ -137,7 +137,7 @@ export const mapVariants: GnmiMapVariant[] = [
         "data": {
           "id": "service-gnmi",
           "kind": "service",
-          "label": "service gNMI 0.10.0",
+          "label": "gNMI 0.10.0",
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi/gnmi.proto#L49",
           "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#grpc-network-management-interface-gnmi",
           "fields": [
@@ -186,7 +186,7 @@ export const mapVariants: GnmiMapVariant[] = [
         "data": {
           "id": "rpc-set",
           "kind": "rpc",
-          "label": "rpc Set",
+          "label": "Set",
           "description": "Set allows the client to modify the state of data on the target. The\npaths to modified along with the new values that the client wishes\nto set the value to.\nReference: gNMI Specification Section 3.4",
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi/gnmi.proto#L67",
           "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#34-modifying-state",
@@ -219,7 +219,7 @@ export const mapVariants: GnmiMapVariant[] = [
         "data": {
           "id": "rpc-subscribe",
           "kind": "rpc",
-          "label": "rpc Subscribe",
+          "label": "Subscribe",
           "description": "Subscribe allows a client to request the target to send it values\nof particular paths within the data tree. These values may be streamed\nat a particular cadence (STREAM), sent one off on a long-lived channel\n(POLL), or sent as a one-off retrieval (ONCE).\nReference: gNMI Specification Section 3.5",
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi/gnmi.proto#L73",
           "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#35-subscribing-to-telemetry-updates",
@@ -252,7 +252,7 @@ export const mapVariants: GnmiMapVariant[] = [
         "data": {
           "id": "rpc-get",
           "kind": "rpc",
-          "label": "rpc Get",
+          "label": "Get",
           "description": "Retrieve a snapshot of data from the target. A Get RPC requests that the\ntarget snapshots a subset of the data tree as specified by the paths\nincluded in the message and serializes this to be returned to the\nclient using the specified encoding.\nReference: gNMI Specification Section 3.3",
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi/gnmi.proto#L62",
           "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#33-retrieving-snapshots-of-state-information",
@@ -285,7 +285,7 @@ export const mapVariants: GnmiMapVariant[] = [
         "data": {
           "id": "rpc-capabilities",
           "kind": "rpc",
-          "label": "rpc Capabilities",
+          "label": "Capabilities",
           "description": "Capabilities allows the client to retrieve the set of capabilities that\nis supported by the target. This allows the target to validate the\nservice version that is implemented and retrieve the set of models that\nthe target supports. The models can then be specified in subsequent RPCs\nto restrict the set of data that is utilized.\nReference: gNMI Specification Section 3.2",
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi/gnmi.proto#L56",
           "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#32-capability-discovery",
@@ -3171,7 +3171,7 @@ export const mapVariants: GnmiMapVariant[] = [
         "data": {
           "id": "service-gnmi",
           "kind": "service",
-          "label": "service gNMI 0.9.0",
+          "label": "gNMI 0.9.0",
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.9.1/proto/gnmi/gnmi.proto#L48",
           "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#grpc-network-management-interface-gnmi",
           "fields": [
@@ -3220,7 +3220,7 @@ export const mapVariants: GnmiMapVariant[] = [
         "data": {
           "id": "rpc-set",
           "kind": "rpc",
-          "label": "rpc Set",
+          "label": "Set",
           "description": "Set allows the client to modify the state of data on the target. The\npaths to modified along with the new values that the client wishes\nto set the value to.\nReference: gNMI Specification Section 3.4",
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.9.1/proto/gnmi/gnmi.proto#L66",
           "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#34-modifying-state",
@@ -3253,7 +3253,7 @@ export const mapVariants: GnmiMapVariant[] = [
         "data": {
           "id": "rpc-subscribe",
           "kind": "rpc",
-          "label": "rpc Subscribe",
+          "label": "Subscribe",
           "description": "Subscribe allows a client to request the target to send it values\nof particular paths within the data tree. These values may be streamed\nat a particular cadence (STREAM), sent one off on a long-lived channel\n(POLL), or sent as a one-off retrieval (ONCE).\nReference: gNMI Specification Section 3.5",
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.9.1/proto/gnmi/gnmi.proto#L72",
           "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#35-subscribing-to-telemetry-updates",
@@ -3286,7 +3286,7 @@ export const mapVariants: GnmiMapVariant[] = [
         "data": {
           "id": "rpc-get",
           "kind": "rpc",
-          "label": "rpc Get",
+          "label": "Get",
           "description": "Retrieve a snapshot of data from the target. A Get RPC requests that the\ntarget snapshots a subset of the data tree as specified by the paths\nincluded in the message and serializes this to be returned to the\nclient using the specified encoding.\nReference: gNMI Specification Section 3.3",
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.9.1/proto/gnmi/gnmi.proto#L61",
           "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#33-retrieving-snapshots-of-state-information",
@@ -3319,7 +3319,7 @@ export const mapVariants: GnmiMapVariant[] = [
         "data": {
           "id": "rpc-capabilities",
           "kind": "rpc",
-          "label": "rpc Capabilities",
+          "label": "Capabilities",
           "description": "Capabilities allows the client to retrieve the set of capabilities that\nis supported by the target. This allows the target to validate the\nservice version that is implemented and retrieve the set of models that\nthe target supports. The models can then be specified in subsequent RPCs\nto restrict the set of data that is utilized.\nReference: gNMI Specification Section 3.2",
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.9.1/proto/gnmi/gnmi.proto#L55",
           "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#32-capability-discovery",
@@ -5779,7 +5779,7 @@ export const mapVariants: GnmiMapVariant[] = [
         "data": {
           "id": "service-gnmi",
           "kind": "service",
-          "label": "service gNMI 0.8.0",
+          "label": "gNMI 0.8.0",
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.8.0/proto/gnmi/gnmi.proto#L48",
           "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#grpc-network-management-interface-gnmi",
           "fields": [
@@ -5828,7 +5828,7 @@ export const mapVariants: GnmiMapVariant[] = [
         "data": {
           "id": "rpc-set",
           "kind": "rpc",
-          "label": "rpc Set",
+          "label": "Set",
           "description": "Set allows the client to modify the state of data on the target. The\npaths to modified along with the new values that the client wishes\nto set the value to.\nReference: gNMI Specification Section 3.4",
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.8.0/proto/gnmi/gnmi.proto#L66",
           "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#34-modifying-state",
@@ -5861,7 +5861,7 @@ export const mapVariants: GnmiMapVariant[] = [
         "data": {
           "id": "rpc-subscribe",
           "kind": "rpc",
-          "label": "rpc Subscribe",
+          "label": "Subscribe",
           "description": "Subscribe allows a client to request the target to send it values\nof particular paths within the data tree. These values may be streamed\nat a particular cadence (STREAM), sent one off on a long-lived channel\n(POLL), or sent as a one-off retrieval (ONCE).\nReference: gNMI Specification Section 3.5",
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.8.0/proto/gnmi/gnmi.proto#L72",
           "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#35-subscribing-to-telemetry-updates",
@@ -5894,7 +5894,7 @@ export const mapVariants: GnmiMapVariant[] = [
         "data": {
           "id": "rpc-get",
           "kind": "rpc",
-          "label": "rpc Get",
+          "label": "Get",
           "description": "Retrieve a snapshot of data from the target. A Get RPC requests that the\ntarget snapshots a subset of the data tree as specified by the paths\nincluded in the message and serializes this to be returned to the\nclient using the specified encoding.\nReference: gNMI Specification Section 3.3",
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.8.0/proto/gnmi/gnmi.proto#L61",
           "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#33-retrieving-snapshots-of-state-information",
@@ -5927,7 +5927,7 @@ export const mapVariants: GnmiMapVariant[] = [
         "data": {
           "id": "rpc-capabilities",
           "kind": "rpc",
-          "label": "rpc Capabilities",
+          "label": "Capabilities",
           "description": "Capabilities allows the client to retrieve the set of capabilities that\nis supported by the target. This allows the target to validate the\nservice version that is implemented and retrieve the set of models that\nthe target supports. The models can then be specified in subsequent RPCs\nto restrict the set of data that is utilized.\nReference: gNMI Specification Section 3.2",
           "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.8.0/proto/gnmi/gnmi.proto#L55",
           "specUrl": "https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md#32-capability-discovery",

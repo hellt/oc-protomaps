@@ -439,7 +439,7 @@ function serviceNode(
     data: {
       id: node.id,
       kind: node.data.kind,
-      label: `service gNMI ${serviceVersion}`,
+      label: `${service.name} ${serviceVersion}`,
       ...(description ? { description } : {}),
       protoUrl: protoUrl('gnmi', serviceLine, gnmiTag),
       specUrl: specUrlFromLayout(node),
@@ -482,7 +482,7 @@ function rpcNode(
     data: {
       id: node.id,
       kind: node.data.kind,
-      label: `rpc ${method.name}`,
+      label: method.name,
       ...(description ? { description } : {}),
       protoUrl: protoUrl('gnmi', rpcLines.get(method.name), gnmiTag),
       specUrl: specUrlFromLayout(node),
@@ -517,11 +517,11 @@ function schemaNode(
   const fields =
     definition instanceof protobuf.Type
       ? [
-          ...definition.fieldsArray.map((field) =>
-            fieldData(field, symbol, symbolToNodeId, byShortName),
-          ),
-          ...reservedFields(definition),
-        ]
+        ...definition.fieldsArray.map((field) =>
+          fieldData(field, symbol, symbolToNodeId, byShortName),
+        ),
+        ...reservedFields(definition),
+      ]
       : enumFields(definition);
   const deprecated = Boolean(definition.options?.deprecated);
   const badges = deprecated
@@ -728,44 +728,44 @@ async function generateGnmiVariant(gnmiTag: string): Promise<GnmiMapVariant> {
 
   const nodes = layoutNodes
     .map((node): MapNode | null => {
-    if (node.id === 'service-gnmi') {
-      return serviceNode(node, service, linesBySource.gnmi.get('gnmi.gNMI'), serviceVersion, gnmiTag);
-    }
-    if (node.data.kind === 'rpc') {
-      return rpcNode(node, service, rpcLines, gnmiTag);
-    }
+      if (node.id === 'service-gnmi') {
+        return serviceNode(node, service, linesBySource.gnmi.get('gnmi.gNMI'), serviceVersion, gnmiTag);
+      }
+      if (node.data.kind === 'rpc') {
+        return rpcNode(node, service, rpcLines, gnmiTag);
+      }
 
-    const symbol = nodeIdToSymbol.get(node.id);
-    if (symbol) {
-      const definition = definitions.get(symbol);
-      if (!definition) {
+      const symbol = nodeIdToSymbol.get(node.id);
+      if (symbol) {
+        const definition = definitions.get(symbol);
+        if (!definition) {
+          return null;
+        }
+        return schemaNode(
+          node,
+          definition,
+          symbol,
+          symbolToNodeId,
+          byShortName,
+          linesBySource,
+          gnmiTag,
+        );
+      }
+
+      if (node.data.kind === 'message' || node.data.kind === 'enum') {
         return null;
       }
-      return schemaNode(
-        node,
-        definition,
-        symbol,
-        symbolToNodeId,
-        byShortName,
-        linesBySource,
-        gnmiTag,
-      );
-    }
 
-    if (node.data.kind === 'message' || node.data.kind === 'enum') {
-      return null;
-    }
-
-    return {
-      ...node,
-      style: { ...node.style },
-      data: {
-        ...node.data,
-        id: node.id,
-        specUrl: specUrlFromLayout(node),
-      },
-    };
-  })
+      return {
+        ...node,
+        style: { ...node.style },
+        data: {
+          ...node.data,
+          id: node.id,
+          specUrl: specUrlFromLayout(node),
+        },
+      };
+    })
     .filter((node): node is MapNode => node !== null);
   const edges = buildEdges(nodes);
 
