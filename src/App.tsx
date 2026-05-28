@@ -75,7 +75,9 @@ import {
   applyManualPositions,
   computeReadableNodeLayout,
   improveNodeLayout,
+  mapNodesBounds,
   routeReadableLayout,
+  type LayoutBounds,
   type RoutePoint,
   type TargetHandleLayout,
 } from './mapLayout';
@@ -161,6 +163,46 @@ function getInitialTheme(): ThemeMode {
 
 function nodePositions(nodes: MapNode[]): Record<string, NodePosition> {
   return Object.fromEntries(nodes.map((node) => [node.id, node.position]));
+}
+
+function routePointsBounds(routePoints: RoutePoint[]): LayoutBounds | null {
+  if (!routePoints.length) {
+    return null;
+  }
+
+  const minX = Math.min(...routePoints.map((point) => point.x));
+  const minY = Math.min(...routePoints.map((point) => point.y));
+  const maxX = Math.max(...routePoints.map((point) => point.x));
+  const maxY = Math.max(...routePoints.map((point) => point.y));
+
+  return {
+    x: minX,
+    y: minY,
+    width: maxX - minX,
+    height: maxY - minY,
+  };
+}
+
+function mergeBounds(first: LayoutBounds | null, second: LayoutBounds | null): LayoutBounds | null {
+  if (!first) {
+    return second;
+  }
+
+  if (!second) {
+    return first;
+  }
+
+  const minX = Math.min(first.x, second.x);
+  const minY = Math.min(first.y, second.y);
+  const maxX = Math.max(first.x + first.width, second.x + second.width);
+  const maxY = Math.max(first.y + first.height, second.y + second.height);
+
+  return {
+    x: minX,
+    y: minY,
+    width: maxX - minX,
+    height: maxY - minY,
+  };
 }
 
 function computeElkLayoutPositions(
@@ -354,7 +396,7 @@ type AppShellProps = {
 };
 
 function AppShell({ themeMode, onToggleTheme }: AppShellProps) {
-  const { fitView } = useReactFlow<MapNode, RoutedMapEdge>();
+  const { fitBounds, fitView } = useReactFlow<MapNode, RoutedMapEdge>();
   const initialServiceRoute = useMemo(() => getInitialServiceRoute(routeBasePath), []);
   const [activeServiceId, setActiveServiceId] = useState<ServiceId>(
     () => initialServiceRoute.serviceId,
@@ -389,6 +431,7 @@ function AppShell({ themeMode, onToggleTheme }: AppShellProps) {
   const [routingPositions, setRoutingPositions] = useState<Record<string, NodePosition>>({});
   const appliedLayoutResetCount = useRef(0);
   const searchInputRef = useRef<HTMLInputElement>(null);
+  const lastSelectionFitKeyRef = useRef<string | null>(null);
 
   const activeService = serviceMaps[activeServiceId];
   const activeServiceChoice =
@@ -717,6 +760,92 @@ function AppShell({ themeMode, onToggleTheme }: AppShellProps) {
       window.cancelAnimationFrame(frame);
     };
   }, [fitView, matchedNodes, query]);
+
+  const selectionFitKey = useMemo(() => {
+    if (selectedId) {
+      return `node:${selectedId}`;
+    }
+
+    if (selectedEdge) {
+      return `edge:${selectedEdge.id}`;
+    }
+
+    if (selectedField) {
+      return `field:${selectedField.nodeId}:${selectedField.fieldId}`;
+    }
+
+    return null;
+  }, [selectedEdge, selectedField, selectedId]);
+
+  const selectionFitNodeIds = useMemo(() => {
+    const nodeIds = new Set<string>();
+
+    if (selectedId) {
+      nodeIds.add(selectedId);
+      selectedNodeConnections.nodeIds.forEach((nodeId) => nodeIds.add(nodeId));
+    }
+
+    if (selectedEdge) {
+      selectedEdgeEndpointIds.forEach((nodeId) => nodeIds.add(nodeId));
+    }
+
+    if (selectedField) {
+      nodeIds.add(selectedField.nodeId);
+      selectedEdgeEndpointIds.forEach((nodeId) => nodeIds.add(nodeId));
+    }
+
+    return nodeIds;
+  }, [selectedEdge, selectedEdgeEndpointIds, selectedField, selectedId, selectedNodeConnections.nodeIds]);
+
+  const selectionFitNodes = useMemo(
+    () =>
+      selectionFitNodeIds.size
+        ? nodes.filter((currentNode) => selectionFitNodeIds.has(currentNode.id))
+        : [],
+    [nodes, selectionFitNodeIds],
+  );
+
+  const selectionFitEdges = useMemo(() => {
+    if (selectedId) {
+      return readableLayout.edges.filter(({ edge }) => selectedNodeConnections.edgeIds.has(edge.id));
+    }
+
+    if (selectedEdge) {
+      return readableLayout.edges.filter(({ edge }) => edge.id === selectedEdge.id);
+    }
+
+    return [];
+  }, [readableLayout.edges, selectedEdge, selectedId, selectedNodeConnections.edgeIds]);
+
+  const selectionFitBounds = useMemo(() => {
+    const nodeBounds = selectionFitNodes.length ? mapNodesBounds(selectionFitNodes) : null;
+    const edgeBounds = routePointsBounds(selectionFitEdges.flatMap((edge) => edge.routePoints));
+
+    return mergeBounds(nodeBounds, edgeBounds);
+  }, [selectionFitEdges, selectionFitNodes]);
+
+  useEffect(() => {
+    if (!selectionFitKey) {
+      lastSelectionFitKeyRef.current = null;
+      return;
+    }
+
+    if (!selectionFitBounds || lastSelectionFitKeyRef.current === selectionFitKey) {
+      return;
+    }
+
+    const frame = window.requestAnimationFrame(() => {
+      lastSelectionFitKeyRef.current = selectionFitKey;
+      void fitBounds(selectionFitBounds, {
+        padding: 0.24,
+        duration: 350,
+      });
+    });
+
+    return () => {
+      window.cancelAnimationFrame(frame);
+    };
+  }, [fitBounds, selectionFitBounds, selectionFitKey]);
 
   const edges = useMemo<RoutedMapEdge[]>(
     () =>
