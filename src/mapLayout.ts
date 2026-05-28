@@ -194,6 +194,74 @@ export function improveNodeLayout(nodes: MapNode[]): MapNode[] {
   });
 }
 
+function semanticLayoutPartitions(nodes: MapNode[], edges: MapEdge[]): Map<string, number> | null {
+  const nodeIds = new Set(nodes.map((node) => node.id));
+  const rpcEdges = edges.filter(
+    (edge) => edge.kind === 'rpc' && nodeIds.has(edge.source) && nodeIds.has(edge.target),
+  );
+
+  if (!rpcEdges.length) {
+    return null;
+  }
+
+  const adjacency = new Map<string, string[]>();
+  for (const edge of edges) {
+    if (!nodeIds.has(edge.source) || !nodeIds.has(edge.target)) {
+      continue;
+    }
+
+    const targets = adjacency.get(edge.source);
+    if (targets) {
+      targets.push(edge.target);
+    } else {
+      adjacency.set(edge.source, [edge.target]);
+    }
+  }
+
+  const partitions = new Map<string, number>();
+  const queue: string[] = [];
+  const rpcSourceIds = new Set(rpcEdges.map((edge) => edge.source));
+
+  for (const node of nodes) {
+    if (node.data.kind !== 'service' || !rpcSourceIds.has(node.id)) {
+      continue;
+    }
+
+    partitions.set(node.id, 0);
+    queue.push(node.id);
+  }
+
+  for (let index = 0; index < queue.length; index += 1) {
+    const nodeId = queue[index];
+    const currentPartition = partitions.get(nodeId);
+
+    if (currentPartition === undefined) {
+      continue;
+    }
+
+    for (const targetId of adjacency.get(nodeId) ?? []) {
+      const nextPartition = currentPartition + 1;
+      const previousPartition = partitions.get(targetId);
+
+      if (previousPartition !== undefined && previousPartition <= nextPartition) {
+        continue;
+      }
+
+      partitions.set(targetId, nextPartition);
+      queue.push(targetId);
+    }
+  }
+
+  const fallbackPartition = Math.max(...partitions.values()) + 1;
+  for (const node of nodes) {
+    if (!partitions.has(node.id)) {
+      partitions.set(node.id, fallbackPartition);
+    }
+  }
+
+  return partitions;
+}
+
 export async function computeReadableNodeLayout(
   nodes: MapNode[],
   edges: MapEdge[],
@@ -202,6 +270,7 @@ export async function computeReadableNodeLayout(
   const activeLayerSpacing = options.compact ? 40 : layerSpacing;
   const activeNodeSpacing = options.compact ? 24 : nodeSpacing;
   const activeEdgeNodeSpacing = options.compact ? 20 : 42;
+  const partitions = semanticLayoutPartitions(nodes, edges);
 
   const graph: ElkNode = {
     id: 'gnmi-map',
@@ -209,6 +278,7 @@ export async function computeReadableNodeLayout(
       'elk.algorithm': 'layered',
       'elk.direction': 'RIGHT',
       'elk.edgeRouting': 'ORTHOGONAL',
+      ...(partitions ? { 'elk.partitioning.activate': 'true' } : {}),
       'elk.layered.nodePlacement.strategy': options.compact ? 'SIMPLE' : 'BRANDES_KOEPF',
       'elk.layered.crossingMinimization.strategy': 'LAYER_SWEEP',
       'elk.layered.layering.strategy': 'NETWORK_SIMPLEX',
@@ -224,6 +294,13 @@ export async function computeReadableNodeLayout(
       id: node.id,
       width: mapNodeWidth(node),
       height: estimatedMapNodeHeight(node),
+      ...(partitions
+        ? {
+          layoutOptions: {
+            'elk.partitioning.partition': `${partitions.get(node.id) ?? 0}`,
+          },
+        }
+        : {}),
     })),
     edges: edges.map<ElkExtendedEdge>((edge) => ({
       id: edge.id,

@@ -48,15 +48,18 @@ import {
   Typography,
 } from '@mui/material';
 import CheckIcon from '@mui/icons-material/Check';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import CloseIcon from '@mui/icons-material/Close';
 import CodeOutlinedIcon from '@mui/icons-material/CodeOutlined';
 import DarkModeOutlinedIcon from '@mui/icons-material/DarkModeOutlined';
 import DataObjectOutlinedIcon from '@mui/icons-material/DataObjectOutlined';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import FavoriteIcon from '@mui/icons-material/Favorite';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import FitScreenOutlinedIcon from '@mui/icons-material/FitScreenOutlined';
 import HubOutlinedIcon from '@mui/icons-material/HubOutlined';
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import MenuBookOutlinedIcon from '@mui/icons-material/MenuBookOutlined';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import PictureAsPdfOutlinedIcon from '@mui/icons-material/PictureAsPdfOutlined';
@@ -93,6 +96,7 @@ import {
 } from './serviceMaps';
 import { downloadMapPdf, downloadMapSvg, type MapExportInput } from './mapExport';
 import { createAppTheme, type ThemeMode } from './theme';
+import { HotkeysDialog } from './hotkeysDialog.tsx';
 
 const edgeStyleByKind: Record<MapEdgeKind, CSSProperties> = {
   rpc: { stroke: 'var(--edge-field)', strokeWidth: 2.2 },
@@ -429,9 +433,14 @@ function AppShell({ themeMode, onToggleTheme }: AppShellProps) {
   const [selectedField, setSelectedField] = useState<FieldSelection | null>(null);
   const [manualPositions, setManualPositions] = useState<Record<string, NodePosition>>({});
   const [routingPositions, setRoutingPositions] = useState<Record<string, NodePosition>>({});
+  const [inspectorCollapsed, setInspectorCollapsed] = useState(false);
   const appliedLayoutResetCount = useRef(0);
   const searchInputRef = useRef<HTMLInputElement>(null);
   const lastSelectionFitKeyRef = useRef<string | null>(null);
+  const inspectorFitFramesRef = useRef<{ first: number | null; second: number | null }>({
+    first: null,
+    second: null,
+  });
 
   const activeService = serviceMaps[activeServiceId];
   const activeServiceChoice =
@@ -956,6 +965,85 @@ function AppShell({ themeMode, onToggleTheme }: AppShellProps) {
     fitView({ padding: 0.12, duration: 450 });
   }, [fitView]);
 
+  const fitCurrentFocus = useCallback(() => {
+    if (selectionFitKey && selectionFitBounds) {
+      void fitBounds(selectionFitBounds, {
+        padding: 0.24,
+        duration: 350,
+      });
+      return;
+    }
+
+    if (query && matchedNodes.length > 0) {
+      void fitView({
+        nodes: matchedNodes,
+        padding: 0.24,
+        duration: 350,
+        maxZoom: 1.2,
+      });
+      return;
+    }
+
+    void fitView({ padding: 0.12, duration: 450 });
+  }, [fitBounds, fitView, matchedNodes, query, selectionFitBounds, selectionFitKey]);
+
+  const cancelInspectorFit = useCallback(() => {
+    const { first, second } = inspectorFitFramesRef.current;
+
+    if (first !== null) {
+      window.cancelAnimationFrame(first);
+    }
+
+    if (second !== null) {
+      window.cancelAnimationFrame(second);
+    }
+
+    inspectorFitFramesRef.current = { first: null, second: null };
+  }, []);
+
+  const scheduleInspectorFit = useCallback(() => {
+    cancelInspectorFit();
+
+    const first = window.requestAnimationFrame(() => {
+      inspectorFitFramesRef.current.first = null;
+      const second = window.requestAnimationFrame(() => {
+        inspectorFitFramesRef.current.second = null;
+        fitCurrentFocus();
+      });
+      inspectorFitFramesRef.current.second = second;
+    });
+
+    inspectorFitFramesRef.current.first = first;
+  }, [cancelInspectorFit, fitCurrentFocus]);
+
+  useEffect(() => cancelInspectorFit, [cancelInspectorFit]);
+
+  const toggleInspector = useCallback(() => {
+    setInspectorCollapsed((collapsed) => !collapsed);
+    scheduleInspectorFit();
+  }, [scheduleInspectorFit]);
+
+  useEffect(() => {
+    const handleDetailsToggleKey = (event: KeyboardEvent) => {
+      if (event.altKey || event.ctrlKey || event.metaKey || isTextEditingTarget(event.target)) {
+        return;
+      }
+
+      if (event.key.toLowerCase() !== 'd') {
+        return;
+      }
+
+      event.preventDefault();
+      toggleInspector();
+    };
+
+    window.addEventListener('keydown', handleDetailsToggleKey);
+
+    return () => {
+      window.removeEventListener('keydown', handleDetailsToggleKey);
+    };
+  }, [toggleInspector]);
+
   const onNodesChange = useCallback((changes: NodeChange<MapNode>[]) => {
     const selectedNodeChanged = changes.some(
       (change) => change.type === 'select' && change.selected,
@@ -1205,7 +1293,7 @@ function AppShell({ themeMode, onToggleTheme }: AppShellProps) {
         </Stack>
       </Box>
 
-      <main className="map-stage">
+      <main className={`map-stage${inspectorCollapsed ? ' is-inspector-collapsed' : ''}`}>
         <ReactFlow<MapNode, RoutedMapEdge>
           nodes={nodes}
           edges={edges}
@@ -1218,7 +1306,9 @@ function AppShell({ themeMode, onToggleTheme }: AppShellProps) {
               [node.id]: node.position,
             }));
           }}
-          nodesDraggable
+          nodesDraggable={false}
+          nodesConnectable={false}
+          elementsSelectable={false}
           minZoom={0.18}
           maxZoom={1.7}
           defaultViewport={{ x: 70, y: 40, zoom: 0.42 }}
@@ -1244,18 +1334,59 @@ function AppShell({ themeMode, onToggleTheme }: AppShellProps) {
         >
           <Background color="var(--background-pattern)" gap={34} size={1.1} />
           <Controls position="bottom-left" />
+          <div
+            className="map-attribution nodrag nopan"
+            aria-label="Created with love by Florian Schwarz and Roman Dodin"
+          >
+            <span>Created with</span>
+            <FavoriteIcon className="map-attribution-heart" aria-hidden="true" />
+            <span>
+              by{' '}
+              <a href="https://www.linkedin.com/in/florian-schwarz-812a34145/" target="_blank" rel="noreferrer">
+                Florian Schwarz
+              </a>{' '}
+              /{' '}
+              <a href="https://www.linkedin.com/in/rdodin/" target="_blank" rel="noreferrer">
+                Roman Dodin
+              </a>
+            </span>
+          </div>
         </ReactFlow>
 
-        <Inspector
-          node={selectedNode}
-          selectedField={selectedFieldDetails}
-          service={activeService}
-          serviceLabel={activeService.label}
-          serviceChoice={activeServiceChoice}
-          serviceNode={activeServiceNode}
-          totalNodes={visibleMap.nodes.length}
-          totalEdges={visibleMap.edges.length}
-        />
+        <div className="inspector-shell" role="complementary" aria-label="Details panel">
+          {inspectorCollapsed ? (
+            <span className="inspector-collapsed-icon" aria-hidden="true">
+              <InfoOutlinedIcon sx={{ fontSize: 18 }} />
+            </span>
+          ) : null}
+
+          <button
+            className="inspector-toggle"
+            type="button"
+            aria-label={inspectorCollapsed ? 'Show details panel' : 'Hide details panel'}
+            aria-expanded={!inspectorCollapsed}
+            onClick={toggleInspector}
+          >
+            {inspectorCollapsed ? (
+              <ChevronLeftIcon sx={{ fontSize: 18 }} />
+            ) : (
+              <ChevronRightIcon sx={{ fontSize: 18 }} />
+            )}
+          </button>
+
+          {!inspectorCollapsed ? (
+            <Inspector
+              node={selectedNode}
+              selectedField={selectedFieldDetails}
+              service={activeService}
+              serviceLabel={activeService.label}
+              serviceChoice={activeServiceChoice}
+              serviceNode={activeServiceNode}
+              totalNodes={visibleMap.nodes.length}
+              totalEdges={visibleMap.edges.length}
+            />
+          ) : null}
+        </div>
       </main>
     </Box>
   );
@@ -1623,6 +1754,7 @@ function ViewOptionsMenu({
   pdfExportPending,
 }: ViewOptionsMenuProps) {
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
+  const [hotkeysOpen, setHotkeysOpen] = useState(false);
   const open = Boolean(anchorEl);
 
   const fit = () => {
@@ -1640,6 +1772,10 @@ function ViewOptionsMenu({
   const exportSvg = () => {
     onExportSvg();
     setAnchorEl(null);
+  };
+  const openHotkeys = () => {
+    setAnchorEl(null);
+    setHotkeysOpen(true);
   };
 
   return (
@@ -1704,6 +1840,15 @@ function ViewOptionsMenu({
           <ListItemText primary="Reset" />
         </MenuItem>
 
+        <MenuItem onClick={openHotkeys}>
+          <ListItemIcon>
+            <InfoOutlinedIcon fontSize="small" />
+          </ListItemIcon>
+          <ListItemText primary="Hotkeys" />
+        </MenuItem>
+
+        <Divider sx={{ my: 0.5 }} />
+
         <MenuItem
           selected={showExtensions}
           role="menuitemcheckbox"
@@ -1748,6 +1893,8 @@ function ViewOptionsMenu({
           <ListItemText primary="Export SVG" />
         </MenuItem>
       </Menu>
+
+      <HotkeysDialog open={hotkeysOpen} onClose={() => setHotkeysOpen(false)} />
     </Box>
   );
 }
