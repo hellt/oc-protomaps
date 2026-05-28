@@ -93,6 +93,43 @@ function validateDeprecatedVisibility(): void {
   );
 }
 
+function validateGnmiServiceVersionRefs(): void {
+  assert(mapSource.gnmiServiceVersion === '0.10.0', 'gNMI latest service version must be 0.10.0');
+  assert(mapSource.gnmiTag === 'v0.14.1', 'gNMI latest source tag must be v0.14.1');
+  assert(
+    mapSource.gnmiBase.includes('/v0.14.1/'),
+    'gNMI latest proto base must use latest v0.14.1 ref',
+  );
+
+  const latestChoice = mapSource.services.find((service) => service.version === '0.10.0');
+  assert(latestChoice?.sourceTag === 'v0.14.1', 'gNMI 0.10.0 must use source tag v0.14.1');
+
+  const previousChoice = mapSource.services.find((service) => service.version === '0.9.0');
+  assert(previousChoice?.sourceTag === 'v0.9.1', 'gNMI 0.9.0 must use source tag v0.9.1');
+  assert(
+    mapSource.services.every((service) => service.version !== '0.9.1'),
+    'gNMI service version 0.9.1 must not be generated',
+  );
+
+  for (const service of mapSource.services) {
+    const serviceMap = getVisibleMap({
+      showDeprecated: true,
+      showExtensions: true,
+      sourceTag: service.sourceTag,
+    });
+    const connectedNodeIds = new Set(
+      serviceMap.edges.flatMap((edge) => [edge.source, edge.target]),
+    );
+    const unconnectedExternalNode = serviceMap.nodes.find(
+      (node) => node.data.kind === 'external' && !connectedNodeIds.has(node.id),
+    );
+    assert(
+      !unconnectedExternalNode,
+      `gNMI ${service.version}: external node ${unconnectedExternalNode?.id} must be connected`,
+    );
+  }
+}
+
 function validateServiceRegistryMaps(): void {
   for (const serviceId of serviceMapOrder) {
     const serviceMap = serviceMaps[serviceId];
@@ -104,6 +141,12 @@ function validateServiceRegistryMaps(): void {
     assert(rpcNodeCount > 0, `${serviceId}: map must include RPC nodes`);
     assert(fullMap.edges.length > 0, `${serviceId}: map must include relationships`);
     validateEdges(fullMap.nodes, fullMap.edges, `${serviceId} full map`);
+
+    const defaultChoice = serviceMap.serviceChoices.find(
+      (serviceChoice) => serviceChoice.id === serviceMap.defaultServiceChoiceId,
+    );
+    const defaultFocusNodeId =
+      defaultChoice?.focusNodeId ?? defaultChoice?.id ?? serviceMap.defaultServiceChoiceId;
 
     for (const serviceChoice of serviceMap.serviceChoices) {
       const focusNodeId = serviceChoice.focusNodeId ?? serviceChoice.id;
@@ -123,8 +166,9 @@ function validateServiceRegistryMaps(): void {
       );
       assert(
         focusedMap.nodes.length < fullMap.nodes.length ||
-        serviceChoice.id === serviceMap.defaultServiceChoiceId ||
-        serviceMap.serviceChoices.length === 1,
+          serviceChoice.id === serviceMap.defaultServiceChoiceId ||
+          focusNodeId === defaultFocusNodeId ||
+          serviceMap.serviceChoices.length === 1,
         `${serviceId}/${serviceChoice.label}: focused map should be narrower than family map`,
       );
       validateEdges(focusedMap.nodes, focusedMap.edges, `${serviceId}/${serviceChoice.label}`);
@@ -279,6 +323,7 @@ async function main(): Promise<void> {
   validateEdges(deprecatedMap.nodes, deprecatedMap.edges, 'deprecated map');
   validateLinks();
   validateDeprecatedVisibility();
+  validateGnmiServiceVersionRefs();
   validateServiceRegistryMaps();
   validateServiceRoutes();
 

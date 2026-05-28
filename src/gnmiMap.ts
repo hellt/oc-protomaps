@@ -2124,6 +2124,44 @@ export const mapVariants: GnmiMapVariant[] = [
         }
       },
       {
+        "id": "legend",
+        "type": "schema",
+        "position": {
+          "x": 2720,
+          "y": 1470
+        },
+        "style": {
+          "width": 410
+        },
+        "data": {
+          "id": "legend",
+          "kind": "legend",
+          "label": "Legend",
+          "fields": [
+            {
+              "id": "proto",
+              "type": "file icon",
+              "name": "proto definition link"
+            },
+            {
+              "id": "docs",
+              "type": "book icon",
+              "name": "documentation link"
+            },
+            {
+              "id": "extension-note",
+              "type": "toggle",
+              "name": "extension relationship edges"
+            },
+            {
+              "id": "pdf",
+              "type": "reference",
+              "name": "gnmi_0.7.0_map.pdf"
+            }
+          ]
+        }
+      },
+      {
         "id": "commit",
         "type": "schema",
         "position": {
@@ -2131,7 +2169,7 @@ export const mapVariants: GnmiMapVariant[] = [
           "y": 1500
         },
         "style": {
-          "width": 390
+          "width": 360
         },
         "data": {
           "id": "commit",
@@ -2185,11 +2223,53 @@ export const mapVariants: GnmiMapVariant[] = [
         }
       },
       {
-        "id": "commit-request",
+        "id": "commit-cancel",
         "type": "schema",
         "position": {
           "x": 2960,
-          "y": 1580
+          "y": 1500
+        },
+        "style": {
+          "width": 360
+        },
+        "data": {
+          "id": "commit-cancel",
+          "kind": "message",
+          "label": "gnmi_ext.CommitCancel",
+          "description": "CommitCancel is used to cancel an on-going commit. It hold additional\nparameter requried for cancel action.",
+          "sourceSymbol": "gnmi_ext.CommitCancel",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi_ext/gnmi_ext.proto#L140",
+          "fields": []
+        }
+      },
+      {
+        "id": "commit-confirm",
+        "type": "schema",
+        "position": {
+          "x": 3410,
+          "y": 1500
+        },
+        "style": {
+          "width": 360
+        },
+        "data": {
+          "id": "commit-confirm",
+          "kind": "message",
+          "label": "gnmi_ext.CommitConfirm",
+          "description": "CommitConfirm is used to confirm an on-going commit. It hold additional\nparameter requried for confirm action.",
+          "sourceSymbol": "gnmi_ext.CommitConfirm",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi_ext/gnmi_ext.proto#L136",
+          "fields": []
+        }
+      },
+      {
+        "id": "commit-request",
+        "type": "schema",
+        "position": {
+          "x": 2510,
+          "y": 1660
         },
         "style": {
           "width": 360
@@ -2214,56 +2294,14 @@ export const mapVariants: GnmiMapVariant[] = [
         }
       },
       {
-        "id": "commit-confirm",
-        "type": "schema",
-        "position": {
-          "x": 2960,
-          "y": 1760
-        },
-        "style": {
-          "width": 300
-        },
-        "data": {
-          "id": "commit-confirm",
-          "kind": "message",
-          "label": "gnmi_ext.CommitConfirm",
-          "description": "CommitConfirm is used to confirm an on-going commit. It hold additional\nparameter requried for confirm action.",
-          "sourceSymbol": "gnmi_ext.CommitConfirm",
-          "deprecated": false,
-          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi_ext/gnmi_ext.proto#L136",
-          "fields": []
-        }
-      },
-      {
-        "id": "commit-cancel",
-        "type": "schema",
-        "position": {
-          "x": 2960,
-          "y": 1900
-        },
-        "style": {
-          "width": 300
-        },
-        "data": {
-          "id": "commit-cancel",
-          "kind": "message",
-          "label": "gnmi_ext.CommitCancel",
-          "description": "CommitCancel is used to cancel an on-going commit. It hold additional\nparameter requried for cancel action.",
-          "sourceSymbol": "gnmi_ext.CommitCancel",
-          "deprecated": false,
-          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi_ext/gnmi_ext.proto#L140",
-          "fields": []
-        }
-      },
-      {
         "id": "commit-set-rollback-duration",
         "type": "schema",
         "position": {
           "x": 2960,
-          "y": 2040
+          "y": 1660
         },
         "style": {
-          "width": 400
+          "width": 360
         },
         "data": {
           "id": "commit-set-rollback-duration",
@@ -2285,72 +2323,14 @@ export const mapVariants: GnmiMapVariant[] = [
         }
       },
       {
-        "id": "duration",
-        "type": "schema",
-        "position": {
-          "x": 3400,
-          "y": 1740
-        },
-        "style": {
-          "width": 300
-        },
-        "data": {
-          "id": "duration",
-          "kind": "external",
-          "label": "google.protobuf.Duration",
-          "protoUrl": "https://github.com/protocolbuffers/protobuf/blob/main/src/google/protobuf/duration.proto",
-          "fields": [
-            {
-              "id": "seconds",
-              "type": "int64",
-              "name": "seconds"
-            },
-            {
-              "id": "nanos",
-              "type": "int32",
-              "name": "nanos"
-            }
-          ]
-        }
-      },
-      {
-        "id": "depth",
-        "type": "schema",
-        "position": {
-          "x": 3350,
-          "y": 850
-        },
-        "style": {
-          "width": 260
-        },
-        "data": {
-          "id": "depth",
-          "kind": "message",
-          "label": "gnmi_ext.Depth",
-          "description": "Depth allows clients to specify the depth of the subtree to be returned in\nthe response. The depth is specified as the number of levels below the\nspecified path.\nThe depth is applied to all paths in the Get or Subscribe request.\nThe document about gNMI depth can be found at\nhttps://github.com/openconfig/reference/tree/master/rpc/gnmi/gnmi-depth.md",
-          "sourceSymbol": "gnmi_ext.Depth",
-          "deprecated": false,
-          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi_ext/gnmi_ext.proto#L155",
-          "fields": [
-            {
-              "id": "level",
-              "type": "uint32",
-              "name": "level",
-              "description": "The level of the subtree to be returned in the response.\nValue of 0 means no depth limit and behaves the same as if the extension\nwas not specified.\nValue of 1 means only the specified path and its direct children will be\nreturned.",
-              "ref": null
-            }
-          ]
-        }
-      },
-      {
         "id": "config-subscription",
         "type": "schema",
         "position": {
-          "x": 3350,
-          "y": 1030
+          "x": 3410,
+          "y": 1660
         },
         "style": {
-          "width": 400
+          "width": 360
         },
         "data": {
           "id": "config-subscription",
@@ -2384,8 +2364,8 @@ export const mapVariants: GnmiMapVariant[] = [
         "id": "config-subscription-start",
         "type": "schema",
         "position": {
-          "x": 3810,
-          "y": 980
+          "x": 2510,
+          "y": 1820
         },
         "style": {
           "width": 360
@@ -2405,11 +2385,11 @@ export const mapVariants: GnmiMapVariant[] = [
         "id": "config-subscription-sync-done",
         "type": "schema",
         "position": {
-          "x": 3810,
-          "y": 1130
+          "x": 2960,
+          "y": 1820
         },
         "style": {
-          "width": 400
+          "width": 360
         },
         "data": {
           "id": "config-subscription-sync-done",
@@ -2445,39 +2425,59 @@ export const mapVariants: GnmiMapVariant[] = [
         }
       },
       {
-        "id": "legend",
+        "id": "depth",
         "type": "schema",
         "position": {
-          "x": 2720,
-          "y": 1470
+          "x": 3410,
+          "y": 1820
         },
         "style": {
-          "width": 410
+          "width": 360
         },
         "data": {
-          "id": "legend",
-          "kind": "legend",
-          "label": "Legend",
+          "id": "depth",
+          "kind": "message",
+          "label": "gnmi_ext.Depth",
+          "description": "Depth allows clients to specify the depth of the subtree to be returned in\nthe response. The depth is specified as the number of levels below the\nspecified path.\nThe depth is applied to all paths in the Get or Subscribe request.\nThe document about gNMI depth can be found at\nhttps://github.com/openconfig/reference/tree/master/rpc/gnmi/gnmi-depth.md",
+          "sourceSymbol": "gnmi_ext.Depth",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gnmi/blob/v0.14.1/proto/gnmi_ext/gnmi_ext.proto#L155",
           "fields": [
             {
-              "id": "proto",
-              "type": "file icon",
-              "name": "proto definition link"
+              "id": "level",
+              "type": "uint32",
+              "name": "level",
+              "description": "The level of the subtree to be returned in the response.\nValue of 0 means no depth limit and behaves the same as if the extension\nwas not specified.\nValue of 1 means only the specified path and its direct children will be\nreturned.",
+              "ref": null
+            }
+          ]
+        }
+      },
+      {
+        "id": "duration",
+        "type": "schema",
+        "position": {
+          "x": 3400,
+          "y": 1740
+        },
+        "style": {
+          "width": 300
+        },
+        "data": {
+          "id": "duration",
+          "kind": "external",
+          "label": "google.protobuf.Duration",
+          "protoUrl": "https://github.com/protocolbuffers/protobuf/blob/main/src/google/protobuf/duration.proto",
+          "fields": [
+            {
+              "id": "seconds",
+              "type": "int64",
+              "name": "seconds"
             },
             {
-              "id": "docs",
-              "type": "book icon",
-              "name": "documentation link"
-            },
-            {
-              "id": "extension-note",
-              "type": "toggle",
-              "name": "extension relationship edges"
-            },
-            {
-              "id": "pdf",
-              "type": "reference",
-              "name": "gnmi_0.7.0_map.pdf"
+              "id": "nanos",
+              "type": "int32",
+              "name": "nanos"
             }
           ]
         }
@@ -5120,35 +5120,6 @@ export const mapVariants: GnmiMapVariant[] = [
         }
       },
       {
-        "id": "duration",
-        "type": "schema",
-        "position": {
-          "x": 3400,
-          "y": 1740
-        },
-        "style": {
-          "width": 300
-        },
-        "data": {
-          "id": "duration",
-          "kind": "external",
-          "label": "google.protobuf.Duration",
-          "protoUrl": "https://github.com/protocolbuffers/protobuf/blob/main/src/google/protobuf/duration.proto",
-          "fields": [
-            {
-              "id": "seconds",
-              "type": "int64",
-              "name": "seconds"
-            },
-            {
-              "id": "nanos",
-              "type": "int32",
-              "name": "nanos"
-            }
-          ]
-        }
-      },
-      {
         "id": "legend",
         "type": "schema",
         "position": {
@@ -7725,35 +7696,6 @@ export const mapVariants: GnmiMapVariant[] = [
               "name": "end",
               "description": "Nanoseconds since the epoch",
               "ref": null
-            }
-          ]
-        }
-      },
-      {
-        "id": "duration",
-        "type": "schema",
-        "position": {
-          "x": 3400,
-          "y": 1740
-        },
-        "style": {
-          "width": 300
-        },
-        "data": {
-          "id": "duration",
-          "kind": "external",
-          "label": "google.protobuf.Duration",
-          "protoUrl": "https://github.com/protocolbuffers/protobuf/blob/main/src/google/protobuf/duration.proto",
-          "fields": [
-            {
-              "id": "seconds",
-              "type": "int64",
-              "name": "seconds"
-            },
-            {
-              "id": "nanos",
-              "type": "int32",
-              "name": "nanos"
             }
           ]
         }
