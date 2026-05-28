@@ -487,7 +487,6 @@ a {
   overflow: hidden;
   border: 1px solid var(--node-border);
   border-radius: 8px;
-  background: var(--node-header-bg);
   box-shadow: 0 8px 22px var(--node-shadow);
   color: var(--ink);
   transition:
