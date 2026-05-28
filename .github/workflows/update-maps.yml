@@ -1,0 +1,90 @@
+name: Update OpenConfig maps
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "17 5 * * 1"
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: update-openconfig-maps
+  cancel-in-progress: false
+
+jobs:
+  update:
+    name: Regenerate map data
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_TOKEN: ${{ github.token }}
+      GH_TOKEN: ${{ github.token }}
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 11.3.0
+          run_install: false
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Regenerate map data
+        run: pnpm run build:map
+
+      - name: Validate generated maps
+        run: pnpm run test:map
+
+      - name: Build app
+        run: pnpm run build
+
+      - name: Detect generated changes
+        id: changes
+        run: |
+          if git diff --quiet -- src/gnmiMap.ts src/generatedServiceMaps.ts; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Commit generated changes
+        if: steps.changes.outputs.changed == 'true'
+        run: |
+          branch="automation/update-openconfig-maps"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -B "$branch"
+          git add src/gnmiMap.ts src/generatedServiceMaps.ts
+          git commit -m "chore: update generated OpenConfig maps"
+          git push --force-with-lease origin "$branch"
+
+      - name: Open pull request
+        if: steps.changes.outputs.changed == 'true'
+        run: |
+          branch="automation/update-openconfig-maps"
+          title="chore: update generated OpenConfig maps"
+          body=$'Regenerates OpenConfig proto maps from the latest upstream tags.\n\nValidation run by workflow:\n- pnpm run build:map\n- pnpm run test:map\n- pnpm run build'
+          existing_pr="$(gh pr list --head "$branch" --state open --json number --jq '.[0].number')"
+
+          if [ -n "$existing_pr" ]; then
+            gh pr edit "$existing_pr" --title "$title" --body "$body"
+          else
+            gh pr create \
+              --head "$branch" \
+              --base "${{ github.event.repository.default_branch }}" \
+              --title "$title" \
+              --body "$body"
+          fi
