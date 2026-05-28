@@ -95,6 +95,7 @@ import {
 } from './serviceMaps';
 import { downloadMapPdf, downloadMapSvg, type MapExportInput } from './mapExport';
 import { createAppTheme, type ThemeMode } from './theme';
+import { HotkeysDialog } from './hotkeysDialog.tsx';
 
 const edgeStyleByKind: Record<MapEdgeKind, CSSProperties> = {
   rpc: { stroke: 'var(--edge-field)', strokeWidth: 2.2 },
@@ -1735,6 +1736,7 @@ function ViewOptionsMenu({
   pdfExportPending,
 }: ViewOptionsMenuProps) {
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
+  const [hotkeysOpen, setHotkeysOpen] = useState(false);
   const open = Boolean(anchorEl);
 
   const fit = () => {
@@ -1752,6 +1754,10 @@ function ViewOptionsMenu({
   const exportSvg = () => {
     onExportSvg();
     setAnchorEl(null);
+  };
+  const openHotkeys = () => {
+    setAnchorEl(null);
+    setHotkeysOpen(true);
   };
 
   return (
@@ -1816,6 +1822,15 @@ function ViewOptionsMenu({
           <ListItemText primary="Reset" />
         </MenuItem>
 
+        <MenuItem onClick={openHotkeys}>
+          <ListItemIcon>
+            <InfoOutlinedIcon fontSize="small" />
+          </ListItemIcon>
+          <ListItemText primary="Hotkeys" />
+        </MenuItem>
+
+        <Divider sx={{ my: 0.5 }} />
+
         <MenuItem
           selected={showExtensions}
           role="menuitemcheckbox"
@@ -1860,6 +1875,8 @@ function ViewOptionsMenu({
           <ListItemText primary="Export SVG" />
         </MenuItem>
       </Menu>
+
+      <HotkeysDialog open={hotkeysOpen} onClose={() => setHotkeysOpen(false)} />
     </Box>
   );
 }
