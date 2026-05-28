@@ -416,13 +416,25 @@ a {
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.01em;
-  pointer-events: none;
+  pointer-events: auto;
   user-select: none;
+}
+
+.map-attribution a {
+  color: color-mix(in srgb, var(--focus) 58%, var(--page-bg));
+  text-decoration: none;
+  text-underline-offset: 2px;
+}
+
+.map-attribution a:hover,
+.map-attribution a:focus-visible {
+  color: color-mix(in srgb, var(--focus) 76%, var(--ink));
+  text-decoration: underline;
 }
 
 .map-attribution-heart {
   animation: attribution-heart-pulse 1.8s ease-in-out infinite;
-  color: currentColor;
+  color: color-mix(in srgb, var(--red) 58%, var(--page-bg));
   transform-origin: center;
 }
 

@@ -1334,10 +1334,22 @@ function AppShell({ themeMode, onToggleTheme }: AppShellProps) {
         >
           <Background color="var(--background-pattern)" gap={34} size={1.1} />
           <Controls position="bottom-left" />
-          <div className="map-attribution" aria-label="Created with love by Florian Schwarz and Roman Dodin">
+          <div
+            className="map-attribution nodrag nopan"
+            aria-label="Created with love by Florian Schwarz and Roman Dodin"
+          >
             <span>Created with</span>
             <FavoriteIcon className="map-attribution-heart" aria-hidden="true" />
-            <span>by Florian Schwarz / Roman Dodin</span>
+            <span>
+              by{' '}
+              <a href="https://www.linkedin.com/in/florian-schwarz-812a34145/" target="_blank" rel="noreferrer">
+                Florian Schwarz
+              </a>{' '}
+              /{' '}
+              <a href="https://www.linkedin.com/in/rdodin/" target="_blank" rel="noreferrer">
+                Roman Dodin
+              </a>
+            </span>
           </div>
         </ReactFlow>
 
