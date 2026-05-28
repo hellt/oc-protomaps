@@ -3,6 +3,7 @@ import type { Edge, Node } from '@xyflow/react';
 export type MapNodeKind = 'service' | 'rpc' | 'message' | 'enum' | 'external' | 'legend';
 export type MapEdgeKind = 'rpc' | 'field' | 'extension' | 'extension-detail';
 export type MapBadge = 'stream' | 'optional' | 'deprecated' | 'reserved';
+export type MapDiffStatus = 'added' | 'changed' | 'removed';
 
 export type MapBounds = {
   width: number;
@@ -18,6 +19,8 @@ export type MapField = {
   group?: string;
   badge?: MapBadge;
   deprecated?: boolean;
+  diffStatus?: MapDiffStatus;
+  diffChanges?: string[];
 };
 
 export type MapNodeData = Record<string, unknown> & {
@@ -34,6 +37,8 @@ export type MapNodeData = Record<string, unknown> & {
   active?: boolean;
   query?: string;
   showExtensions?: boolean;
+  diffStatus?: MapDiffStatus;
+  diffChanges?: string[];
 };
 
 export type MapNode = Node<MapNodeData, 'schema'>;
@@ -42,6 +47,8 @@ export type MapEdge = Edge<Record<string, never>, 'smoothstep'> & {
   sourceHandle: string;
   kind: MapEdgeKind;
   deprecated: boolean;
+  diffStatus?: MapDiffStatus;
+  diffChanges?: string[];
 };
 
 export type VisibleMapOptions = {

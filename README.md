@@ -21,6 +21,7 @@ All maps are available in the app:
 - Choose a service family with the top navigation.
 - Select a concrete service from the service selector.
 - Use the RPC selector to focus the map on one RPC.
+- Use the diff selector to compare the selected service version with another checked-in version.
 - Search for messages, fields, enums, groups, or badges.
 - Open protobuf source links from nodes where available.
 - Toggle extension relationships and deprecated fields/types from the view menu.
