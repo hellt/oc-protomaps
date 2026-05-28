@@ -99,7 +99,12 @@ import {
 } from './serviceMaps';
 import { downloadMapPdf, downloadMapSvg, type MapExportInput } from './mapExport';
 import { buildProtoMapDiff, type ProtoMapDiffResult } from './mapDiff';
-import { createAppTheme, type ThemeMode } from './theme';
+import {
+  applyDocumentTheme,
+  createAppTheme,
+  getInitialTheme,
+  type ThemeMode,
+} from './theme';
 import { HotkeysDialog } from './hotkeysDialog';
 import {
   replaceCurrentUrlHash,
@@ -128,7 +133,6 @@ const edgeTypes: EdgeTypes = {
   routed: RoutedEdge,
 };
 
-const themeStorageKey = 'gnmi-map-theme';
 const routeBasePath = import.meta.env.BASE_URL;
 
 type NodePosition = {
@@ -169,19 +173,6 @@ type DiffListItem = {
   edgeId?: string;
   focusNodeIds: string[];
 };
-
-function isThemeMode(value: string | null): value is ThemeMode {
-  return value === 'light' || value === 'dark';
-}
-
-function getInitialTheme(): ThemeMode {
-  const savedTheme = window.localStorage.getItem(themeStorageKey);
-  if (isThemeMode(savedTheme)) {
-    return savedTheme;
-  }
-
-  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-}
 
 function nodePositions(nodes: MapNode[]): Record<string, NodePosition> {
   return Object.fromEntries(nodes.map((node) => [node.id, node.position]));
@@ -3216,8 +3207,7 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    document.documentElement.dataset.theme = themeMode;
-    window.localStorage.setItem(themeStorageKey, themeMode);
+    applyDocumentTheme(themeMode);
   }, [themeMode]);
 
   return (

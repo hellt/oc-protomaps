@@ -2,6 +2,25 @@ import { alpha, createTheme } from '@mui/material/styles';
 
 export type ThemeMode = 'light' | 'dark';
 
+export function getSystemTheme(): ThemeMode {
+  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+}
+
+export function getInitialTheme(): ThemeMode {
+  return getSystemTheme();
+}
+
+export function applyDocumentTheme(themeMode: ThemeMode) {
+  document.documentElement.dataset.theme = themeMode;
+}
+
+export function initializeDocumentTheme(): ThemeMode {
+  const themeMode = getInitialTheme();
+  applyDocumentTheme(themeMode);
+
+  return themeMode;
+}
+
 const lightColors = {
   pageBg: '#e6e9ef',
   panel: '#eff1f5',
