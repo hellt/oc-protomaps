@@ -25,7 +25,6 @@
   --tooltip-ink: #eff1f5;
   --node-border: #acb0be;
   --node-shadow: rgba(76, 79, 105, 0.12);
-  --node-selected-shadow: rgba(30, 102, 245, 0.16);
   --edge-rpc: #7c7f93;
   --edge-field: #7c7f93;
   --edge-extension: #7c7f93;
@@ -92,7 +91,6 @@
   --tooltip-ink: #cdd6f4;
   --node-border: #45475a;
   --node-shadow: rgba(17, 17, 27, 0.42);
-  --node-selected-shadow: rgba(137, 180, 250, 0.22);
   --edge-rpc: #a6adc8;
   --edge-field: #a6adc8;
   --edge-extension: #a6adc8;
@@ -424,10 +422,7 @@ a {
 .react-flow {
   width: 100%;
   height: 100%;
-  background:
-    linear-gradient(90deg, color-mix(in srgb, var(--blue) 8%, transparent), transparent 36%),
-    linear-gradient(0deg, color-mix(in srgb, var(--teal) 8%, transparent), transparent 42%),
-    var(--page-bg);
+  background: var(--page-bg);
 }
 
 .map-attribution {
@@ -487,27 +482,12 @@ a {
   overflow: hidden;
   border: 1px solid var(--node-border);
   border-radius: 8px;
-  background: var(--node-header-bg);
   box-shadow: 0 8px 22px var(--node-shadow);
   color: var(--ink);
   transition:
     box-shadow 160ms ease,
     opacity 160ms ease,
     transform 160ms ease;
-}
-
-.schema-node.is-selected {
-  border-color: var(--focus);
-  box-shadow:
-    0 0 0 3px var(--node-selected-shadow),
-    0 10px 28px var(--node-shadow);
-}
-
-.schema-node.is-edge-endpoint {
-  border-color: var(--edge-selected);
-  box-shadow:
-    0 0 0 3px color-mix(in srgb, var(--edge-selected) 16%, transparent),
-    0 10px 28px var(--node-shadow);
 }
 
 .schema-node.is-dimmed {
@@ -524,6 +504,13 @@ a {
 
 .schema-node.diff-removed {
   border-color: var(--diff-removed);
+}
+
+.schema-node.is-selected {
+  border-color: var(--red);
+  box-shadow:
+    0 0 0 3px color-mix(in srgb, var(--red) 16%, transparent),
+    0 10px 28px var(--node-shadow);
 }
 
 .schema-node.diff-added::after,
@@ -893,12 +880,12 @@ a {
 .inspector-shell {
   position: relative;
   z-index: 4;
+  display: grid;
   min-width: 0;
   min-height: 0;
   overflow: visible;
   border-left: 1px solid var(--line);
   background: var(--topbar-bg);
-  box-shadow: -8px 0 20px var(--node-shadow);
 }
 
 .map-stage.is-inspector-collapsed .inspector-shell {
@@ -953,8 +940,11 @@ a {
 .inspector {
   position: relative;
   width: auto;
-  max-height: none;
-  overflow: auto;
+  height: 100%;
+  min-height: 0;
+  max-height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
   padding: 20px;
   border: 0;
   border-radius: 0;
@@ -1252,6 +1242,35 @@ a {
   line-height: 1.65;
 }
 
+.inspector-field-link {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--blue);
+  cursor: pointer;
+  font-family:
+    "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1.65;
+  overflow-wrap: anywhere;
+  text-align: left;
+  text-decoration: none;
+}
+
+.inspector-field-link:hover,
+.inspector-field-link:focus-visible {
+  outline: none;
+  text-decoration: underline;
+}
+
+.inspector-field-link:focus-visible {
+  border-radius: 3px;
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--blue) 36%, transparent);
+}
+
 .inspector-field-description {
   margin: 0;
   padding-left: 10px;
@@ -1263,17 +1282,35 @@ a {
 }
 
 .inspector-description p,
-.inspector-field-description p {
+.inspector-description ul,
+.inspector-description ol,
+.inspector-field-description p,
+.inspector-field-description ul,
+.inspector-field-description ol {
   margin: 0;
 }
 
-.inspector-description p+p,
-.inspector-description pre+p,
-.inspector-description p+pre,
-.inspector-field-description p+p,
-.inspector-field-description pre+p,
-.inspector-field-description p+pre {
-  margin-top: 10px;
+.inspector-description .description-block,
+.inspector-field-description .description-block {
+  color: inherit;
+  font-size: inherit;
+  line-height: inherit;
+}
+
+.inspector-description ul,
+.inspector-description ol,
+.inspector-field-description ul,
+.inspector-field-description ol {
+  padding-left: 20px;
+}
+
+.description-block+.description-block {
+  margin-top: 1em;
+}
+
+.inspector-description li+li,
+.inspector-field-description li+li {
+  margin-top: 4px;
 }
 
 .inspector-description code,
@@ -1416,6 +1453,7 @@ a {
   .inspector {
     position: relative;
     width: auto;
+    height: auto;
     max-height: 34vh;
     border-top: 1px solid var(--line);
     border-left: 0;

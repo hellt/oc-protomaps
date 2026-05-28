@@ -99,7 +99,12 @@ import {
 } from './serviceMaps';
 import { downloadMapPdf, downloadMapSvg, type MapExportInput } from './mapExport';
 import { buildProtoMapDiff, type ProtoMapDiffResult } from './mapDiff';
-import { createAppTheme, type ThemeMode } from './theme';
+import {
+  applyDocumentTheme,
+  createAppTheme,
+  getInitialTheme,
+  type ThemeMode,
+} from './theme';
 import { HotkeysDialog } from './hotkeysDialog';
 import {
   replaceCurrentUrlHash,
@@ -128,7 +133,6 @@ const edgeTypes: EdgeTypes = {
   routed: RoutedEdge,
 };
 
-const themeStorageKey = 'gnmi-map-theme';
 const routeBasePath = import.meta.env.BASE_URL;
 
 type NodePosition = {
@@ -169,19 +173,6 @@ type DiffListItem = {
   edgeId?: string;
   focusNodeIds: string[];
 };
-
-function isThemeMode(value: string | null): value is ThemeMode {
-  return value === 'light' || value === 'dark';
-}
-
-function getInitialTheme(): ThemeMode {
-  const savedTheme = window.localStorage.getItem(themeStorageKey);
-  if (isThemeMode(savedTheme)) {
-    return savedTheme;
-  }
-
-  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-}
 
 function nodePositions(nodes: MapNode[]): Record<string, NodePosition> {
   return Object.fromEntries(nodes.map((node) => [node.id, node.position]));
@@ -895,6 +886,12 @@ function AppShell({ themeMode, onToggleTheme }: AppShellProps) {
       ),
     [visibleMap.edges],
   );
+  const selectNode = useCallback((nodeId: string) => {
+    setSelectedField(null);
+    setSelectedEdgeId(null);
+    setSelectedId(nodeId);
+  }, []);
+
   const selectField = useCallback((nodeId: string, fieldId: string, edgeId?: string) => {
     setSelectedId(null);
     setSelectedField({ nodeId, fieldId });
@@ -954,6 +951,10 @@ function AppShell({ themeMode, onToggleTheme }: AppShellProps) {
       showExtensions,
     ],
   );
+  const nodeById = useMemo(
+    () => new Map(nodes.map((currentNode) => [currentNode.id, currentNode] as const)),
+    [nodes],
+  );
   const diffItems = useMemo(
     () => (diffResult ? diffItemsForMap(diffResult.map) : []),
     [diffResult],
@@ -989,14 +990,12 @@ function AppShell({ themeMode, onToggleTheme }: AppShellProps) {
         setSelectedField(null);
         setSelectedEdgeId(item.edgeId);
       } else if (item.nodeId) {
-        setSelectedField(null);
-        setSelectedEdgeId(null);
-        setSelectedId(item.nodeId);
+        selectNode(item.nodeId);
       }
 
       fitFocusNodeIds(item.focusNodeIds);
     },
-    [edgeIdBySourceHandle, fitFocusNodeIds, selectField],
+    [edgeIdBySourceHandle, fitFocusNodeIds, selectField, selectNode],
   );
 
   const matchedNodes = useMemo(
@@ -1167,8 +1166,8 @@ function AppShell({ themeMode, onToggleTheme }: AppShellProps) {
   );
 
   const selectedNode = useMemo(
-    () => nodes.find((currentNode) => currentNode.id === selectedId),
-    [nodes, selectedId],
+    () => (selectedId ? nodeById.get(selectedId) : undefined),
+    [nodeById, selectedId],
   );
   const activeServiceNode = useMemo(
     () =>
@@ -1183,15 +1182,12 @@ function AppShell({ themeMode, onToggleTheme }: AppShellProps) {
       return null;
     }
 
-    const node = nodes.find((currentNode) => currentNode.id === selectedField.nodeId);
+    const node = nodeById.get(selectedField.nodeId);
     const field = node?.data.fields?.find((currentField) => currentField.id === selectedField.fieldId);
-    const refNode =
-      typeof field?.ref === 'string'
-        ? nodes.find((currentNode) => currentNode.id === field.ref)
-        : undefined;
+    const refNode = typeof field?.ref === 'string' ? nodeById.get(field.ref) : undefined;
 
     return node && field ? { node, field, refNode } : null;
-  }, [nodes, selectedField]);
+  }, [nodeById, selectedField]);
   const exportInput = useMemo<MapExportInput>(
     () => ({
       layout: readableLayout,
@@ -1649,6 +1645,7 @@ function AppShell({ themeMode, onToggleTheme }: AppShellProps) {
             <Inspector
               node={selectedNode}
               selectedField={selectedFieldDetails}
+              nodeById={nodeById}
               service={activeService}
               serviceLabel={activeService.label}
               serviceChoice={activeServiceChoice}
@@ -2646,10 +2643,20 @@ function fieldSelectHandlerFromData(data: MapNode['data']): FieldSelectHandler |
     : undefined;
 }
 
-type DescriptionBlock = {
-  text: string;
-  preformatted: boolean;
-};
+type DescriptionBlock =
+  | {
+    kind: 'paragraph';
+    text: string;
+  }
+  | {
+    kind: 'preformatted';
+    text: string;
+  }
+  | {
+    kind: 'list';
+    ordered: boolean;
+    items: string[];
+  };
 
 function descriptionBlocks(description: string): DescriptionBlock[] {
   const blocks: DescriptionBlock[] = [];
@@ -2664,18 +2671,11 @@ function descriptionBlocks(description: string): DescriptionBlock[] {
 
     const preformatted = isPreformattedDescription(trimmedLines);
     if (preformatted) {
-      blocks.push({ preformatted: true, text: trimmedLines.join('\n') });
+      blocks.push({ kind: 'preformatted', text: trimmedLines.join('\n') });
       return;
     }
 
-    for (const text of readableParagraphs(
-      trimmedLines
-        .map((line) => line.trim())
-        .join(' ')
-        .replace(/\s+/g, ' '),
-    )) {
-      blocks.push({ preformatted: false, text });
-    }
+    blocks.push(...readableDescriptionBlocks(trimmedLines));
   };
 
   for (const line of description.replace(/\r\n/g, '\n').split('\n')) {
@@ -2692,8 +2692,83 @@ function descriptionBlocks(description: string): DescriptionBlock[] {
 
 function isPreformattedDescription(lines: string[]): boolean {
   return lines.some((line) =>
-    /(?:<-{2,}|-{2,}>|={3,}|\|)|^\s*(?:Client|Target)\s|^\s*(?:[-*]|\d+[.)])\s/.test(line),
+    /(?:<-{2,}|-{2,}>|={3,}|\|)|^\s*(?:Client|Target)\s/.test(line),
   );
+}
+
+function readableDescriptionBlocks(lines: string[]): DescriptionBlock[] {
+  const blocks: DescriptionBlock[] = [];
+  let paragraphLines: string[] = [];
+  let listItems: string[] = [];
+  let listOrdered = false;
+
+  const pushParagraph = () => {
+    const text = paragraphLines
+      .map((line) => line.trim())
+      .join(' ')
+      .replace(/\s+/g, ' ');
+    paragraphLines = [];
+    if (!text) {
+      return;
+    }
+
+    for (const paragraph of readableParagraphs(text)) {
+      blocks.push({ kind: 'paragraph', text: paragraph });
+    }
+  };
+
+  const pushList = () => {
+    if (!listItems.length) {
+      return;
+    }
+
+    blocks.push({
+      kind: 'list',
+      ordered: listOrdered,
+      items: listItems.map((item) => item.replace(/\s+/g, ' ')),
+    });
+    listItems = [];
+  };
+
+  for (const line of lines) {
+    const listItem = parseDescriptionListItem(line);
+
+    if (listItem) {
+      pushParagraph();
+
+      if (listItems.length && listOrdered !== listItem.ordered) {
+        pushList();
+      }
+
+      listOrdered = listItem.ordered;
+      listItems.push(listItem.text);
+      continue;
+    }
+
+    if (listItems.length) {
+      listItems[listItems.length - 1] = `${listItems[listItems.length - 1]} ${line.trim()}`;
+      continue;
+    }
+
+    paragraphLines.push(line);
+  }
+
+  pushParagraph();
+  pushList();
+
+  return blocks;
+}
+
+function parseDescriptionListItem(line: string): { ordered: boolean; text: string } | null {
+  const match = /^\s*((?:[-*])|\d+[.)])\s+(.+)$/.exec(line);
+  if (!match) {
+    return null;
+  }
+
+  return {
+    ordered: /\d/.test(match[1][0]),
+    text: match[2].trim(),
+  };
 }
 
 function readableParagraphs(text: string): string[] {
@@ -2818,13 +2893,32 @@ function DescriptionText({
 
   return (
     <div className={className}>
-      {blocks.map((block, index) =>
-        block.preformatted ? (
-          <pre key={index}>{block.text}</pre>
-        ) : (
-          <p key={index}>{inlineDescriptionText(block.text, specUrl)}</p>
-        ),
-      )}
+      {blocks.map((block, index) => {
+        if (block.kind === 'preformatted') {
+          return (
+            <pre key={index} className="description-block">
+              {block.text}
+            </pre>
+          );
+        }
+
+        if (block.kind === 'list') {
+          const ListTag = block.ordered ? 'ol' : 'ul';
+          return (
+            <ListTag key={index} className="description-block">
+              {block.items.map((item, itemIndex) => (
+                <li key={itemIndex}>{inlineDescriptionText(item, specUrl)}</li>
+              ))}
+            </ListTag>
+          );
+        }
+
+        return (
+          <p key={index} className="description-block">
+            {inlineDescriptionText(block.text, specUrl)}
+          </p>
+        );
+      })}
     </div>
   );
 }
@@ -2832,6 +2926,7 @@ function DescriptionText({
 type InspectorProps = {
   node?: MapNode;
   selectedField?: SelectedFieldDetails | null;
+  nodeById: ReadonlyMap<string, MapNode>;
   service: ServiceMapDefinition;
   serviceLabel: string;
   serviceChoice: ServiceMapChoice;
@@ -2933,6 +3028,7 @@ function DiffChangeList({
 function Inspector({
   node,
   selectedField,
+  nodeById,
   service,
   serviceLabel,
   serviceChoice,
@@ -3016,7 +3112,13 @@ function Inspector({
             <div className="inspector-field">
               <div className="inspector-field-main">
                 <span>{refNode.data.kind}</span>
-                <strong>{refNode.data.label}</strong>
+                <a
+                  className="inspector-field-link"
+                  href={selectionHashForSelection(refNode.id, null, [refNode])}
+                  aria-label={`Select ${refNode.data.label} card`}
+                >
+                  {refNode.data.label}
+                </a>
               </div>
               {refNode.data.description ? (
                 <DescriptionText
@@ -3183,21 +3285,35 @@ function Inspector({
 
       {node.data.fields?.length ? (
         <div className="inspector-fields">
-          {node.data.fields.map((field) => (
-            <div key={field.id} className="inspector-field">
-              <div className="inspector-field-main">
-                <span>{field.type}</span>
-                <strong>{field.name}</strong>
+          {node.data.fields.map((field) => {
+            const refNode = typeof field.ref === 'string' ? nodeById.get(field.ref) : undefined;
+
+            return (
+              <div key={field.id} className="inspector-field">
+                <div className="inspector-field-main">
+                  <span>{field.type}</span>
+                  {refNode ? (
+                    <a
+                      className="inspector-field-link"
+                      href={selectionHashForSelection(refNode.id, null, [refNode])}
+                      aria-label={`Select ${refNode.data.label} card`}
+                    >
+                      {field.name}
+                    </a>
+                  ) : (
+                    <strong>{field.name}</strong>
+                  )}
+                </div>
+                {field.description ? (
+                  <DescriptionText
+                    className="inspector-field-description"
+                    text={field.description}
+                    specUrl={node.data.specUrl}
+                  />
+                ) : null}
               </div>
-              {field.description ? (
-                <DescriptionText
-                  className="inspector-field-description"
-                  text={field.description}
-                  specUrl={node.data.specUrl}
-                />
-              ) : null}
-            </div>
-          ))}
+            );
+          })}
         </div>
       ) : (
         <Typography variant="body2" color="text.secondary">
@@ -3216,8 +3332,7 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    document.documentElement.dataset.theme = themeMode;
-    window.localStorage.setItem(themeStorageKey, themeMode);
+    applyDocumentTheme(themeMode);
   }, [themeMode]);
 
   return (
