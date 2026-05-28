@@ -886,6 +886,12 @@ function AppShell({ themeMode, onToggleTheme }: AppShellProps) {
       ),
     [visibleMap.edges],
   );
+  const selectNode = useCallback((nodeId: string) => {
+    setSelectedField(null);
+    setSelectedEdgeId(null);
+    setSelectedId(nodeId);
+  }, []);
+
   const selectField = useCallback((nodeId: string, fieldId: string, edgeId?: string) => {
     setSelectedId(null);
     setSelectedField({ nodeId, fieldId });
@@ -945,6 +951,10 @@ function AppShell({ themeMode, onToggleTheme }: AppShellProps) {
       showExtensions,
     ],
   );
+  const nodeById = useMemo(
+    () => new Map(nodes.map((currentNode) => [currentNode.id, currentNode] as const)),
+    [nodes],
+  );
   const diffItems = useMemo(
     () => (diffResult ? diffItemsForMap(diffResult.map) : []),
     [diffResult],
@@ -980,14 +990,12 @@ function AppShell({ themeMode, onToggleTheme }: AppShellProps) {
         setSelectedField(null);
         setSelectedEdgeId(item.edgeId);
       } else if (item.nodeId) {
-        setSelectedField(null);
-        setSelectedEdgeId(null);
-        setSelectedId(item.nodeId);
+        selectNode(item.nodeId);
       }
 
       fitFocusNodeIds(item.focusNodeIds);
     },
-    [edgeIdBySourceHandle, fitFocusNodeIds, selectField],
+    [edgeIdBySourceHandle, fitFocusNodeIds, selectField, selectNode],
   );
 
   const matchedNodes = useMemo(
@@ -1158,8 +1166,8 @@ function AppShell({ themeMode, onToggleTheme }: AppShellProps) {
   );
 
   const selectedNode = useMemo(
-    () => nodes.find((currentNode) => currentNode.id === selectedId),
-    [nodes, selectedId],
+    () => (selectedId ? nodeById.get(selectedId) : undefined),
+    [nodeById, selectedId],
   );
   const activeServiceNode = useMemo(
     () =>
@@ -1174,15 +1182,12 @@ function AppShell({ themeMode, onToggleTheme }: AppShellProps) {
       return null;
     }
 
-    const node = nodes.find((currentNode) => currentNode.id === selectedField.nodeId);
+    const node = nodeById.get(selectedField.nodeId);
     const field = node?.data.fields?.find((currentField) => currentField.id === selectedField.fieldId);
-    const refNode =
-      typeof field?.ref === 'string'
-        ? nodes.find((currentNode) => currentNode.id === field.ref)
-        : undefined;
+    const refNode = typeof field?.ref === 'string' ? nodeById.get(field.ref) : undefined;
 
     return node && field ? { node, field, refNode } : null;
-  }, [nodes, selectedField]);
+  }, [nodeById, selectedField]);
   const exportInput = useMemo<MapExportInput>(
     () => ({
       layout: readableLayout,
@@ -1640,6 +1645,7 @@ function AppShell({ themeMode, onToggleTheme }: AppShellProps) {
             <Inspector
               node={selectedNode}
               selectedField={selectedFieldDetails}
+              nodeById={nodeById}
               service={activeService}
               serviceLabel={activeService.label}
               serviceChoice={activeServiceChoice}
@@ -2823,6 +2829,7 @@ function DescriptionText({
 type InspectorProps = {
   node?: MapNode;
   selectedField?: SelectedFieldDetails | null;
+  nodeById: ReadonlyMap<string, MapNode>;
   service: ServiceMapDefinition;
   serviceLabel: string;
   serviceChoice: ServiceMapChoice;
@@ -2924,6 +2931,7 @@ function DiffChangeList({
 function Inspector({
   node,
   selectedField,
+  nodeById,
   service,
   serviceLabel,
   serviceChoice,
@@ -3007,7 +3015,13 @@ function Inspector({
             <div className="inspector-field">
               <div className="inspector-field-main">
                 <span>{refNode.data.kind}</span>
-                <strong>{refNode.data.label}</strong>
+                <a
+                  className="inspector-field-link"
+                  href={selectionHashForSelection(refNode.id, null, [refNode])}
+                  aria-label={`Select ${refNode.data.label} card`}
+                >
+                  {refNode.data.label}
+                </a>
               </div>
               {refNode.data.description ? (
                 <DescriptionText
@@ -3174,21 +3188,35 @@ function Inspector({
 
       {node.data.fields?.length ? (
         <div className="inspector-fields">
-          {node.data.fields.map((field) => (
-            <div key={field.id} className="inspector-field">
-              <div className="inspector-field-main">
-                <span>{field.type}</span>
-                <strong>{field.name}</strong>
+          {node.data.fields.map((field) => {
+            const refNode = typeof field.ref === 'string' ? nodeById.get(field.ref) : undefined;
+
+            return (
+              <div key={field.id} className="inspector-field">
+                <div className="inspector-field-main">
+                  <span>{field.type}</span>
+                  {refNode ? (
+                    <a
+                      className="inspector-field-link"
+                      href={selectionHashForSelection(refNode.id, null, [refNode])}
+                      aria-label={`Select ${refNode.data.label} card`}
+                    >
+                      {field.name}
+                    </a>
+                  ) : (
+                    <strong>{field.name}</strong>
+                  )}
+                </div>
+                {field.description ? (
+                  <DescriptionText
+                    className="inspector-field-description"
+                    text={field.description}
+                    specUrl={node.data.specUrl}
+                  />
+                ) : null}
               </div>
-              {field.description ? (
-                <DescriptionText
-                  className="inspector-field-description"
-                  text={field.description}
-                  specUrl={node.data.specUrl}
-                />
-              ) : null}
-            </div>
-          ))}
+            );
+          })}
         </div>
       ) : (
         <Typography variant="body2" color="text.secondary">

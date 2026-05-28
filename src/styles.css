@@ -1251,6 +1251,35 @@ a {
   line-height: 1.65;
 }
 
+.inspector-field-link {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--blue);
+  cursor: pointer;
+  font-family:
+    "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1.65;
+  overflow-wrap: anywhere;
+  text-align: left;
+  text-decoration: none;
+}
+
+.inspector-field-link:hover,
+.inspector-field-link:focus-visible {
+  outline: none;
+  text-decoration: underline;
+}
+
+.inspector-field-link:focus-visible {
+  border-radius: 3px;
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--blue) 36%, transparent);
+}
+
 .inspector-field-description {
   margin: 0;
   padding-left: 10px;
