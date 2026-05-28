@@ -75,7 +75,9 @@ import {
   applyManualPositions,
   computeReadableNodeLayout,
   improveNodeLayout,
+  mapNodesBounds,
   routeReadableLayout,
+  type LayoutBounds,
   type RoutePoint,
   type TargetHandleLayout,
 } from './mapLayout';
@@ -93,14 +95,14 @@ import { downloadMapPdf, downloadMapSvg, type MapExportInput } from './mapExport
 import { createAppTheme, type ThemeMode } from './theme';
 
 const edgeStyleByKind: Record<MapEdgeKind, CSSProperties> = {
-  rpc: { stroke: 'var(--edge-rpc)', strokeWidth: 2.2 },
+  rpc: { stroke: 'var(--edge-field)', strokeWidth: 2.2 },
   field: { stroke: 'var(--edge-field)', strokeWidth: 1.6 },
   extension: {
-    stroke: 'var(--edge-extension)',
+    stroke: 'var(--edge-field)',
     strokeWidth: 1.4,
     strokeDasharray: '7 6',
   },
-  'extension-detail': { stroke: 'var(--edge-extension-detail)', strokeWidth: 1.5 },
+  'extension-detail': { stroke: 'var(--edge-field)', strokeWidth: 1.5 },
 };
 
 const nodeTypes: NodeTypes = {
@@ -124,7 +126,6 @@ const cachedElkLayoutPromises = new Map<string, Promise<Record<string, NodePosit
 
 type RoutedEdgeData = Record<string, unknown> & {
   routePoints: RoutePoint[];
-  routeBridges: RouteBridge[];
 };
 
 type RoutedMapEdge = Edge<RoutedEdgeData, 'routed'> & {
@@ -147,21 +148,6 @@ type SelectedFieldDetails = {
   refNode?: MapNode;
 };
 
-type RouteBridge = RoutePoint & {
-  orientation: 'horizontal' | 'vertical';
-};
-
-type RouteSegment = {
-  edgeId: string;
-  index: number;
-  start: RoutePoint;
-  end: RoutePoint;
-  orientation: 'horizontal' | 'vertical';
-  fixed: number;
-  from: number;
-  to: number;
-};
-
 function isThemeMode(value: string | null): value is ThemeMode {
   return value === 'light' || value === 'dark';
 }
@@ -177,6 +163,46 @@ function getInitialTheme(): ThemeMode {
 
 function nodePositions(nodes: MapNode[]): Record<string, NodePosition> {
   return Object.fromEntries(nodes.map((node) => [node.id, node.position]));
+}
+
+function routePointsBounds(routePoints: RoutePoint[]): LayoutBounds | null {
+  if (!routePoints.length) {
+    return null;
+  }
+
+  const minX = Math.min(...routePoints.map((point) => point.x));
+  const minY = Math.min(...routePoints.map((point) => point.y));
+  const maxX = Math.max(...routePoints.map((point) => point.x));
+  const maxY = Math.max(...routePoints.map((point) => point.y));
+
+  return {
+    x: minX,
+    y: minY,
+    width: maxX - minX,
+    height: maxY - minY,
+  };
+}
+
+function mergeBounds(first: LayoutBounds | null, second: LayoutBounds | null): LayoutBounds | null {
+  if (!first) {
+    return second;
+  }
+
+  if (!second) {
+    return first;
+  }
+
+  const minX = Math.min(first.x, second.x);
+  const minY = Math.min(first.y, second.y);
+  const maxX = Math.max(first.x + first.width, second.x + second.width);
+  const maxY = Math.max(first.y + first.height, second.y + second.height);
+
+  return {
+    x: minX,
+    y: minY,
+    width: maxX - minX,
+    height: maxY - minY,
+  };
 }
 
 function computeElkLayoutPositions(
@@ -370,7 +396,7 @@ type AppShellProps = {
 };
 
 function AppShell({ themeMode, onToggleTheme }: AppShellProps) {
-  const { fitView } = useReactFlow<MapNode, RoutedMapEdge>();
+  const { fitBounds, fitView } = useReactFlow<MapNode, RoutedMapEdge>();
   const initialServiceRoute = useMemo(() => getInitialServiceRoute(routeBasePath), []);
   const [activeServiceId, setActiveServiceId] = useState<ServiceId>(
     () => initialServiceRoute.serviceId,
@@ -405,6 +431,7 @@ function AppShell({ themeMode, onToggleTheme }: AppShellProps) {
   const [routingPositions, setRoutingPositions] = useState<Record<string, NodePosition>>({});
   const appliedLayoutResetCount = useRef(0);
   const searchInputRef = useRef<HTMLInputElement>(null);
+  const lastSelectionFitKeyRef = useRef<string | null>(null);
 
   const activeService = serviceMaps[activeServiceId];
   const activeServiceChoice =
@@ -734,10 +761,91 @@ function AppShell({ themeMode, onToggleTheme }: AppShellProps) {
     };
   }, [fitView, matchedNodes, query]);
 
-  const routeBridgesByEdge = useMemo(
-    () => routeBridges(readableLayout.edges),
-    [readableLayout.edges],
+  const selectionFitKey = useMemo(() => {
+    if (selectedId) {
+      return `node:${selectedId}`;
+    }
+
+    if (selectedEdge) {
+      return `edge:${selectedEdge.id}`;
+    }
+
+    if (selectedField) {
+      return `field:${selectedField.nodeId}:${selectedField.fieldId}`;
+    }
+
+    return null;
+  }, [selectedEdge, selectedField, selectedId]);
+
+  const selectionFitNodeIds = useMemo(() => {
+    const nodeIds = new Set<string>();
+
+    if (selectedId) {
+      nodeIds.add(selectedId);
+      selectedNodeConnections.nodeIds.forEach((nodeId) => nodeIds.add(nodeId));
+    }
+
+    if (selectedEdge) {
+      selectedEdgeEndpointIds.forEach((nodeId) => nodeIds.add(nodeId));
+    }
+
+    if (selectedField) {
+      nodeIds.add(selectedField.nodeId);
+      selectedEdgeEndpointIds.forEach((nodeId) => nodeIds.add(nodeId));
+    }
+
+    return nodeIds;
+  }, [selectedEdge, selectedEdgeEndpointIds, selectedField, selectedId, selectedNodeConnections.nodeIds]);
+
+  const selectionFitNodes = useMemo(
+    () =>
+      selectionFitNodeIds.size
+        ? nodes.filter((currentNode) => selectionFitNodeIds.has(currentNode.id))
+        : [],
+    [nodes, selectionFitNodeIds],
   );
+
+  const selectionFitEdges = useMemo(() => {
+    if (selectedId) {
+      return readableLayout.edges.filter(({ edge }) => selectedNodeConnections.edgeIds.has(edge.id));
+    }
+
+    if (selectedEdge) {
+      return readableLayout.edges.filter(({ edge }) => edge.id === selectedEdge.id);
+    }
+
+    return [];
+  }, [readableLayout.edges, selectedEdge, selectedId, selectedNodeConnections.edgeIds]);
+
+  const selectionFitBounds = useMemo(() => {
+    const nodeBounds = selectionFitNodes.length ? mapNodesBounds(selectionFitNodes) : null;
+    const edgeBounds = routePointsBounds(selectionFitEdges.flatMap((edge) => edge.routePoints));
+
+    return mergeBounds(nodeBounds, edgeBounds);
+  }, [selectionFitEdges, selectionFitNodes]);
+
+  useEffect(() => {
+    if (!selectionFitKey) {
+      lastSelectionFitKeyRef.current = null;
+      return;
+    }
+
+    if (!selectionFitBounds || lastSelectionFitKeyRef.current === selectionFitKey) {
+      return;
+    }
+
+    const frame = window.requestAnimationFrame(() => {
+      lastSelectionFitKeyRef.current = selectionFitKey;
+      void fitBounds(selectionFitBounds, {
+        padding: 0.24,
+        duration: 350,
+      });
+    });
+
+    return () => {
+      window.cancelAnimationFrame(frame);
+    };
+  }, [fitBounds, selectionFitBounds, selectionFitKey]);
 
   const edges = useMemo<RoutedMapEdge[]>(
     () =>
@@ -753,7 +861,7 @@ function AppShell({ themeMode, onToggleTheme }: AppShellProps) {
           (Boolean(selectedId) && !connectedToSelectedNode) ||
           (selectedField !== null && !selectedEdge);
         const opacity = highlighted ? 1 : connectedToMatch ? (selectionDimmed ? 0.18 : 1) : 0.14;
-        const stroke = highlighted ? 'var(--edge-selected)' : style.stroke;
+        const stroke = highlighted ? 'var(--edge-selected)' : 'var(--edge-field)';
         const strokeWidth =
           typeof style.strokeWidth === 'number'
             ? style.strokeWidth + (highlighted ? 1.8 : 0)
@@ -768,14 +876,13 @@ function AppShell({ themeMode, onToggleTheme }: AppShellProps) {
           interactionWidth: 28,
           className: [
             'flow-edge',
-            `flow-edge-${edge.kind}`,
             highlighted ? 'is-selected' : '',
             selectionDimmed ? 'is-dimmed' : '',
           ]
             .filter(Boolean)
             .join(' '),
           markerEnd: { type: MarkerType.ArrowClosed, color: stroke },
-          data: { routePoints, routeBridges: routeBridgesByEdge.get(edge.id) ?? [] },
+          data: { routePoints },
           style: {
             ...style,
             opacity,
@@ -788,7 +895,6 @@ function AppShell({ themeMode, onToggleTheme }: AppShellProps) {
       nodeMatches,
       query,
       readableLayout.edges,
-      routeBridgesByEdge,
       selectedEdge,
       selectedField,
       selectedId,
@@ -1829,8 +1935,6 @@ function RoutedEdge({
         { x: sourceX, y: sourceY },
         { x: targetX, y: targetY },
       ];
-  const routeBridges = data?.routeBridges ?? [];
-  const stroke = typeof style?.stroke === 'string' ? style.stroke : 'var(--edge-field)';
   const strokeWidth = typeof style?.strokeWidth === 'number' ? style.strokeWidth : 1.6;
   const path = roundedRoutePath(routePoints);
 
@@ -1848,23 +1952,6 @@ function RoutedEdge({
         style={style}
         interactionWidth={interactionWidth ?? 28}
       />
-      {routeBridges.map((bridge, index) => {
-        const path = bridgePath(bridge);
-
-        return (
-          <g key={`${bridge.orientation}-${bridge.x}-${bridge.y}-${index}`}>
-            <path className="flow-edge-bridge-gap" d={path} />
-            <path
-              className="flow-edge-bridge"
-              d={path}
-              style={{
-                stroke,
-                strokeWidth: Math.max(strokeWidth, 1.8),
-              }}
-            />
-          </g>
-        );
-      })}
     </>
   );
 }
@@ -1938,162 +2025,6 @@ function roundedRoutePath(points: RoutePoint[], radius = 18): string {
   }
 
   return commands.join(' ');
-}
-
-function bridgePath(bridge: RouteBridge): string {
-  const radius = 9;
-  const height = 4;
-
-  if (bridge.orientation === 'horizontal') {
-    return [
-      `M ${bridge.x - radius} ${bridge.y}`,
-      `Q ${bridge.x} ${bridge.y - height} ${bridge.x + radius} ${bridge.y}`,
-    ].join(' ');
-  }
-
-  return [
-    `M ${bridge.x} ${bridge.y - radius}`,
-    `Q ${bridge.x + height} ${bridge.y} ${bridge.x} ${bridge.y + radius}`,
-  ].join(' ');
-}
-
-function routeBridges(
-  routedEdges: Array<{ edge: MapEdge; routePoints: RoutePoint[] }>,
-): Map<string, RouteBridge[]> {
-  const bridgesByEdge = new Map<string, RouteBridge[]>();
-  const segments = routedEdges.flatMap(({ edge, routePoints }) =>
-    routeSegments(edge.id, routePoints),
-  );
-
-  for (let firstIndex = 0; firstIndex < segments.length; firstIndex += 1) {
-    const first = segments[firstIndex];
-
-    for (let secondIndex = firstIndex + 1; secondIndex < segments.length; secondIndex += 1) {
-      const second = segments[secondIndex];
-      if (first.edgeId === second.edgeId) {
-        continue;
-      }
-
-      if (first.orientation !== second.orientation) {
-        addCrossingBridge(bridgesByEdge, first, second);
-      }
-    }
-  }
-
-  for (const [edgeId, bridges] of bridgesByEdge) {
-    bridgesByEdge.set(edgeId, dedupeBridges(bridges));
-  }
-
-  return bridgesByEdge;
-}
-
-function routeSegments(edgeId: string, points: RoutePoint[]): RouteSegment[] {
-  const segments: RouteSegment[] = [];
-
-  for (let index = 0; index < points.length - 1; index += 1) {
-    const start = points[index];
-    const end = points[index + 1];
-    if (start.x === end.x && start.y === end.y) {
-      continue;
-    }
-
-    if (start.y === end.y) {
-      segments.push({
-        edgeId,
-        index,
-        start,
-        end,
-        orientation: 'horizontal',
-        fixed: start.y,
-        from: Math.min(start.x, end.x),
-        to: Math.max(start.x, end.x),
-      });
-      continue;
-    }
-
-    if (start.x === end.x) {
-      segments.push({
-        edgeId,
-        index,
-        start,
-        end,
-        orientation: 'vertical',
-        fixed: start.x,
-        from: Math.min(start.y, end.y),
-        to: Math.max(start.y, end.y),
-      });
-    }
-  }
-
-  return segments;
-}
-
-function addCrossingBridge(
-  bridgesByEdge: Map<string, RouteBridge[]>,
-  first: RouteSegment,
-  second: RouteSegment,
-): void {
-  const horizontal = first.orientation === 'horizontal' ? first : second;
-  const vertical = first.orientation === 'vertical' ? first : second;
-  const x = vertical.fixed;
-  const y = horizontal.fixed;
-  const crossingMargin = 34;
-
-  if (
-    x <= horizontal.from + crossingMargin ||
-    x >= horizontal.to - crossingMargin ||
-    y <= vertical.from + crossingMargin ||
-    y >= vertical.to - crossingMargin
-  ) {
-    return;
-  }
-
-  if (segmentsShareEndpoint(first, second)) {
-    return;
-  }
-
-  const bridgeSegment = first.edgeId > second.edgeId ? first : second;
-  appendBridge(bridgesByEdge, bridgeSegment.edgeId, {
-    x,
-    y,
-    orientation: bridgeSegment.orientation,
-  });
-}
-
-function appendBridge(
-  bridgesByEdge: Map<string, RouteBridge[]>,
-  edgeId: string,
-  bridge: RouteBridge,
-): void {
-  bridgesByEdge.set(edgeId, [...(bridgesByEdge.get(edgeId) ?? []), bridge]);
-}
-
-function dedupeBridges(bridges: RouteBridge[]): RouteBridge[] {
-  const seen = new Set<string>();
-
-  return bridges
-    .sort((first, second) => first.x - second.x || first.y - second.y)
-    .filter((bridge) => {
-      const key = `${bridge.orientation}:${Math.round(bridge.x / 8)}:${Math.round(bridge.y / 8)}`;
-      if (seen.has(key)) {
-        return false;
-      }
-      seen.add(key);
-      return true;
-    });
-}
-
-function segmentsShareEndpoint(first: RouteSegment, second: RouteSegment): boolean {
-  return (
-    pointsEqual(first.start, second.start) ||
-    pointsEqual(first.start, second.end) ||
-    pointsEqual(first.end, second.start) ||
-    pointsEqual(first.end, second.end)
-  );
-}
-
-function pointsEqual(first: RoutePoint, second: RoutePoint): boolean {
-  return Math.abs(first.x - second.x) < 0.5 && Math.abs(first.y - second.y) < 0.5;
 }
 
 function pointDistance(first: RoutePoint, second: RoutePoint): number {
