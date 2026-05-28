@@ -742,6 +742,84 @@ a {
   line-height: 1.45;
 }
 
+.inspector-summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 14px;
+}
+
+.inspector-summary span {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+  padding: 3px 7px;
+  border: 1px solid color-mix(in srgb, var(--line) 56%, transparent);
+  border-radius: 5px;
+  background: color-mix(in srgb, var(--panel-soft) 72%, transparent);
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.inspector-doc-links {
+  display: grid;
+  margin-top: 18px;
+}
+
+.inspector-doc-links a {
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr) auto;
+  gap: 10px;
+  align-items: center;
+  padding: 10px 0;
+  border-top: 1px solid color-mix(in srgb, var(--line) 60%, transparent);
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.inspector-doc-links a:hover strong,
+.inspector-doc-links a:focus-visible strong {
+  color: var(--blue);
+}
+
+.inspector-doc-links a:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--blue) 45%, transparent);
+  outline-offset: 3px;
+}
+
+.inspector-doc-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border: 1px solid color-mix(in srgb, var(--line) 72%, transparent);
+  border-radius: 6px;
+  background: color-mix(in srgb, var(--panel-soft) 70%, transparent);
+  color: var(--blue);
+}
+
+.inspector-doc-text {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.inspector-doc-text strong {
+  color: var(--ink);
+  font-size: 13px;
+  line-height: 1.2;
+}
+
+.inspector-doc-text span {
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.3;
+  overflow-wrap: anywhere;
+}
+
 .inspector-actions {
   display: flex;
   flex-wrap: wrap;
@@ -859,6 +937,21 @@ a {
   font-family:
     "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
   font-size: 0.92em;
+}
+
+.inspector-description a,
+.inspector-field-description a {
+  color: var(--blue);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.inspector-description a:hover,
+.inspector-description a:focus-visible,
+.inspector-field-description a:hover,
+.inspector-field-description a:focus-visible {
+  text-decoration: underline;
+  outline: none;
 }
 
 .inspector-description pre,

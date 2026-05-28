@@ -800,6 +800,14 @@ function AppShell({ themeMode, onToggleTheme }: AppShellProps) {
     () => nodes.find((currentNode) => currentNode.id === selectedId),
     [nodes, selectedId],
   );
+  const activeServiceNode = useMemo(
+    () =>
+      visibleMap.nodes.find(
+        (currentNode) =>
+          currentNode.id === activeServiceFocusNodeId || currentNode.data.kind === 'service',
+      ),
+    [activeServiceFocusNodeId, visibleMap.nodes],
+  );
   const selectedFieldDetails = useMemo<SelectedFieldDetails | null>(() => {
     if (!selectedField) {
       return null;
@@ -1135,8 +1143,10 @@ function AppShell({ themeMode, onToggleTheme }: AppShellProps) {
         <Inspector
           node={selectedNode}
           selectedField={selectedFieldDetails}
+          service={activeService}
           serviceLabel={activeService.label}
           serviceChoice={activeServiceChoice}
+          serviceNode={activeServiceNode}
           totalNodes={visibleMap.nodes.length}
           totalEdges={visibleMap.edges.length}
         />
@@ -2197,18 +2207,88 @@ function readableParagraphs(text: string): string[] {
   return paragraphs.length ? paragraphs : [text];
 }
 
-function inlineDescriptionText(text: string): ReactNode {
+function normalizedSectionNumber(section: string): string {
+  return section.replace(/\s+/g, '');
+}
+
+function sectionAnchorPrefix(section: string): string {
+  return normalizedSectionNumber(section).replace(/\./g, '');
+}
+
+function gnmiSpecificationSectionUrl(section: string, specUrl: string | undefined): string | null {
+  if (!specUrl) {
+    return null;
+  }
+
+  const hash = specUrl.split('#')[1];
+  const anchorPrefix = sectionAnchorPrefix(section);
+  if (!hash || (hash !== anchorPrefix && !hash.startsWith(`${anchorPrefix}-`))) {
+    return null;
+  }
+
+  return specUrl;
+}
+
+function linkedDescriptionText(
+  text: string,
+  keyPrefix: string,
+  specUrl: string | undefined,
+): ReactNode[] {
+  const sectionReferencePattern =
+    /\bgNMI Specification\s+Section(?:\s+Section)?\s+((?:\d+\s*\.\s*)*\d+)/gi;
+  const nodes: ReactNode[] = [];
+  let cursor = 0;
+
+  for (const match of text.matchAll(sectionReferencePattern)) {
+    const index = match.index ?? 0;
+    const section = match[1];
+    const href = gnmiSpecificationSectionUrl(section, specUrl);
+    if (!href) {
+      continue;
+    }
+
+    if (index > cursor) {
+      nodes.push(text.slice(cursor, index));
+    }
+    nodes.push(
+      <a
+        key={`${keyPrefix}:section:${index}`}
+        href={href}
+        target="_blank"
+        rel="noreferrer"
+      >
+        {`gNMI Specification Section ${normalizedSectionNumber(section)}`}
+      </a>,
+    );
+    cursor = index + match[0].length;
+  }
+
+  if (cursor < text.length) {
+    nodes.push(text.slice(cursor));
+  }
+  return nodes.length ? nodes : [text];
+}
+
+function inlineDescriptionText(text: string, specUrl?: string): ReactNode {
   const parts = text.split(/(`[^`]+`)/g);
-  return parts.map((part, index) =>
+  return parts.flatMap((part, index): ReactNode[] =>
     part.startsWith('`') && part.endsWith('`') ? (
-      <code key={index}>{part.slice(1, -1)}</code>
+      [<code key={`code:${index}`}>{part.slice(1, -1)}</code>]
     ) : (
-      part
+      linkedDescriptionText(part, `text:${index}`, specUrl)
     ),
   );
 }
 
-function DescriptionText({ text, className }: { text: string; className: string }) {
+function DescriptionText({
+  text,
+  className,
+  specUrl,
+}: {
+  text: string;
+  className: string;
+  specUrl?: string;
+}) {
   const blocks = descriptionBlocks(text);
   if (!blocks.length) {
     return null;
@@ -2220,7 +2300,7 @@ function DescriptionText({ text, className }: { text: string; className: string 
         block.preformatted ? (
           <pre key={index}>{block.text}</pre>
         ) : (
-          <p key={index}>{inlineDescriptionText(block.text)}</p>
+          <p key={index}>{inlineDescriptionText(block.text, specUrl)}</p>
         ),
       )}
     </div>
@@ -2230,17 +2310,28 @@ function DescriptionText({ text, className }: { text: string; className: string 
 type InspectorProps = {
   node?: MapNode;
   selectedField?: SelectedFieldDetails | null;
+  service: ServiceMapDefinition;
   serviceLabel: string;
   serviceChoice: ServiceMapChoice;
+  serviceNode?: MapNode;
   totalNodes: number;
   totalEdges: number;
+};
+
+type InspectorDocumentationLink = {
+  href: string;
+  label: string;
+  description: string;
+  icon: ReactNode;
 };
 
 function Inspector({
   node,
   selectedField,
+  service,
   serviceLabel,
   serviceChoice,
+  serviceNode,
   totalNodes,
   totalEdges,
 }: InspectorProps) {
@@ -2303,6 +2394,7 @@ function Inspector({
               <DescriptionText
                 className="inspector-field-description"
                 text={field.description}
+                specUrl={parentNode.data.specUrl}
               />
             ) : (
               <p className="inspector-field-description">No field description in the proto.</p>
@@ -2319,6 +2411,7 @@ function Inspector({
                 <DescriptionText
                   className="inspector-field-description"
                   text={refNode.data.description}
+                  specUrl={refNode.data.specUrl}
                 />
               ) : (
                 <p className="inspector-field-description">
@@ -2335,18 +2428,80 @@ function Inspector({
   }
 
   if (!node) {
+    const displayChoiceLabel = displayServiceChoiceLabel(serviceChoice.label);
+    const sourceTag = serviceChoice.sourceTag ?? service.sourceTag;
+    const version = serviceChoice.version ?? service.serviceVersion;
+    const repositoryUrl = `https://github.com/${service.sourceRepository}`;
+    const sourceTagUrl = sourceTag ? `${repositoryUrl}/tree/${sourceTag}` : null;
+    const documentationLinks: InspectorDocumentationLink[] = [];
+
+    if (serviceNode?.data.specUrl) {
+      documentationLinks.push({
+        href: serviceNode.data.specUrl,
+        label: 'Specification',
+        description: `${displayChoiceLabel} protocol documentation`,
+        icon: <MenuBookOutlinedIcon fontSize="small" />,
+      });
+    }
+
+    if (serviceNode?.data.protoUrl) {
+      documentationLinks.push({
+        href: serviceNode.data.protoUrl,
+        label: 'Service proto',
+        description: serviceChoice.symbol,
+        icon: <CodeOutlinedIcon fontSize="small" />,
+      });
+    }
+
+    documentationLinks.push({
+      href: repositoryUrl,
+      label: 'Source repository',
+      description: service.sourceRepository,
+      icon: <HubOutlinedIcon fontSize="small" />,
+    });
+
+    if (sourceTag && sourceTagUrl) {
+      documentationLinks.push({
+        href: sourceTagUrl,
+        label: 'Source tag',
+        description: sourceTag,
+        icon: <CodeOutlinedIcon fontSize="small" />,
+      });
+    }
+
     return (
       <Paper component="aside" className="inspector" elevation={0} square>
         <Typography className="inspector-kicker" component="span">
           {serviceLabel}
         </Typography>
         <Typography variant="h6" component="h2">
-          {totalNodes} nodes
+          {displayChoiceLabel} documentation
         </Typography>
         <Typography variant="body2" color="text.secondary">
-          {totalEdges} relationships across {serviceChoice.label} RPCs, messages, enums, and
-          external types.
+          {service.description}
         </Typography>
+
+        <div className="inspector-summary" aria-label="Current map summary">
+          {version ? <span>Version {version}</span> : null}
+          {sourceTag ? <span>{sourceTag}</span> : null}
+          <span>{totalNodes} nodes</span>
+          <span>{totalEdges} relationships</span>
+        </div>
+
+        <div className="inspector-doc-links" aria-label={`${serviceLabel} documentation links`}>
+          {documentationLinks.map((link) => (
+            <a key={`${link.label}:${link.href}`} href={link.href} target="_blank" rel="noreferrer">
+              <span className="inspector-doc-icon" aria-hidden="true">
+                {link.icon}
+              </span>
+              <span className="inspector-doc-text">
+                <strong>{link.label}</strong>
+                <span>{link.description}</span>
+              </span>
+              <OpenInNewIcon sx={{ fontSize: 14 }} />
+            </a>
+          ))}
+        </div>
       </Paper>
     );
   }
@@ -2392,7 +2547,11 @@ function Inspector({
       </Stack>
 
       {node.data.description ? (
-        <DescriptionText className="inspector-description" text={node.data.description} />
+        <DescriptionText
+          className="inspector-description"
+          text={node.data.description}
+          specUrl={node.data.specUrl}
+        />
       ) : null}
 
       {node.data.fields?.length ? (
@@ -2407,6 +2566,7 @@ function Inspector({
                 <DescriptionText
                   className="inspector-field-description"
                   text={field.description}
+                  specUrl={node.data.specUrl}
                 />
               ) : null}
             </div>
