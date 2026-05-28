@@ -369,6 +369,22 @@ a {
   }
 }
 
+.search-keyboard-hint {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--panel-soft);
+  color: var(--muted);
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1;
+}
+
 .map-stage {
   position: relative;
   display: grid;
@@ -825,12 +841,12 @@ a {
   margin: 0;
 }
 
-.inspector-description p + p,
-.inspector-description pre + p,
-.inspector-description p + pre,
-.inspector-field-description p + p,
-.inspector-field-description pre + p,
-.inspector-field-description p + pre {
+.inspector-description p+p,
+.inspector-description pre+p,
+.inspector-description p+pre,
+.inspector-field-description p+p,
+.inspector-field-description pre+p,
+.inspector-field-description p+pre {
   margin-top: 10px;
 }
 

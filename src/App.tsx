@@ -1,5 +1,6 @@
 import {
   type CSSProperties,
+  type KeyboardEventHandler,
   type ReactNode,
   useCallback,
   useEffect,
@@ -48,6 +49,7 @@ import {
 } from '@mui/material';
 import CheckIcon from '@mui/icons-material/Check';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import CloseIcon from '@mui/icons-material/Close';
 import CodeOutlinedIcon from '@mui/icons-material/CodeOutlined';
 import DarkModeOutlinedIcon from '@mui/icons-material/DarkModeOutlined';
 import DataObjectOutlinedIcon from '@mui/icons-material/DataObjectOutlined';
@@ -349,6 +351,19 @@ function fieldMatches(field: MapField, query: string): boolean {
     .includes(query);
 }
 
+function isTextEditingTarget(target: EventTarget | null): boolean {
+  if (!(target instanceof HTMLElement)) {
+    return false;
+  }
+
+  return (
+    target.isContentEditable ||
+    target.tagName === 'INPUT' ||
+    target.tagName === 'TEXTAREA' ||
+    target.tagName === 'SELECT'
+  );
+}
+
 type AppShellProps = {
   themeMode: ThemeMode;
   onToggleTheme: () => void;
@@ -389,6 +404,7 @@ function AppShell({ themeMode, onToggleTheme }: AppShellProps) {
   const [manualPositions, setManualPositions] = useState<Record<string, NodePosition>>({});
   const [routingPositions, setRoutingPositions] = useState<Record<string, NodePosition>>({});
   const appliedLayoutResetCount = useRef(0);
+  const searchInputRef = useRef<HTMLInputElement>(null);
 
   const activeService = serviceMaps[activeServiceId];
   const activeServiceChoice =
@@ -485,6 +501,38 @@ function AppShell({ themeMode, onToggleTheme }: AppShellProps) {
       window.history.replaceState(null, '', nextUrl);
     }
   }, [activeRpcFocusNodeId, activeServiceChoiceId, activeServiceId]);
+
+  useEffect(() => {
+    const handleGlobalSearchKeys = (event: KeyboardEvent) => {
+      if (event.key === 'Escape' && queryValue) {
+        setQueryValue('');
+        return;
+      }
+
+      if (event.altKey || event.ctrlKey || event.metaKey || isTextEditingTarget(event.target)) {
+        return;
+      }
+
+      if (event.key.toLowerCase() === 'f') {
+        event.preventDefault();
+        void fitView({ padding: 0.12, duration: 450 });
+        return;
+      }
+
+      if (event.key !== '/') {
+        return;
+      }
+
+      event.preventDefault();
+      searchInputRef.current?.focus();
+    };
+
+    window.addEventListener('keydown', handleGlobalSearchKeys);
+
+    return () => {
+      window.removeEventListener('keydown', handleGlobalSearchKeys);
+    };
+  }, [fitView, queryValue]);
 
   useEffect(() => {
     let cancelled = false;
@@ -661,6 +709,30 @@ function AppShell({ themeMode, onToggleTheme }: AppShellProps) {
       showExtensions,
     ],
   );
+
+  const matchedNodes = useMemo(
+    () => (query ? nodes.filter((currentNode) => nodeMatches.has(currentNode.id)) : []),
+    [nodeMatches, nodes, query],
+  );
+
+  useEffect(() => {
+    if (!query || matchedNodes.length === 0) {
+      return;
+    }
+
+    const frame = window.requestAnimationFrame(() => {
+      void fitView({
+        nodes: matchedNodes,
+        padding: 0.24,
+        duration: 350,
+        maxZoom: 1.2,
+      });
+    });
+
+    return () => {
+      window.cancelAnimationFrame(frame);
+    };
+  }, [fitView, matchedNodes, query]);
 
   const routeBridgesByEdge = useMemo(
     () => routeBridges(readableLayout.edges),
@@ -855,6 +927,22 @@ function AppShell({ themeMode, onToggleTheme }: AppShellProps) {
       setPdfExportPending(false);
     }
   }, [exportInput]);
+  const clearSearch = useCallback(() => {
+    setQueryValue('');
+    searchInputRef.current?.focus();
+  }, []);
+  const handleSearchKeyDown = useCallback<KeyboardEventHandler<HTMLInputElement>>(
+    (event) => {
+      if (event.key !== 'Escape' || !event.currentTarget.value) {
+        return;
+      }
+
+      event.preventDefault();
+      event.stopPropagation();
+      clearSearch();
+    },
+    [clearSearch],
+  );
   const selectServiceChoice = useCallback(
     (serviceChoiceId: string) => {
       setServiceChoiceIds((currentChoices) => ({
@@ -908,14 +996,43 @@ function AppShell({ themeMode, onToggleTheme }: AppShellProps) {
             value={queryValue}
             onChange={(event) => setQueryValue(event.target.value)}
             placeholder="Search messages, fields, enums"
-            type="search"
+            type="text"
             size="small"
             hiddenLabel
+            inputRef={searchInputRef}
             slotProps={{
+              htmlInput: {
+                'aria-label': 'Search messages, fields, enums. Press slash to focus.',
+                'aria-keyshortcuts': '/',
+                onKeyDown: handleSearchKeyDown,
+              },
               input: {
                 startAdornment: (
                   <InputAdornment position="start">
                     <SearchIcon sx={{ fontSize: 18 }} />
+                  </InputAdornment>
+                ),
+                endAdornment: queryValue ? (
+                  <InputAdornment position="end">
+                    <Tooltip title="Clear search">
+                      <IconButton
+                        aria-label="Clear search"
+                        edge="end"
+                        size="small"
+                        type="button"
+                        onClick={clearSearch}
+                        onMouseDown={(event) => event.preventDefault()}
+                        sx={{ mr: -0.75 }}
+                      >
+                        <CloseIcon sx={{ fontSize: 18 }} />
+                      </IconButton>
+                    </Tooltip>
+                  </InputAdornment>
+                ) : (
+                  <InputAdornment position="end">
+                    <kbd className="search-keyboard-hint" title="Press / to search">
+                      /
+                    </kbd>
                   </InputAdornment>
                 ),
               },
