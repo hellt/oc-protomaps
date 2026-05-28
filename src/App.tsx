@@ -133,7 +133,17 @@ type RoutedMapEdge = Edge<RoutedEdgeData, 'routed'> & {
 };
 
 type FieldConnectionIds = Record<string, string>;
-type FieldClickHandler = (edgeId: string) => void;
+type FieldSelection = {
+  nodeId: string;
+  fieldId: string;
+};
+type FieldSelectHandler = (fieldId: string, edgeId?: string) => void;
+
+type SelectedFieldDetails = {
+  node: MapNode;
+  field: MapField;
+  refNode?: MapNode;
+};
 
 type RouteBridge = RoutePoint & {
   orientation: 'horizontal' | 'vertical';
@@ -372,6 +382,7 @@ function AppShell({ themeMode, onToggleTheme }: AppShellProps) {
   );
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [selectedEdgeId, setSelectedEdgeId] = useState<string | null>(null);
+  const [selectedField, setSelectedField] = useState<FieldSelection | null>(null);
   const [manualPositions, setManualPositions] = useState<Record<string, NodePosition>>({});
   const [routingPositions, setRoutingPositions] = useState<Record<string, NodePosition>>({});
   const appliedLayoutResetCount = useRef(0);
@@ -450,6 +461,7 @@ function AppShell({ themeMode, onToggleTheme }: AppShellProps) {
   useEffect(() => {
     setSelectedId(null);
     setSelectedEdgeId(null);
+    setSelectedField(null);
     setManualPositions({});
     setRoutingPositions({});
     setQueryValue('');
@@ -587,9 +599,10 @@ function AppShell({ themeMode, onToggleTheme }: AppShellProps) {
       ),
     [visibleMap.edges],
   );
-  const selectFieldConnection = useCallback((edgeId: string) => {
+  const selectField = useCallback((nodeId: string, fieldId: string, edgeId?: string) => {
     setSelectedId(null);
-    setSelectedEdgeId(edgeId);
+    setSelectedField({ nodeId, fieldId });
+    setSelectedEdgeId(edgeId ?? null);
   }, []);
 
   const nodes = useMemo(
@@ -599,9 +612,10 @@ function AppShell({ themeMode, onToggleTheme }: AppShellProps) {
         const edgeEndpoint =
           selectedEdgeEndpointIds.has(currentNode.id) ||
           (selectedNodeRelated && currentNode.id !== selectedId);
-        const selectionActive = Boolean(selectedId || selectedEdge);
+        const selectedFieldInNode = selectedField?.nodeId === currentNode.id;
+        const selectionActive = Boolean(selectedId || selectedEdge || selectedField);
         const active = selectionActive
-          ? selectedNodeRelated || selectedEdgeEndpointIds.has(currentNode.id)
+          ? selectedNodeRelated || selectedEdgeEndpointIds.has(currentNode.id) || selectedFieldInNode
           : !query || nodeMatches.has(currentNode.id);
         const fieldConnectionIds = Object.fromEntries(
           (currentNode.data.fields ?? [])
@@ -622,7 +636,9 @@ function AppShell({ themeMode, onToggleTheme }: AppShellProps) {
             activeEdgeSourceHandle:
               selectedEdge?.source === currentNode.id ? selectedEdge.sourceHandle : null,
             fieldConnectionIds,
-            onFieldConnectionClick: selectFieldConnection,
+            selectedFieldId: selectedFieldInNode ? selectedField.fieldId : null,
+            onFieldSelect: (fieldId: string, edgeId?: string) =>
+              selectField(currentNode.id, fieldId, edgeId),
             query,
             showExtensions,
           },
@@ -633,9 +649,10 @@ function AppShell({ themeMode, onToggleTheme }: AppShellProps) {
       displayedLayoutNodes,
       edgeIdBySourceHandle,
       query,
-      selectFieldConnection,
+      selectField,
       selectedEdge,
       selectedEdgeEndpointIds,
+      selectedField,
       selectedId,
       selectedNodeConnections,
       showExtensions,
@@ -657,7 +674,9 @@ function AppShell({ themeMode, onToggleTheme }: AppShellProps) {
         const connectedToSelectedNode = selectedNodeConnections.edgeIds.has(edge.id);
         const highlighted = selected || connectedToSelectedNode;
         const selectionDimmed =
-          (Boolean(selectedEdge) && !selected) || (Boolean(selectedId) && !connectedToSelectedNode);
+          (Boolean(selectedEdge) && !selected) ||
+          (Boolean(selectedId) && !connectedToSelectedNode) ||
+          (selectedField !== null && !selectedEdge);
         const opacity = highlighted ? 1 : connectedToMatch ? (selectionDimmed ? 0.18 : 1) : 0.14;
         const stroke = highlighted ? 'var(--edge-selected)' : style.stroke;
         const strokeWidth =
@@ -696,6 +715,7 @@ function AppShell({ themeMode, onToggleTheme }: AppShellProps) {
       readableLayout.edges,
       routeBridgesByEdge,
       selectedEdge,
+      selectedField,
       selectedId,
       selectedNodeConnections,
     ],
@@ -705,6 +725,20 @@ function AppShell({ themeMode, onToggleTheme }: AppShellProps) {
     () => nodes.find((currentNode) => currentNode.id === selectedId),
     [nodes, selectedId],
   );
+  const selectedFieldDetails = useMemo<SelectedFieldDetails | null>(() => {
+    if (!selectedField) {
+      return null;
+    }
+
+    const node = nodes.find((currentNode) => currentNode.id === selectedField.nodeId);
+    const field = node?.data.fields?.find((currentField) => currentField.id === selectedField.fieldId);
+    const refNode =
+      typeof field?.ref === 'string'
+        ? nodes.find((currentNode) => currentNode.id === field.ref)
+        : undefined;
+
+    return node && field ? { node, field, refNode } : null;
+  }, [nodes, selectedField]);
   const exportInput = useMemo<MapExportInput>(
     () => ({
       layout: readableLayout,
@@ -734,6 +768,10 @@ function AppShell({ themeMode, onToggleTheme }: AppShellProps) {
   }, [fitView]);
 
   const onNodesChange = useCallback((changes: NodeChange<MapNode>[]) => {
+    const selectedNodeChanged = changes.some(
+      (change) => change.type === 'select' && change.selected,
+    );
+
     setManualPositions((currentPositions) => {
       let nextPositions = currentPositions;
 
@@ -789,6 +827,11 @@ function AppShell({ themeMode, onToggleTheme }: AppShellProps) {
 
       return selectedNodeWasCleared ? null : currentSelectedId;
     });
+
+    if (selectedNodeChanged) {
+      setSelectedEdgeId(null);
+      setSelectedField(null);
+    }
   }, []);
 
   const resetLayout = useCallback(() => {
@@ -950,15 +993,18 @@ function AppShell({ themeMode, onToggleTheme }: AppShellProps) {
           onNodeClick={(_, node) => {
             setSelectedId(node.id);
             setSelectedEdgeId(null);
+            setSelectedField(null);
           }}
           onEdgeClick={(event, edge) => {
             event.stopPropagation();
             setSelectedId(null);
             setSelectedEdgeId(edge.id);
+            setSelectedField(null);
           }}
           onPaneClick={() => {
             setSelectedId(null);
             setSelectedEdgeId(null);
+            setSelectedField(null);
           }}
           proOptions={{ hideAttribution: true }}
         >
@@ -968,6 +1014,7 @@ function AppShell({ themeMode, onToggleTheme }: AppShellProps) {
 
         <Inspector
           node={selectedNode}
+          selectedField={selectedFieldDetails}
           serviceLabel={activeService.label}
           serviceChoice={activeServiceChoice}
           totalNodes={visibleMap.nodes.length}
@@ -1474,7 +1521,8 @@ function SchemaNode({ data, selected }: NodeProps<MapNode>) {
   const dimmed = data.active === false;
   const targetHandles = targetHandlesFromData(data);
   const fieldConnectionIds = fieldConnectionIdsFromData(data);
-  const onFieldConnectionClick = fieldClickHandlerFromData(data);
+  const onFieldSelect = fieldSelectHandlerFromData(data);
+  const selectedFieldId = typeof data.selectedFieldId === 'string' ? data.selectedFieldId : null;
   const activeEdgeSourceHandle =
     typeof data.activeEdgeSourceHandle === 'string' ? data.activeEdgeSourceHandle : null;
   const className = [
@@ -1537,8 +1585,9 @@ function SchemaNode({ data, selected }: NodeProps<MapNode>) {
               field={field}
               highlighted={fieldMatches(field, data.query ?? '')}
               edgeHighlighted={field.id === activeEdgeSourceHandle}
+              selected={field.id === selectedFieldId}
               connectionEdgeId={fieldConnectionIds[field.id]}
-              onConnectionClick={onFieldConnectionClick}
+              onFieldSelect={onFieldSelect}
               showExtensions={data.showExtensions}
             />
           ))
@@ -1554,8 +1603,9 @@ type FieldRowProps = {
   field: MapField;
   highlighted: boolean;
   edgeHighlighted: boolean;
+  selected: boolean;
   connectionEdgeId?: string;
-  onConnectionClick?: FieldClickHandler;
+  onFieldSelect?: FieldSelectHandler;
   showExtensions?: boolean;
 };
 
@@ -1563,19 +1613,20 @@ function FieldRow({
   field,
   highlighted,
   edgeHighlighted,
+  selected,
   connectionEdgeId,
-  onConnectionClick,
+  onFieldSelect,
   showExtensions,
 }: FieldRowProps) {
   const isExtension = field.ref === 'extension';
   const visibleExtensionHandle = !isExtension || showExtensions;
-  const clickable = Boolean(connectionEdgeId && onConnectionClick);
+  const clickable = Boolean(onFieldSelect);
   const fieldTitle = [field.type, field.name, field.group, field.badge]
     .filter(Boolean)
     .join(' ');
-  const selectConnection = () => {
-    if (connectionEdgeId && onConnectionClick) {
-      onConnectionClick(connectionEdgeId);
+  const selectField = () => {
+    if (onFieldSelect) {
+      onFieldSelect(field.id, connectionEdgeId);
     }
   };
 
@@ -1587,6 +1638,7 @@ function FieldRow({
         field.ref ? 'has-ref' : '',
         highlighted ? 'is-highlighted' : '',
         edgeHighlighted ? 'is-edge-highlighted' : '',
+        selected ? 'is-selected' : '',
         clickable ? 'is-clickable nodrag nopan' : '',
         field.badge === 'deprecated' ? 'is-deprecated' : '',
       ]
@@ -1595,13 +1647,13 @@ function FieldRow({
       role={clickable ? 'button' : undefined}
       tabIndex={clickable ? 0 : undefined}
       title={field.ref ? `${fieldTitle} -> ${field.ref}` : fieldTitle}
-      aria-label={clickable ? `Highlight ${field.name} connection to ${field.ref}` : undefined}
+      aria-label={clickable ? `Select ${field.name} field` : undefined}
       onClick={(event) => {
         if (!clickable) {
           return;
         }
         event.stopPropagation();
-        selectConnection();
+        selectField();
       }}
       onKeyDown={(event) => {
         if (!clickable || (event.key !== 'Enter' && event.key !== ' ')) {
@@ -1609,7 +1661,7 @@ function FieldRow({
         }
         event.preventDefault();
         event.stopPropagation();
-        selectConnection();
+        selectField();
       }}
     >
       <span className="field-type">{field.type}</span>
@@ -1936,9 +1988,9 @@ function fieldConnectionIdsFromData(data: MapNode['data']): FieldConnectionIds {
     : {};
 }
 
-function fieldClickHandlerFromData(data: MapNode['data']): FieldClickHandler | undefined {
-  return typeof data.onFieldConnectionClick === 'function'
-    ? (data.onFieldConnectionClick as FieldClickHandler)
+function fieldSelectHandlerFromData(data: MapNode['data']): FieldSelectHandler | undefined {
+  return typeof data.onFieldSelect === 'function'
+    ? (data.onFieldSelect as FieldSelectHandler)
     : undefined;
 }
 
@@ -2057,13 +2109,111 @@ function DescriptionText({ text, className }: { text: string; className: string 
 
 type InspectorProps = {
   node?: MapNode;
+  selectedField?: SelectedFieldDetails | null;
   serviceLabel: string;
   serviceChoice: ServiceMapChoice;
   totalNodes: number;
   totalEdges: number;
 };
 
-function Inspector({ node, serviceLabel, serviceChoice, totalNodes, totalEdges }: InspectorProps) {
+function Inspector({
+  node,
+  selectedField,
+  serviceLabel,
+  serviceChoice,
+  totalNodes,
+  totalEdges,
+}: InspectorProps) {
+  if (selectedField) {
+    const { node: parentNode, field, refNode } = selectedField;
+    const refFieldCount = refNode?.data.fields?.length ?? 0;
+
+    return (
+      <Paper component="aside" className="inspector" elevation={0} square>
+        <Typography className="inspector-kicker" component="span">
+          {parentNode.data.kind} field
+        </Typography>
+        <Typography variant="h6" component="h2">
+          {field.name}
+        </Typography>
+        <Typography variant="body2" color="text.secondary">
+          {field.type} in {parentNode.data.label}
+        </Typography>
+
+        <Stack className="inspector-actions" direction="row" sx={{ flexWrap: 'wrap' }}>
+          {parentNode.data.protoUrl ? (
+            <Button
+              component="a"
+              href={parentNode.data.protoUrl}
+              target="_blank"
+              rel="noreferrer"
+              size="small"
+              variant="outlined"
+              startIcon={<CodeOutlinedIcon fontSize="small" />}
+              endIcon={<OpenInNewIcon sx={{ fontSize: 14 }} />}
+            >
+              Proto
+            </Button>
+          ) : null}
+          {parentNode.data.specUrl ? (
+            <Button
+              component="a"
+              href={parentNode.data.specUrl}
+              target="_blank"
+              rel="noreferrer"
+              size="small"
+              variant="outlined"
+              startIcon={<MenuBookOutlinedIcon fontSize="small" />}
+              endIcon={<OpenInNewIcon sx={{ fontSize: 14 }} />}
+            >
+              Docs
+            </Button>
+          ) : null}
+        </Stack>
+
+        <div className="inspector-fields">
+          <div className="inspector-field">
+            <div className="inspector-field-main">
+              <span>{field.type}</span>
+              <strong>{field.name}</strong>
+              {field.group ? <span>{field.group}</span> : null}
+              {field.badge ? <span>{field.badge}</span> : null}
+            </div>
+            {field.description ? (
+              <DescriptionText
+                className="inspector-field-description"
+                text={field.description}
+              />
+            ) : (
+              <p className="inspector-field-description">No field description in the proto.</p>
+            )}
+          </div>
+
+          {refNode ? (
+            <div className="inspector-field">
+              <div className="inspector-field-main">
+                <span>{refNode.data.kind}</span>
+                <strong>{refNode.data.label}</strong>
+              </div>
+              {refNode.data.description ? (
+                <DescriptionText
+                  className="inspector-field-description"
+                  text={refNode.data.description}
+                />
+              ) : (
+                <p className="inspector-field-description">
+                  {refFieldCount
+                    ? `${refNode.data.label} has ${refFieldCount} fields.`
+                    : `${refNode.data.label} is an empty ${refNode.data.kind}.`}
+                </p>
+              )}
+            </div>
+          ) : null}
+        </div>
+      </Paper>
+    );
+  }
+
   if (!node) {
     return (
       <Paper component="aside" className="inspector" elevation={0} square>
