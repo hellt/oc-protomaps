@@ -728,6 +728,14 @@ function AppShell({ themeMode, onToggleTheme }: AppShellProps) {
     () => nodes.find((currentNode) => currentNode.id === selectedId),
     [nodes, selectedId],
   );
+  const activeServiceNode = useMemo(
+    () =>
+      visibleMap.nodes.find(
+        (currentNode) =>
+          currentNode.id === activeServiceFocusNodeId || currentNode.data.kind === 'service',
+      ),
+    [activeServiceFocusNodeId, visibleMap.nodes],
+  );
   const selectedFieldDetails = useMemo<SelectedFieldDetails | null>(() => {
     if (!selectedField) {
       return null;
@@ -1018,8 +1026,10 @@ function AppShell({ themeMode, onToggleTheme }: AppShellProps) {
         <Inspector
           node={selectedNode}
           selectedField={selectedFieldDetails}
+          service={activeService}
           serviceLabel={activeService.label}
           serviceChoice={activeServiceChoice}
+          serviceNode={activeServiceNode}
           totalNodes={visibleMap.nodes.length}
           totalEdges={visibleMap.edges.length}
         />
@@ -2113,17 +2123,28 @@ function DescriptionText({ text, className }: { text: string; className: string 
 type InspectorProps = {
   node?: MapNode;
   selectedField?: SelectedFieldDetails | null;
+  service: ServiceMapDefinition;
   serviceLabel: string;
   serviceChoice: ServiceMapChoice;
+  serviceNode?: MapNode;
   totalNodes: number;
   totalEdges: number;
+};
+
+type InspectorDocumentationLink = {
+  href: string;
+  label: string;
+  description: string;
+  icon: ReactNode;
 };
 
 function Inspector({
   node,
   selectedField,
+  service,
   serviceLabel,
   serviceChoice,
+  serviceNode,
   totalNodes,
   totalEdges,
 }: InspectorProps) {
@@ -2218,18 +2239,80 @@ function Inspector({
   }
 
   if (!node) {
+    const displayChoiceLabel = displayServiceChoiceLabel(serviceChoice.label);
+    const sourceTag = serviceChoice.sourceTag ?? service.sourceTag;
+    const version = serviceChoice.version ?? service.serviceVersion;
+    const repositoryUrl = `https://github.com/${service.sourceRepository}`;
+    const sourceTagUrl = sourceTag ? `${repositoryUrl}/tree/${sourceTag}` : null;
+    const documentationLinks: InspectorDocumentationLink[] = [];
+
+    if (serviceNode?.data.specUrl) {
+      documentationLinks.push({
+        href: serviceNode.data.specUrl,
+        label: 'Specification',
+        description: `${displayChoiceLabel} protocol documentation`,
+        icon: <MenuBookOutlinedIcon fontSize="small" />,
+      });
+    }
+
+    if (serviceNode?.data.protoUrl) {
+      documentationLinks.push({
+        href: serviceNode.data.protoUrl,
+        label: 'Service proto',
+        description: serviceChoice.symbol,
+        icon: <CodeOutlinedIcon fontSize="small" />,
+      });
+    }
+
+    documentationLinks.push({
+      href: repositoryUrl,
+      label: 'Source repository',
+      description: service.sourceRepository,
+      icon: <HubOutlinedIcon fontSize="small" />,
+    });
+
+    if (sourceTag && sourceTagUrl) {
+      documentationLinks.push({
+        href: sourceTagUrl,
+        label: 'Source tag',
+        description: sourceTag,
+        icon: <CodeOutlinedIcon fontSize="small" />,
+      });
+    }
+
     return (
       <Paper component="aside" className="inspector" elevation={0} square>
         <Typography className="inspector-kicker" component="span">
           {serviceLabel}
         </Typography>
         <Typography variant="h6" component="h2">
-          {totalNodes} nodes
+          {displayChoiceLabel} documentation
         </Typography>
         <Typography variant="body2" color="text.secondary">
-          {totalEdges} relationships across {serviceChoice.label} RPCs, messages, enums, and
-          external types.
+          {service.description}
         </Typography>
+
+        <div className="inspector-summary" aria-label="Current map summary">
+          {version ? <span>Version {version}</span> : null}
+          {sourceTag ? <span>{sourceTag}</span> : null}
+          <span>{totalNodes} nodes</span>
+          <span>{totalEdges} relationships</span>
+        </div>
+
+        <div className="inspector-doc-links" aria-label={`${serviceLabel} documentation links`}>
+          {documentationLinks.map((link) => (
+            <a key={`${link.label}:${link.href}`} href={link.href} target="_blank" rel="noreferrer">
+              <span className="inspector-doc-icon" aria-hidden="true">
+                {link.icon}
+              </span>
+              <span className="inspector-doc-text">
+                <strong>{link.label}</strong>
+                <span>{link.description}</span>
+              </span>
+              <OpenInNewIcon sx={{ fontSize: 14 }} />
+            </a>
+          ))}
+        </div>
       </Paper>
     );
   }
