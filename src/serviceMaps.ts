@@ -220,15 +220,46 @@ function routeSegments(pathname: string, basePath: string): string[] {
     .map(decodeRouteSegment);
 }
 
-function serviceChoiceRouteNodeId(choice: ServiceMapChoice): string {
-  return choice.focusNodeId ?? choice.id.split('@')[0] ?? choice.id;
+function serviceChoiceRouteSegment(choice: ServiceMapChoice): string {
+  return choice.label.toLowerCase();
+}
+
+function rpcFilterRouteSegment(rpcFilterId: string): string {
+  return rpcFilterId.replace(/^rpc-/, '');
+}
+
+function rpcFilterIdForPath(
+  serviceMap: ServiceMapDefinition,
+  serviceChoice: ServiceMapChoice,
+  routeSegment: string | null | undefined,
+): string | null {
+  if (!routeSegment) {
+    return null;
+  }
+
+  const normalizedRouteSegment = routeSegment.toLowerCase();
+  const focusNodeId = serviceChoice.focusNodeId ?? serviceChoice.id;
+  const visibleMap = serviceMap.getVisibleMap({
+    showDeprecated: true,
+    showExtensions: true,
+    focusNodeId,
+    sourceTag: serviceChoice.sourceTag,
+  });
+  const serviceNode = visibleMap.nodes.find((node) => node.id === focusNodeId);
+  const matchingRpcField = serviceNode?.data.fields?.find(
+    (field) =>
+      typeof field.ref === 'string' &&
+      rpcFilterRouteSegment(field.ref).toLowerCase() === normalizedRouteSegment,
+  );
+
+  return typeof matchingRpcField?.ref === 'string' ? matchingRpcField.ref : null;
 }
 
 function serviceChoiceForPath(
   serviceMap: ServiceMapDefinition,
   routeNodeId: string | null | undefined,
   routeVersion: string | null | undefined,
-): ServiceMapChoice {
+): ServiceMapChoice | null {
   if (!routeNodeId) {
     return serviceChoiceForRoute(serviceMap, serviceMap.defaultServiceChoiceId);
   }
@@ -236,7 +267,7 @@ function serviceChoiceForPath(
   const normalizedRouteNodeId = routeNodeId.toLowerCase();
   const normalizedRouteVersion = routeVersion?.toLowerCase();
   const pathChoice = serviceMap.serviceChoices.find((choice) => {
-    if (serviceChoiceRouteNodeId(choice).toLowerCase() !== normalizedRouteNodeId) {
+    if (serviceChoiceRouteSegment(choice) !== normalizedRouteNodeId) {
       return false;
     }
 
@@ -245,13 +276,7 @@ function serviceChoiceForPath(
       : true;
   });
 
-  return (
-    pathChoice ??
-    serviceChoiceForRoute(
-      serviceMap,
-      routeVersion ? `${routeNodeId}@${routeVersion}` : routeNodeId,
-    )
-  );
+  return pathChoice ?? null;
 }
 
 function routeVersionForPath(
@@ -267,7 +292,7 @@ function routeVersionForPath(
   const normalizedRouteSegment = routeSegment.toLowerCase();
   const matchingChoice = serviceMap.serviceChoices.find(
     (choice) =>
-      serviceChoiceRouteNodeId(choice).toLowerCase() === normalizedRouteNodeId &&
+      serviceChoiceRouteSegment(choice) === normalizedRouteNodeId &&
       choice.version?.toLowerCase() === normalizedRouteSegment,
   );
 
@@ -294,7 +319,14 @@ export function serviceRouteFromPath(
     routeVersionOrRpcFilterId,
   );
   const serviceChoice = serviceChoiceForPath(serviceMap, routeNodeId, routeVersion);
-  const rpcFilterId = routeVersion ? routeRpcFilterId : routeVersionOrRpcFilterId;
+  if (!serviceChoice) {
+    return null;
+  }
+  const routeRpcFilterSegment = routeVersion ? routeRpcFilterId : routeVersionOrRpcFilterId;
+  const rpcFilterId = rpcFilterIdForPath(serviceMap, serviceChoice, routeRpcFilterSegment);
+  if (routeRpcFilterSegment && !rpcFilterId) {
+    return null;
+  }
 
   return {
     serviceId,
@@ -351,9 +383,9 @@ export function serviceRoutePath(route: ServiceRoute, basePath = '/'): string {
   const normalizedBasePath = normalizeRouteBasePath(basePath);
   const pathSegments = [
     route.serviceId,
-    serviceChoiceRouteNodeId(serviceChoice),
+    serviceChoiceRouteSegment(serviceChoice),
     ...(serviceChoice.version ? [serviceChoice.version] : []),
-    ...(route.rpcFilterId ? [route.rpcFilterId] : []),
+    ...(route.rpcFilterId ? [rpcFilterRouteSegment(route.rpcFilterId)] : []),
   ].map(encodeURIComponent);
   const routePath = `/${pathSegments.join('/')}`;
 

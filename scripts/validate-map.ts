@@ -123,8 +123,8 @@ function validateServiceRegistryMaps(): void {
       );
       assert(
         focusedMap.nodes.length < fullMap.nodes.length ||
-          serviceChoice.id === serviceMap.defaultServiceChoiceId ||
-          serviceMap.serviceChoices.length === 1,
+        serviceChoice.id === serviceMap.defaultServiceChoiceId ||
+        serviceMap.serviceChoices.length === 1,
         `${serviceId}/${serviceChoice.label}: focused map should be narrower than family map`,
       );
       validateEdges(focusedMap.nodes, focusedMap.edges, `${serviceId}/${serviceChoice.label}`);
@@ -150,17 +150,17 @@ function validateServiceRoutes(): void {
     serviceChoiceId: 'service-gnmi@0.10.0',
   } as const;
   assert(
-    serviceRoutePath(gnmiLatestRoute) === '/gnmi/service-gnmi/0.10.0',
-    'gNMI route must serialize without a hash or encoded @',
+    serviceRoutePath(gnmiLatestRoute) === '/gnmi/gnmi/0.10.0',
+    'gNMI route must serialize with the interface/service/version path',
   );
   assert(
     serviceRoutePath(gnmiLatestRoute, '/gnmi-map/') ===
-      '/gnmi-map/gnmi/service-gnmi/0.10.0',
+    '/gnmi-map/gnmi/gnmi/0.10.0',
     'gNMI route must serialize under a configured base path',
   );
   assertServiceRoute(
     serviceRouteFromLocation({
-      pathname: '/gnmi/service-gnmi/0.10.0',
+      pathname: '/gnmi/gnmi/0.10.0',
       search: '',
       hash: '',
     }),
@@ -173,12 +173,12 @@ function validateServiceRoutes(): void {
     rpcFilterId: 'rpc-get',
   };
   assert(
-    serviceRoutePath(gnmiGetRoute) === '/gnmi/service-gnmi/0.10.0/rpc-get',
+    serviceRoutePath(gnmiGetRoute) === '/gnmi/gnmi/0.10.0/get',
     'gNMI RPC route must serialize the active RPC filter',
   );
   assertServiceRoute(
     serviceRouteFromLocation({
-      pathname: '/gnmi/service-gnmi/0.10.0/rpc-get',
+      pathname: '/gnmi/gnmi/0.10.0/get',
       search: '',
       hash: '',
     }),
@@ -186,18 +186,9 @@ function validateServiceRoutes(): void {
     'gNMI RPC path route',
   );
   assertServiceRoute(
-    serviceRouteFromLocation({
-      pathname: '/gnmi/service-gnmi/rpc-get',
-      search: '',
-      hash: '',
-    }),
-    gnmiGetRoute,
-    'gNMI RPC path route without explicit version',
-  );
-  assertServiceRoute(
     serviceRouteFromLocation(
       {
-        pathname: '/gnmi-map/gnmi/service-gnmi/0.10.0',
+        pathname: '/gnmi-map/gnmi/gnmi/0.10.0',
         search: '',
         hash: '',
       },
@@ -206,32 +197,18 @@ function validateServiceRoutes(): void {
     gnmiLatestRoute,
     'gNMI base path route',
   );
-  assertServiceRoute(
-    serviceRouteFromLocation({
-      pathname: '/',
-      search: '',
-      hash: '#gnmi/service-gnmi%400.10.0',
-    }),
-    gnmiLatestRoute,
-    'legacy gNMI hash route',
-  );
-  assertServiceRoute(
-    serviceRouteFromLocation({
-      pathname: '/',
-      search: '?service=gnmi&map=service-gnmi%400.10.0&rpc=rpc-get',
-      hash: '',
-    }),
-    gnmiGetRoute,
-    'legacy gNMI query route',
-  );
 
   const gnoiSystemRoute = {
     serviceId: 'gnoi',
     serviceChoiceId: 'service-gnoi-system-system@1.4.0',
   } as const;
+  assert(
+    serviceRoutePath(gnoiSystemRoute) === '/gnoi/system/1.4.0',
+    'gNOI system route must serialize with the interface/service/version path',
+  );
   assertServiceRoute(
     serviceRouteFromLocation({
-      pathname: '/gnoi/service-gnoi-system-system/1.4.0',
+      pathname: '/gnoi/system/1.4.0',
       search: '',
       hash: '',
     }),
@@ -262,9 +239,9 @@ async function validateReadableLayout(
     for (const point of routedEdge.routePoints) {
       assert(
         point.x >= layout.bounds.x - routeMargin &&
-          point.x <= layout.bounds.x + layout.bounds.width + routeMargin &&
-          point.y >= layout.bounds.y - routeMargin &&
-          point.y <= layout.bounds.y + layout.bounds.height + routeMargin,
+        point.x <= layout.bounds.x + layout.bounds.width + routeMargin &&
+        point.y >= layout.bounds.y - routeMargin &&
+        point.y <= layout.bounds.y + layout.bounds.height + routeMargin,
         `${label}: edge ${routedEdge.edge.id} routes too far outside the graph`,
       );
     }

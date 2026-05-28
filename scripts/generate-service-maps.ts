@@ -574,11 +574,11 @@ function schemaNode(
   const fields =
     definition instanceof protobuf.Type
       ? [
-          ...definition.fieldsArray.map((field) =>
-            fieldData(field, symbol, symbolToNodeId, byShortName, ensureExternalNode),
-          ),
-          ...reservedFields(definition),
-        ]
+        ...definition.fieldsArray.map((field) =>
+          fieldData(field, symbol, symbolToNodeId, byShortName, ensureExternalNode),
+        ),
+        ...reservedFields(definition),
+      ]
       : enumFields(definition);
   const deprecated = Boolean(definition.options?.deprecated);
   const badges = deprecated ? ['deprecated' as const] : undefined;
@@ -597,7 +597,7 @@ function schemaNode(
     data: {
       id: nodeIdForSymbol(symbol),
       kind,
-      label: kind === 'enum' ? `enum ${symbol}` : symbol,
+      label: symbol,
       ...(description ? { description } : {}),
       sourceSymbol: symbol,
       deprecated,
@@ -720,7 +720,7 @@ async function generateFamilyVariant(
       data: {
         id: serviceNodeId(symbol),
         kind: 'service',
-        label: `service ${service.name}${version ? ` ${version}` : ''}`,
+        label: `${service.name}${version ? ` ${version}` : ''}`,
         ...(description ? { description } : {}),
         sourceSymbol: symbol,
         protoUrl: protoUrl(githubBaseUrl, definitionSource.get(symbol)),
@@ -755,7 +755,7 @@ async function generateFamilyVariant(
         data: {
           id: rpcNodeId(serviceSymbol, method.name),
           kind: 'rpc' as const,
-          label: `rpc ${method.name}`,
+          label: method.name,
           ...(description ? { description } : {}),
           protoUrl: protoUrl(githubBaseUrl, methodSource.get(`${serviceSymbol}.${method.name}`)),
           fields: [

@@ -217,9 +217,12 @@ function computeElkLayoutPositions(
   return layoutPromise;
 }
 
-function serviceSubtitle(serviceMap: ServiceMapDefinition): string {
-  const serviceLabels = new Set(serviceMap.serviceChoices.map((choice) => choice.label));
-  return `${serviceMap.label} ${serviceLabels.size > 1 ? 'service family' : 'service'}`;
+function interfaceTitle(serviceId: ServiceId): string {
+  return serviceId.toUpperCase();
+}
+
+function serviceSubtitle(serviceChoice: ServiceMapChoice): string {
+  return `${displayServiceChoiceLabel(serviceChoice.label)} Service`;
 }
 
 type ServiceChoiceGroup = {
@@ -375,9 +378,9 @@ function AppShell({ themeMode, onToggleTheme }: AppShellProps) {
   const [rpcFilterIds, setRpcFilterIds] = useState<Record<string, string>>(() =>
     initialServiceRoute.rpcFilterId
       ? {
-          [`${initialServiceRoute.serviceId}:${initialServiceRoute.serviceChoiceId}`]:
-            initialServiceRoute.rpcFilterId,
-        }
+        [`${initialServiceRoute.serviceId}:${initialServiceRoute.serviceChoiceId}`]:
+          initialServiceRoute.rpcFilterId,
+      }
       : {},
   );
   const [selectedId, setSelectedId] = useState<string | null>(null);
@@ -881,8 +884,8 @@ function AppShell({ themeMode, onToggleTheme }: AppShellProps) {
     <Box className="app-shell">
       <Box component="header" className="topbar">
         <Box className="brand">
-          <span className="brand-kicker">{serviceSubtitle(activeService)}</span>
-          <h1>{activeService.title}</h1>
+          <span className="brand-kicker">{interfaceTitle(activeServiceId)}</span>
+          <h1>{serviceSubtitle(activeServiceChoice)}</h1>
         </Box>
 
         <ServiceNav activeServiceId={activeServiceId} onSelect={setActiveServiceId} />
