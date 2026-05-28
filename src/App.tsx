@@ -435,6 +435,10 @@ function AppShell({ themeMode, onToggleTheme }: AppShellProps) {
   const appliedLayoutResetCount = useRef(0);
   const searchInputRef = useRef<HTMLInputElement>(null);
   const lastSelectionFitKeyRef = useRef<string | null>(null);
+  const inspectorFitFramesRef = useRef<{ first: number | null; second: number | null }>({
+    first: null,
+    second: null,
+  });
 
   const activeService = serviceMaps[activeServiceId];
   const activeServiceChoice =
@@ -959,6 +963,85 @@ function AppShell({ themeMode, onToggleTheme }: AppShellProps) {
     fitView({ padding: 0.12, duration: 450 });
   }, [fitView]);
 
+  const fitCurrentFocus = useCallback(() => {
+    if (selectionFitKey && selectionFitBounds) {
+      void fitBounds(selectionFitBounds, {
+        padding: 0.24,
+        duration: 350,
+      });
+      return;
+    }
+
+    if (query && matchedNodes.length > 0) {
+      void fitView({
+        nodes: matchedNodes,
+        padding: 0.24,
+        duration: 350,
+        maxZoom: 1.2,
+      });
+      return;
+    }
+
+    void fitView({ padding: 0.12, duration: 450 });
+  }, [fitBounds, fitView, matchedNodes, query, selectionFitBounds, selectionFitKey]);
+
+  const cancelInspectorFit = useCallback(() => {
+    const { first, second } = inspectorFitFramesRef.current;
+
+    if (first !== null) {
+      window.cancelAnimationFrame(first);
+    }
+
+    if (second !== null) {
+      window.cancelAnimationFrame(second);
+    }
+
+    inspectorFitFramesRef.current = { first: null, second: null };
+  }, []);
+
+  const scheduleInspectorFit = useCallback(() => {
+    cancelInspectorFit();
+
+    const first = window.requestAnimationFrame(() => {
+      inspectorFitFramesRef.current.first = null;
+      const second = window.requestAnimationFrame(() => {
+        inspectorFitFramesRef.current.second = null;
+        fitCurrentFocus();
+      });
+      inspectorFitFramesRef.current.second = second;
+    });
+
+    inspectorFitFramesRef.current.first = first;
+  }, [cancelInspectorFit, fitCurrentFocus]);
+
+  useEffect(() => cancelInspectorFit, [cancelInspectorFit]);
+
+  const toggleInspector = useCallback(() => {
+    setInspectorCollapsed((collapsed) => !collapsed);
+    scheduleInspectorFit();
+  }, [scheduleInspectorFit]);
+
+  useEffect(() => {
+    const handleDetailsToggleKey = (event: KeyboardEvent) => {
+      if (event.altKey || event.ctrlKey || event.metaKey || isTextEditingTarget(event.target)) {
+        return;
+      }
+
+      if (event.key.toLowerCase() !== 'd') {
+        return;
+      }
+
+      event.preventDefault();
+      toggleInspector();
+    };
+
+    window.addEventListener('keydown', handleDetailsToggleKey);
+
+    return () => {
+      window.removeEventListener('keydown', handleDetailsToggleKey);
+    };
+  }, [toggleInspector]);
+
   const onNodesChange = useCallback((changes: NodeChange<MapNode>[]) => {
     const selectedNodeChanged = changes.some(
       (change) => change.type === 'select' && change.selected,
@@ -1263,7 +1346,7 @@ function AppShell({ themeMode, onToggleTheme }: AppShellProps) {
             type="button"
             aria-label={inspectorCollapsed ? 'Show details panel' : 'Hide details panel'}
             aria-expanded={!inspectorCollapsed}
-            onClick={() => setInspectorCollapsed((collapsed) => !collapsed)}
+            onClick={toggleInspector}
           >
             {inspectorCollapsed ? (
               <ChevronLeftIcon sx={{ fontSize: 18 }} />
