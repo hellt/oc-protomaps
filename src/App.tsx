@@ -871,11 +871,6 @@ function AppShell({ themeMode, onToggleTheme }: AppShellProps) {
           (selectedField !== null && !selectedEdge);
         const opacity = highlighted ? 1 : connectedToMatch ? (selectionDimmed ? 0.18 : 1) : 0.14;
         const stroke = highlighted ? 'var(--edge-selected)' : 'var(--edge-field)';
-        const strokeWidth =
-          typeof style.strokeWidth === 'number'
-            ? style.strokeWidth + (highlighted ? 1.8 : 0)
-            : style.strokeWidth;
-
         return {
           ...edge,
           type: 'routed',
@@ -896,7 +891,6 @@ function AppShell({ themeMode, onToggleTheme }: AppShellProps) {
             ...style,
             opacity,
             stroke,
-            strokeWidth,
           },
         } satisfies RoutedMapEdge;
       }),
@@ -1992,6 +1986,31 @@ type FieldRowProps = {
   showExtensions?: boolean;
 };
 
+function FieldTypeLabel({ field }: { field: MapField }) {
+  const parts = field.type.split(/(\bstream\b)/i);
+  const hasInlineStream = parts.some((part) => part.toLowerCase() === 'stream');
+  const streamFromBadge = field.badge === 'stream' && !hasInlineStream;
+
+  return (
+    <span className="field-type">
+      {parts.filter(Boolean).map((part, index) => (
+        <span
+          key={`${part}:${index}`}
+          className={part.toLowerCase() === 'stream' ? 'field-type-accent' : undefined}
+        >
+          {part}
+        </span>
+      ))}
+      {streamFromBadge ? (
+        <>
+          {' '}
+          <span className="field-type-accent">stream</span>
+        </>
+      ) : null}
+    </span>
+  );
+}
+
 function FieldRow({
   field,
   highlighted,
@@ -2004,6 +2023,7 @@ function FieldRow({
   const isExtension = field.ref === 'extension';
   const visibleExtensionHandle = !isExtension || showExtensions;
   const clickable = Boolean(onFieldSelect);
+  const inlineBadge = field.badge === 'stream';
   const fieldTitle = [field.type, field.name, field.group, field.badge]
     .filter(Boolean)
     .join(' ');
@@ -2017,7 +2037,7 @@ function FieldRow({
     <div
       className={[
         'field-row',
-        field.group || field.badge ? 'is-detail' : '',
+        field.group || (field.badge && !inlineBadge) ? 'is-detail' : '',
         field.ref ? 'has-ref' : '',
         highlighted ? 'is-highlighted' : '',
         edgeHighlighted ? 'is-edge-highlighted' : '',
@@ -2047,10 +2067,12 @@ function FieldRow({
         selectField();
       }}
     >
-      <span className="field-type">{field.type}</span>
+      <FieldTypeLabel field={field} />
       <span className="field-name">{field.name}</span>
       {field.group ? <span className="field-group">{field.group}</span> : null}
-      {field.badge ? <span className={`field-badge badge-${field.badge}`}>{field.badge}</span> : null}
+      {field.badge && !inlineBadge ? (
+        <span className={`field-badge badge-${field.badge}`}>{field.badge}</span>
+      ) : null}
       {field.ref && visibleExtensionHandle ? (
         <Handle
           type="source"

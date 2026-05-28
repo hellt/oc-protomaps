@@ -457,10 +457,12 @@ a {
 }
 
 .schema-node {
+  --node-header-bg: var(--teal);
+  position: relative;
   overflow: hidden;
   border: 1px solid var(--node-border);
   border-radius: 8px;
-  background: var(--panel);
+  background: var(--node-header-bg);
   box-shadow: 0 8px 22px var(--node-shadow);
   color: var(--ink);
   transition:
@@ -494,25 +496,36 @@ a {
   gap: 8px;
   min-height: 36px;
   padding: 8px 10px;
-  background: var(--teal);
+  background: var(--node-header-bg);
   color: var(--header-ink);
 }
 
-.kind-service .node-header {
-  background: var(--blue);
+.node-header,
+.node-badges,
+.node-body {
+  position: relative;
 }
 
-.kind-rpc .node-header {
-  background: var(--lavender);
+.node-badges,
+.node-body {
+  background: var(--panel);
 }
 
-.kind-enum .node-header {
-  background: var(--amber);
+.kind-service {
+  --node-header-bg: var(--blue);
 }
 
-.kind-external .node-header,
-.kind-legend .node-header {
-  background: var(--gray);
+.kind-rpc {
+  --node-header-bg: var(--lavender);
+}
+
+.kind-enum {
+  --node-header-bg: var(--amber);
+}
+
+.kind-external,
+.kind-legend {
+  --node-header-bg: var(--gray);
 }
 
 .node-kind {
@@ -599,6 +612,8 @@ a {
 
 .node-body {
   padding: 8px;
+  border-bottom-right-radius: 7px;
+  border-bottom-left-radius: 7px;
 }
 
 .field-row,
@@ -622,7 +637,18 @@ a {
 }
 
 .field-row:nth-child(odd) {
-  background: var(--panel-soft);
+  background: transparent;
+}
+
+.field-row+.field-row::before {
+  position: absolute;
+  top: 0;
+  right: 9px;
+  left: 9px;
+  height: 1px;
+  background: color-mix(in srgb, var(--line) 48%, transparent);
+  content: "";
+  pointer-events: none;
 }
 
 .field-row.is-highlighted {
@@ -660,6 +686,10 @@ a {
   font-weight: 700;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.field-type-accent {
+  color: var(--sapphire);
 }
 
 .field-name {

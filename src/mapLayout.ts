@@ -87,7 +87,9 @@ export function mapFieldRowHeight(field?: MapField): number {
     return baseFieldRowHeight;
   }
 
-  return field.group || field.badge ? detailFieldRowHeight : baseFieldRowHeight;
+  return field.group || (field.badge && field.badge !== 'stream')
+    ? detailFieldRowHeight
+    : baseFieldRowHeight;
 }
 
 export function sourceHandleY(node: MapNode, sourceHandle: string): number {
