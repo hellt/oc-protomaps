@@ -26,10 +26,10 @@
   --node-border: #acb0be;
   --node-shadow: rgba(76, 79, 105, 0.12);
   --node-selected-shadow: rgba(30, 102, 245, 0.16);
-  --edge-rpc: #1e66f5;
+  --edge-rpc: #7c7f93;
   --edge-field: #7c7f93;
-  --edge-extension: #df8e1d;
-  --edge-extension-detail: #fe640b;
+  --edge-extension: #7c7f93;
+  --edge-extension-detail: #7c7f93;
   --edge-selected: #d20f39;
   --background-pattern: #bcc0cc;
   --edge-halo: #eff1f5;
@@ -87,10 +87,10 @@
   --node-border: #45475a;
   --node-shadow: rgba(17, 17, 27, 0.42);
   --node-selected-shadow: rgba(137, 180, 250, 0.22);
-  --edge-rpc: #89b4fa;
+  --edge-rpc: #a6adc8;
   --edge-field: #a6adc8;
-  --edge-extension: #f9e2af;
-  --edge-extension-detail: #fab387;
+  --edge-extension: #a6adc8;
+  --edge-extension-detail: #a6adc8;
   --edge-selected: #f38ba8;
   --background-pattern: #45475a;
   --edge-halo: #181825;
@@ -659,10 +659,6 @@ a {
   background: var(--amber);
 }
 
-.flow-edge-rpc .react-flow__edge-path {
-  filter: drop-shadow(0 1px 1px color-mix(in srgb, var(--blue) 18%, transparent));
-}
-
 .flow-edge .react-flow__edge-path {
   transition:
     opacity 160ms ease,
@@ -677,23 +673,6 @@ a {
   stroke: var(--edge-halo);
   stroke-linecap: round;
   stroke-linejoin: round;
-}
-
-.flow-edge-bridge,
-.flow-edge-bridge-gap {
-  fill: none;
-  pointer-events: none;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-
-.flow-edge-bridge-gap {
-  stroke: var(--page-bg);
-  stroke-width: 8px;
-}
-
-.flow-edge-bridge {
-  stroke-dasharray: none;
 }
 
 .flow-edge.is-selected .react-flow__edge-path {
