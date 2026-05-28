@@ -1286,17 +1286,35 @@ a {
 }
 
 .inspector-description p,
-.inspector-field-description p {
+.inspector-description ul,
+.inspector-description ol,
+.inspector-field-description p,
+.inspector-field-description ul,
+.inspector-field-description ol {
   margin: 0;
 }
 
-.inspector-description p+p,
-.inspector-description pre+p,
-.inspector-description p+pre,
-.inspector-field-description p+p,
-.inspector-field-description pre+p,
-.inspector-field-description p+pre {
-  margin-top: 10px;
+.inspector-description .description-block,
+.inspector-field-description .description-block {
+  color: inherit;
+  font-size: inherit;
+  line-height: inherit;
+}
+
+.inspector-description ul,
+.inspector-description ol,
+.inspector-field-description ul,
+.inspector-field-description ol {
+  padding-left: 20px;
+}
+
+.description-block+.description-block {
+  margin-top: 1em;
+}
+
+.inspector-description li+li,
+.inspector-field-description li+li {
+  margin-top: 4px;
 }
 
 .inspector-description code,

@@ -2643,10 +2643,20 @@ function fieldSelectHandlerFromData(data: MapNode['data']): FieldSelectHandler |
     : undefined;
 }
 
-type DescriptionBlock = {
-  text: string;
-  preformatted: boolean;
-};
+type DescriptionBlock =
+  | {
+    kind: 'paragraph';
+    text: string;
+  }
+  | {
+    kind: 'preformatted';
+    text: string;
+  }
+  | {
+    kind: 'list';
+    ordered: boolean;
+    items: string[];
+  };
 
 function descriptionBlocks(description: string): DescriptionBlock[] {
   const blocks: DescriptionBlock[] = [];
@@ -2661,18 +2671,11 @@ function descriptionBlocks(description: string): DescriptionBlock[] {
 
     const preformatted = isPreformattedDescription(trimmedLines);
     if (preformatted) {
-      blocks.push({ preformatted: true, text: trimmedLines.join('\n') });
+      blocks.push({ kind: 'preformatted', text: trimmedLines.join('\n') });
       return;
     }
 
-    for (const text of readableParagraphs(
-      trimmedLines
-        .map((line) => line.trim())
-        .join(' ')
-        .replace(/\s+/g, ' '),
-    )) {
-      blocks.push({ preformatted: false, text });
-    }
+    blocks.push(...readableDescriptionBlocks(trimmedLines));
   };
 
   for (const line of description.replace(/\r\n/g, '\n').split('\n')) {
@@ -2689,8 +2692,83 @@ function descriptionBlocks(description: string): DescriptionBlock[] {
 
 function isPreformattedDescription(lines: string[]): boolean {
   return lines.some((line) =>
-    /(?:<-{2,}|-{2,}>|={3,}|\|)|^\s*(?:Client|Target)\s|^\s*(?:[-*]|\d+[.)])\s/.test(line),
+    /(?:<-{2,}|-{2,}>|={3,}|\|)|^\s*(?:Client|Target)\s/.test(line),
   );
+}
+
+function readableDescriptionBlocks(lines: string[]): DescriptionBlock[] {
+  const blocks: DescriptionBlock[] = [];
+  let paragraphLines: string[] = [];
+  let listItems: string[] = [];
+  let listOrdered = false;
+
+  const pushParagraph = () => {
+    const text = paragraphLines
+      .map((line) => line.trim())
+      .join(' ')
+      .replace(/\s+/g, ' ');
+    paragraphLines = [];
+    if (!text) {
+      return;
+    }
+
+    for (const paragraph of readableParagraphs(text)) {
+      blocks.push({ kind: 'paragraph', text: paragraph });
+    }
+  };
+
+  const pushList = () => {
+    if (!listItems.length) {
+      return;
+    }
+
+    blocks.push({
+      kind: 'list',
+      ordered: listOrdered,
+      items: listItems.map((item) => item.replace(/\s+/g, ' ')),
+    });
+    listItems = [];
+  };
+
+  for (const line of lines) {
+    const listItem = parseDescriptionListItem(line);
+
+    if (listItem) {
+      pushParagraph();
+
+      if (listItems.length && listOrdered !== listItem.ordered) {
+        pushList();
+      }
+
+      listOrdered = listItem.ordered;
+      listItems.push(listItem.text);
+      continue;
+    }
+
+    if (listItems.length) {
+      listItems[listItems.length - 1] = `${listItems[listItems.length - 1]} ${line.trim()}`;
+      continue;
+    }
+
+    paragraphLines.push(line);
+  }
+
+  pushParagraph();
+  pushList();
+
+  return blocks;
+}
+
+function parseDescriptionListItem(line: string): { ordered: boolean; text: string } | null {
+  const match = /^\s*((?:[-*])|\d+[.)])\s+(.+)$/.exec(line);
+  if (!match) {
+    return null;
+  }
+
+  return {
+    ordered: /\d/.test(match[1][0]),
+    text: match[2].trim(),
+  };
 }
 
 function readableParagraphs(text: string): string[] {
@@ -2815,13 +2893,32 @@ function DescriptionText({
 
   return (
     <div className={className}>
-      {blocks.map((block, index) =>
-        block.preformatted ? (
-          <pre key={index}>{block.text}</pre>
-        ) : (
-          <p key={index}>{inlineDescriptionText(block.text, specUrl)}</p>
-        ),
-      )}
+      {blocks.map((block, index) => {
+        if (block.kind === 'preformatted') {
+          return (
+            <pre key={index} className="description-block">
+              {block.text}
+            </pre>
+          );
+        }
+
+        if (block.kind === 'list') {
+          const ListTag = block.ordered ? 'ol' : 'ul';
+          return (
+            <ListTag key={index} className="description-block">
+              {block.items.map((item, itemIndex) => (
+                <li key={itemIndex}>{inlineDescriptionText(item, specUrl)}</li>
+              ))}
+            </ListTag>
+          );
+        }
+
+        return (
+          <p key={index} className="description-block">
+            {inlineDescriptionText(block.text, specUrl)}
+          </p>
+        );
+      })}
     </div>
   );
 }
