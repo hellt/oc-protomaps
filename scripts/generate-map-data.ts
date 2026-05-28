@@ -48,14 +48,12 @@ type GeneratedSourceInput = {
 };
 type GnmiMapVariant = {
   tag: string;
-  serviceVersion: string;
   nodes: MapNode[];
   edges: MapEdge[];
   bounds: MapBounds;
 };
 type MapSource = {
   gnmiTag: string;
-  gnmiServiceVersion: string;
   gnmiBase: string;
   extBase: string;
   specBase: string;
@@ -428,7 +426,6 @@ function serviceNode(
   node: MapNode,
   service: protobuf.Service,
   serviceLine: number | undefined,
-  serviceVersion: string,
   gnmiTag: string,
 ): MapNode {
   const methods = service.methodsArray;
@@ -439,7 +436,7 @@ function serviceNode(
     data: {
       id: node.id,
       kind: node.data.kind,
-      label: `service gNMI ${serviceVersion}`,
+      label: `service gNMI ${gnmiTag}`,
       ...(description ? { description } : {}),
       protoUrl: protoUrl('gnmi', serviceLine, gnmiTag),
       specUrl: specUrlFromLayout(node),
@@ -599,7 +596,6 @@ export type MapBadge = 'stream' | 'optional' | 'deprecated' | 'reserved';
 
 export type MapSource = {
   gnmiTag: string;
-  gnmiServiceVersion: string;
   gnmiBase: string;
   extBase: string;
   specBase: string;
@@ -616,7 +612,6 @@ export type MapSource = {
 
 export type GnmiMapVariant = {
   tag: string;
-  serviceVersion: string;
   nodes: MapNode[];
   edges: MapEdge[];
   bounds: MapBounds;
@@ -677,7 +672,6 @@ function generatedSource({ variants, services }: GeneratedSourceInput): string {
   const latestVariant = variants[0];
   const source: MapSource = {
     gnmiTag: latestVariant.tag,
-    gnmiServiceVersion: latestVariant.serviceVersion,
     gnmiBase: `${GNMI_GITHUB_BASE}/${latestVariant.tag}/proto/gnmi/gnmi.proto`,
     extBase: `${GNMI_GITHUB_BASE}/${latestVariant.tag}/proto/gnmi_ext/gnmi_ext.proto`,
     specBase: SPECBASE,
@@ -712,14 +706,6 @@ async function generateGnmiVariant(gnmiTag: string): Promise<GnmiMapVariant> {
     byShortName,
   );
   const service = root.lookupService('gnmi.gNMI');
-  const gnmiNamespace = root.lookup('gnmi');
-  if (!gnmiNamespace) {
-    throw new Error('Could not resolve gNMI namespace');
-  }
-  const serviceVersion = gnmiNamespace.options?.['(gnmi_service)'];
-  if (typeof serviceVersion !== 'string') {
-    throw new Error('Could not resolve gNMI service version');
-  }
   const linesBySource: LinesBySource = {
     gnmi: definitionLines(gnmiProto),
     gnmi_ext: definitionLines(extProto),
@@ -729,7 +715,7 @@ async function generateGnmiVariant(gnmiTag: string): Promise<GnmiMapVariant> {
   const nodes = layoutNodes
     .map((node): MapNode | null => {
     if (node.id === 'service-gnmi') {
-      return serviceNode(node, service, linesBySource.gnmi.get('gnmi.gNMI'), serviceVersion, gnmiTag);
+      return serviceNode(node, service, linesBySource.gnmi.get('gnmi.gNMI'), gnmiTag);
     }
     if (node.data.kind === 'rpc') {
       return rpcNode(node, service, rpcLines, gnmiTag);
@@ -771,26 +757,10 @@ async function generateGnmiVariant(gnmiTag: string): Promise<GnmiMapVariant> {
 
   return {
     tag: gnmiTag,
-    serviceVersion,
     nodes,
     edges,
     bounds: mapBounds,
   };
-}
-
-function uniqueServiceVersionVariants(variants: GnmiMapVariant[]): GnmiMapVariant[] {
-  const seenVersions = new Set<string>();
-  const uniqueVariants: GnmiMapVariant[] = [];
-
-  for (const variant of variants) {
-    if (seenVersions.has(variant.serviceVersion)) {
-      continue;
-    }
-    seenVersions.add(variant.serviceVersion);
-    uniqueVariants.push(variant);
-  }
-
-  return uniqueVariants;
 }
 
 function serviceChoiceForVariant(variant: GnmiMapVariant): GnmiServiceChoice {
@@ -798,10 +768,10 @@ function serviceChoiceForVariant(variant: GnmiMapVariant): GnmiServiceChoice {
     nodeId: 'service-gnmi',
     name: 'gNMI',
     symbol: 'gnmi.gNMI',
-    choiceId: `service-gnmi@${variant.serviceVersion}`,
+    choiceId: `service-gnmi@${variant.tag}`,
     focusNodeId: 'service-gnmi',
     sourceTag: variant.tag,
-    version: variant.serviceVersion,
+    version: variant.tag,
   };
 }
 
@@ -812,13 +782,12 @@ async function main() {
   }
 
   const scannedVariants = await Promise.all(tags.map((tag) => generateGnmiVariant(tag)));
-  const variants = uniqueServiceVersionVariants(scannedVariants);
-  const services = variants.map(serviceChoiceForVariant);
+  const services = scannedVariants.map(serviceChoiceForVariant);
 
-  await fs.writeFile(OUTPUT_PATH, generatedSource({ variants, services }));
+  await fs.writeFile(OUTPUT_PATH, generatedSource({ variants: scannedVariants, services }));
   console.log(
-    `Wrote ${OUTPUT_PATH} from ${variants
-      .map((variant) => `openconfig/gnmi ${variant.tag} (${variant.serviceVersion})`)
+    `Wrote ${OUTPUT_PATH} from ${scannedVariants
+      .map((variant) => `openconfig/gnmi ${variant.tag}`)
       .join(', ')}`,
   );
 }

@@ -96,6 +96,9 @@ function validateDeprecatedVisibility(): void {
 function validateServiceRegistryMaps(): void {
   for (const serviceId of serviceMapOrder) {
     const serviceMap = serviceMaps[serviceId];
+    const focusNodeIds = new Set(
+      serviceMap.serviceChoices.map((choice) => choice.focusNodeId ?? choice.id),
+    );
     const fullMap = serviceMap.getVisibleMap({ showDeprecated: true, showExtensions: true });
     const serviceNodeCount = fullMap.nodes.filter((node) => node.data.kind === 'service').length;
     const rpcNodeCount = fullMap.nodes.filter((node) => node.data.kind === 'rpc').length;
@@ -123,6 +126,7 @@ function validateServiceRegistryMaps(): void {
       );
       assert(
         focusedMap.nodes.length < fullMap.nodes.length ||
+          focusNodeIds.size === 1 ||
           serviceChoice.id === serviceMap.defaultServiceChoiceId ||
           serviceMap.serviceChoices.length === 1,
         `${serviceId}/${serviceChoice.label}: focused map should be narrower than family map`,
@@ -145,22 +149,26 @@ function assertServiceRoute(route: ServiceRoute, expected: ServiceRoute, label: 
 }
 
 function validateServiceRoutes(): void {
+  const gnmiLatestChoice = serviceMaps.gnmi.serviceChoices[0];
+  const gnmiLatestVersion = gnmiLatestChoice.version;
+  assert(gnmiLatestVersion, 'gNMI latest route test requires a versioned service choice');
+
   const gnmiLatestRoute = {
     serviceId: 'gnmi',
-    serviceChoiceId: 'service-gnmi@0.10.0',
+    serviceChoiceId: gnmiLatestChoice.id,
   } as const;
   assert(
-    serviceRoutePath(gnmiLatestRoute) === '/gnmi/service-gnmi/0.10.0',
+    serviceRoutePath(gnmiLatestRoute) === `/gnmi/service-gnmi/${gnmiLatestVersion}`,
     'gNMI route must serialize without a hash or encoded @',
   );
   assert(
     serviceRoutePath(gnmiLatestRoute, '/gnmi-map/') ===
-      '/gnmi-map/gnmi/service-gnmi/0.10.0',
+      `/gnmi-map/gnmi/service-gnmi/${gnmiLatestVersion}`,
     'gNMI route must serialize under a configured base path',
   );
   assertServiceRoute(
     serviceRouteFromLocation({
-      pathname: '/gnmi/service-gnmi/0.10.0',
+      pathname: `/gnmi/service-gnmi/${gnmiLatestVersion}`,
       search: '',
       hash: '',
     }),
@@ -173,12 +181,12 @@ function validateServiceRoutes(): void {
     rpcFilterId: 'rpc-get',
   };
   assert(
-    serviceRoutePath(gnmiGetRoute) === '/gnmi/service-gnmi/0.10.0/rpc-get',
+    serviceRoutePath(gnmiGetRoute) === `/gnmi/service-gnmi/${gnmiLatestVersion}/rpc-get`,
     'gNMI RPC route must serialize the active RPC filter',
   );
   assertServiceRoute(
     serviceRouteFromLocation({
-      pathname: '/gnmi/service-gnmi/0.10.0/rpc-get',
+      pathname: `/gnmi/service-gnmi/${gnmiLatestVersion}/rpc-get`,
       search: '',
       hash: '',
     }),
@@ -197,7 +205,7 @@ function validateServiceRoutes(): void {
   assertServiceRoute(
     serviceRouteFromLocation(
       {
-        pathname: '/gnmi-map/gnmi/service-gnmi/0.10.0',
+        pathname: `/gnmi-map/gnmi/service-gnmi/${gnmiLatestVersion}`,
         search: '',
         hash: '',
       },
@@ -210,7 +218,7 @@ function validateServiceRoutes(): void {
     serviceRouteFromLocation({
       pathname: '/',
       search: '',
-      hash: '#gnmi/service-gnmi%400.10.0',
+      hash: `#gnmi/service-gnmi%40${gnmiLatestVersion}`,
     }),
     gnmiLatestRoute,
     'legacy gNMI hash route',
@@ -218,7 +226,7 @@ function validateServiceRoutes(): void {
   assertServiceRoute(
     serviceRouteFromLocation({
       pathname: '/',
-      search: '?service=gnmi&map=service-gnmi%400.10.0&rpc=rpc-get',
+      search: `?service=gnmi&map=service-gnmi%40${gnmiLatestVersion}&rpc=rpc-get`,
       hash: '',
     }),
     gnmiGetRoute,

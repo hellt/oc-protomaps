@@ -71,7 +71,6 @@ export const serviceMaps: Record<ServiceId, ServiceMapDefinition> = {
       'Configuration, state retrieval, and telemetry subscription RPCs for OpenConfig targets.',
     sourceRepository: 'openconfig/gnmi',
     sourceTag: gnmiMapSource.gnmiTag,
-    serviceVersion: gnmiMapSource.gnmiServiceVersion,
     serviceChoices: gnmiServiceChoices,
     defaultServiceChoiceId: gnmiServiceChoices[0].id,
     getVisibleMap: getFocusedGnmiVisibleMap,
