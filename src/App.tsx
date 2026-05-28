@@ -871,11 +871,6 @@ function AppShell({ themeMode, onToggleTheme }: AppShellProps) {
           (selectedField !== null && !selectedEdge);
         const opacity = highlighted ? 1 : connectedToMatch ? (selectionDimmed ? 0.18 : 1) : 0.14;
         const stroke = highlighted ? 'var(--edge-selected)' : 'var(--edge-field)';
-        const strokeWidth =
-          typeof style.strokeWidth === 'number'
-            ? style.strokeWidth + (highlighted ? 1.8 : 0)
-            : style.strokeWidth;
-
         return {
           ...edge,
           type: 'routed',
@@ -896,7 +891,6 @@ function AppShell({ themeMode, onToggleTheme }: AppShellProps) {
             ...style,
             opacity,
             stroke,
-            strokeWidth,
           },
         } satisfies RoutedMapEdge;
       }),
