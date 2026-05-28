@@ -2090,18 +2090,88 @@ function readableParagraphs(text: string): string[] {
   return paragraphs.length ? paragraphs : [text];
 }
 
-function inlineDescriptionText(text: string): ReactNode {
+function normalizedSectionNumber(section: string): string {
+  return section.replace(/\s+/g, '');
+}
+
+function sectionAnchorPrefix(section: string): string {
+  return normalizedSectionNumber(section).replace(/\./g, '');
+}
+
+function gnmiSpecificationSectionUrl(section: string, specUrl: string | undefined): string | null {
+  if (!specUrl) {
+    return null;
+  }
+
+  const hash = specUrl.split('#')[1];
+  const anchorPrefix = sectionAnchorPrefix(section);
+  if (!hash || (hash !== anchorPrefix && !hash.startsWith(`${anchorPrefix}-`))) {
+    return null;
+  }
+
+  return specUrl;
+}
+
+function linkedDescriptionText(
+  text: string,
+  keyPrefix: string,
+  specUrl: string | undefined,
+): ReactNode[] {
+  const sectionReferencePattern =
+    /\bgNMI Specification\s+Section(?:\s+Section)?\s+((?:\d+\s*\.\s*)*\d+)/gi;
+  const nodes: ReactNode[] = [];
+  let cursor = 0;
+
+  for (const match of text.matchAll(sectionReferencePattern)) {
+    const index = match.index ?? 0;
+    const section = match[1];
+    const href = gnmiSpecificationSectionUrl(section, specUrl);
+    if (!href) {
+      continue;
+    }
+
+    if (index > cursor) {
+      nodes.push(text.slice(cursor, index));
+    }
+    nodes.push(
+      <a
+        key={`${keyPrefix}:section:${index}`}
+        href={href}
+        target="_blank"
+        rel="noreferrer"
+      >
+        {`gNMI Specification Section ${normalizedSectionNumber(section)}`}
+      </a>,
+    );
+    cursor = index + match[0].length;
+  }
+
+  if (cursor < text.length) {
+    nodes.push(text.slice(cursor));
+  }
+  return nodes.length ? nodes : [text];
+}
+
+function inlineDescriptionText(text: string, specUrl?: string): ReactNode {
   const parts = text.split(/(`[^`]+`)/g);
-  return parts.map((part, index) =>
+  return parts.flatMap((part, index): ReactNode[] =>
     part.startsWith('`') && part.endsWith('`') ? (
-      <code key={index}>{part.slice(1, -1)}</code>
+      [<code key={`code:${index}`}>{part.slice(1, -1)}</code>]
     ) : (
-      part
+      linkedDescriptionText(part, `text:${index}`, specUrl)
     ),
   );
 }
 
-function DescriptionText({ text, className }: { text: string; className: string }) {
+function DescriptionText({
+  text,
+  className,
+  specUrl,
+}: {
+  text: string;
+  className: string;
+  specUrl?: string;
+}) {
   const blocks = descriptionBlocks(text);
   if (!blocks.length) {
     return null;
@@ -2113,7 +2183,7 @@ function DescriptionText({ text, className }: { text: string; className: string 
         block.preformatted ? (
           <pre key={index}>{block.text}</pre>
         ) : (
-          <p key={index}>{inlineDescriptionText(block.text)}</p>
+          <p key={index}>{inlineDescriptionText(block.text, specUrl)}</p>
         ),
       )}
     </div>
@@ -2207,6 +2277,7 @@ function Inspector({
               <DescriptionText
                 className="inspector-field-description"
                 text={field.description}
+                specUrl={parentNode.data.specUrl}
               />
             ) : (
               <p className="inspector-field-description">No field description in the proto.</p>
@@ -2223,6 +2294,7 @@ function Inspector({
                 <DescriptionText
                   className="inspector-field-description"
                   text={refNode.data.description}
+                  specUrl={refNode.data.specUrl}
                 />
               ) : (
                 <p className="inspector-field-description">
@@ -2358,7 +2430,11 @@ function Inspector({
       </Stack>
 
       {node.data.description ? (
-        <DescriptionText className="inspector-description" text={node.data.description} />
+        <DescriptionText
+          className="inspector-description"
+          text={node.data.description}
+          specUrl={node.data.specUrl}
+        />
       ) : null}
 
       {node.data.fields?.length ? (
@@ -2373,6 +2449,7 @@ function Inspector({
                 <DescriptionText
                   className="inspector-field-description"
                   text={field.description}
+                  specUrl={node.data.specUrl}
                 />
               ) : null}
             </div>

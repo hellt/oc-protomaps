@@ -923,6 +923,21 @@ a {
   font-size: 0.92em;
 }
 
+.inspector-description a,
+.inspector-field-description a {
+  color: var(--blue);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.inspector-description a:hover,
+.inspector-description a:focus-visible,
+.inspector-field-description a:hover,
+.inspector-field-description a:focus-visible {
+  text-decoration: underline;
+  outline: none;
+}
+
 .inspector-description pre,
 .inspector-field-description pre {
   margin: 0;
