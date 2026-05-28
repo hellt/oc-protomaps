@@ -46,6 +46,14 @@ pnpm run build
 pnpm run preview
 ```
 
+To refresh the checked-in generated map data from upstream OpenConfig tags:
+
+```bash
+pnpm run build:map
+```
+
+The repository also includes a weekly GitHub Actions updater.
+
 ## Notes
 
 - The app uses checked-in generated map data and does not fetch protobuf files at runtime.
