@@ -152,6 +152,20 @@ type SelectedFieldDetails = {
   refNode?: MapNode;
 };
 
+type SelectionHashTarget =
+  | {
+    kind: 'node';
+    nodeId: string;
+    hashValue: string;
+  }
+  | {
+    kind: 'field';
+    nodeId: string;
+    fieldId: string;
+    edgeId: string | null;
+    hashValue: string;
+  };
+
 function isThemeMode(value: string | null): value is ThemeMode {
   return value === 'light' || value === 'dark';
 }
@@ -363,6 +377,123 @@ function rpcFilterChoicesForService(
     }));
 }
 
+function decodeSelectionHash(hash: string): string {
+  const value = hash.replace(/^#/, '');
+  if (!value || value.startsWith('/')) {
+    return '';
+  }
+
+  try {
+    return decodeURIComponent(value);
+  } catch {
+    return value;
+  }
+}
+
+function encodeSelectionHash(value: string): string {
+  return value ? `#${encodeURIComponent(value)}` : '';
+}
+
+function selectionHashName(value: string): string {
+  return value
+    .trim()
+    .replace(/\s+v?\d+(?:\.\d+){1,3}(?:[-+][\w.]+)?$/i, '')
+    .toLowerCase();
+}
+
+function selectionHashValueForNode(node: MapNode): string {
+  const name = selectionHashName(node.data.label) || node.id;
+  return `${node.data.kind}-${name}`;
+}
+
+function selectionHashValueForField(node: MapNode, field: MapField): string {
+  const nodeName = selectionHashValueForNode(node);
+  const fieldName = selectionHashName(field.name) || field.id;
+  return `${nodeName}-field-${fieldName}`;
+}
+
+function selectionHashForTarget(target: SelectionHashTarget | null): string {
+  if (!target) {
+    return '';
+  }
+
+  return encodeSelectionHash(target.hashValue);
+}
+
+function selectionHashForSelection(
+  selectedId: string | null,
+  selectedField: FieldSelection | null,
+  nodes: MapNode[],
+): string {
+  if (selectedId) {
+    const node = nodes.find((currentNode) => currentNode.id === selectedId);
+    return node ? encodeSelectionHash(selectionHashValueForNode(node)) : '';
+  }
+
+  if (selectedField) {
+    const node = nodes.find((currentNode) => currentNode.id === selectedField.nodeId);
+    const field = node?.data.fields?.find(
+      (currentField) => currentField.id === selectedField.fieldId,
+    );
+    return node && field ? encodeSelectionHash(selectionHashValueForField(node, field)) : '';
+  }
+
+  return '';
+}
+
+function resolveSelectionHash(
+  hash: string,
+  nodes: MapNode[],
+  edges: MapEdge[],
+): SelectionHashTarget | null {
+  const value = decodeSelectionHash(hash);
+  if (!value) {
+    return null;
+  }
+
+  const selectedNode = nodes.find((node) => selectionHashValueForNode(node) === value);
+  if (selectedNode) {
+    return {
+      kind: 'node',
+      nodeId: selectedNode.id,
+      hashValue: selectionHashValueForNode(selectedNode),
+    };
+  }
+
+  const fieldTarget = nodes
+    .flatMap((node) =>
+      (node.data.fields ?? []).map((field) => ({
+        node,
+        field,
+        hashValue: selectionHashValueForField(node, field),
+      })),
+    )
+    .find((target) => target.hashValue === value);
+  if (!fieldTarget) {
+    return null;
+  }
+
+  const { node: fieldNode, field, hashValue } = fieldTarget;
+  const edgeId =
+    edges.find((edge) => edge.source === fieldNode.id && edge.sourceHandle === field.id)?.id ?? null;
+
+  return {
+    kind: 'field',
+    nodeId: fieldNode.id,
+    fieldId: field.id,
+    edgeId,
+    hashValue,
+  };
+}
+
+function replaceCurrentUrlHash(hash: string): void {
+  const nextUrl = `${window.location.pathname}${window.location.search}${hash}`;
+  const currentUrl = `${window.location.pathname}${window.location.search}${window.location.hash}`;
+  if (currentUrl !== nextUrl) {
+    window.history.replaceState(null, '', nextUrl);
+  }
+}
+
 function searchableText(node: MapNode): string {
   const fieldText = node.data.fields
     ?.map((field) => `${field.type} ${field.name} ${field.group ?? ''} ${field.badge ?? ''}`)
@@ -437,6 +568,7 @@ function AppShell({ themeMode, onToggleTheme }: AppShellProps) {
   const appliedLayoutResetCount = useRef(0);
   const searchInputRef = useRef<HTMLInputElement>(null);
   const lastSelectionFitKeyRef = useRef<string | null>(null);
+  const restoredSelectionHashRef = useRef<string | null>(null);
   const inspectorFitFramesRef = useRef<{ first: number | null; second: number | null }>({
     first: null,
     second: null,
@@ -524,6 +656,9 @@ function AppShell({ themeMode, onToggleTheme }: AppShellProps) {
   }, [layoutCacheKey]);
 
   useEffect(() => {
+    const currentSelectionHash = selectionHashForTarget(
+      resolveSelectionHash(window.location.hash, visibleMap.nodes, visibleMap.edges),
+    );
     const nextUrl = `${serviceRoutePath(
       {
         serviceId: activeServiceId,
@@ -531,12 +666,78 @@ function AppShell({ themeMode, onToggleTheme }: AppShellProps) {
         rpcFilterId: activeRpcFocusNodeId,
       },
       routeBasePath,
-    )}${window.location.search}`;
+    )}${window.location.search}${currentSelectionHash}`;
     const currentUrl = `${window.location.pathname}${window.location.search}${window.location.hash}`;
     if (currentUrl !== nextUrl) {
       window.history.replaceState(null, '', nextUrl);
     }
-  }, [activeRpcFocusNodeId, activeServiceChoiceId, activeServiceId]);
+  }, [
+    activeRpcFocusNodeId,
+    activeServiceChoiceId,
+    activeServiceId,
+    visibleMap.edges,
+    visibleMap.nodes,
+  ]);
+
+  const applySelectionHash = useCallback(
+    (hash: string) => {
+      if (!hash) {
+        restoredSelectionHashRef.current = '';
+        setSelectedId(null);
+        setSelectedEdgeId(null);
+        setSelectedField(null);
+        return;
+      }
+
+      const target = resolveSelectionHash(hash, visibleMap.nodes, visibleMap.edges);
+      if (!target) {
+        return;
+      }
+
+      restoredSelectionHashRef.current = selectionHashForTarget(target);
+      if (target.kind === 'node') {
+        setSelectedId(target.nodeId);
+        setSelectedEdgeId(null);
+        setSelectedField(null);
+        return;
+      }
+
+      setSelectedId(null);
+      setSelectedField({ nodeId: target.nodeId, fieldId: target.fieldId });
+      setSelectedEdgeId(target.edgeId);
+    },
+    [visibleMap.edges, visibleMap.nodes],
+  );
+
+  useEffect(() => {
+    applySelectionHash(window.location.hash);
+
+    const handleHashChange = () => {
+      applySelectionHash(window.location.hash);
+    };
+
+    window.addEventListener('hashchange', handleHashChange);
+
+    return () => {
+      window.removeEventListener('hashchange', handleHashChange);
+    };
+  }, [applySelectionHash]);
+
+  const selectedSelectionHash = useMemo(
+    () => selectionHashForSelection(selectedId, selectedField, visibleMap.nodes),
+    [selectedField, selectedId, visibleMap.nodes],
+  );
+
+  useEffect(() => {
+    if (restoredSelectionHashRef.current !== null) {
+      if (selectedSelectionHash !== restoredSelectionHashRef.current) {
+        return;
+      }
+      restoredSelectionHashRef.current = null;
+    }
+
+    replaceCurrentUrlHash(selectedSelectionHash);
+  }, [selectedSelectionHash]);
 
   useEffect(() => {
     const handleGlobalSearchKeys = (event: KeyboardEvent) => {
