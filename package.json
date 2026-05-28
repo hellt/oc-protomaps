@@ -6,8 +6,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite --host 0.0.0.0",
-    "build:map": "tsx scripts/generate-map-data.ts",
-    "build:service-maps": "tsx scripts/generate-service-maps.ts",
+    "build:map": "tsx scripts/generate-map-data.ts && tsx scripts/generate-service-maps.ts",
     "build": "tsc --noEmit && vite build",
     "test:map": "tsx scripts/validate-map.ts",
     "typecheck": "tsc --noEmit",
