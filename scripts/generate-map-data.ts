@@ -15,6 +15,8 @@ import {
 const GNMI_TAGS_API = 'https://api.github.com/repos/openconfig/gnmi/tags?per_page=30';
 const GNMI_GITHUB_BASE = 'https://github.com/openconfig/gnmi/blob';
 const GNMI_RAW_BASE = 'https://raw.githubusercontent.com/openconfig/gnmi';
+const GNMI_PROTO_PATH = 'proto/gnmi/gnmi.proto';
+const GNMI_EXT_PROTO_PATH = 'proto/gnmi_ext/gnmi_ext.proto';
 const SPECBASE =
   'https://github.com/openconfig/reference/blob/master/rpc/gnmi/gnmi-specification.md';
 const OUTPUT_PATH = path.resolve('src/gnmiMap.ts');
@@ -52,6 +54,10 @@ type GnmiMapVariant = {
   nodes: MapNode[];
   edges: MapEdge[];
   bounds: MapBounds;
+};
+type GnmiServiceVersionRef = {
+  tag: string;
+  serviceVersion: string;
 };
 type MapSource = {
   gnmiTag: string;
@@ -132,6 +138,28 @@ function semverTuple(tag: string): [number, number, number] | null {
 function compareSemver(first: string, second: string): number {
   const firstTuple = semverTuple(first);
   const secondTuple = semverTuple(second);
+  if (!firstTuple || !secondTuple) {
+    return 0;
+  }
+
+  return (
+    firstTuple[0] - secondTuple[0] ||
+    firstTuple[1] - secondTuple[1] ||
+    firstTuple[2] - secondTuple[2]
+  );
+}
+
+function serviceVersionTuple(version: string): [number, number, number] | null {
+  const match = version.match(/^(\d+)\.(\d+)\.(\d+)$/);
+  if (!match) {
+    return null;
+  }
+  return [Number(match[1]), Number(match[2]), Number(match[3])];
+}
+
+function compareServiceVersions(first: string, second: string): number {
+  const firstTuple = serviceVersionTuple(first);
+  const secondTuple = serviceVersionTuple(second);
   if (!firstTuple || !secondTuple) {
     return 0;
   }
@@ -394,14 +422,18 @@ function protoUrl(source: SourceKind, line: number | undefined, gnmiTag: string)
     return undefined;
   }
 
-  const file =
-    source === 'gnmi_ext' ? 'proto/gnmi_ext/gnmi_ext.proto' : 'proto/gnmi/gnmi.proto';
+  const file = source === 'gnmi_ext' ? GNMI_EXT_PROTO_PATH : GNMI_PROTO_PATH;
   return `${GNMI_GITHUB_BASE}/${gnmiTag}/${file}#L${line}`;
 }
 
 function descriptionText(comment: string | null | undefined): string | undefined {
   const description = comment?.trim();
   return description || undefined;
+}
+
+function gnmiServiceVersionFromProto(protoText: string): string | undefined {
+  const match = protoText.match(/option\s+\(gnmi_service\)\s*=\s*"([^"]+)"/);
+  return match?.[1];
 }
 
 function buildSymbolMaps(
@@ -591,6 +623,20 @@ function buildEdges(nodes: MapNode[]): MapEdge[] {
   return edges;
 }
 
+function removeUnreferencedExternalNodes(nodes: MapNode[]): MapNode[] {
+  const referencedNodeIds = new Set(
+    nodes.flatMap((node) =>
+      (node.data.fields ?? [])
+        .map((field) => field.ref)
+        .filter((ref): ref is string => typeof ref === 'string'),
+    ),
+  );
+
+  return nodes.filter(
+    (node) => node.data.kind !== 'external' || referencedNodeIds.has(node.id),
+  );
+}
+
 const GENERATED_TYPE_DEFINITIONS = `import type { Edge, Node } from '@xyflow/react';
 
 export type MapNodeKind = 'service' | 'rpc' | 'message' | 'enum' | 'external' | 'legend';
@@ -678,8 +724,8 @@ function generatedSource({ variants, services }: GeneratedSourceInput): string {
   const source: MapSource = {
     gnmiTag: latestVariant.tag,
     gnmiServiceVersion: latestVariant.serviceVersion,
-    gnmiBase: `${GNMI_GITHUB_BASE}/${latestVariant.tag}/proto/gnmi/gnmi.proto`,
-    extBase: `${GNMI_GITHUB_BASE}/${latestVariant.tag}/proto/gnmi_ext/gnmi_ext.proto`,
+    gnmiBase: `${GNMI_GITHUB_BASE}/${latestVariant.tag}/${GNMI_PROTO_PATH}`,
+    extBase: `${GNMI_GITHUB_BASE}/${latestVariant.tag}/${GNMI_EXT_PROTO_PATH}`,
     specBase: SPECBASE,
     services,
   };
@@ -696,8 +742,8 @@ function generatedSource({ variants, services }: GeneratedSourceInput): string {
 }
 
 async function generateGnmiVariant(gnmiTag: string): Promise<GnmiMapVariant> {
-  const gnmiRawUrl = `${GNMI_RAW_BASE}/${gnmiTag}/proto/gnmi/gnmi.proto`;
-  const extRawUrl = `${GNMI_RAW_BASE}/${gnmiTag}/proto/gnmi_ext/gnmi_ext.proto`;
+  const gnmiRawUrl = `${GNMI_RAW_BASE}/${gnmiTag}/${GNMI_PROTO_PATH}`;
+  const extRawUrl = `${GNMI_RAW_BASE}/${gnmiTag}/${GNMI_EXT_PROTO_PATH}`;
   const [gnmiProto, extProto] = await Promise.all([fetchText(gnmiRawUrl), fetchText(extRawUrl)]);
 
   const root = new protobuf.Root();
@@ -726,7 +772,8 @@ async function generateGnmiVariant(gnmiTag: string): Promise<GnmiMapVariant> {
   };
   const rpcLines = methodLines(gnmiProto);
 
-  const nodes = layoutNodes
+  const nodes = removeUnreferencedExternalNodes(
+    layoutNodes
     .map((node): MapNode | null => {
       if (node.id === 'service-gnmi') {
         return serviceNode(node, service, linesBySource.gnmi.get('gnmi.gNMI'), serviceVersion, gnmiTag);
@@ -766,7 +813,8 @@ async function generateGnmiVariant(gnmiTag: string): Promise<GnmiMapVariant> {
         },
       };
     })
-    .filter((node): node is MapNode => node !== null);
+    .filter((node): node is MapNode => node !== null),
+  );
   const edges = buildEdges(nodes);
 
   return {
@@ -778,19 +826,27 @@ async function generateGnmiVariant(gnmiTag: string): Promise<GnmiMapVariant> {
   };
 }
 
-function uniqueServiceVersionVariants(variants: GnmiMapVariant[]): GnmiMapVariant[] {
+async function canonicalServiceVersionRefs(tags: string[]): Promise<GnmiServiceVersionRef[]> {
+  const refs: GnmiServiceVersionRef[] = [];
   const seenVersions = new Set<string>();
-  const uniqueVariants: GnmiMapVariant[] = [];
+  const ascendingTags = [...tags].sort(compareSemver);
 
-  for (const variant of variants) {
-    if (seenVersions.has(variant.serviceVersion)) {
+  for (const tag of ascendingTags) {
+    const protoText = await fetchText(`${GNMI_RAW_BASE}/${tag}/${GNMI_PROTO_PATH}`);
+    const serviceVersion = gnmiServiceVersionFromProto(protoText);
+    if (!serviceVersion || seenVersions.has(serviceVersion)) {
       continue;
     }
-    seenVersions.add(variant.serviceVersion);
-    uniqueVariants.push(variant);
+
+    seenVersions.add(serviceVersion);
+    refs.push({ tag, serviceVersion });
   }
 
-  return uniqueVariants;
+  return refs.sort(
+    (first, second) =>
+      compareServiceVersions(second.serviceVersion, first.serviceVersion) ||
+      compareSemver(second.tag, first.tag),
+  );
 }
 
 function serviceChoiceForVariant(variant: GnmiMapVariant): GnmiServiceChoice {
@@ -811,8 +867,20 @@ async function main() {
     throw new Error('Could not resolve openconfig/gnmi release tags');
   }
 
-  const scannedVariants = await Promise.all(tags.map((tag) => generateGnmiVariant(tag)));
-  const variants = uniqueServiceVersionVariants(scannedVariants);
+  const refs = await canonicalServiceVersionRefs(tags);
+  if (!refs.length) {
+    throw new Error('Could not resolve canonical gNMI service version refs');
+  }
+
+  const variants = await Promise.all(refs.map((ref) => generateGnmiVariant(ref.tag)));
+  variants.forEach((variant, index) => {
+    const ref = refs[index];
+    if (variant.serviceVersion !== ref.serviceVersion) {
+      throw new Error(
+        `gNMI service version mismatch for ${ref.tag}: expected ${ref.serviceVersion}, got ${variant.serviceVersion}`,
+      );
+    }
+  });
   const services = variants.map(serviceChoiceForVariant);
 
   await fs.writeFile(OUTPUT_PATH, generatedSource({ variants, services }));
