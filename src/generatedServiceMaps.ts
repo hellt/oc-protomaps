@@ -3666,7 +3666,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-bgp-clear-bgpneighbor-request-mode",
           "kind": "enum",
-          "label": "enum gnoi.bgp.ClearBGPNeighborRequest.Mode",
+          "label": "gnoi.bgp.ClearBGPNeighborRequest.Mode",
           "sourceSymbol": "gnoi.bgp.ClearBGPNeighborRequest.Mode",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.8.0/bgp/bgp.proto#L44",
@@ -4055,7 +4055,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-certificate-certificate-type",
           "kind": "enum",
-          "label": "enum gnoi.certificate.CertificateType",
+          "label": "gnoi.certificate.CertificateType",
           "description": "Types of certificates.",
           "sourceSymbol": "gnoi.certificate.CertificateType",
           "deprecated": false,
@@ -4258,7 +4258,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-certificate-endpoint-type",
           "kind": "enum",
-          "label": "enum gnoi.certificate.Endpoint.Type",
+          "label": "gnoi.certificate.Endpoint.Type",
           "description": "Type of endpoint that can use a cert. This list is to be extended based on\nconversation with vendors.",
           "sourceSymbol": "gnoi.certificate.Endpoint.Type",
           "deprecated": false,
@@ -4538,7 +4538,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-certificate-key-type",
           "kind": "enum",
-          "label": "enum gnoi.certificate.KeyType",
+          "label": "gnoi.certificate.KeyType",
           "description": "Algorithm to be used for generation the key pair.",
           "sourceSymbol": "gnoi.certificate.KeyType",
           "deprecated": false,
@@ -4891,7 +4891,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-common-remote-download-protocol",
           "kind": "enum",
-          "label": "enum gnoi.common.RemoteDownload.Protocol",
+          "label": "gnoi.common.RemoteDownload.Protocol",
           "sourceSymbol": "gnoi.common.RemoteDownload.Protocol",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.8.0/common/common.proto#L34",
@@ -5188,7 +5188,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-containerz-device-permission",
           "kind": "enum",
-          "label": "enum gnoi.containerz.Device.Permission",
+          "label": "gnoi.containerz.Device.Permission",
           "description": "The permissions to apply to the device.",
           "sourceSymbol": "gnoi.containerz.Device.Permission",
           "deprecated": false,
@@ -5237,7 +5237,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-containerz-driver",
           "kind": "enum",
-          "label": "enum gnoi.containerz.Driver",
+          "label": "gnoi.containerz.Driver",
           "description": "Driver enum defines which volume driver should be used when creating the\nvolume",
           "sourceSymbol": "gnoi.containerz.Driver",
           "deprecated": false,
@@ -5591,7 +5591,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-containerz-list-container-response-status",
           "kind": "enum",
-          "label": "enum gnoi.containerz.ListContainerResponse.Status",
+          "label": "gnoi.containerz.ListContainerResponse.Status",
           "sourceSymbol": "gnoi.containerz.ListContainerResponse.Status",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.8.0/containerz/containerz.proto#L329",
@@ -5965,7 +5965,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-containerz-local-driver-options-type",
           "kind": "enum",
-          "label": "enum gnoi.containerz.LocalDriverOptions.Type",
+          "label": "gnoi.containerz.LocalDriverOptions.Type",
           "sourceSymbol": "gnoi.containerz.LocalDriverOptions.Type",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.8.0/containerz/containerz.proto#L635",
@@ -6563,7 +6563,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-containerz-start-container-request-location",
           "kind": "enum",
-          "label": "enum gnoi.containerz.StartContainerRequest.Location",
+          "label": "gnoi.containerz.StartContainerRequest.Location",
           "description": "Location describes where a container should be located.",
           "sourceSymbol": "gnoi.containerz.StartContainerRequest.Location",
           "deprecated": false,
@@ -6679,7 +6679,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-containerz-start-container-request-restart-policy",
           "kind": "enum",
-          "label": "enum gnoi.containerz.StartContainerRequest.Restart.Policy",
+          "label": "gnoi.containerz.StartContainerRequest.Restart.Policy",
           "sourceSymbol": "gnoi.containerz.StartContainerRequest.Restart.Policy",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.8.0/containerz/containerz.proto#L437",
@@ -7311,7 +7311,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-debug-debug-request-mode",
           "kind": "enum",
-          "label": "enum gnoi.debug.DebugRequest.Mode",
+          "label": "gnoi.debug.DebugRequest.Mode",
           "sourceSymbol": "gnoi.debug.DebugRequest.Mode",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.8.0/debug/debug.proto#L41",
@@ -7435,7 +7435,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-diag-bert-status",
           "kind": "enum",
-          "label": "enum gnoi.diag.BertStatus",
+          "label": "gnoi.diag.BertStatus",
           "description": "Status returned for each per-port BERT request.",
           "sourceSymbol": "gnoi.diag.BertStatus",
           "deprecated": false,
@@ -7747,7 +7747,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-diag-prbs-polynomial",
           "kind": "enum",
-          "label": "enum gnoi.diag.PrbsPolynomial",
+          "label": "gnoi.diag.PrbsPolynomial",
           "description": "Common sequence generating monic polynomials used for PRBS.",
           "sourceSymbol": "gnoi.diag.PrbsPolynomial",
           "deprecated": false,
@@ -9179,7 +9179,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-healthz-status",
           "kind": "enum",
-          "label": "enum gnoi.healthz.Status",
+          "label": "gnoi.healthz.Status",
           "sourceSymbol": "gnoi.healthz.Status",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.8.0/healthz/healthz.proto#L72",
@@ -9463,7 +9463,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-layer2-perform-bertresponse-bertstate",
           "kind": "enum",
-          "label": "enum gnoi.layer2.PerformBERTResponse.BERTState",
+          "label": "gnoi.layer2.PerformBERTResponse.BERTState",
           "sourceSymbol": "gnoi.layer2.PerformBERTResponse.BERTState",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.8.0/layer2/layer2.proto#L82",
@@ -9660,7 +9660,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-mpls-clear-lsprequest-mode",
           "kind": "enum",
-          "label": "enum gnoi.mpls.ClearLSPRequest.Mode",
+          "label": "gnoi.mpls.ClearLSPRequest.Mode",
           "sourceSymbol": "gnoi.mpls.ClearLSPRequest.Mode",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.8.0/mpls/mpls.proto#L45",
@@ -9874,7 +9874,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-mpls-mplsping-request-reply-mode",
           "kind": "enum",
-          "label": "enum gnoi.mpls.MPLSPingRequest.ReplyMode",
+          "label": "gnoi.mpls.MPLSPingRequest.ReplyMode",
           "sourceSymbol": "gnoi.mpls.MPLSPingRequest.ReplyMode",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.8.0/mpls/mpls.proto#L119",
@@ -9952,7 +9952,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-mpls-mplsping-response-echo-response-code",
           "kind": "enum",
-          "label": "enum gnoi.mpls.MPLSPingResponse.EchoResponseCode",
+          "label": "gnoi.mpls.MPLSPingResponse.EchoResponseCode",
           "sourceSymbol": "gnoi.mpls.MPLSPingResponse.EchoResponseCode",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.8.0/mpls/mpls.proto#L145",
@@ -10073,7 +10073,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-optical-adjust-psderror-type",
           "kind": "enum",
-          "label": "enum gnoi.optical.AdjustPSDError.Type",
+          "label": "gnoi.optical.AdjustPSDError.Type",
           "sourceSymbol": "gnoi.optical.AdjustPSDError.Type",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.8.0/wavelength_router/wavelength_router.proto#L109",
@@ -10146,7 +10146,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-optical-adjust-psdprogress-state",
           "kind": "enum",
-          "label": "enum gnoi.optical.AdjustPSDProgress.State",
+          "label": "gnoi.optical.AdjustPSDProgress.State",
           "sourceSymbol": "gnoi.optical.AdjustPSDProgress.State",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.8.0/wavelength_router/wavelength_router.proto#L97",
@@ -10225,7 +10225,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-optical-adjust-psdrequest-signal-direction",
           "kind": "enum",
-          "label": "enum gnoi.optical.AdjustPSDRequest.SignalDirection",
+          "label": "gnoi.optical.AdjustPSDRequest.SignalDirection",
           "sourceSymbol": "gnoi.optical.AdjustPSDRequest.SignalDirection",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.8.0/wavelength_router/wavelength_router.proto#L84",
@@ -10336,7 +10336,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-optical-adjust-spectrum-error-type",
           "kind": "enum",
-          "label": "enum gnoi.optical.AdjustSpectrumError.Type",
+          "label": "gnoi.optical.AdjustSpectrumError.Type",
           "sourceSymbol": "gnoi.optical.AdjustSpectrumError.Type",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.8.0/wavelength_router/wavelength_router.proto#L169",
@@ -10406,7 +10406,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-optical-adjust-spectrum-progress-state",
           "kind": "enum",
-          "label": "enum gnoi.optical.AdjustSpectrumProgress.State",
+          "label": "gnoi.optical.AdjustSpectrumProgress.State",
           "sourceSymbol": "gnoi.optical.AdjustSpectrumProgress.State",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.8.0/wavelength_router/wavelength_router.proto#L158",
@@ -10482,7 +10482,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-optical-adjust-spectrum-request-signal-direction",
           "kind": "enum",
-          "label": "enum gnoi.optical.AdjustSpectrumRequest.SignalDirection",
+          "label": "gnoi.optical.AdjustSpectrumRequest.SignalDirection",
           "sourceSymbol": "gnoi.optical.AdjustSpectrumRequest.SignalDirection",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.8.0/wavelength_router/wavelength_router.proto#L146",
@@ -10642,7 +10642,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-optical-fiber-type-profile",
           "kind": "enum",
-          "label": "enum gnoi.optical.FiberTypeProfile",
+          "label": "gnoi.optical.FiberTypeProfile",
           "description": "Type definition for different profiles of fiber types. These match what is\nalready defined in OpenConfig under the FIBER_TYPE_PROFILE identityref in\nopenconfig-optical-amplifier.yang model.",
           "sourceSymbol": "gnoi.optical.FiberTypeProfile",
           "deprecated": false,
@@ -10759,7 +10759,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-optical-initiate-error-type",
           "kind": "enum",
-          "label": "enum gnoi.optical.InitiateError.Type",
+          "label": "gnoi.optical.InitiateError.Type",
           "sourceSymbol": "gnoi.optical.InitiateError.Type",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.8.0/otdr/otdr.proto#L137",
@@ -10829,7 +10829,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-optical-initiate-progress-state",
           "kind": "enum",
-          "label": "enum gnoi.optical.InitiateProgress.State",
+          "label": "gnoi.optical.InitiateProgress.State",
           "description": "The State enum defines possible states that the OTDR trace may be in\nwhile running the operation.",
           "sourceSymbol": "gnoi.optical.InitiateProgress.State",
           "deprecated": false,
@@ -10927,7 +10927,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-optical-initiate-request-results-method",
           "kind": "enum",
-          "label": "enum gnoi.optical.InitiateRequest.ResultsMethod",
+          "label": "gnoi.optical.InitiateRequest.ResultsMethod",
           "sourceSymbol": "gnoi.optical.InitiateRequest.ResultsMethod",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.8.0/otdr/otdr.proto#L44",
@@ -11212,7 +11212,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-os-activate-error-type",
           "kind": "enum",
-          "label": "enum gnoi.os.ActivateError.Type",
+          "label": "gnoi.os.ActivateError.Type",
           "sourceSymbol": "gnoi.os.ActivateError.Type",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.8.0/os/os.proto#L373",
@@ -11395,7 +11395,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-os-install-error-type",
           "kind": "enum",
-          "label": "enum gnoi.os.InstallError.Type",
+          "label": "gnoi.os.InstallError.Type",
           "sourceSymbol": "gnoi.os.InstallError.Type",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.8.0/os/os.proto#L277",
@@ -11652,7 +11652,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-os-standby-state-state",
           "kind": "enum",
-          "label": "enum gnoi.os.StandbyState.State",
+          "label": "gnoi.os.StandbyState.State",
           "sourceSymbol": "gnoi.os.StandbyState.State",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.8.0/os/os.proto#L418",
@@ -12321,7 +12321,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-packet-link-qualification-header-match-field",
           "kind": "enum",
-          "label": "enum gnoi.packet_link_qualification.HeaderMatchField",
+          "label": "gnoi.packet_link_qualification.HeaderMatchField",
           "sourceSymbol": "gnoi.packet_link_qualification.HeaderMatchField",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.8.0/packet_link_qualification/packet_link_qualification.proto#L346",
@@ -12724,7 +12724,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-packet-link-qualification-packet-injector-loopback-mode",
           "kind": "enum",
-          "label": "enum gnoi.packet_link_qualification.PacketInjectorLoopbackMode",
+          "label": "gnoi.packet_link_qualification.PacketInjectorLoopbackMode",
           "sourceSymbol": "gnoi.packet_link_qualification.PacketInjectorLoopbackMode",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.8.0/packet_link_qualification/packet_link_qualification.proto#L310",
@@ -12999,7 +12999,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-packet-link-qualification-qualification-state",
           "kind": "enum",
-          "label": "enum gnoi.packet_link_qualification.QualificationState",
+          "label": "gnoi.packet_link_qualification.QualificationState",
           "description": "States of qualification.",
           "sourceSymbol": "gnoi.packet_link_qualification.QualificationState",
           "deprecated": false,
@@ -13283,7 +13283,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-pcap-channel-width",
           "kind": "enum",
-          "label": "enum gnoi.pcap.ChannelWidth",
+          "label": "gnoi.pcap.ChannelWidth",
           "sourceSymbol": "gnoi.pcap.ChannelWidth",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.8.0/packet_capture/packet_capture.proto#L51",
@@ -13328,7 +13328,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-pcap-direction",
           "kind": "enum",
-          "label": "enum gnoi.pcap.Direction",
+          "label": "gnoi.pcap.Direction",
           "sourceSymbol": "gnoi.pcap.Direction",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.8.0/packet_capture/packet_capture.proto#L43",
@@ -13429,7 +13429,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-pcap-operating-band",
           "kind": "enum",
-          "label": "enum gnoi.pcap.OperatingBand",
+          "label": "gnoi.pcap.OperatingBand",
           "sourceSymbol": "gnoi.pcap.OperatingBand",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.8.0/packet_capture/packet_capture.proto#L31",
@@ -13588,7 +13588,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-pcap-protocol",
           "kind": "enum",
-          "label": "enum gnoi.pcap.Protocol",
+          "label": "gnoi.pcap.Protocol",
           "sourceSymbol": "gnoi.pcap.Protocol",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.8.0/packet_capture/packet_capture.proto#L38",
@@ -13849,7 +13849,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-system-kill-process-request-signal",
           "kind": "enum",
-          "label": "enum gnoi.system.KillProcessRequest.Signal",
+          "label": "gnoi.system.KillProcessRequest.Signal",
           "description": "Termination signal sent to the process.",
           "sourceSymbol": "gnoi.system.KillProcessRequest.Signal",
           "deprecated": false,
@@ -14167,7 +14167,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-system-reboot-method",
           "kind": "enum",
-          "label": "enum gnoi.system.RebootMethod",
+          "label": "gnoi.system.RebootMethod",
           "description": "A RebootMethod determines what should be done with a target when a Reboot is\nrequested.  Only the COLD method is required to be supported by all\ntargets.  A target should return 'INVALID_ARGUMENT` if UNKNOWN or any other\nunsupported method is called.\n\nIt is vendor defined if a WARM reboot is the same as an NSF reboot.",
           "sourceSymbol": "gnoi.system.RebootMethod",
           "deprecated": false,
@@ -14347,7 +14347,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-system-reboot-status-status",
           "kind": "enum",
-          "label": "enum gnoi.system.RebootStatus.Status",
+          "label": "gnoi.system.RebootStatus.Status",
           "sourceSymbol": "gnoi.system.RebootStatus.Status",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.8.0/system/system.proto#L165",
@@ -14771,7 +14771,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-system-traceroute-request-l4-protocol",
           "kind": "enum",
-          "label": "enum gnoi.system.TracerouteRequest.L4Protocol",
+          "label": "gnoi.system.TracerouteRequest.L4Protocol",
           "sourceSymbol": "gnoi.system.TracerouteRequest.L4Protocol",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.8.0/system/system.proto#L246",
@@ -14965,7 +14965,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-system-traceroute-response-state",
           "kind": "enum",
-          "label": "enum gnoi.system.TracerouteResponse.State",
+          "label": "gnoi.system.TracerouteResponse.State",
           "description": "State is the resulting state of a single traceoroute packet.",
           "sourceSymbol": "gnoi.system.TracerouteResponse.State",
           "deprecated": false,
@@ -15148,7 +15148,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-types-hash-type-hash-method",
           "kind": "enum",
-          "label": "enum gnoi.types.HashType.HashMethod",
+          "label": "gnoi.types.HashType.HashMethod",
           "sourceSymbol": "gnoi.types.HashType.HashMethod",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.8.0/types/types.proto#L41",
@@ -15193,7 +15193,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-types-l3-protocol",
           "kind": "enum",
-          "label": "enum gnoi.types.L3Protocol",
+          "label": "gnoi.types.L3Protocol",
           "description": "Generic Layer 3 Protocol enumeration.",
           "sourceSymbol": "gnoi.types.L3Protocol",
           "deprecated": false,
@@ -22600,7 +22600,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-bgp-clear-bgpneighbor-request-mode",
           "kind": "enum",
-          "label": "enum gnoi.bgp.ClearBGPNeighborRequest.Mode",
+          "label": "gnoi.bgp.ClearBGPNeighborRequest.Mode",
           "sourceSymbol": "gnoi.bgp.ClearBGPNeighborRequest.Mode",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.7.0/bgp/bgp.proto#L44",
@@ -22989,7 +22989,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-certificate-certificate-type",
           "kind": "enum",
-          "label": "enum gnoi.certificate.CertificateType",
+          "label": "gnoi.certificate.CertificateType",
           "description": "Types of certificates.",
           "sourceSymbol": "gnoi.certificate.CertificateType",
           "deprecated": false,
@@ -23192,7 +23192,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-certificate-endpoint-type",
           "kind": "enum",
-          "label": "enum gnoi.certificate.Endpoint.Type",
+          "label": "gnoi.certificate.Endpoint.Type",
           "description": "Type of endpoint that can use a cert. This list is to be extended based on\nconversation with vendors.",
           "sourceSymbol": "gnoi.certificate.Endpoint.Type",
           "deprecated": false,
@@ -23472,7 +23472,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-certificate-key-type",
           "kind": "enum",
-          "label": "enum gnoi.certificate.KeyType",
+          "label": "gnoi.certificate.KeyType",
           "description": "Algorithm to be used for generation the key pair.",
           "sourceSymbol": "gnoi.certificate.KeyType",
           "deprecated": false,
@@ -23825,7 +23825,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-common-remote-download-protocol",
           "kind": "enum",
-          "label": "enum gnoi.common.RemoteDownload.Protocol",
+          "label": "gnoi.common.RemoteDownload.Protocol",
           "sourceSymbol": "gnoi.common.RemoteDownload.Protocol",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.7.0/common/common.proto#L34",
@@ -24122,7 +24122,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-containerz-device-permission",
           "kind": "enum",
-          "label": "enum gnoi.containerz.Device.Permission",
+          "label": "gnoi.containerz.Device.Permission",
           "description": "The permissions to apply to the device.",
           "sourceSymbol": "gnoi.containerz.Device.Permission",
           "deprecated": false,
@@ -24171,7 +24171,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-containerz-driver",
           "kind": "enum",
-          "label": "enum gnoi.containerz.Driver",
+          "label": "gnoi.containerz.Driver",
           "description": "Driver enum defines which volume driver should be used when creating the\nvolume",
           "sourceSymbol": "gnoi.containerz.Driver",
           "deprecated": false,
@@ -24525,7 +24525,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-containerz-list-container-response-status",
           "kind": "enum",
-          "label": "enum gnoi.containerz.ListContainerResponse.Status",
+          "label": "gnoi.containerz.ListContainerResponse.Status",
           "sourceSymbol": "gnoi.containerz.ListContainerResponse.Status",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.7.0/containerz/containerz.proto#L326",
@@ -24899,7 +24899,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-containerz-local-driver-options-type",
           "kind": "enum",
-          "label": "enum gnoi.containerz.LocalDriverOptions.Type",
+          "label": "gnoi.containerz.LocalDriverOptions.Type",
           "sourceSymbol": "gnoi.containerz.LocalDriverOptions.Type",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.7.0/containerz/containerz.proto#L647",
@@ -25194,7 +25194,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-containerz-remove-image-response-code",
           "kind": "enum",
-          "label": "enum gnoi.containerz.RemoveImageResponse.Code",
+          "label": "gnoi.containerz.RemoveImageResponse.Code",
           "sourceSymbol": "gnoi.containerz.RemoveImageResponse.Code",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.7.0/containerz/containerz.proto#L250",
@@ -25610,7 +25610,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-containerz-start-container-request-restart-policy",
           "kind": "enum",
-          "label": "enum gnoi.containerz.StartContainerRequest.Restart.Policy",
+          "label": "gnoi.containerz.StartContainerRequest.Restart.Policy",
           "sourceSymbol": "gnoi.containerz.StartContainerRequest.Restart.Policy",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.7.0/containerz/containerz.proto#L434",
@@ -25762,7 +25762,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-containerz-start-error-code",
           "kind": "enum",
-          "label": "enum gnoi.containerz.StartError.Code",
+          "label": "gnoi.containerz.StartError.Code",
           "sourceSymbol": "gnoi.containerz.StartError.Code",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.7.0/containerz/containerz.proto#L520",
@@ -25981,7 +25981,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-containerz-stop-container-response-code",
           "kind": "enum",
-          "label": "enum gnoi.containerz.StopContainerResponse.Code",
+          "label": "gnoi.containerz.StopContainerResponse.Code",
           "sourceSymbol": "gnoi.containerz.StopContainerResponse.Code",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.7.0/containerz/containerz.proto#L549",
@@ -26200,7 +26200,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-containerz-update-error-code",
           "kind": "enum",
-          "label": "enum gnoi.containerz.UpdateError.Code",
+          "label": "gnoi.containerz.UpdateError.Code",
           "sourceSymbol": "gnoi.containerz.UpdateError.Code",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.7.0/containerz/containerz.proto#L599",
@@ -26396,7 +26396,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-debug-debug-request-mode",
           "kind": "enum",
-          "label": "enum gnoi.debug.DebugRequest.Mode",
+          "label": "gnoi.debug.DebugRequest.Mode",
           "sourceSymbol": "gnoi.debug.DebugRequest.Mode",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.7.0/debug/debug.proto#L41",
@@ -26520,7 +26520,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-diag-bert-status",
           "kind": "enum",
-          "label": "enum gnoi.diag.BertStatus",
+          "label": "gnoi.diag.BertStatus",
           "description": "Status returned for each per-port BERT request.",
           "sourceSymbol": "gnoi.diag.BertStatus",
           "deprecated": false,
@@ -26832,7 +26832,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-diag-prbs-polynomial",
           "kind": "enum",
-          "label": "enum gnoi.diag.PrbsPolynomial",
+          "label": "gnoi.diag.PrbsPolynomial",
           "description": "Common sequence generating monic polynomials used for PRBS.",
           "sourceSymbol": "gnoi.diag.PrbsPolynomial",
           "deprecated": false,
@@ -28264,7 +28264,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-healthz-status",
           "kind": "enum",
-          "label": "enum gnoi.healthz.Status",
+          "label": "gnoi.healthz.Status",
           "sourceSymbol": "gnoi.healthz.Status",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.7.0/healthz/healthz.proto#L72",
@@ -28548,7 +28548,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-layer2-perform-bertresponse-bertstate",
           "kind": "enum",
-          "label": "enum gnoi.layer2.PerformBERTResponse.BERTState",
+          "label": "gnoi.layer2.PerformBERTResponse.BERTState",
           "sourceSymbol": "gnoi.layer2.PerformBERTResponse.BERTState",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.7.0/layer2/layer2.proto#L82",
@@ -28745,7 +28745,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-mpls-clear-lsprequest-mode",
           "kind": "enum",
-          "label": "enum gnoi.mpls.ClearLSPRequest.Mode",
+          "label": "gnoi.mpls.ClearLSPRequest.Mode",
           "sourceSymbol": "gnoi.mpls.ClearLSPRequest.Mode",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.7.0/mpls/mpls.proto#L45",
@@ -28959,7 +28959,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-mpls-mplsping-request-reply-mode",
           "kind": "enum",
-          "label": "enum gnoi.mpls.MPLSPingRequest.ReplyMode",
+          "label": "gnoi.mpls.MPLSPingRequest.ReplyMode",
           "sourceSymbol": "gnoi.mpls.MPLSPingRequest.ReplyMode",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.7.0/mpls/mpls.proto#L119",
@@ -29037,7 +29037,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-mpls-mplsping-response-echo-response-code",
           "kind": "enum",
-          "label": "enum gnoi.mpls.MPLSPingResponse.EchoResponseCode",
+          "label": "gnoi.mpls.MPLSPingResponse.EchoResponseCode",
           "sourceSymbol": "gnoi.mpls.MPLSPingResponse.EchoResponseCode",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.7.0/mpls/mpls.proto#L145",
@@ -29158,7 +29158,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-optical-adjust-psderror-type",
           "kind": "enum",
-          "label": "enum gnoi.optical.AdjustPSDError.Type",
+          "label": "gnoi.optical.AdjustPSDError.Type",
           "sourceSymbol": "gnoi.optical.AdjustPSDError.Type",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.7.0/wavelength_router/wavelength_router.proto#L109",
@@ -29231,7 +29231,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-optical-adjust-psdprogress-state",
           "kind": "enum",
-          "label": "enum gnoi.optical.AdjustPSDProgress.State",
+          "label": "gnoi.optical.AdjustPSDProgress.State",
           "sourceSymbol": "gnoi.optical.AdjustPSDProgress.State",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.7.0/wavelength_router/wavelength_router.proto#L97",
@@ -29310,7 +29310,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-optical-adjust-psdrequest-signal-direction",
           "kind": "enum",
-          "label": "enum gnoi.optical.AdjustPSDRequest.SignalDirection",
+          "label": "gnoi.optical.AdjustPSDRequest.SignalDirection",
           "sourceSymbol": "gnoi.optical.AdjustPSDRequest.SignalDirection",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.7.0/wavelength_router/wavelength_router.proto#L84",
@@ -29421,7 +29421,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-optical-adjust-spectrum-error-type",
           "kind": "enum",
-          "label": "enum gnoi.optical.AdjustSpectrumError.Type",
+          "label": "gnoi.optical.AdjustSpectrumError.Type",
           "sourceSymbol": "gnoi.optical.AdjustSpectrumError.Type",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.7.0/wavelength_router/wavelength_router.proto#L169",
@@ -29491,7 +29491,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-optical-adjust-spectrum-progress-state",
           "kind": "enum",
-          "label": "enum gnoi.optical.AdjustSpectrumProgress.State",
+          "label": "gnoi.optical.AdjustSpectrumProgress.State",
           "sourceSymbol": "gnoi.optical.AdjustSpectrumProgress.State",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.7.0/wavelength_router/wavelength_router.proto#L158",
@@ -29567,7 +29567,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-optical-adjust-spectrum-request-signal-direction",
           "kind": "enum",
-          "label": "enum gnoi.optical.AdjustSpectrumRequest.SignalDirection",
+          "label": "gnoi.optical.AdjustSpectrumRequest.SignalDirection",
           "sourceSymbol": "gnoi.optical.AdjustSpectrumRequest.SignalDirection",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.7.0/wavelength_router/wavelength_router.proto#L146",
@@ -29727,7 +29727,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-optical-fiber-type-profile",
           "kind": "enum",
-          "label": "enum gnoi.optical.FiberTypeProfile",
+          "label": "gnoi.optical.FiberTypeProfile",
           "description": "Type definition for different profiles of fiber types. These match what is\nalready defined in OpenConfig under the FIBER_TYPE_PROFILE identityref in\nopenconfig-optical-amplifier.yang model.",
           "sourceSymbol": "gnoi.optical.FiberTypeProfile",
           "deprecated": false,
@@ -29844,7 +29844,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-optical-initiate-error-type",
           "kind": "enum",
-          "label": "enum gnoi.optical.InitiateError.Type",
+          "label": "gnoi.optical.InitiateError.Type",
           "sourceSymbol": "gnoi.optical.InitiateError.Type",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.7.0/otdr/otdr.proto#L137",
@@ -29914,7 +29914,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-optical-initiate-progress-state",
           "kind": "enum",
-          "label": "enum gnoi.optical.InitiateProgress.State",
+          "label": "gnoi.optical.InitiateProgress.State",
           "description": "The State enum defines possible states that the OTDR trace may be in\nwhile running the operation.",
           "sourceSymbol": "gnoi.optical.InitiateProgress.State",
           "deprecated": false,
@@ -30012,7 +30012,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-optical-initiate-request-results-method",
           "kind": "enum",
-          "label": "enum gnoi.optical.InitiateRequest.ResultsMethod",
+          "label": "gnoi.optical.InitiateRequest.ResultsMethod",
           "sourceSymbol": "gnoi.optical.InitiateRequest.ResultsMethod",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.7.0/otdr/otdr.proto#L44",
@@ -30297,7 +30297,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-os-activate-error-type",
           "kind": "enum",
-          "label": "enum gnoi.os.ActivateError.Type",
+          "label": "gnoi.os.ActivateError.Type",
           "sourceSymbol": "gnoi.os.ActivateError.Type",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.7.0/os/os.proto#L373",
@@ -30480,7 +30480,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-os-install-error-type",
           "kind": "enum",
-          "label": "enum gnoi.os.InstallError.Type",
+          "label": "gnoi.os.InstallError.Type",
           "sourceSymbol": "gnoi.os.InstallError.Type",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.7.0/os/os.proto#L277",
@@ -30737,7 +30737,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-os-standby-state-state",
           "kind": "enum",
-          "label": "enum gnoi.os.StandbyState.State",
+          "label": "gnoi.os.StandbyState.State",
           "sourceSymbol": "gnoi.os.StandbyState.State",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.7.0/os/os.proto#L418",
@@ -31406,7 +31406,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-packet-link-qualification-header-match-field",
           "kind": "enum",
-          "label": "enum gnoi.packet_link_qualification.HeaderMatchField",
+          "label": "gnoi.packet_link_qualification.HeaderMatchField",
           "sourceSymbol": "gnoi.packet_link_qualification.HeaderMatchField",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.7.0/packet_link_qualification/packet_link_qualification.proto#L346",
@@ -31809,7 +31809,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-packet-link-qualification-packet-injector-loopback-mode",
           "kind": "enum",
-          "label": "enum gnoi.packet_link_qualification.PacketInjectorLoopbackMode",
+          "label": "gnoi.packet_link_qualification.PacketInjectorLoopbackMode",
           "sourceSymbol": "gnoi.packet_link_qualification.PacketInjectorLoopbackMode",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.7.0/packet_link_qualification/packet_link_qualification.proto#L310",
@@ -32084,7 +32084,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-packet-link-qualification-qualification-state",
           "kind": "enum",
-          "label": "enum gnoi.packet_link_qualification.QualificationState",
+          "label": "gnoi.packet_link_qualification.QualificationState",
           "description": "States of qualification.",
           "sourceSymbol": "gnoi.packet_link_qualification.QualificationState",
           "deprecated": false,
@@ -32368,7 +32368,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-pcap-channel-width",
           "kind": "enum",
-          "label": "enum gnoi.pcap.ChannelWidth",
+          "label": "gnoi.pcap.ChannelWidth",
           "sourceSymbol": "gnoi.pcap.ChannelWidth",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.7.0/packet_capture/packet_capture.proto#L51",
@@ -32413,7 +32413,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-pcap-direction",
           "kind": "enum",
-          "label": "enum gnoi.pcap.Direction",
+          "label": "gnoi.pcap.Direction",
           "sourceSymbol": "gnoi.pcap.Direction",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.7.0/packet_capture/packet_capture.proto#L43",
@@ -32514,7 +32514,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-pcap-operating-band",
           "kind": "enum",
-          "label": "enum gnoi.pcap.OperatingBand",
+          "label": "gnoi.pcap.OperatingBand",
           "sourceSymbol": "gnoi.pcap.OperatingBand",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.7.0/packet_capture/packet_capture.proto#L31",
@@ -32673,7 +32673,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-pcap-protocol",
           "kind": "enum",
-          "label": "enum gnoi.pcap.Protocol",
+          "label": "gnoi.pcap.Protocol",
           "sourceSymbol": "gnoi.pcap.Protocol",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.7.0/packet_capture/packet_capture.proto#L38",
@@ -32934,7 +32934,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-system-kill-process-request-signal",
           "kind": "enum",
-          "label": "enum gnoi.system.KillProcessRequest.Signal",
+          "label": "gnoi.system.KillProcessRequest.Signal",
           "description": "Termination signal sent to the process.",
           "sourceSymbol": "gnoi.system.KillProcessRequest.Signal",
           "deprecated": false,
@@ -33252,7 +33252,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-system-reboot-method",
           "kind": "enum",
-          "label": "enum gnoi.system.RebootMethod",
+          "label": "gnoi.system.RebootMethod",
           "description": "A RebootMethod determines what should be done with a target when a Reboot is\nrequested.  Only the COLD method is required to be supported by all\ntargets.  A target should return 'INVALID_ARGUMENT` if UNKNOWN or any other\nunsupported method is called.\n\nIt is vendor defined if a WARM reboot is the same as an NSF reboot.",
           "sourceSymbol": "gnoi.system.RebootMethod",
           "deprecated": false,
@@ -33432,7 +33432,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-system-reboot-status-status",
           "kind": "enum",
-          "label": "enum gnoi.system.RebootStatus.Status",
+          "label": "gnoi.system.RebootStatus.Status",
           "sourceSymbol": "gnoi.system.RebootStatus.Status",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.7.0/system/system.proto#L165",
@@ -33856,7 +33856,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-system-traceroute-request-l4-protocol",
           "kind": "enum",
-          "label": "enum gnoi.system.TracerouteRequest.L4Protocol",
+          "label": "gnoi.system.TracerouteRequest.L4Protocol",
           "sourceSymbol": "gnoi.system.TracerouteRequest.L4Protocol",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.7.0/system/system.proto#L246",
@@ -34050,7 +34050,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-system-traceroute-response-state",
           "kind": "enum",
-          "label": "enum gnoi.system.TracerouteResponse.State",
+          "label": "gnoi.system.TracerouteResponse.State",
           "description": "State is the resulting state of a single traceoroute packet.",
           "sourceSymbol": "gnoi.system.TracerouteResponse.State",
           "deprecated": false,
@@ -34233,7 +34233,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-types-hash-type-hash-method",
           "kind": "enum",
-          "label": "enum gnoi.types.HashType.HashMethod",
+          "label": "gnoi.types.HashType.HashMethod",
           "sourceSymbol": "gnoi.types.HashType.HashMethod",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.7.0/types/types.proto#L41",
@@ -34278,7 +34278,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-types-l3-protocol",
           "kind": "enum",
-          "label": "enum gnoi.types.L3Protocol",
+          "label": "gnoi.types.L3Protocol",
           "description": "Generic Layer 3 Protocol enumeration.",
           "sourceSymbol": "gnoi.types.L3Protocol",
           "deprecated": false,
@@ -41708,7 +41708,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-bgp-clear-bgpneighbor-request-mode",
           "kind": "enum",
-          "label": "enum gnoi.bgp.ClearBGPNeighborRequest.Mode",
+          "label": "gnoi.bgp.ClearBGPNeighborRequest.Mode",
           "sourceSymbol": "gnoi.bgp.ClearBGPNeighborRequest.Mode",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.6.1/bgp/bgp.proto#L39",
@@ -42082,7 +42082,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-certificate-certificate-type",
           "kind": "enum",
-          "label": "enum gnoi.certificate.CertificateType",
+          "label": "gnoi.certificate.CertificateType",
           "description": "Types of certificates.",
           "sourceSymbol": "gnoi.certificate.CertificateType",
           "deprecated": false,
@@ -42285,7 +42285,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-certificate-endpoint-type",
           "kind": "enum",
-          "label": "enum gnoi.certificate.Endpoint.Type",
+          "label": "gnoi.certificate.Endpoint.Type",
           "description": "Type of endpoint that can use a cert. This list is to be extended based on\nconversation with vendors.",
           "sourceSymbol": "gnoi.certificate.Endpoint.Type",
           "deprecated": false,
@@ -42565,7 +42565,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-certificate-key-type",
           "kind": "enum",
-          "label": "enum gnoi.certificate.KeyType",
+          "label": "gnoi.certificate.KeyType",
           "description": "Algorithm to be used for generation the key pair.",
           "sourceSymbol": "gnoi.certificate.KeyType",
           "deprecated": false,
@@ -42918,7 +42918,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-common-remote-download-protocol",
           "kind": "enum",
-          "label": "enum gnoi.common.RemoteDownload.Protocol",
+          "label": "gnoi.common.RemoteDownload.Protocol",
           "sourceSymbol": "gnoi.common.RemoteDownload.Protocol",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.6.1/common/common.proto#L34",
@@ -43215,7 +43215,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-containerz-device-permission",
           "kind": "enum",
-          "label": "enum gnoi.containerz.Device.Permission",
+          "label": "gnoi.containerz.Device.Permission",
           "description": "The permissions to apply to the device.",
           "sourceSymbol": "gnoi.containerz.Device.Permission",
           "deprecated": false,
@@ -43264,7 +43264,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-containerz-driver",
           "kind": "enum",
-          "label": "enum gnoi.containerz.Driver",
+          "label": "gnoi.containerz.Driver",
           "description": "Driver enum defines which volume driver should be used when creating the\nvolume",
           "sourceSymbol": "gnoi.containerz.Driver",
           "deprecated": false,
@@ -43618,7 +43618,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-containerz-list-container-response-status",
           "kind": "enum",
-          "label": "enum gnoi.containerz.ListContainerResponse.Status",
+          "label": "gnoi.containerz.ListContainerResponse.Status",
           "sourceSymbol": "gnoi.containerz.ListContainerResponse.Status",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.6.1/containerz/containerz.proto#L322",
@@ -43992,7 +43992,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-containerz-local-driver-options-type",
           "kind": "enum",
-          "label": "enum gnoi.containerz.LocalDriverOptions.Type",
+          "label": "gnoi.containerz.LocalDriverOptions.Type",
           "sourceSymbol": "gnoi.containerz.LocalDriverOptions.Type",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.6.1/containerz/containerz.proto#L643",
@@ -44210,7 +44210,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-containerz-remove-container-response-code",
           "kind": "enum",
-          "label": "enum gnoi.containerz.RemoveContainerResponse.Code",
+          "label": "gnoi.containerz.RemoveContainerResponse.Code",
           "sourceSymbol": "gnoi.containerz.RemoveContainerResponse.Code",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.6.1/containerz/containerz.proto#L263",
@@ -44334,7 +44334,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-containerz-remove-image-response-code",
           "kind": "enum",
-          "label": "enum gnoi.containerz.RemoveImageResponse.Code",
+          "label": "gnoi.containerz.RemoveImageResponse.Code",
           "sourceSymbol": "gnoi.containerz.RemoveImageResponse.Code",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.6.1/containerz/containerz.proto#L231",
@@ -44750,7 +44750,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-containerz-start-container-request-restart-policy",
           "kind": "enum",
-          "label": "enum gnoi.containerz.StartContainerRequest.Restart.Policy",
+          "label": "gnoi.containerz.StartContainerRequest.Restart.Policy",
           "sourceSymbol": "gnoi.containerz.StartContainerRequest.Restart.Policy",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.6.1/containerz/containerz.proto#L430",
@@ -44902,7 +44902,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-containerz-start-error-code",
           "kind": "enum",
-          "label": "enum gnoi.containerz.StartError.Code",
+          "label": "gnoi.containerz.StartError.Code",
           "sourceSymbol": "gnoi.containerz.StartError.Code",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.6.1/containerz/containerz.proto#L516",
@@ -45121,7 +45121,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-containerz-stop-container-response-code",
           "kind": "enum",
-          "label": "enum gnoi.containerz.StopContainerResponse.Code",
+          "label": "gnoi.containerz.StopContainerResponse.Code",
           "sourceSymbol": "gnoi.containerz.StopContainerResponse.Code",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.6.1/containerz/containerz.proto#L545",
@@ -45340,7 +45340,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-containerz-update-error-code",
           "kind": "enum",
-          "label": "enum gnoi.containerz.UpdateError.Code",
+          "label": "gnoi.containerz.UpdateError.Code",
           "sourceSymbol": "gnoi.containerz.UpdateError.Code",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.6.1/containerz/containerz.proto#L595",
@@ -45536,7 +45536,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-debug-debug-request-mode",
           "kind": "enum",
-          "label": "enum gnoi.debug.DebugRequest.Mode",
+          "label": "gnoi.debug.DebugRequest.Mode",
           "sourceSymbol": "gnoi.debug.DebugRequest.Mode",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.6.1/debug/debug.proto#L41",
@@ -45660,7 +45660,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-diag-bert-status",
           "kind": "enum",
-          "label": "enum gnoi.diag.BertStatus",
+          "label": "gnoi.diag.BertStatus",
           "description": "Status returned for each per-port BERT request.",
           "sourceSymbol": "gnoi.diag.BertStatus",
           "deprecated": false,
@@ -45972,7 +45972,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-diag-prbs-polynomial",
           "kind": "enum",
-          "label": "enum gnoi.diag.PrbsPolynomial",
+          "label": "gnoi.diag.PrbsPolynomial",
           "description": "Common sequence generating monic polynomials used for PRBS.",
           "sourceSymbol": "gnoi.diag.PrbsPolynomial",
           "deprecated": false,
@@ -47404,7 +47404,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-healthz-status",
           "kind": "enum",
-          "label": "enum gnoi.healthz.Status",
+          "label": "gnoi.healthz.Status",
           "sourceSymbol": "gnoi.healthz.Status",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.6.1/healthz/healthz.proto#L72",
@@ -47688,7 +47688,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-layer2-perform-bertresponse-bertstate",
           "kind": "enum",
-          "label": "enum gnoi.layer2.PerformBERTResponse.BERTState",
+          "label": "gnoi.layer2.PerformBERTResponse.BERTState",
           "sourceSymbol": "gnoi.layer2.PerformBERTResponse.BERTState",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.6.1/layer2/layer2.proto#L82",
@@ -47885,7 +47885,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-mpls-clear-lsprequest-mode",
           "kind": "enum",
-          "label": "enum gnoi.mpls.ClearLSPRequest.Mode",
+          "label": "gnoi.mpls.ClearLSPRequest.Mode",
           "sourceSymbol": "gnoi.mpls.ClearLSPRequest.Mode",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.6.1/mpls/mpls.proto#L45",
@@ -48099,7 +48099,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-mpls-mplsping-request-reply-mode",
           "kind": "enum",
-          "label": "enum gnoi.mpls.MPLSPingRequest.ReplyMode",
+          "label": "gnoi.mpls.MPLSPingRequest.ReplyMode",
           "sourceSymbol": "gnoi.mpls.MPLSPingRequest.ReplyMode",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.6.1/mpls/mpls.proto#L119",
@@ -48177,7 +48177,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-mpls-mplsping-response-echo-response-code",
           "kind": "enum",
-          "label": "enum gnoi.mpls.MPLSPingResponse.EchoResponseCode",
+          "label": "gnoi.mpls.MPLSPingResponse.EchoResponseCode",
           "sourceSymbol": "gnoi.mpls.MPLSPingResponse.EchoResponseCode",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.6.1/mpls/mpls.proto#L145",
@@ -48298,7 +48298,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-optical-adjust-psderror-type",
           "kind": "enum",
-          "label": "enum gnoi.optical.AdjustPSDError.Type",
+          "label": "gnoi.optical.AdjustPSDError.Type",
           "sourceSymbol": "gnoi.optical.AdjustPSDError.Type",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.6.1/wavelength_router/wavelength_router.proto#L109",
@@ -48371,7 +48371,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-optical-adjust-psdprogress-state",
           "kind": "enum",
-          "label": "enum gnoi.optical.AdjustPSDProgress.State",
+          "label": "gnoi.optical.AdjustPSDProgress.State",
           "sourceSymbol": "gnoi.optical.AdjustPSDProgress.State",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.6.1/wavelength_router/wavelength_router.proto#L97",
@@ -48450,7 +48450,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-optical-adjust-psdrequest-signal-direction",
           "kind": "enum",
-          "label": "enum gnoi.optical.AdjustPSDRequest.SignalDirection",
+          "label": "gnoi.optical.AdjustPSDRequest.SignalDirection",
           "sourceSymbol": "gnoi.optical.AdjustPSDRequest.SignalDirection",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.6.1/wavelength_router/wavelength_router.proto#L84",
@@ -48561,7 +48561,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-optical-adjust-spectrum-error-type",
           "kind": "enum",
-          "label": "enum gnoi.optical.AdjustSpectrumError.Type",
+          "label": "gnoi.optical.AdjustSpectrumError.Type",
           "sourceSymbol": "gnoi.optical.AdjustSpectrumError.Type",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.6.1/wavelength_router/wavelength_router.proto#L169",
@@ -48631,7 +48631,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-optical-adjust-spectrum-progress-state",
           "kind": "enum",
-          "label": "enum gnoi.optical.AdjustSpectrumProgress.State",
+          "label": "gnoi.optical.AdjustSpectrumProgress.State",
           "sourceSymbol": "gnoi.optical.AdjustSpectrumProgress.State",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.6.1/wavelength_router/wavelength_router.proto#L158",
@@ -48707,7 +48707,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-optical-adjust-spectrum-request-signal-direction",
           "kind": "enum",
-          "label": "enum gnoi.optical.AdjustSpectrumRequest.SignalDirection",
+          "label": "gnoi.optical.AdjustSpectrumRequest.SignalDirection",
           "sourceSymbol": "gnoi.optical.AdjustSpectrumRequest.SignalDirection",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.6.1/wavelength_router/wavelength_router.proto#L146",
@@ -48867,7 +48867,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-optical-fiber-type-profile",
           "kind": "enum",
-          "label": "enum gnoi.optical.FiberTypeProfile",
+          "label": "gnoi.optical.FiberTypeProfile",
           "description": "Type definition for different profiles of fiber types. These match what is\nalready defined in OpenConfig under the FIBER_TYPE_PROFILE identityref in\nopenconfig-optical-amplifier.yang model.",
           "sourceSymbol": "gnoi.optical.FiberTypeProfile",
           "deprecated": false,
@@ -48984,7 +48984,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-optical-initiate-error-type",
           "kind": "enum",
-          "label": "enum gnoi.optical.InitiateError.Type",
+          "label": "gnoi.optical.InitiateError.Type",
           "sourceSymbol": "gnoi.optical.InitiateError.Type",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.6.1/otdr/otdr.proto#L126",
@@ -49054,7 +49054,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-optical-initiate-progress-state",
           "kind": "enum",
-          "label": "enum gnoi.optical.InitiateProgress.State",
+          "label": "gnoi.optical.InitiateProgress.State",
           "description": "The State enum defines possible states that the OTDR trace may be in\nwhile running the operation.",
           "sourceSymbol": "gnoi.optical.InitiateProgress.State",
           "deprecated": false,
@@ -49152,7 +49152,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-optical-initiate-request-results-method",
           "kind": "enum",
-          "label": "enum gnoi.optical.InitiateRequest.ResultsMethod",
+          "label": "gnoi.optical.InitiateRequest.ResultsMethod",
           "sourceSymbol": "gnoi.optical.InitiateRequest.ResultsMethod",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.6.1/otdr/otdr.proto#L44",
@@ -49430,7 +49430,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-os-activate-error-type",
           "kind": "enum",
-          "label": "enum gnoi.os.ActivateError.Type",
+          "label": "gnoi.os.ActivateError.Type",
           "sourceSymbol": "gnoi.os.ActivateError.Type",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.6.1/os/os.proto#L373",
@@ -49613,7 +49613,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-os-install-error-type",
           "kind": "enum",
-          "label": "enum gnoi.os.InstallError.Type",
+          "label": "gnoi.os.InstallError.Type",
           "sourceSymbol": "gnoi.os.InstallError.Type",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.6.1/os/os.proto#L277",
@@ -49870,7 +49870,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-os-standby-state-state",
           "kind": "enum",
-          "label": "enum gnoi.os.StandbyState.State",
+          "label": "gnoi.os.StandbyState.State",
           "sourceSymbol": "gnoi.os.StandbyState.State",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.6.1/os/os.proto#L418",
@@ -50539,7 +50539,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-packet-link-qualification-header-match-field",
           "kind": "enum",
-          "label": "enum gnoi.packet_link_qualification.HeaderMatchField",
+          "label": "gnoi.packet_link_qualification.HeaderMatchField",
           "sourceSymbol": "gnoi.packet_link_qualification.HeaderMatchField",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.6.1/packet_link_qualification/packet_link_qualification.proto#L346",
@@ -50942,7 +50942,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-packet-link-qualification-packet-injector-loopback-mode",
           "kind": "enum",
-          "label": "enum gnoi.packet_link_qualification.PacketInjectorLoopbackMode",
+          "label": "gnoi.packet_link_qualification.PacketInjectorLoopbackMode",
           "sourceSymbol": "gnoi.packet_link_qualification.PacketInjectorLoopbackMode",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.6.1/packet_link_qualification/packet_link_qualification.proto#L310",
@@ -51217,7 +51217,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-packet-link-qualification-qualification-state",
           "kind": "enum",
-          "label": "enum gnoi.packet_link_qualification.QualificationState",
+          "label": "gnoi.packet_link_qualification.QualificationState",
           "description": "States of qualification.",
           "sourceSymbol": "gnoi.packet_link_qualification.QualificationState",
           "deprecated": false,
@@ -51501,7 +51501,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-pcap-channel-width",
           "kind": "enum",
-          "label": "enum gnoi.pcap.ChannelWidth",
+          "label": "gnoi.pcap.ChannelWidth",
           "sourceSymbol": "gnoi.pcap.ChannelWidth",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.6.1/packet_capture/packet_capture.proto#L51",
@@ -51546,7 +51546,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-pcap-direction",
           "kind": "enum",
-          "label": "enum gnoi.pcap.Direction",
+          "label": "gnoi.pcap.Direction",
           "sourceSymbol": "gnoi.pcap.Direction",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.6.1/packet_capture/packet_capture.proto#L43",
@@ -51647,7 +51647,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-pcap-operating-band",
           "kind": "enum",
-          "label": "enum gnoi.pcap.OperatingBand",
+          "label": "gnoi.pcap.OperatingBand",
           "sourceSymbol": "gnoi.pcap.OperatingBand",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.6.1/packet_capture/packet_capture.proto#L31",
@@ -51806,7 +51806,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-pcap-protocol",
           "kind": "enum",
-          "label": "enum gnoi.pcap.Protocol",
+          "label": "gnoi.pcap.Protocol",
           "sourceSymbol": "gnoi.pcap.Protocol",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.6.1/packet_capture/packet_capture.proto#L38",
@@ -52067,7 +52067,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-system-kill-process-request-signal",
           "kind": "enum",
-          "label": "enum gnoi.system.KillProcessRequest.Signal",
+          "label": "gnoi.system.KillProcessRequest.Signal",
           "description": "Termination signal sent to the process.",
           "sourceSymbol": "gnoi.system.KillProcessRequest.Signal",
           "deprecated": false,
@@ -52385,7 +52385,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-system-reboot-method",
           "kind": "enum",
-          "label": "enum gnoi.system.RebootMethod",
+          "label": "gnoi.system.RebootMethod",
           "description": "A RebootMethod determines what should be done with a target when a Reboot is\nrequested.  Only the COLD method is required to be supported by all\ntargets.  A target should return 'INVALID_ARGUMENT` if UNKNOWN or any other\nunsupported method is called.\n\nIt is vendor defined if a WARM reboot is the same as an NSF reboot.",
           "sourceSymbol": "gnoi.system.RebootMethod",
           "deprecated": false,
@@ -52565,7 +52565,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-system-reboot-status-status",
           "kind": "enum",
-          "label": "enum gnoi.system.RebootStatus.Status",
+          "label": "gnoi.system.RebootStatus.Status",
           "sourceSymbol": "gnoi.system.RebootStatus.Status",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.6.1/system/system.proto#L165",
@@ -52989,7 +52989,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-system-traceroute-request-l4-protocol",
           "kind": "enum",
-          "label": "enum gnoi.system.TracerouteRequest.L4Protocol",
+          "label": "gnoi.system.TracerouteRequest.L4Protocol",
           "sourceSymbol": "gnoi.system.TracerouteRequest.L4Protocol",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.6.1/system/system.proto#L246",
@@ -53183,7 +53183,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-system-traceroute-response-state",
           "kind": "enum",
-          "label": "enum gnoi.system.TracerouteResponse.State",
+          "label": "gnoi.system.TracerouteResponse.State",
           "description": "State is the resulting state of a single traceoroute packet.",
           "sourceSymbol": "gnoi.system.TracerouteResponse.State",
           "deprecated": false,
@@ -53366,7 +53366,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-types-hash-type-hash-method",
           "kind": "enum",
-          "label": "enum gnoi.types.HashType.HashMethod",
+          "label": "gnoi.types.HashType.HashMethod",
           "sourceSymbol": "gnoi.types.HashType.HashMethod",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.6.1/types/types.proto#L41",
@@ -53411,7 +53411,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-types-l3-protocol",
           "kind": "enum",
-          "label": "enum gnoi.types.L3Protocol",
+          "label": "gnoi.types.L3Protocol",
           "description": "Generic Layer 3 Protocol enumeration.",
           "sourceSymbol": "gnoi.types.L3Protocol",
           "deprecated": false,
@@ -60284,7 +60284,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-bgp-clear-bgpneighbor-request-mode",
           "kind": "enum",
-          "label": "enum gnoi.bgp.ClearBGPNeighborRequest.Mode",
+          "label": "gnoi.bgp.ClearBGPNeighborRequest.Mode",
           "sourceSymbol": "gnoi.bgp.ClearBGPNeighborRequest.Mode",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.3.0/bgp/bgp.proto#L40",
@@ -60531,7 +60531,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-certificate-certificate-type",
           "kind": "enum",
-          "label": "enum gnoi.certificate.CertificateType",
+          "label": "gnoi.certificate.CertificateType",
           "description": "Types of certificates.",
           "sourceSymbol": "gnoi.certificate.CertificateType",
           "deprecated": false,
@@ -60734,7 +60734,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-certificate-endpoint-type",
           "kind": "enum",
-          "label": "enum gnoi.certificate.Endpoint.Type",
+          "label": "gnoi.certificate.Endpoint.Type",
           "description": "Type of endpoint that can use a cert. This list is to be extended based on\nconversation with vendors.",
           "sourceSymbol": "gnoi.certificate.Endpoint.Type",
           "deprecated": false,
@@ -61014,7 +61014,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-certificate-key-type",
           "kind": "enum",
-          "label": "enum gnoi.certificate.KeyType",
+          "label": "gnoi.certificate.KeyType",
           "description": "Algorithm to be used for generation the key pair.",
           "sourceSymbol": "gnoi.certificate.KeyType",
           "deprecated": false,
@@ -61367,7 +61367,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-common-remote-download-protocol",
           "kind": "enum",
-          "label": "enum gnoi.common.RemoteDownload.Protocol",
+          "label": "gnoi.common.RemoteDownload.Protocol",
           "sourceSymbol": "gnoi.common.RemoteDownload.Protocol",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.3.0/common/common.proto#L34",
@@ -61800,7 +61800,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-containerz-list-response-status",
           "kind": "enum",
-          "label": "enum gnoi.containerz.ListResponse.Status",
+          "label": "gnoi.containerz.ListResponse.Status",
           "sourceSymbol": "gnoi.containerz.ListResponse.Status",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.3.0/containerz/containerz.proto#L185",
@@ -61992,7 +61992,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-containerz-remove-response-code",
           "kind": "enum",
-          "label": "enum gnoi.containerz.RemoveResponse.Code",
+          "label": "gnoi.containerz.RemoveResponse.Code",
           "sourceSymbol": "gnoi.containerz.RemoveResponse.Code",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.3.0/containerz/containerz.proto#L145",
@@ -62074,7 +62074,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-containerz-start-error-code",
           "kind": "enum",
-          "label": "enum gnoi.containerz.StartError.Code",
+          "label": "gnoi.containerz.StartError.Code",
           "sourceSymbol": "gnoi.containerz.StartError.Code",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.3.0/containerz/containerz.proto#L241",
@@ -62340,7 +62340,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-containerz-stop-response-code",
           "kind": "enum",
-          "label": "enum gnoi.containerz.StopResponse.Code",
+          "label": "gnoi.containerz.StopResponse.Code",
           "sourceSymbol": "gnoi.containerz.StopResponse.Code",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.3.0/containerz/containerz.proto#L264",
@@ -62389,7 +62389,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-diag-bert-status",
           "kind": "enum",
-          "label": "enum gnoi.diag.BertStatus",
+          "label": "gnoi.diag.BertStatus",
           "description": "Status returned for each per-port BERT request.",
           "sourceSymbol": "gnoi.diag.BertStatus",
           "deprecated": false,
@@ -62701,7 +62701,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-diag-prbs-polynomial",
           "kind": "enum",
-          "label": "enum gnoi.diag.PrbsPolynomial",
+          "label": "gnoi.diag.PrbsPolynomial",
           "description": "Common sequence generating monic polynomials used for PRBS.",
           "sourceSymbol": "gnoi.diag.PrbsPolynomial",
           "deprecated": false,
@@ -64133,7 +64133,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-healthz-status",
           "kind": "enum",
-          "label": "enum gnoi.healthz.Status",
+          "label": "gnoi.healthz.Status",
           "sourceSymbol": "gnoi.healthz.Status",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.3.0/healthz/healthz.proto#L72",
@@ -64417,7 +64417,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-layer2-perform-bertresponse-bertstate",
           "kind": "enum",
-          "label": "enum gnoi.layer2.PerformBERTResponse.BERTState",
+          "label": "gnoi.layer2.PerformBERTResponse.BERTState",
           "sourceSymbol": "gnoi.layer2.PerformBERTResponse.BERTState",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.3.0/layer2/layer2.proto#L82",
@@ -64614,7 +64614,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-mpls-clear-lsprequest-mode",
           "kind": "enum",
-          "label": "enum gnoi.mpls.ClearLSPRequest.Mode",
+          "label": "gnoi.mpls.ClearLSPRequest.Mode",
           "sourceSymbol": "gnoi.mpls.ClearLSPRequest.Mode",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.3.0/mpls/mpls.proto#L46",
@@ -64828,7 +64828,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-mpls-mplsping-request-reply-mode",
           "kind": "enum",
-          "label": "enum gnoi.mpls.MPLSPingRequest.ReplyMode",
+          "label": "gnoi.mpls.MPLSPingRequest.ReplyMode",
           "sourceSymbol": "gnoi.mpls.MPLSPingRequest.ReplyMode",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.3.0/mpls/mpls.proto#L120",
@@ -64906,7 +64906,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-mpls-mplsping-response-echo-response-code",
           "kind": "enum",
-          "label": "enum gnoi.mpls.MPLSPingResponse.EchoResponseCode",
+          "label": "gnoi.mpls.MPLSPingResponse.EchoResponseCode",
           "sourceSymbol": "gnoi.mpls.MPLSPingResponse.EchoResponseCode",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.3.0/mpls/mpls.proto#L146",
@@ -65027,7 +65027,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-optical-adjust-psderror-type",
           "kind": "enum",
-          "label": "enum gnoi.optical.AdjustPSDError.Type",
+          "label": "gnoi.optical.AdjustPSDError.Type",
           "sourceSymbol": "gnoi.optical.AdjustPSDError.Type",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.3.0/wavelength_router/wavelength_router.proto#L109",
@@ -65100,7 +65100,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-optical-adjust-psdprogress-state",
           "kind": "enum",
-          "label": "enum gnoi.optical.AdjustPSDProgress.State",
+          "label": "gnoi.optical.AdjustPSDProgress.State",
           "sourceSymbol": "gnoi.optical.AdjustPSDProgress.State",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.3.0/wavelength_router/wavelength_router.proto#L97",
@@ -65179,7 +65179,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-optical-adjust-psdrequest-signal-direction",
           "kind": "enum",
-          "label": "enum gnoi.optical.AdjustPSDRequest.SignalDirection",
+          "label": "gnoi.optical.AdjustPSDRequest.SignalDirection",
           "sourceSymbol": "gnoi.optical.AdjustPSDRequest.SignalDirection",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.3.0/wavelength_router/wavelength_router.proto#L84",
@@ -65290,7 +65290,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-optical-adjust-spectrum-error-type",
           "kind": "enum",
-          "label": "enum gnoi.optical.AdjustSpectrumError.Type",
+          "label": "gnoi.optical.AdjustSpectrumError.Type",
           "sourceSymbol": "gnoi.optical.AdjustSpectrumError.Type",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.3.0/wavelength_router/wavelength_router.proto#L169",
@@ -65360,7 +65360,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-optical-adjust-spectrum-progress-state",
           "kind": "enum",
-          "label": "enum gnoi.optical.AdjustSpectrumProgress.State",
+          "label": "gnoi.optical.AdjustSpectrumProgress.State",
           "sourceSymbol": "gnoi.optical.AdjustSpectrumProgress.State",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.3.0/wavelength_router/wavelength_router.proto#L158",
@@ -65436,7 +65436,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-optical-adjust-spectrum-request-signal-direction",
           "kind": "enum",
-          "label": "enum gnoi.optical.AdjustSpectrumRequest.SignalDirection",
+          "label": "gnoi.optical.AdjustSpectrumRequest.SignalDirection",
           "sourceSymbol": "gnoi.optical.AdjustSpectrumRequest.SignalDirection",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.3.0/wavelength_router/wavelength_router.proto#L146",
@@ -65596,7 +65596,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-optical-fiber-type-profile",
           "kind": "enum",
-          "label": "enum gnoi.optical.FiberTypeProfile",
+          "label": "gnoi.optical.FiberTypeProfile",
           "description": "Type definition for different profiles of fiber types. These match what is\nalready defined in OpenConfig under the FIBER_TYPE_PROFILE identityref in\nopenconfig-optical-amplifier.yang model.",
           "sourceSymbol": "gnoi.optical.FiberTypeProfile",
           "deprecated": false,
@@ -65713,7 +65713,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-optical-initiate-error-type",
           "kind": "enum",
-          "label": "enum gnoi.optical.InitiateError.Type",
+          "label": "gnoi.optical.InitiateError.Type",
           "sourceSymbol": "gnoi.optical.InitiateError.Type",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.3.0/otdr/otdr.proto#L127",
@@ -65783,7 +65783,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-optical-initiate-progress-state",
           "kind": "enum",
-          "label": "enum gnoi.optical.InitiateProgress.State",
+          "label": "gnoi.optical.InitiateProgress.State",
           "description": "The State enum defines possible states that the OTDR trace may be in\nwhile running the operation.",
           "sourceSymbol": "gnoi.optical.InitiateProgress.State",
           "deprecated": false,
@@ -65881,7 +65881,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-optical-initiate-request-results-method",
           "kind": "enum",
-          "label": "enum gnoi.optical.InitiateRequest.ResultsMethod",
+          "label": "gnoi.optical.InitiateRequest.ResultsMethod",
           "sourceSymbol": "gnoi.optical.InitiateRequest.ResultsMethod",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.3.0/otdr/otdr.proto#L45",
@@ -66159,7 +66159,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-os-activate-error-type",
           "kind": "enum",
-          "label": "enum gnoi.os.ActivateError.Type",
+          "label": "gnoi.os.ActivateError.Type",
           "sourceSymbol": "gnoi.os.ActivateError.Type",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.3.0/os/os.proto#L349",
@@ -66335,7 +66335,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-os-install-error-type",
           "kind": "enum",
-          "label": "enum gnoi.os.InstallError.Type",
+          "label": "gnoi.os.InstallError.Type",
           "sourceSymbol": "gnoi.os.InstallError.Type",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.3.0/os/os.proto#L261",
@@ -66592,7 +66592,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-os-standby-state-state",
           "kind": "enum",
-          "label": "enum gnoi.os.StandbyState.State",
+          "label": "gnoi.os.StandbyState.State",
           "sourceSymbol": "gnoi.os.StandbyState.State",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.3.0/os/os.proto#L393",
@@ -67261,7 +67261,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-packet-link-qualification-header-match-field",
           "kind": "enum",
-          "label": "enum gnoi.packet_link_qualification.HeaderMatchField",
+          "label": "gnoi.packet_link_qualification.HeaderMatchField",
           "sourceSymbol": "gnoi.packet_link_qualification.HeaderMatchField",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.3.0/packet_link_qualification/packet_link_qualification.proto#L346",
@@ -67664,7 +67664,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-packet-link-qualification-packet-injector-loopback-mode",
           "kind": "enum",
-          "label": "enum gnoi.packet_link_qualification.PacketInjectorLoopbackMode",
+          "label": "gnoi.packet_link_qualification.PacketInjectorLoopbackMode",
           "sourceSymbol": "gnoi.packet_link_qualification.PacketInjectorLoopbackMode",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.3.0/packet_link_qualification/packet_link_qualification.proto#L310",
@@ -67939,7 +67939,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-packet-link-qualification-qualification-state",
           "kind": "enum",
-          "label": "enum gnoi.packet_link_qualification.QualificationState",
+          "label": "gnoi.packet_link_qualification.QualificationState",
           "description": "States of qualification.",
           "sourceSymbol": "gnoi.packet_link_qualification.QualificationState",
           "deprecated": false,
@@ -68223,7 +68223,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-pcap-channel-width",
           "kind": "enum",
-          "label": "enum gnoi.pcap.ChannelWidth",
+          "label": "gnoi.pcap.ChannelWidth",
           "sourceSymbol": "gnoi.pcap.ChannelWidth",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.3.0/packet_capture/packet_capture.proto#L37",
@@ -68268,7 +68268,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-pcap-direction",
           "kind": "enum",
-          "label": "enum gnoi.pcap.Direction",
+          "label": "gnoi.pcap.Direction",
           "sourceSymbol": "gnoi.pcap.Direction",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.3.0/packet_capture/packet_capture.proto#L29",
@@ -68369,7 +68369,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-pcap-operating-band",
           "kind": "enum",
-          "label": "enum gnoi.pcap.OperatingBand",
+          "label": "gnoi.pcap.OperatingBand",
           "sourceSymbol": "gnoi.pcap.OperatingBand",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.3.0/packet_capture/packet_capture.proto#L17",
@@ -68528,7 +68528,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-pcap-protocol",
           "kind": "enum",
-          "label": "enum gnoi.pcap.Protocol",
+          "label": "gnoi.pcap.Protocol",
           "sourceSymbol": "gnoi.pcap.Protocol",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.3.0/packet_capture/packet_capture.proto#L24",
@@ -68789,7 +68789,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-system-kill-process-request-signal",
           "kind": "enum",
-          "label": "enum gnoi.system.KillProcessRequest.Signal",
+          "label": "gnoi.system.KillProcessRequest.Signal",
           "description": "Termination signal sent to the process.",
           "sourceSymbol": "gnoi.system.KillProcessRequest.Signal",
           "deprecated": false,
@@ -69107,7 +69107,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-system-reboot-method",
           "kind": "enum",
-          "label": "enum gnoi.system.RebootMethod",
+          "label": "gnoi.system.RebootMethod",
           "description": "A RebootMethod determines what should be done with a target when a Reboot is\nrequested.  Only the COLD method is required to be supported by all\ntargets.  A target should return 'INVALID_ARGUMENT` if UNKNOWN or any other\nunsupported method is called.\n\nIt is vendor defined if a WARM reboot is the same as an NSF reboot.",
           "sourceSymbol": "gnoi.system.RebootMethod",
           "deprecated": false,
@@ -69287,7 +69287,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-system-reboot-status-status",
           "kind": "enum",
-          "label": "enum gnoi.system.RebootStatus.Status",
+          "label": "gnoi.system.RebootStatus.Status",
           "sourceSymbol": "gnoi.system.RebootStatus.Status",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.3.0/system/system.proto#L161",
@@ -69709,7 +69709,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-system-traceroute-request-l4-protocol",
           "kind": "enum",
-          "label": "enum gnoi.system.TracerouteRequest.L4Protocol",
+          "label": "gnoi.system.TracerouteRequest.L4Protocol",
           "sourceSymbol": "gnoi.system.TracerouteRequest.L4Protocol",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.3.0/system/system.proto#L242",
@@ -69854,7 +69854,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-system-traceroute-response-state",
           "kind": "enum",
-          "label": "enum gnoi.system.TracerouteResponse.State",
+          "label": "gnoi.system.TracerouteResponse.State",
           "description": "State is the resulting state of a single traceoroute packet.",
           "sourceSymbol": "gnoi.system.TracerouteResponse.State",
           "deprecated": false,
@@ -70037,7 +70037,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-types-hash-type-hash-method",
           "kind": "enum",
-          "label": "enum gnoi.types.HashType.HashMethod",
+          "label": "gnoi.types.HashType.HashMethod",
           "sourceSymbol": "gnoi.types.HashType.HashMethod",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.3.0/types/types.proto#L41",
@@ -70082,7 +70082,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-types-l3-protocol",
           "kind": "enum",
-          "label": "enum gnoi.types.L3Protocol",
+          "label": "gnoi.types.L3Protocol",
           "description": "Generic Layer 3 Protocol enumeration.",
           "sourceSymbol": "gnoi.types.L3Protocol",
           "deprecated": false,
@@ -76270,7 +76270,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-bgp-clear-bgpneighbor-request-mode",
           "kind": "enum",
-          "label": "enum gnoi.bgp.ClearBGPNeighborRequest.Mode",
+          "label": "gnoi.bgp.ClearBGPNeighborRequest.Mode",
           "sourceSymbol": "gnoi.bgp.ClearBGPNeighborRequest.Mode",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.2.0/bgp/bgp.proto#L40",
@@ -76517,7 +76517,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-certificate-certificate-type",
           "kind": "enum",
-          "label": "enum gnoi.certificate.CertificateType",
+          "label": "gnoi.certificate.CertificateType",
           "description": "Types of certificates.",
           "sourceSymbol": "gnoi.certificate.CertificateType",
           "deprecated": false,
@@ -76720,7 +76720,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-certificate-endpoint-type",
           "kind": "enum",
-          "label": "enum gnoi.certificate.Endpoint.Type",
+          "label": "gnoi.certificate.Endpoint.Type",
           "description": "Type of endpoint that can use a cert. This list is to be extended based on\nconversation with vendors.",
           "sourceSymbol": "gnoi.certificate.Endpoint.Type",
           "deprecated": false,
@@ -77000,7 +77000,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-certificate-key-type",
           "kind": "enum",
-          "label": "enum gnoi.certificate.KeyType",
+          "label": "gnoi.certificate.KeyType",
           "description": "Algorithm to be used for generation the key pair.",
           "sourceSymbol": "gnoi.certificate.KeyType",
           "deprecated": false,
@@ -77353,7 +77353,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-common-remote-download-protocol",
           "kind": "enum",
-          "label": "enum gnoi.common.RemoteDownload.Protocol",
+          "label": "gnoi.common.RemoteDownload.Protocol",
           "sourceSymbol": "gnoi.common.RemoteDownload.Protocol",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.2.0/common/common.proto#L34",
@@ -77786,7 +77786,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-containerz-list-response-status",
           "kind": "enum",
-          "label": "enum gnoi.containerz.ListResponse.Status",
+          "label": "gnoi.containerz.ListResponse.Status",
           "sourceSymbol": "gnoi.containerz.ListResponse.Status",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.2.0/containerz/containerz.proto#L185",
@@ -77978,7 +77978,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-containerz-remove-response-code",
           "kind": "enum",
-          "label": "enum gnoi.containerz.RemoveResponse.Code",
+          "label": "gnoi.containerz.RemoveResponse.Code",
           "sourceSymbol": "gnoi.containerz.RemoveResponse.Code",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.2.0/containerz/containerz.proto#L145",
@@ -78060,7 +78060,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-containerz-start-error-code",
           "kind": "enum",
-          "label": "enum gnoi.containerz.StartError.Code",
+          "label": "gnoi.containerz.StartError.Code",
           "sourceSymbol": "gnoi.containerz.StartError.Code",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.2.0/containerz/containerz.proto#L241",
@@ -78326,7 +78326,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-containerz-stop-response-code",
           "kind": "enum",
-          "label": "enum gnoi.containerz.StopResponse.Code",
+          "label": "gnoi.containerz.StopResponse.Code",
           "sourceSymbol": "gnoi.containerz.StopResponse.Code",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.2.0/containerz/containerz.proto#L264",
@@ -78375,7 +78375,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-diag-bert-status",
           "kind": "enum",
-          "label": "enum gnoi.diag.BertStatus",
+          "label": "gnoi.diag.BertStatus",
           "description": "Status returned for each per-port BERT request.",
           "sourceSymbol": "gnoi.diag.BertStatus",
           "deprecated": false,
@@ -78687,7 +78687,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-diag-prbs-polynomial",
           "kind": "enum",
-          "label": "enum gnoi.diag.PrbsPolynomial",
+          "label": "gnoi.diag.PrbsPolynomial",
           "description": "Common sequence generating monic polynomials used for PRBS.",
           "sourceSymbol": "gnoi.diag.PrbsPolynomial",
           "deprecated": false,
@@ -80119,7 +80119,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-healthz-status",
           "kind": "enum",
-          "label": "enum gnoi.healthz.Status",
+          "label": "gnoi.healthz.Status",
           "sourceSymbol": "gnoi.healthz.Status",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.2.0/healthz/healthz.proto#L72",
@@ -80403,7 +80403,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-layer2-perform-bertresponse-bertstate",
           "kind": "enum",
-          "label": "enum gnoi.layer2.PerformBERTResponse.BERTState",
+          "label": "gnoi.layer2.PerformBERTResponse.BERTState",
           "sourceSymbol": "gnoi.layer2.PerformBERTResponse.BERTState",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.2.0/layer2/layer2.proto#L82",
@@ -80600,7 +80600,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-mpls-clear-lsprequest-mode",
           "kind": "enum",
-          "label": "enum gnoi.mpls.ClearLSPRequest.Mode",
+          "label": "gnoi.mpls.ClearLSPRequest.Mode",
           "sourceSymbol": "gnoi.mpls.ClearLSPRequest.Mode",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.2.0/mpls/mpls.proto#L46",
@@ -80814,7 +80814,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-mpls-mplsping-request-reply-mode",
           "kind": "enum",
-          "label": "enum gnoi.mpls.MPLSPingRequest.ReplyMode",
+          "label": "gnoi.mpls.MPLSPingRequest.ReplyMode",
           "sourceSymbol": "gnoi.mpls.MPLSPingRequest.ReplyMode",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.2.0/mpls/mpls.proto#L120",
@@ -80892,7 +80892,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-mpls-mplsping-response-echo-response-code",
           "kind": "enum",
-          "label": "enum gnoi.mpls.MPLSPingResponse.EchoResponseCode",
+          "label": "gnoi.mpls.MPLSPingResponse.EchoResponseCode",
           "sourceSymbol": "gnoi.mpls.MPLSPingResponse.EchoResponseCode",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.2.0/mpls/mpls.proto#L146",
@@ -81013,7 +81013,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-optical-adjust-psderror-type",
           "kind": "enum",
-          "label": "enum gnoi.optical.AdjustPSDError.Type",
+          "label": "gnoi.optical.AdjustPSDError.Type",
           "sourceSymbol": "gnoi.optical.AdjustPSDError.Type",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.2.0/wavelength_router/wavelength_router.proto#L109",
@@ -81086,7 +81086,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-optical-adjust-psdprogress-state",
           "kind": "enum",
-          "label": "enum gnoi.optical.AdjustPSDProgress.State",
+          "label": "gnoi.optical.AdjustPSDProgress.State",
           "sourceSymbol": "gnoi.optical.AdjustPSDProgress.State",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.2.0/wavelength_router/wavelength_router.proto#L97",
@@ -81165,7 +81165,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-optical-adjust-psdrequest-signal-direction",
           "kind": "enum",
-          "label": "enum gnoi.optical.AdjustPSDRequest.SignalDirection",
+          "label": "gnoi.optical.AdjustPSDRequest.SignalDirection",
           "sourceSymbol": "gnoi.optical.AdjustPSDRequest.SignalDirection",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.2.0/wavelength_router/wavelength_router.proto#L84",
@@ -81276,7 +81276,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-optical-adjust-spectrum-error-type",
           "kind": "enum",
-          "label": "enum gnoi.optical.AdjustSpectrumError.Type",
+          "label": "gnoi.optical.AdjustSpectrumError.Type",
           "sourceSymbol": "gnoi.optical.AdjustSpectrumError.Type",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.2.0/wavelength_router/wavelength_router.proto#L169",
@@ -81346,7 +81346,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-optical-adjust-spectrum-progress-state",
           "kind": "enum",
-          "label": "enum gnoi.optical.AdjustSpectrumProgress.State",
+          "label": "gnoi.optical.AdjustSpectrumProgress.State",
           "sourceSymbol": "gnoi.optical.AdjustSpectrumProgress.State",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.2.0/wavelength_router/wavelength_router.proto#L158",
@@ -81422,7 +81422,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-optical-adjust-spectrum-request-signal-direction",
           "kind": "enum",
-          "label": "enum gnoi.optical.AdjustSpectrumRequest.SignalDirection",
+          "label": "gnoi.optical.AdjustSpectrumRequest.SignalDirection",
           "sourceSymbol": "gnoi.optical.AdjustSpectrumRequest.SignalDirection",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.2.0/wavelength_router/wavelength_router.proto#L146",
@@ -81582,7 +81582,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-optical-fiber-type-profile",
           "kind": "enum",
-          "label": "enum gnoi.optical.FiberTypeProfile",
+          "label": "gnoi.optical.FiberTypeProfile",
           "description": "Type definition for different profiles of fiber types. These match what is\nalready defined in OpenConfig under the FIBER_TYPE_PROFILE identityref in\nopenconfig-optical-amplifier.yang model.",
           "sourceSymbol": "gnoi.optical.FiberTypeProfile",
           "deprecated": false,
@@ -81699,7 +81699,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-optical-initiate-error-type",
           "kind": "enum",
-          "label": "enum gnoi.optical.InitiateError.Type",
+          "label": "gnoi.optical.InitiateError.Type",
           "sourceSymbol": "gnoi.optical.InitiateError.Type",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.2.0/otdr/otdr.proto#L127",
@@ -81769,7 +81769,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-optical-initiate-progress-state",
           "kind": "enum",
-          "label": "enum gnoi.optical.InitiateProgress.State",
+          "label": "gnoi.optical.InitiateProgress.State",
           "description": "The State enum defines possible states that the OTDR trace may be in\nwhile running the operation.",
           "sourceSymbol": "gnoi.optical.InitiateProgress.State",
           "deprecated": false,
@@ -81867,7 +81867,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-optical-initiate-request-results-method",
           "kind": "enum",
-          "label": "enum gnoi.optical.InitiateRequest.ResultsMethod",
+          "label": "gnoi.optical.InitiateRequest.ResultsMethod",
           "sourceSymbol": "gnoi.optical.InitiateRequest.ResultsMethod",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.2.0/otdr/otdr.proto#L45",
@@ -82145,7 +82145,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-os-activate-error-type",
           "kind": "enum",
-          "label": "enum gnoi.os.ActivateError.Type",
+          "label": "gnoi.os.ActivateError.Type",
           "sourceSymbol": "gnoi.os.ActivateError.Type",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.2.0/os/os.proto#L349",
@@ -82321,7 +82321,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-os-install-error-type",
           "kind": "enum",
-          "label": "enum gnoi.os.InstallError.Type",
+          "label": "gnoi.os.InstallError.Type",
           "sourceSymbol": "gnoi.os.InstallError.Type",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.2.0/os/os.proto#L261",
@@ -82578,7 +82578,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-os-standby-state-state",
           "kind": "enum",
-          "label": "enum gnoi.os.StandbyState.State",
+          "label": "gnoi.os.StandbyState.State",
           "sourceSymbol": "gnoi.os.StandbyState.State",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.2.0/os/os.proto#L393",
@@ -83247,7 +83247,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-packet-link-qualification-header-match-field",
           "kind": "enum",
-          "label": "enum gnoi.packet_link_qualification.HeaderMatchField",
+          "label": "gnoi.packet_link_qualification.HeaderMatchField",
           "sourceSymbol": "gnoi.packet_link_qualification.HeaderMatchField",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.2.0/packet_link_qualification/packet_link_qualification.proto#L346",
@@ -83650,7 +83650,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-packet-link-qualification-packet-injector-loopback-mode",
           "kind": "enum",
-          "label": "enum gnoi.packet_link_qualification.PacketInjectorLoopbackMode",
+          "label": "gnoi.packet_link_qualification.PacketInjectorLoopbackMode",
           "sourceSymbol": "gnoi.packet_link_qualification.PacketInjectorLoopbackMode",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.2.0/packet_link_qualification/packet_link_qualification.proto#L310",
@@ -83925,7 +83925,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-packet-link-qualification-qualification-state",
           "kind": "enum",
-          "label": "enum gnoi.packet_link_qualification.QualificationState",
+          "label": "gnoi.packet_link_qualification.QualificationState",
           "description": "States of qualification.",
           "sourceSymbol": "gnoi.packet_link_qualification.QualificationState",
           "deprecated": false,
@@ -84209,7 +84209,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-pcap-channel-width",
           "kind": "enum",
-          "label": "enum gnoi.pcap.ChannelWidth",
+          "label": "gnoi.pcap.ChannelWidth",
           "sourceSymbol": "gnoi.pcap.ChannelWidth",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.2.0/packet_capture/packet_capture.proto#L37",
@@ -84254,7 +84254,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-pcap-direction",
           "kind": "enum",
-          "label": "enum gnoi.pcap.Direction",
+          "label": "gnoi.pcap.Direction",
           "sourceSymbol": "gnoi.pcap.Direction",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.2.0/packet_capture/packet_capture.proto#L29",
@@ -84355,7 +84355,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-pcap-operating-band",
           "kind": "enum",
-          "label": "enum gnoi.pcap.OperatingBand",
+          "label": "gnoi.pcap.OperatingBand",
           "sourceSymbol": "gnoi.pcap.OperatingBand",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.2.0/packet_capture/packet_capture.proto#L17",
@@ -84514,7 +84514,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-pcap-protocol",
           "kind": "enum",
-          "label": "enum gnoi.pcap.Protocol",
+          "label": "gnoi.pcap.Protocol",
           "sourceSymbol": "gnoi.pcap.Protocol",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.2.0/packet_capture/packet_capture.proto#L24",
@@ -84775,7 +84775,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-system-kill-process-request-signal",
           "kind": "enum",
-          "label": "enum gnoi.system.KillProcessRequest.Signal",
+          "label": "gnoi.system.KillProcessRequest.Signal",
           "description": "Termination signal sent to the process.",
           "sourceSymbol": "gnoi.system.KillProcessRequest.Signal",
           "deprecated": false,
@@ -85093,7 +85093,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-system-reboot-method",
           "kind": "enum",
-          "label": "enum gnoi.system.RebootMethod",
+          "label": "gnoi.system.RebootMethod",
           "description": "A RebootMethod determines what should be done with a target when a Reboot is\nrequested.  Only the COLD method is required to be supported by all\ntargets.  A target should return 'INVALID_ARGUMENT` if UNKNOWN or any other\nunsupported method is called.\n\nIt is vendor defined if a WARM reboot is the same as an NSF reboot.",
           "sourceSymbol": "gnoi.system.RebootMethod",
           "deprecated": false,
@@ -85603,7 +85603,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-system-traceroute-request-l4-protocol",
           "kind": "enum",
-          "label": "enum gnoi.system.TracerouteRequest.L4Protocol",
+          "label": "gnoi.system.TracerouteRequest.L4Protocol",
           "sourceSymbol": "gnoi.system.TracerouteRequest.L4Protocol",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.2.0/system/system.proto#L228",
@@ -85748,7 +85748,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-system-traceroute-response-state",
           "kind": "enum",
-          "label": "enum gnoi.system.TracerouteResponse.State",
+          "label": "gnoi.system.TracerouteResponse.State",
           "description": "State is the resulting state of a single traceoroute packet.",
           "sourceSymbol": "gnoi.system.TracerouteResponse.State",
           "deprecated": false,
@@ -85931,7 +85931,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-types-hash-type-hash-method",
           "kind": "enum",
-          "label": "enum gnoi.types.HashType.HashMethod",
+          "label": "gnoi.types.HashType.HashMethod",
           "sourceSymbol": "gnoi.types.HashType.HashMethod",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.2.0/types/types.proto#L41",
@@ -85976,7 +85976,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-types-l3-protocol",
           "kind": "enum",
-          "label": "enum gnoi.types.L3Protocol",
+          "label": "gnoi.types.L3Protocol",
           "description": "Generic Layer 3 Protocol enumeration.",
           "sourceSymbol": "gnoi.types.L3Protocol",
           "deprecated": false,
@@ -91809,7 +91809,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-bgp-clear-bgpneighbor-request-mode",
           "kind": "enum",
-          "label": "enum gnoi.bgp.ClearBGPNeighborRequest.Mode",
+          "label": "gnoi.bgp.ClearBGPNeighborRequest.Mode",
           "sourceSymbol": "gnoi.bgp.ClearBGPNeighborRequest.Mode",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.1.0/bgp/bgp.proto#L40",
@@ -92056,7 +92056,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-certificate-certificate-type",
           "kind": "enum",
-          "label": "enum gnoi.certificate.CertificateType",
+          "label": "gnoi.certificate.CertificateType",
           "description": "Types of certificates.",
           "sourceSymbol": "gnoi.certificate.CertificateType",
           "deprecated": false,
@@ -92259,7 +92259,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-certificate-endpoint-type",
           "kind": "enum",
-          "label": "enum gnoi.certificate.Endpoint.Type",
+          "label": "gnoi.certificate.Endpoint.Type",
           "description": "Type of endpoint that can use a cert. This list is to be extended based on\nconversation with vendors.",
           "sourceSymbol": "gnoi.certificate.Endpoint.Type",
           "deprecated": false,
@@ -92539,7 +92539,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-certificate-key-type",
           "kind": "enum",
-          "label": "enum gnoi.certificate.KeyType",
+          "label": "gnoi.certificate.KeyType",
           "description": "Algorithm to be used for generation the key pair.",
           "sourceSymbol": "gnoi.certificate.KeyType",
           "deprecated": false,
@@ -92885,7 +92885,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-common-remote-download-protocol",
           "kind": "enum",
-          "label": "enum gnoi.common.RemoteDownload.Protocol",
+          "label": "gnoi.common.RemoteDownload.Protocol",
           "sourceSymbol": "gnoi.common.RemoteDownload.Protocol",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.1.0/common/common.proto#L34",
@@ -92936,7 +92936,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-diag-bert-status",
           "kind": "enum",
-          "label": "enum gnoi.diag.BertStatus",
+          "label": "gnoi.diag.BertStatus",
           "description": "Status returned for each per-port BERT request.",
           "sourceSymbol": "gnoi.diag.BertStatus",
           "deprecated": false,
@@ -93248,7 +93248,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-diag-prbs-polynomial",
           "kind": "enum",
-          "label": "enum gnoi.diag.PrbsPolynomial",
+          "label": "gnoi.diag.PrbsPolynomial",
           "description": "Common sequence generating monic polynomials used for PRBS.",
           "sourceSymbol": "gnoi.diag.PrbsPolynomial",
           "deprecated": false,
@@ -94680,7 +94680,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-healthz-status",
           "kind": "enum",
-          "label": "enum gnoi.healthz.Status",
+          "label": "gnoi.healthz.Status",
           "sourceSymbol": "gnoi.healthz.Status",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.1.0/healthz/healthz.proto#L72",
@@ -94964,7 +94964,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-layer2-perform-bertresponse-bertstate",
           "kind": "enum",
-          "label": "enum gnoi.layer2.PerformBERTResponse.BERTState",
+          "label": "gnoi.layer2.PerformBERTResponse.BERTState",
           "sourceSymbol": "gnoi.layer2.PerformBERTResponse.BERTState",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.1.0/layer2/layer2.proto#L82",
@@ -95161,7 +95161,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-mpls-clear-lsprequest-mode",
           "kind": "enum",
-          "label": "enum gnoi.mpls.ClearLSPRequest.Mode",
+          "label": "gnoi.mpls.ClearLSPRequest.Mode",
           "sourceSymbol": "gnoi.mpls.ClearLSPRequest.Mode",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.1.0/mpls/mpls.proto#L46",
@@ -95375,7 +95375,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-mpls-mplsping-request-reply-mode",
           "kind": "enum",
-          "label": "enum gnoi.mpls.MPLSPingRequest.ReplyMode",
+          "label": "gnoi.mpls.MPLSPingRequest.ReplyMode",
           "sourceSymbol": "gnoi.mpls.MPLSPingRequest.ReplyMode",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.1.0/mpls/mpls.proto#L120",
@@ -95453,7 +95453,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-mpls-mplsping-response-echo-response-code",
           "kind": "enum",
-          "label": "enum gnoi.mpls.MPLSPingResponse.EchoResponseCode",
+          "label": "gnoi.mpls.MPLSPingResponse.EchoResponseCode",
           "sourceSymbol": "gnoi.mpls.MPLSPingResponse.EchoResponseCode",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.1.0/mpls/mpls.proto#L146",
@@ -95574,7 +95574,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-optical-adjust-psderror-type",
           "kind": "enum",
-          "label": "enum gnoi.optical.AdjustPSDError.Type",
+          "label": "gnoi.optical.AdjustPSDError.Type",
           "sourceSymbol": "gnoi.optical.AdjustPSDError.Type",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.1.0/wavelength_router/wavelength_router.proto#L109",
@@ -95647,7 +95647,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-optical-adjust-psdprogress-state",
           "kind": "enum",
-          "label": "enum gnoi.optical.AdjustPSDProgress.State",
+          "label": "gnoi.optical.AdjustPSDProgress.State",
           "sourceSymbol": "gnoi.optical.AdjustPSDProgress.State",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.1.0/wavelength_router/wavelength_router.proto#L97",
@@ -95726,7 +95726,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-optical-adjust-psdrequest-signal-direction",
           "kind": "enum",
-          "label": "enum gnoi.optical.AdjustPSDRequest.SignalDirection",
+          "label": "gnoi.optical.AdjustPSDRequest.SignalDirection",
           "sourceSymbol": "gnoi.optical.AdjustPSDRequest.SignalDirection",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.1.0/wavelength_router/wavelength_router.proto#L84",
@@ -95837,7 +95837,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-optical-adjust-spectrum-error-type",
           "kind": "enum",
-          "label": "enum gnoi.optical.AdjustSpectrumError.Type",
+          "label": "gnoi.optical.AdjustSpectrumError.Type",
           "sourceSymbol": "gnoi.optical.AdjustSpectrumError.Type",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.1.0/wavelength_router/wavelength_router.proto#L169",
@@ -95907,7 +95907,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-optical-adjust-spectrum-progress-state",
           "kind": "enum",
-          "label": "enum gnoi.optical.AdjustSpectrumProgress.State",
+          "label": "gnoi.optical.AdjustSpectrumProgress.State",
           "sourceSymbol": "gnoi.optical.AdjustSpectrumProgress.State",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.1.0/wavelength_router/wavelength_router.proto#L158",
@@ -95983,7 +95983,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-optical-adjust-spectrum-request-signal-direction",
           "kind": "enum",
-          "label": "enum gnoi.optical.AdjustSpectrumRequest.SignalDirection",
+          "label": "gnoi.optical.AdjustSpectrumRequest.SignalDirection",
           "sourceSymbol": "gnoi.optical.AdjustSpectrumRequest.SignalDirection",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.1.0/wavelength_router/wavelength_router.proto#L146",
@@ -96143,7 +96143,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-optical-fiber-type-profile",
           "kind": "enum",
-          "label": "enum gnoi.optical.FiberTypeProfile",
+          "label": "gnoi.optical.FiberTypeProfile",
           "description": "Type definition for different profiles of fiber types. These match what is\nalready defined in OpenConfig under the FIBER_TYPE_PROFILE identityref in\nopenconfig-optical-amplifier.yang model.",
           "sourceSymbol": "gnoi.optical.FiberTypeProfile",
           "deprecated": false,
@@ -96260,7 +96260,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-optical-initiate-error-type",
           "kind": "enum",
-          "label": "enum gnoi.optical.InitiateError.Type",
+          "label": "gnoi.optical.InitiateError.Type",
           "sourceSymbol": "gnoi.optical.InitiateError.Type",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.1.0/otdr/otdr.proto#L127",
@@ -96330,7 +96330,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-optical-initiate-progress-state",
           "kind": "enum",
-          "label": "enum gnoi.optical.InitiateProgress.State",
+          "label": "gnoi.optical.InitiateProgress.State",
           "description": "The State enum defines possible states that the OTDR trace may be in\nwhile running the operation.",
           "sourceSymbol": "gnoi.optical.InitiateProgress.State",
           "deprecated": false,
@@ -96428,7 +96428,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-optical-initiate-request-results-method",
           "kind": "enum",
-          "label": "enum gnoi.optical.InitiateRequest.ResultsMethod",
+          "label": "gnoi.optical.InitiateRequest.ResultsMethod",
           "sourceSymbol": "gnoi.optical.InitiateRequest.ResultsMethod",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.1.0/otdr/otdr.proto#L45",
@@ -96706,7 +96706,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-os-activate-error-type",
           "kind": "enum",
-          "label": "enum gnoi.os.ActivateError.Type",
+          "label": "gnoi.os.ActivateError.Type",
           "sourceSymbol": "gnoi.os.ActivateError.Type",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.1.0/os/os.proto#L349",
@@ -96882,7 +96882,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-os-install-error-type",
           "kind": "enum",
-          "label": "enum gnoi.os.InstallError.Type",
+          "label": "gnoi.os.InstallError.Type",
           "sourceSymbol": "gnoi.os.InstallError.Type",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.1.0/os/os.proto#L261",
@@ -97139,7 +97139,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-os-standby-state-state",
           "kind": "enum",
-          "label": "enum gnoi.os.StandbyState.State",
+          "label": "gnoi.os.StandbyState.State",
           "sourceSymbol": "gnoi.os.StandbyState.State",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.1.0/os/os.proto#L393",
@@ -97808,7 +97808,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-packet-link-qualification-header-match-field",
           "kind": "enum",
-          "label": "enum gnoi.packet_link_qualification.HeaderMatchField",
+          "label": "gnoi.packet_link_qualification.HeaderMatchField",
           "sourceSymbol": "gnoi.packet_link_qualification.HeaderMatchField",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.1.0/packet_link_qualification/packet_link_qualification.proto#L346",
@@ -98211,7 +98211,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-packet-link-qualification-packet-injector-loopback-mode",
           "kind": "enum",
-          "label": "enum gnoi.packet_link_qualification.PacketInjectorLoopbackMode",
+          "label": "gnoi.packet_link_qualification.PacketInjectorLoopbackMode",
           "sourceSymbol": "gnoi.packet_link_qualification.PacketInjectorLoopbackMode",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.1.0/packet_link_qualification/packet_link_qualification.proto#L310",
@@ -98486,7 +98486,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-packet-link-qualification-qualification-state",
           "kind": "enum",
-          "label": "enum gnoi.packet_link_qualification.QualificationState",
+          "label": "gnoi.packet_link_qualification.QualificationState",
           "description": "States of qualification.",
           "sourceSymbol": "gnoi.packet_link_qualification.QualificationState",
           "deprecated": false,
@@ -98752,7 +98752,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-system-kill-process-request-signal",
           "kind": "enum",
-          "label": "enum gnoi.system.KillProcessRequest.Signal",
+          "label": "gnoi.system.KillProcessRequest.Signal",
           "description": "Termination signal sent to the process.",
           "sourceSymbol": "gnoi.system.KillProcessRequest.Signal",
           "deprecated": false,
@@ -99063,7 +99063,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-system-reboot-method",
           "kind": "enum",
-          "label": "enum gnoi.system.RebootMethod",
+          "label": "gnoi.system.RebootMethod",
           "description": "A RebootMethod determines what should be done with a target when a Reboot is\nrequested.  Only the COLD method is required to be supported by all\ntargets.  Methods the target does not support should result in failure.\n\nIt is vendor defined if a WARM reboot is the same as an NSF reboot.",
           "sourceSymbol": "gnoi.system.RebootMethod",
           "deprecated": false,
@@ -99566,7 +99566,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-system-traceroute-request-l4-protocol",
           "kind": "enum",
-          "label": "enum gnoi.system.TracerouteRequest.L4Protocol",
+          "label": "gnoi.system.TracerouteRequest.L4Protocol",
           "sourceSymbol": "gnoi.system.TracerouteRequest.L4Protocol",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.1.0/system/system.proto#L226",
@@ -99711,7 +99711,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-system-traceroute-response-state",
           "kind": "enum",
-          "label": "enum gnoi.system.TracerouteResponse.State",
+          "label": "gnoi.system.TracerouteResponse.State",
           "description": "State is the resulting state of a single traceoroute packet.",
           "sourceSymbol": "gnoi.system.TracerouteResponse.State",
           "deprecated": false,
@@ -99893,7 +99893,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-types-hash-type-hash-method",
           "kind": "enum",
-          "label": "enum gnoi.types.HashType.HashMethod",
+          "label": "gnoi.types.HashType.HashMethod",
           "sourceSymbol": "gnoi.types.HashType.HashMethod",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnoi/blob/v0.1.0/types/types.proto#L41",
@@ -99938,7 +99938,7 @@ export const gnoiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnoi-types-l3-protocol",
           "kind": "enum",
-          "label": "enum gnoi.types.L3Protocol",
+          "label": "gnoi.types.L3Protocol",
           "description": "Generic Layer 3 Protocol enumeration.",
           "sourceSymbol": "gnoi.types.L3Protocol",
           "deprecated": false,
@@ -104992,7 +104992,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-acctz-v1-auth-detail-authen-status",
           "kind": "enum",
-          "label": "enum gnsi.acctz.v1.AuthDetail.AuthenStatus",
+          "label": "gnsi.acctz.v1.AuthDetail.AuthenStatus",
           "description": "authentication status",
           "sourceSymbol": "gnsi.acctz.v1.AuthDetail.AuthenStatus",
           "deprecated": false,
@@ -105073,7 +105073,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-acctz-v1-authn-detail-authn-status",
           "kind": "enum",
-          "label": "enum gnsi.acctz.v1.AuthnDetail.AuthnStatus",
+          "label": "gnsi.acctz.v1.AuthnDetail.AuthnStatus",
           "description": "authentication status",
           "sourceSymbol": "gnsi.acctz.v1.AuthnDetail.AuthnStatus",
           "deprecated": false,
@@ -105119,7 +105119,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-acctz-v1-authn-detail-authn-type",
           "kind": "enum",
-          "label": "enum gnsi.acctz.v1.AuthnDetail.AuthnType",
+          "label": "gnsi.acctz.v1.AuthnDetail.AuthnType",
           "description": "authentication type",
           "sourceSymbol": "gnsi.acctz.v1.AuthnDetail.AuthnType",
           "deprecated": false,
@@ -105224,7 +105224,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-acctz-v1-authz-detail-authz-status",
           "kind": "enum",
-          "label": "enum gnsi.acctz.v1.AuthzDetail.AuthzStatus",
+          "label": "gnsi.acctz.v1.AuthzDetail.AuthzStatus",
           "description": "authorization status",
           "sourceSymbol": "gnsi.acctz.v1.AuthzDetail.AuthzStatus",
           "deprecated": false,
@@ -105333,7 +105333,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-acctz-v1-command-service-cmd-service-type",
           "kind": "enum",
-          "label": "enum gnsi.acctz.v1.CommandService.CmdServiceType",
+          "label": "gnsi.acctz.v1.CommandService.CmdServiceType",
           "sourceSymbol": "gnsi.acctz.v1.CommandService.CmdServiceType",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.9.1/acctz/acctz.proto#L249",
@@ -105464,7 +105464,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-acctz-v1-grpc-service-grpc-service-type",
           "kind": "enum",
-          "label": "enum gnsi.acctz.v1.GrpcService.GrpcServiceType",
+          "label": "gnsi.acctz.v1.GrpcService.GrpcServiceType",
           "sourceSymbol": "gnsi.acctz.v1.GrpcService.GrpcServiceType",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.9.1/acctz/acctz.proto#L286",
@@ -105723,7 +105723,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-acctz-v1-session-info-session-status",
           "kind": "enum",
-          "label": "enum gnsi.acctz.v1.SessionInfo.SessionStatus",
+          "label": "gnsi.acctz.v1.SessionInfo.SessionStatus",
           "description": "session status",
           "sourceSymbol": "gnsi.acctz.v1.SessionInfo.SessionStatus",
           "deprecated": false,
@@ -105991,7 +105991,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-authz-v1-probe-response-action",
           "kind": "enum",
-          "label": "enum gnsi.authz.v1.ProbeResponse.Action",
+          "label": "gnsi.authz.v1.ProbeResponse.Action",
           "description": "Action is the defined action for an gRPC-level Authorization Policy.",
           "sourceSymbol": "gnsi.authz.v1.ProbeResponse.Action",
           "deprecated": false,
@@ -106394,7 +106394,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-certz-v1-certificate-cert-source",
           "kind": "enum",
-          "label": "enum gnsi.certz.v1.Certificate.CertSource",
+          "label": "gnsi.certz.v1.Certificate.CertSource",
           "sourceSymbol": "gnsi.certz.v1.Certificate.CertSource",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.9.1/certz/certz.proto#L485",
@@ -106442,7 +106442,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-certz-v1-certificate-key-source",
           "kind": "enum",
-          "label": "enum gnsi.certz.v1.Certificate.KeySource",
+          "label": "gnsi.certz.v1.Certificate.KeySource",
           "sourceSymbol": "gnsi.certz.v1.Certificate.KeySource",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.9.1/certz/certz.proto#L513",
@@ -106525,7 +106525,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-certz-v1-certificate-encoding",
           "kind": "enum",
-          "label": "enum gnsi.certz.v1.CertificateEncoding",
+          "label": "gnsi.certz.v1.CertificateEncoding",
           "sourceSymbol": "gnsi.certz.v1.CertificateEncoding",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.9.1/certz/certz.proto#L444",
@@ -106691,7 +106691,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-certz-v1-certificate-type",
           "kind": "enum",
-          "label": "enum gnsi.certz.v1.CertificateType",
+          "label": "gnsi.certz.v1.CertificateType",
           "description": "Types of certificates.",
           "sourceSymbol": "gnsi.certz.v1.CertificateType",
           "deprecated": false,
@@ -106815,7 +106815,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-certz-v1-csrsuite",
           "kind": "enum",
-          "label": "enum gnsi.certz.v1.CSRSuite",
+          "label": "gnsi.certz.v1.CSRSuite",
           "description": "CSRSuite specifies the valid types of keys and digests that can be used\nto generate CSRs\n\nprotolint:disable:next ENUM_FIELD_NAMES_PREFIX",
           "sourceSymbol": "gnsi.certz.v1.CSRSuite",
           "deprecated": false,
@@ -107130,7 +107130,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-certz-v1-existing-entity-entity-type",
           "kind": "enum",
-          "label": "enum gnsi.certz.v1.ExistingEntity.EntityType",
+          "label": "gnsi.certz.v1.ExistingEntity.EntityType",
           "sourceSymbol": "gnsi.certz.v1.ExistingEntity.EntityType",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.9.1/certz/certz.proto#L609",
@@ -107943,7 +107943,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-credentialz-v1-authentication-type",
           "kind": "enum",
-          "label": "enum gnsi.credentialz.v1.AuthenticationType",
+          "label": "gnsi.credentialz.v1.AuthenticationType",
           "sourceSymbol": "gnsi.credentialz.v1.AuthenticationType",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.9.1/credentialz/credentialz.proto#L659",
@@ -108064,7 +108064,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-credentialz-v1-authorized-principal-check-request-tool",
           "kind": "enum",
-          "label": "enum gnsi.credentialz.v1.AuthorizedPrincipalCheckRequest.Tool",
+          "label": "gnsi.credentialz.v1.AuthorizedPrincipalCheckRequest.Tool",
           "sourceSymbol": "gnsi.credentialz.v1.AuthorizedPrincipalCheckRequest.Tool",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.9.1/credentialz/credentialz.proto#L698",
@@ -108487,7 +108487,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-credentialz-v1-key-gen",
           "kind": "enum",
-          "label": "enum gnsi.credentialz.v1.KeyGen",
+          "label": "gnsi.credentialz.v1.KeyGen",
           "description": "KeyGen specifies the valid types of keys and their lengths that\ncan be used.",
           "sourceSymbol": "gnsi.credentialz.v1.KeyGen",
           "deprecated": false,
@@ -108557,7 +108557,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-credentialz-v1-key-type",
           "kind": "enum",
-          "label": "enum gnsi.credentialz.v1.KeyType",
+          "label": "gnsi.credentialz.v1.KeyType",
           "description": "Key encryption type.",
           "sourceSymbol": "gnsi.credentialz.v1.KeyType",
           "deprecated": false,
@@ -108668,7 +108668,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-credentialz-v1-option-standard-option",
           "kind": "enum",
-          "label": "enum gnsi.credentialz.v1.Option.StandardOption",
+          "label": "gnsi.credentialz.v1.Option.StandardOption",
           "description": "An option that is specified for an authorized user, key entry, or\nauthorized principal tool.\nFor example, for OpenSSH, an entry can have an option\n`from=\"*.sales.example.net,!pc.sales.example.net\"`\nFor such option the `key.id` would be `FROM` (6) while the `value`\nwould be `*.sales.example.net,!pc.sales.example.net`.\n\nIf a specified option is unknown then the whole request should be rejected.",
           "sourceSymbol": "gnsi.credentialz.v1.Option.StandardOption",
           "deprecated": false,
@@ -108959,7 +108959,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-credentialz-v1-password-request-crypto-hash-hash-type",
           "kind": "enum",
-          "label": "enum gnsi.credentialz.v1.PasswordRequest.CryptoHash.HashType",
+          "label": "gnsi.credentialz.v1.PasswordRequest.CryptoHash.HashType",
           "description": "Hash type's",
           "sourceSymbol": "gnsi.credentialz.v1.PasswordRequest.CryptoHash.HashType",
           "deprecated": false,
@@ -109535,7 +109535,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-pathz-v1-action",
           "kind": "enum",
-          "label": "enum gnsi.pathz.v1.Action",
+          "label": "gnsi.pathz.v1.Action",
           "description": "Action is the defined action for an AuthorizationPolicy.",
           "sourceSymbol": "gnsi.pathz.v1.Action",
           "deprecated": false,
@@ -109800,7 +109800,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-pathz-v1-mode",
           "kind": "enum",
-          "label": "enum gnsi.pathz.v1.Mode",
+          "label": "gnsi.pathz.v1.Mode",
           "description": "Mode is:\nREAD: Ability to read/subscribe to data from the model.\nWRITE: Ability to mutate/write updates to data in the model.",
           "sourceSymbol": "gnsi.pathz.v1.Mode",
           "deprecated": false,
@@ -109840,7 +109840,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-pathz-v1-policy-instance",
           "kind": "enum",
-          "label": "enum gnsi.pathz.v1.PolicyInstance",
+          "label": "gnsi.pathz.v1.PolicyInstance",
           "sourceSymbol": "gnsi.pathz.v1.PolicyInstance",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.9.1/pathz/pathz.proto#L180",
@@ -112479,7 +112479,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-acctz-v1-auth-detail-authen-status",
           "kind": "enum",
-          "label": "enum gnsi.acctz.v1.AuthDetail.AuthenStatus",
+          "label": "gnsi.acctz.v1.AuthDetail.AuthenStatus",
           "description": "authentication status",
           "sourceSymbol": "gnsi.acctz.v1.AuthDetail.AuthenStatus",
           "deprecated": false,
@@ -112560,7 +112560,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-acctz-v1-authn-detail-authn-status",
           "kind": "enum",
-          "label": "enum gnsi.acctz.v1.AuthnDetail.AuthnStatus",
+          "label": "gnsi.acctz.v1.AuthnDetail.AuthnStatus",
           "description": "authentication status",
           "sourceSymbol": "gnsi.acctz.v1.AuthnDetail.AuthnStatus",
           "deprecated": false,
@@ -112606,7 +112606,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-acctz-v1-authn-detail-authn-type",
           "kind": "enum",
-          "label": "enum gnsi.acctz.v1.AuthnDetail.AuthnType",
+          "label": "gnsi.acctz.v1.AuthnDetail.AuthnType",
           "description": "authentication type",
           "sourceSymbol": "gnsi.acctz.v1.AuthnDetail.AuthnType",
           "deprecated": false,
@@ -112711,7 +112711,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-acctz-v1-authz-detail-authz-status",
           "kind": "enum",
-          "label": "enum gnsi.acctz.v1.AuthzDetail.AuthzStatus",
+          "label": "gnsi.acctz.v1.AuthzDetail.AuthzStatus",
           "description": "authorization status",
           "sourceSymbol": "gnsi.acctz.v1.AuthzDetail.AuthzStatus",
           "deprecated": false,
@@ -112820,7 +112820,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-acctz-v1-command-service-cmd-service-type",
           "kind": "enum",
-          "label": "enum gnsi.acctz.v1.CommandService.CmdServiceType",
+          "label": "gnsi.acctz.v1.CommandService.CmdServiceType",
           "sourceSymbol": "gnsi.acctz.v1.CommandService.CmdServiceType",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.9.0/acctz/acctz.proto#L249",
@@ -112951,7 +112951,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-acctz-v1-grpc-service-grpc-service-type",
           "kind": "enum",
-          "label": "enum gnsi.acctz.v1.GrpcService.GrpcServiceType",
+          "label": "gnsi.acctz.v1.GrpcService.GrpcServiceType",
           "sourceSymbol": "gnsi.acctz.v1.GrpcService.GrpcServiceType",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.9.0/acctz/acctz.proto#L286",
@@ -113210,7 +113210,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-acctz-v1-session-info-session-status",
           "kind": "enum",
-          "label": "enum gnsi.acctz.v1.SessionInfo.SessionStatus",
+          "label": "gnsi.acctz.v1.SessionInfo.SessionStatus",
           "description": "session status",
           "sourceSymbol": "gnsi.acctz.v1.SessionInfo.SessionStatus",
           "deprecated": false,
@@ -113478,7 +113478,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-authz-v1-probe-response-action",
           "kind": "enum",
-          "label": "enum gnsi.authz.v1.ProbeResponse.Action",
+          "label": "gnsi.authz.v1.ProbeResponse.Action",
           "description": "Action is the defined action for an gRPC-level Authorization Policy.",
           "sourceSymbol": "gnsi.authz.v1.ProbeResponse.Action",
           "deprecated": false,
@@ -113881,7 +113881,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-certz-v1-certificate-cert-source",
           "kind": "enum",
-          "label": "enum gnsi.certz.v1.Certificate.CertSource",
+          "label": "gnsi.certz.v1.Certificate.CertSource",
           "sourceSymbol": "gnsi.certz.v1.Certificate.CertSource",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.9.0/certz/certz.proto#L483",
@@ -113921,7 +113921,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-certz-v1-certificate-key-source",
           "kind": "enum",
-          "label": "enum gnsi.certz.v1.Certificate.KeySource",
+          "label": "gnsi.certz.v1.Certificate.KeySource",
           "sourceSymbol": "gnsi.certz.v1.Certificate.KeySource",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.9.0/certz/certz.proto#L501",
@@ -113997,7 +113997,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-certz-v1-certificate-encoding",
           "kind": "enum",
-          "label": "enum gnsi.certz.v1.CertificateEncoding",
+          "label": "gnsi.certz.v1.CertificateEncoding",
           "sourceSymbol": "gnsi.certz.v1.CertificateEncoding",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.9.0/certz/certz.proto#L442",
@@ -114163,7 +114163,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-certz-v1-certificate-type",
           "kind": "enum",
-          "label": "enum gnsi.certz.v1.CertificateType",
+          "label": "gnsi.certz.v1.CertificateType",
           "description": "Types of certificates.",
           "sourceSymbol": "gnsi.certz.v1.CertificateType",
           "deprecated": false,
@@ -114287,7 +114287,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-certz-v1-csrsuite",
           "kind": "enum",
-          "label": "enum gnsi.certz.v1.CSRSuite",
+          "label": "gnsi.certz.v1.CSRSuite",
           "description": "CSRSuite specifies the valid types of keys and digests that can be used\nto generate CSRs",
           "sourceSymbol": "gnsi.certz.v1.CSRSuite",
           "deprecated": false,
@@ -114602,7 +114602,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-certz-v1-existing-entity-entity-type",
           "kind": "enum",
-          "label": "enum gnsi.certz.v1.ExistingEntity.EntityType",
+          "label": "gnsi.certz.v1.ExistingEntity.EntityType",
           "sourceSymbol": "gnsi.certz.v1.ExistingEntity.EntityType",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.9.0/certz/certz.proto#L594",
@@ -115415,7 +115415,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-credentialz-v1-authentication-type",
           "kind": "enum",
-          "label": "enum gnsi.credentialz.v1.AuthenticationType",
+          "label": "gnsi.credentialz.v1.AuthenticationType",
           "sourceSymbol": "gnsi.credentialz.v1.AuthenticationType",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.9.0/credentialz/credentialz.proto#L659",
@@ -115536,7 +115536,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-credentialz-v1-authorized-principal-check-request-tool",
           "kind": "enum",
-          "label": "enum gnsi.credentialz.v1.AuthorizedPrincipalCheckRequest.Tool",
+          "label": "gnsi.credentialz.v1.AuthorizedPrincipalCheckRequest.Tool",
           "sourceSymbol": "gnsi.credentialz.v1.AuthorizedPrincipalCheckRequest.Tool",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.9.0/credentialz/credentialz.proto#L698",
@@ -115959,7 +115959,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-credentialz-v1-key-gen",
           "kind": "enum",
-          "label": "enum gnsi.credentialz.v1.KeyGen",
+          "label": "gnsi.credentialz.v1.KeyGen",
           "description": "KeyGen specifies the valid types of keys and their lengths that\ncan be used.",
           "sourceSymbol": "gnsi.credentialz.v1.KeyGen",
           "deprecated": false,
@@ -116029,7 +116029,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-credentialz-v1-key-type",
           "kind": "enum",
-          "label": "enum gnsi.credentialz.v1.KeyType",
+          "label": "gnsi.credentialz.v1.KeyType",
           "description": "Key encryption type.",
           "sourceSymbol": "gnsi.credentialz.v1.KeyType",
           "deprecated": false,
@@ -116140,7 +116140,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-credentialz-v1-option-standard-option",
           "kind": "enum",
-          "label": "enum gnsi.credentialz.v1.Option.StandardOption",
+          "label": "gnsi.credentialz.v1.Option.StandardOption",
           "description": "An option that is specified for an authorized user, key entry, or\nauthorized principal tool.\nFor example, for OpenSSH, an entry can have an option\n`from=\"*.sales.example.net,!pc.sales.example.net\"`\nFor such option the `key.id` would be `FROM` (6) while the `value`\nwould be `*.sales.example.net,!pc.sales.example.net`.\n\nIf a specified option is unknown then the whole request should be rejected.",
           "sourceSymbol": "gnsi.credentialz.v1.Option.StandardOption",
           "deprecated": false,
@@ -116431,7 +116431,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-credentialz-v1-password-request-crypto-hash-hash-type",
           "kind": "enum",
-          "label": "enum gnsi.credentialz.v1.PasswordRequest.CryptoHash.HashType",
+          "label": "gnsi.credentialz.v1.PasswordRequest.CryptoHash.HashType",
           "description": "Hash type's",
           "sourceSymbol": "gnsi.credentialz.v1.PasswordRequest.CryptoHash.HashType",
           "deprecated": false,
@@ -117007,7 +117007,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-pathz-v1-action",
           "kind": "enum",
-          "label": "enum gnsi.pathz.v1.Action",
+          "label": "gnsi.pathz.v1.Action",
           "description": "Action is the defined action for an AuthorizationPolicy.",
           "sourceSymbol": "gnsi.pathz.v1.Action",
           "deprecated": false,
@@ -117272,7 +117272,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-pathz-v1-mode",
           "kind": "enum",
-          "label": "enum gnsi.pathz.v1.Mode",
+          "label": "gnsi.pathz.v1.Mode",
           "description": "Mode is:\nREAD: Ability to read/subscribe to data from the model.\nWRITE: Ability to mutate/write updates to data in the model.",
           "sourceSymbol": "gnsi.pathz.v1.Mode",
           "deprecated": false,
@@ -117312,7 +117312,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-pathz-v1-policy-instance",
           "kind": "enum",
-          "label": "enum gnsi.pathz.v1.PolicyInstance",
+          "label": "gnsi.pathz.v1.PolicyInstance",
           "sourceSymbol": "gnsi.pathz.v1.PolicyInstance",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.9.0/pathz/pathz.proto#L180",
@@ -119951,7 +119951,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-acctz-v1-auth-detail-authen-status",
           "kind": "enum",
-          "label": "enum gnsi.acctz.v1.AuthDetail.AuthenStatus",
+          "label": "gnsi.acctz.v1.AuthDetail.AuthenStatus",
           "description": "authentication status",
           "sourceSymbol": "gnsi.acctz.v1.AuthDetail.AuthenStatus",
           "deprecated": false,
@@ -120032,7 +120032,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-acctz-v1-authn-detail-authn-status",
           "kind": "enum",
-          "label": "enum gnsi.acctz.v1.AuthnDetail.AuthnStatus",
+          "label": "gnsi.acctz.v1.AuthnDetail.AuthnStatus",
           "description": "authentication status",
           "sourceSymbol": "gnsi.acctz.v1.AuthnDetail.AuthnStatus",
           "deprecated": false,
@@ -120078,7 +120078,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-acctz-v1-authn-detail-authn-type",
           "kind": "enum",
-          "label": "enum gnsi.acctz.v1.AuthnDetail.AuthnType",
+          "label": "gnsi.acctz.v1.AuthnDetail.AuthnType",
           "description": "authentication type",
           "sourceSymbol": "gnsi.acctz.v1.AuthnDetail.AuthnType",
           "deprecated": false,
@@ -120183,7 +120183,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-acctz-v1-authz-detail-authz-status",
           "kind": "enum",
-          "label": "enum gnsi.acctz.v1.AuthzDetail.AuthzStatus",
+          "label": "gnsi.acctz.v1.AuthzDetail.AuthzStatus",
           "description": "authorization status",
           "sourceSymbol": "gnsi.acctz.v1.AuthzDetail.AuthzStatus",
           "deprecated": false,
@@ -120292,7 +120292,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-acctz-v1-command-service-cmd-service-type",
           "kind": "enum",
-          "label": "enum gnsi.acctz.v1.CommandService.CmdServiceType",
+          "label": "gnsi.acctz.v1.CommandService.CmdServiceType",
           "sourceSymbol": "gnsi.acctz.v1.CommandService.CmdServiceType",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.8.2/acctz/acctz.proto#L249",
@@ -120423,7 +120423,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-acctz-v1-grpc-service-grpc-service-type",
           "kind": "enum",
-          "label": "enum gnsi.acctz.v1.GrpcService.GrpcServiceType",
+          "label": "gnsi.acctz.v1.GrpcService.GrpcServiceType",
           "sourceSymbol": "gnsi.acctz.v1.GrpcService.GrpcServiceType",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.8.2/acctz/acctz.proto#L286",
@@ -120682,7 +120682,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-acctz-v1-session-info-session-status",
           "kind": "enum",
-          "label": "enum gnsi.acctz.v1.SessionInfo.SessionStatus",
+          "label": "gnsi.acctz.v1.SessionInfo.SessionStatus",
           "description": "session status",
           "sourceSymbol": "gnsi.acctz.v1.SessionInfo.SessionStatus",
           "deprecated": false,
@@ -120950,7 +120950,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-authz-v1-probe-response-action",
           "kind": "enum",
-          "label": "enum gnsi.authz.v1.ProbeResponse.Action",
+          "label": "gnsi.authz.v1.ProbeResponse.Action",
           "description": "Action is the defined action for an gRPC-level Authorization Policy.",
           "sourceSymbol": "gnsi.authz.v1.ProbeResponse.Action",
           "deprecated": false,
@@ -121353,7 +121353,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-certz-v1-certificate-cert-source",
           "kind": "enum",
-          "label": "enum gnsi.certz.v1.Certificate.CertSource",
+          "label": "gnsi.certz.v1.Certificate.CertSource",
           "sourceSymbol": "gnsi.certz.v1.Certificate.CertSource",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.8.2/certz/certz.proto#L483",
@@ -121393,7 +121393,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-certz-v1-certificate-key-source",
           "kind": "enum",
-          "label": "enum gnsi.certz.v1.Certificate.KeySource",
+          "label": "gnsi.certz.v1.Certificate.KeySource",
           "sourceSymbol": "gnsi.certz.v1.Certificate.KeySource",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.8.2/certz/certz.proto#L501",
@@ -121469,7 +121469,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-certz-v1-certificate-encoding",
           "kind": "enum",
-          "label": "enum gnsi.certz.v1.CertificateEncoding",
+          "label": "gnsi.certz.v1.CertificateEncoding",
           "sourceSymbol": "gnsi.certz.v1.CertificateEncoding",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.8.2/certz/certz.proto#L442",
@@ -121635,7 +121635,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-certz-v1-certificate-type",
           "kind": "enum",
-          "label": "enum gnsi.certz.v1.CertificateType",
+          "label": "gnsi.certz.v1.CertificateType",
           "description": "Types of certificates.",
           "sourceSymbol": "gnsi.certz.v1.CertificateType",
           "deprecated": false,
@@ -121759,7 +121759,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-certz-v1-csrsuite",
           "kind": "enum",
-          "label": "enum gnsi.certz.v1.CSRSuite",
+          "label": "gnsi.certz.v1.CSRSuite",
           "description": "CSRSuite specifies the valid types of keys and digests that can be used\nto generate CSRs",
           "sourceSymbol": "gnsi.certz.v1.CSRSuite",
           "deprecated": false,
@@ -122074,7 +122074,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-certz-v1-existing-entity-entity-type",
           "kind": "enum",
-          "label": "enum gnsi.certz.v1.ExistingEntity.EntityType",
+          "label": "gnsi.certz.v1.ExistingEntity.EntityType",
           "sourceSymbol": "gnsi.certz.v1.ExistingEntity.EntityType",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.8.2/certz/certz.proto#L594",
@@ -122887,7 +122887,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-credentialz-v1-authentication-type",
           "kind": "enum",
-          "label": "enum gnsi.credentialz.v1.AuthenticationType",
+          "label": "gnsi.credentialz.v1.AuthenticationType",
           "sourceSymbol": "gnsi.credentialz.v1.AuthenticationType",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.8.2/credentialz/credentialz.proto#L659",
@@ -123008,7 +123008,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-credentialz-v1-authorized-principal-check-request-tool",
           "kind": "enum",
-          "label": "enum gnsi.credentialz.v1.AuthorizedPrincipalCheckRequest.Tool",
+          "label": "gnsi.credentialz.v1.AuthorizedPrincipalCheckRequest.Tool",
           "sourceSymbol": "gnsi.credentialz.v1.AuthorizedPrincipalCheckRequest.Tool",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.8.2/credentialz/credentialz.proto#L698",
@@ -123431,7 +123431,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-credentialz-v1-key-gen",
           "kind": "enum",
-          "label": "enum gnsi.credentialz.v1.KeyGen",
+          "label": "gnsi.credentialz.v1.KeyGen",
           "description": "KeyGen specifies the valid types of keys and their lengths that\ncan be used.",
           "sourceSymbol": "gnsi.credentialz.v1.KeyGen",
           "deprecated": false,
@@ -123501,7 +123501,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-credentialz-v1-key-type",
           "kind": "enum",
-          "label": "enum gnsi.credentialz.v1.KeyType",
+          "label": "gnsi.credentialz.v1.KeyType",
           "description": "Key encryption type.",
           "sourceSymbol": "gnsi.credentialz.v1.KeyType",
           "deprecated": false,
@@ -123612,7 +123612,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-credentialz-v1-option-standard-option",
           "kind": "enum",
-          "label": "enum gnsi.credentialz.v1.Option.StandardOption",
+          "label": "gnsi.credentialz.v1.Option.StandardOption",
           "description": "An option that is specified for an authorized user, key entry, or\nauthorized principal tool.\nFor example, for OpenSSH, an entry can have an option\n`from=\"*.sales.example.net,!pc.sales.example.net\"`\nFor such option the `key.id` would be `FROM` (6) while the `value`\nwould be `*.sales.example.net,!pc.sales.example.net`.\n\nIf a specified option is unknown then the whole request should be rejected.",
           "sourceSymbol": "gnsi.credentialz.v1.Option.StandardOption",
           "deprecated": false,
@@ -123903,7 +123903,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-credentialz-v1-password-request-crypto-hash-hash-type",
           "kind": "enum",
-          "label": "enum gnsi.credentialz.v1.PasswordRequest.CryptoHash.HashType",
+          "label": "gnsi.credentialz.v1.PasswordRequest.CryptoHash.HashType",
           "description": "Hash type's",
           "sourceSymbol": "gnsi.credentialz.v1.PasswordRequest.CryptoHash.HashType",
           "deprecated": false,
@@ -124479,7 +124479,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-pathz-v1-action",
           "kind": "enum",
-          "label": "enum gnsi.pathz.v1.Action",
+          "label": "gnsi.pathz.v1.Action",
           "description": "Action is the defined action for an AuthorizationPolicy.",
           "sourceSymbol": "gnsi.pathz.v1.Action",
           "deprecated": false,
@@ -124744,7 +124744,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-pathz-v1-mode",
           "kind": "enum",
-          "label": "enum gnsi.pathz.v1.Mode",
+          "label": "gnsi.pathz.v1.Mode",
           "description": "Mode is:\nREAD: Ability to read/subscribe to data from the model.\nWRITE: Ability to mutate/write updates to data in the model.",
           "sourceSymbol": "gnsi.pathz.v1.Mode",
           "deprecated": false,
@@ -124784,7 +124784,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-pathz-v1-policy-instance",
           "kind": "enum",
-          "label": "enum gnsi.pathz.v1.PolicyInstance",
+          "label": "gnsi.pathz.v1.PolicyInstance",
           "sourceSymbol": "gnsi.pathz.v1.PolicyInstance",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.8.2/pathz/pathz.proto#L180",
@@ -127423,7 +127423,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-acctz-v1-auth-detail-authen-status",
           "kind": "enum",
-          "label": "enum gnsi.acctz.v1.AuthDetail.AuthenStatus",
+          "label": "gnsi.acctz.v1.AuthDetail.AuthenStatus",
           "description": "authentication status",
           "sourceSymbol": "gnsi.acctz.v1.AuthDetail.AuthenStatus",
           "deprecated": false,
@@ -127504,7 +127504,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-acctz-v1-authn-detail-authn-status",
           "kind": "enum",
-          "label": "enum gnsi.acctz.v1.AuthnDetail.AuthnStatus",
+          "label": "gnsi.acctz.v1.AuthnDetail.AuthnStatus",
           "description": "authentication status",
           "sourceSymbol": "gnsi.acctz.v1.AuthnDetail.AuthnStatus",
           "deprecated": false,
@@ -127550,7 +127550,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-acctz-v1-authn-detail-authn-type",
           "kind": "enum",
-          "label": "enum gnsi.acctz.v1.AuthnDetail.AuthnType",
+          "label": "gnsi.acctz.v1.AuthnDetail.AuthnType",
           "description": "authentication type",
           "sourceSymbol": "gnsi.acctz.v1.AuthnDetail.AuthnType",
           "deprecated": false,
@@ -127655,7 +127655,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-acctz-v1-authz-detail-authz-status",
           "kind": "enum",
-          "label": "enum gnsi.acctz.v1.AuthzDetail.AuthzStatus",
+          "label": "gnsi.acctz.v1.AuthzDetail.AuthzStatus",
           "description": "authorization status",
           "sourceSymbol": "gnsi.acctz.v1.AuthzDetail.AuthzStatus",
           "deprecated": false,
@@ -127764,7 +127764,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-acctz-v1-command-service-cmd-service-type",
           "kind": "enum",
-          "label": "enum gnsi.acctz.v1.CommandService.CmdServiceType",
+          "label": "gnsi.acctz.v1.CommandService.CmdServiceType",
           "sourceSymbol": "gnsi.acctz.v1.CommandService.CmdServiceType",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.8.1/acctz/acctz.proto#L249",
@@ -127895,7 +127895,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-acctz-v1-grpc-service-grpc-service-type",
           "kind": "enum",
-          "label": "enum gnsi.acctz.v1.GrpcService.GrpcServiceType",
+          "label": "gnsi.acctz.v1.GrpcService.GrpcServiceType",
           "sourceSymbol": "gnsi.acctz.v1.GrpcService.GrpcServiceType",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.8.1/acctz/acctz.proto#L286",
@@ -128154,7 +128154,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-acctz-v1-session-info-session-status",
           "kind": "enum",
-          "label": "enum gnsi.acctz.v1.SessionInfo.SessionStatus",
+          "label": "gnsi.acctz.v1.SessionInfo.SessionStatus",
           "description": "session status",
           "sourceSymbol": "gnsi.acctz.v1.SessionInfo.SessionStatus",
           "deprecated": false,
@@ -128422,7 +128422,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-authz-v1-probe-response-action",
           "kind": "enum",
-          "label": "enum gnsi.authz.v1.ProbeResponse.Action",
+          "label": "gnsi.authz.v1.ProbeResponse.Action",
           "description": "Action is the defined action for an gRPC-level Authorization Policy.",
           "sourceSymbol": "gnsi.authz.v1.ProbeResponse.Action",
           "deprecated": false,
@@ -128825,7 +128825,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-certz-v1-certificate-cert-source",
           "kind": "enum",
-          "label": "enum gnsi.certz.v1.Certificate.CertSource",
+          "label": "gnsi.certz.v1.Certificate.CertSource",
           "sourceSymbol": "gnsi.certz.v1.Certificate.CertSource",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.8.1/certz/certz.proto#L483",
@@ -128865,7 +128865,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-certz-v1-certificate-key-source",
           "kind": "enum",
-          "label": "enum gnsi.certz.v1.Certificate.KeySource",
+          "label": "gnsi.certz.v1.Certificate.KeySource",
           "sourceSymbol": "gnsi.certz.v1.Certificate.KeySource",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.8.1/certz/certz.proto#L501",
@@ -128941,7 +128941,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-certz-v1-certificate-encoding",
           "kind": "enum",
-          "label": "enum gnsi.certz.v1.CertificateEncoding",
+          "label": "gnsi.certz.v1.CertificateEncoding",
           "sourceSymbol": "gnsi.certz.v1.CertificateEncoding",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.8.1/certz/certz.proto#L442",
@@ -129107,7 +129107,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-certz-v1-certificate-type",
           "kind": "enum",
-          "label": "enum gnsi.certz.v1.CertificateType",
+          "label": "gnsi.certz.v1.CertificateType",
           "description": "Types of certificates.",
           "sourceSymbol": "gnsi.certz.v1.CertificateType",
           "deprecated": false,
@@ -129231,7 +129231,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-certz-v1-csrsuite",
           "kind": "enum",
-          "label": "enum gnsi.certz.v1.CSRSuite",
+          "label": "gnsi.certz.v1.CSRSuite",
           "description": "CSRSuite specifies the valid types of keys and digests that can be used\nto generate CSRs",
           "sourceSymbol": "gnsi.certz.v1.CSRSuite",
           "deprecated": false,
@@ -129546,7 +129546,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-certz-v1-existing-entity-entity-type",
           "kind": "enum",
-          "label": "enum gnsi.certz.v1.ExistingEntity.EntityType",
+          "label": "gnsi.certz.v1.ExistingEntity.EntityType",
           "sourceSymbol": "gnsi.certz.v1.ExistingEntity.EntityType",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.8.1/certz/certz.proto#L594",
@@ -130359,7 +130359,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-credentialz-v1-authentication-type",
           "kind": "enum",
-          "label": "enum gnsi.credentialz.v1.AuthenticationType",
+          "label": "gnsi.credentialz.v1.AuthenticationType",
           "sourceSymbol": "gnsi.credentialz.v1.AuthenticationType",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.8.1/credentialz/credentialz.proto#L659",
@@ -130480,7 +130480,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-credentialz-v1-authorized-principal-check-request-tool",
           "kind": "enum",
-          "label": "enum gnsi.credentialz.v1.AuthorizedPrincipalCheckRequest.Tool",
+          "label": "gnsi.credentialz.v1.AuthorizedPrincipalCheckRequest.Tool",
           "sourceSymbol": "gnsi.credentialz.v1.AuthorizedPrincipalCheckRequest.Tool",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.8.1/credentialz/credentialz.proto#L698",
@@ -130903,7 +130903,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-credentialz-v1-key-gen",
           "kind": "enum",
-          "label": "enum gnsi.credentialz.v1.KeyGen",
+          "label": "gnsi.credentialz.v1.KeyGen",
           "description": "KeyGen specifies the valid types of keys and their lengths that\ncan be used.",
           "sourceSymbol": "gnsi.credentialz.v1.KeyGen",
           "deprecated": false,
@@ -130973,7 +130973,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-credentialz-v1-key-type",
           "kind": "enum",
-          "label": "enum gnsi.credentialz.v1.KeyType",
+          "label": "gnsi.credentialz.v1.KeyType",
           "description": "Key encryption type.",
           "sourceSymbol": "gnsi.credentialz.v1.KeyType",
           "deprecated": false,
@@ -131084,7 +131084,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-credentialz-v1-option-standard-option",
           "kind": "enum",
-          "label": "enum gnsi.credentialz.v1.Option.StandardOption",
+          "label": "gnsi.credentialz.v1.Option.StandardOption",
           "description": "An option that is specified for an authorized user, key entry, or\nauthorized principal tool.\nFor example, for OpenSSH, an entry can have an option\n`from=\"*.sales.example.net,!pc.sales.example.net\"`\nFor such option the `key.id` would be `FROM` (6) while the `value`\nwould be `*.sales.example.net,!pc.sales.example.net`.\n\nIf a specified option is unknown then the whole request should be rejected.",
           "sourceSymbol": "gnsi.credentialz.v1.Option.StandardOption",
           "deprecated": false,
@@ -131375,7 +131375,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-credentialz-v1-password-request-crypto-hash-hash-type",
           "kind": "enum",
-          "label": "enum gnsi.credentialz.v1.PasswordRequest.CryptoHash.HashType",
+          "label": "gnsi.credentialz.v1.PasswordRequest.CryptoHash.HashType",
           "description": "Hash type's",
           "sourceSymbol": "gnsi.credentialz.v1.PasswordRequest.CryptoHash.HashType",
           "deprecated": false,
@@ -131951,7 +131951,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-pathz-v1-action",
           "kind": "enum",
-          "label": "enum gnsi.pathz.v1.Action",
+          "label": "gnsi.pathz.v1.Action",
           "description": "Action is the defined action for an AuthorizationPolicy.",
           "sourceSymbol": "gnsi.pathz.v1.Action",
           "deprecated": false,
@@ -132216,7 +132216,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-pathz-v1-mode",
           "kind": "enum",
-          "label": "enum gnsi.pathz.v1.Mode",
+          "label": "gnsi.pathz.v1.Mode",
           "description": "Mode is:\nREAD: Ability to read/subscribe to data from the model.\nWRITE: Ability to mutate/write updates to data in the model.",
           "sourceSymbol": "gnsi.pathz.v1.Mode",
           "deprecated": false,
@@ -132256,7 +132256,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-pathz-v1-policy-instance",
           "kind": "enum",
-          "label": "enum gnsi.pathz.v1.PolicyInstance",
+          "label": "gnsi.pathz.v1.PolicyInstance",
           "sourceSymbol": "gnsi.pathz.v1.PolicyInstance",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.8.1/pathz/pathz.proto#L180",
@@ -134895,7 +134895,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-acctz-v1-auth-detail-authen-status",
           "kind": "enum",
-          "label": "enum gnsi.acctz.v1.AuthDetail.AuthenStatus",
+          "label": "gnsi.acctz.v1.AuthDetail.AuthenStatus",
           "description": "authentication status",
           "sourceSymbol": "gnsi.acctz.v1.AuthDetail.AuthenStatus",
           "deprecated": false,
@@ -134976,7 +134976,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-acctz-v1-authn-detail-authn-status",
           "kind": "enum",
-          "label": "enum gnsi.acctz.v1.AuthnDetail.AuthnStatus",
+          "label": "gnsi.acctz.v1.AuthnDetail.AuthnStatus",
           "description": "authentication status",
           "sourceSymbol": "gnsi.acctz.v1.AuthnDetail.AuthnStatus",
           "deprecated": false,
@@ -135022,7 +135022,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-acctz-v1-authn-detail-authn-type",
           "kind": "enum",
-          "label": "enum gnsi.acctz.v1.AuthnDetail.AuthnType",
+          "label": "gnsi.acctz.v1.AuthnDetail.AuthnType",
           "description": "authentication type",
           "sourceSymbol": "gnsi.acctz.v1.AuthnDetail.AuthnType",
           "deprecated": false,
@@ -135127,7 +135127,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-acctz-v1-authz-detail-authz-status",
           "kind": "enum",
-          "label": "enum gnsi.acctz.v1.AuthzDetail.AuthzStatus",
+          "label": "gnsi.acctz.v1.AuthzDetail.AuthzStatus",
           "description": "authorization status",
           "sourceSymbol": "gnsi.acctz.v1.AuthzDetail.AuthzStatus",
           "deprecated": false,
@@ -135236,7 +135236,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-acctz-v1-command-service-cmd-service-type",
           "kind": "enum",
-          "label": "enum gnsi.acctz.v1.CommandService.CmdServiceType",
+          "label": "gnsi.acctz.v1.CommandService.CmdServiceType",
           "sourceSymbol": "gnsi.acctz.v1.CommandService.CmdServiceType",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.8.0/acctz/acctz.proto#L249",
@@ -135367,7 +135367,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-acctz-v1-grpc-service-grpc-service-type",
           "kind": "enum",
-          "label": "enum gnsi.acctz.v1.GrpcService.GrpcServiceType",
+          "label": "gnsi.acctz.v1.GrpcService.GrpcServiceType",
           "sourceSymbol": "gnsi.acctz.v1.GrpcService.GrpcServiceType",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.8.0/acctz/acctz.proto#L286",
@@ -135626,7 +135626,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-acctz-v1-session-info-session-status",
           "kind": "enum",
-          "label": "enum gnsi.acctz.v1.SessionInfo.SessionStatus",
+          "label": "gnsi.acctz.v1.SessionInfo.SessionStatus",
           "description": "session status",
           "sourceSymbol": "gnsi.acctz.v1.SessionInfo.SessionStatus",
           "deprecated": false,
@@ -135894,7 +135894,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-authz-v1-probe-response-action",
           "kind": "enum",
-          "label": "enum gnsi.authz.v1.ProbeResponse.Action",
+          "label": "gnsi.authz.v1.ProbeResponse.Action",
           "description": "Action is the defined action for an gRPC-level Authorization Policy.",
           "sourceSymbol": "gnsi.authz.v1.ProbeResponse.Action",
           "deprecated": false,
@@ -136297,7 +136297,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-certz-v1-certificate-cert-source",
           "kind": "enum",
-          "label": "enum gnsi.certz.v1.Certificate.CertSource",
+          "label": "gnsi.certz.v1.Certificate.CertSource",
           "sourceSymbol": "gnsi.certz.v1.Certificate.CertSource",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.8.0/certz/certz.proto#L483",
@@ -136337,7 +136337,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-certz-v1-certificate-key-source",
           "kind": "enum",
-          "label": "enum gnsi.certz.v1.Certificate.KeySource",
+          "label": "gnsi.certz.v1.Certificate.KeySource",
           "sourceSymbol": "gnsi.certz.v1.Certificate.KeySource",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.8.0/certz/certz.proto#L501",
@@ -136413,7 +136413,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-certz-v1-certificate-encoding",
           "kind": "enum",
-          "label": "enum gnsi.certz.v1.CertificateEncoding",
+          "label": "gnsi.certz.v1.CertificateEncoding",
           "sourceSymbol": "gnsi.certz.v1.CertificateEncoding",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.8.0/certz/certz.proto#L442",
@@ -136579,7 +136579,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-certz-v1-certificate-type",
           "kind": "enum",
-          "label": "enum gnsi.certz.v1.CertificateType",
+          "label": "gnsi.certz.v1.CertificateType",
           "description": "Types of certificates.",
           "sourceSymbol": "gnsi.certz.v1.CertificateType",
           "deprecated": false,
@@ -136703,7 +136703,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-certz-v1-csrsuite",
           "kind": "enum",
-          "label": "enum gnsi.certz.v1.CSRSuite",
+          "label": "gnsi.certz.v1.CSRSuite",
           "description": "CSRSuite specifies the valid types of keys and digests that can be used\nto generate CSRs",
           "sourceSymbol": "gnsi.certz.v1.CSRSuite",
           "deprecated": false,
@@ -137018,7 +137018,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-certz-v1-existing-entity-entity-type",
           "kind": "enum",
-          "label": "enum gnsi.certz.v1.ExistingEntity.EntityType",
+          "label": "gnsi.certz.v1.ExistingEntity.EntityType",
           "sourceSymbol": "gnsi.certz.v1.ExistingEntity.EntityType",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.8.0/certz/certz.proto#L594",
@@ -137824,7 +137824,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-credentialz-v1-authentication-type",
           "kind": "enum",
-          "label": "enum gnsi.credentialz.v1.AuthenticationType",
+          "label": "gnsi.credentialz.v1.AuthenticationType",
           "sourceSymbol": "gnsi.credentialz.v1.AuthenticationType",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.8.0/credentialz/credentialz.proto#L659",
@@ -137945,7 +137945,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-credentialz-v1-authorized-principal-check-request-tool",
           "kind": "enum",
-          "label": "enum gnsi.credentialz.v1.AuthorizedPrincipalCheckRequest.Tool",
+          "label": "gnsi.credentialz.v1.AuthorizedPrincipalCheckRequest.Tool",
           "sourceSymbol": "gnsi.credentialz.v1.AuthorizedPrincipalCheckRequest.Tool",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.8.0/credentialz/credentialz.proto#L698",
@@ -138368,7 +138368,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-credentialz-v1-key-gen",
           "kind": "enum",
-          "label": "enum gnsi.credentialz.v1.KeyGen",
+          "label": "gnsi.credentialz.v1.KeyGen",
           "description": "KeyGen specifies the valid types of keys and their lengths that\ncan be used.",
           "sourceSymbol": "gnsi.credentialz.v1.KeyGen",
           "deprecated": false,
@@ -138438,7 +138438,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-credentialz-v1-key-type",
           "kind": "enum",
-          "label": "enum gnsi.credentialz.v1.KeyType",
+          "label": "gnsi.credentialz.v1.KeyType",
           "description": "Key encryption type.",
           "sourceSymbol": "gnsi.credentialz.v1.KeyType",
           "deprecated": false,
@@ -138549,7 +138549,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-credentialz-v1-option-standard-option",
           "kind": "enum",
-          "label": "enum gnsi.credentialz.v1.Option.StandardOption",
+          "label": "gnsi.credentialz.v1.Option.StandardOption",
           "description": "An option that is specified for an authorized user, key entry, or\nauthorized principal tool.\nFor example, for OpenSSH, an entry can have an option\n`from=\"*.sales.example.net,!pc.sales.example.net\"`\nFor such option the `key.id` would be `FROM` (6) while the `value`\nwould be `*.sales.example.net,!pc.sales.example.net`.\n\nIf a specified option is unknown then the whole request should be rejected.",
           "sourceSymbol": "gnsi.credentialz.v1.Option.StandardOption",
           "deprecated": false,
@@ -138840,7 +138840,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-credentialz-v1-password-request-crypto-hash-hash-type",
           "kind": "enum",
-          "label": "enum gnsi.credentialz.v1.PasswordRequest.CryptoHash.HashType",
+          "label": "gnsi.credentialz.v1.PasswordRequest.CryptoHash.HashType",
           "description": "Hash type's",
           "sourceSymbol": "gnsi.credentialz.v1.PasswordRequest.CryptoHash.HashType",
           "deprecated": false,
@@ -139416,7 +139416,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-pathz-v1-action",
           "kind": "enum",
-          "label": "enum gnsi.pathz.v1.Action",
+          "label": "gnsi.pathz.v1.Action",
           "description": "Action is the defined action for an AuthorizationPolicy.",
           "sourceSymbol": "gnsi.pathz.v1.Action",
           "deprecated": false,
@@ -139681,7 +139681,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-pathz-v1-mode",
           "kind": "enum",
-          "label": "enum gnsi.pathz.v1.Mode",
+          "label": "gnsi.pathz.v1.Mode",
           "description": "Mode is:\nREAD: Ability to read/subscribe to data from the model.\nWRITE: Ability to mutate/write updates to data in the model.",
           "sourceSymbol": "gnsi.pathz.v1.Mode",
           "deprecated": false,
@@ -139721,7 +139721,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-pathz-v1-policy-instance",
           "kind": "enum",
-          "label": "enum gnsi.pathz.v1.PolicyInstance",
+          "label": "gnsi.pathz.v1.PolicyInstance",
           "sourceSymbol": "gnsi.pathz.v1.PolicyInstance",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.8.0/pathz/pathz.proto#L180",
@@ -142360,7 +142360,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-acctz-v1-auth-detail-authen-status",
           "kind": "enum",
-          "label": "enum gnsi.acctz.v1.AuthDetail.AuthenStatus",
+          "label": "gnsi.acctz.v1.AuthDetail.AuthenStatus",
           "description": "authentication status",
           "sourceSymbol": "gnsi.acctz.v1.AuthDetail.AuthenStatus",
           "deprecated": false,
@@ -142441,7 +142441,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-acctz-v1-authn-detail-authn-status",
           "kind": "enum",
-          "label": "enum gnsi.acctz.v1.AuthnDetail.AuthnStatus",
+          "label": "gnsi.acctz.v1.AuthnDetail.AuthnStatus",
           "description": "authentication status",
           "sourceSymbol": "gnsi.acctz.v1.AuthnDetail.AuthnStatus",
           "deprecated": false,
@@ -142487,7 +142487,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-acctz-v1-authn-detail-authn-type",
           "kind": "enum",
-          "label": "enum gnsi.acctz.v1.AuthnDetail.AuthnType",
+          "label": "gnsi.acctz.v1.AuthnDetail.AuthnType",
           "description": "authentication type",
           "sourceSymbol": "gnsi.acctz.v1.AuthnDetail.AuthnType",
           "deprecated": false,
@@ -142592,7 +142592,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-acctz-v1-authz-detail-authz-status",
           "kind": "enum",
-          "label": "enum gnsi.acctz.v1.AuthzDetail.AuthzStatus",
+          "label": "gnsi.acctz.v1.AuthzDetail.AuthzStatus",
           "description": "authorization status",
           "sourceSymbol": "gnsi.acctz.v1.AuthzDetail.AuthzStatus",
           "deprecated": false,
@@ -142701,7 +142701,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-acctz-v1-command-service-cmd-service-type",
           "kind": "enum",
-          "label": "enum gnsi.acctz.v1.CommandService.CmdServiceType",
+          "label": "gnsi.acctz.v1.CommandService.CmdServiceType",
           "sourceSymbol": "gnsi.acctz.v1.CommandService.CmdServiceType",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.7.0/acctz/acctz.proto#L249",
@@ -142832,7 +142832,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-acctz-v1-grpc-service-grpc-service-type",
           "kind": "enum",
-          "label": "enum gnsi.acctz.v1.GrpcService.GrpcServiceType",
+          "label": "gnsi.acctz.v1.GrpcService.GrpcServiceType",
           "sourceSymbol": "gnsi.acctz.v1.GrpcService.GrpcServiceType",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.7.0/acctz/acctz.proto#L286",
@@ -143091,7 +143091,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-acctz-v1-session-info-session-status",
           "kind": "enum",
-          "label": "enum gnsi.acctz.v1.SessionInfo.SessionStatus",
+          "label": "gnsi.acctz.v1.SessionInfo.SessionStatus",
           "description": "session status",
           "sourceSymbol": "gnsi.acctz.v1.SessionInfo.SessionStatus",
           "deprecated": false,
@@ -143359,7 +143359,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-authz-v1-probe-response-action",
           "kind": "enum",
-          "label": "enum gnsi.authz.v1.ProbeResponse.Action",
+          "label": "gnsi.authz.v1.ProbeResponse.Action",
           "description": "Action is the defined action for an gRPC-level Authorization Policy.",
           "sourceSymbol": "gnsi.authz.v1.ProbeResponse.Action",
           "deprecated": false,
@@ -143762,7 +143762,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-certz-v1-certificate-cert-source",
           "kind": "enum",
-          "label": "enum gnsi.certz.v1.Certificate.CertSource",
+          "label": "gnsi.certz.v1.Certificate.CertSource",
           "sourceSymbol": "gnsi.certz.v1.Certificate.CertSource",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.7.0/certz/certz.proto#L481",
@@ -143802,7 +143802,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-certz-v1-certificate-key-source",
           "kind": "enum",
-          "label": "enum gnsi.certz.v1.Certificate.KeySource",
+          "label": "gnsi.certz.v1.Certificate.KeySource",
           "sourceSymbol": "gnsi.certz.v1.Certificate.KeySource",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.7.0/certz/certz.proto#L499",
@@ -143878,7 +143878,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-certz-v1-certificate-encoding",
           "kind": "enum",
-          "label": "enum gnsi.certz.v1.CertificateEncoding",
+          "label": "gnsi.certz.v1.CertificateEncoding",
           "sourceSymbol": "gnsi.certz.v1.CertificateEncoding",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.7.0/certz/certz.proto#L440",
@@ -144044,7 +144044,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-certz-v1-certificate-type",
           "kind": "enum",
-          "label": "enum gnsi.certz.v1.CertificateType",
+          "label": "gnsi.certz.v1.CertificateType",
           "description": "Types of certificates.",
           "sourceSymbol": "gnsi.certz.v1.CertificateType",
           "deprecated": false,
@@ -144168,7 +144168,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-certz-v1-csrsuite",
           "kind": "enum",
-          "label": "enum gnsi.certz.v1.CSRSuite",
+          "label": "gnsi.certz.v1.CSRSuite",
           "description": "CSRSuite specifies the valid types of keys and digests that can be used\nto generate CSRs",
           "sourceSymbol": "gnsi.certz.v1.CSRSuite",
           "deprecated": false,
@@ -144483,7 +144483,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-certz-v1-existing-entity-entity-type",
           "kind": "enum",
-          "label": "enum gnsi.certz.v1.ExistingEntity.EntityType",
+          "label": "gnsi.certz.v1.ExistingEntity.EntityType",
           "sourceSymbol": "gnsi.certz.v1.ExistingEntity.EntityType",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.7.0/certz/certz.proto#L592",
@@ -145282,7 +145282,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-credentialz-v1-authentication-type",
           "kind": "enum",
-          "label": "enum gnsi.credentialz.v1.AuthenticationType",
+          "label": "gnsi.credentialz.v1.AuthenticationType",
           "sourceSymbol": "gnsi.credentialz.v1.AuthenticationType",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.7.0/credentialz/credentialz.proto#L658",
@@ -145403,7 +145403,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-credentialz-v1-authorized-principal-check-request-tool",
           "kind": "enum",
-          "label": "enum gnsi.credentialz.v1.AuthorizedPrincipalCheckRequest.Tool",
+          "label": "gnsi.credentialz.v1.AuthorizedPrincipalCheckRequest.Tool",
           "sourceSymbol": "gnsi.credentialz.v1.AuthorizedPrincipalCheckRequest.Tool",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.7.0/credentialz/credentialz.proto#L697",
@@ -145826,7 +145826,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-credentialz-v1-key-gen",
           "kind": "enum",
-          "label": "enum gnsi.credentialz.v1.KeyGen",
+          "label": "gnsi.credentialz.v1.KeyGen",
           "description": "KeyGen specifies the valid types of keys and their lengths that\ncan be used.",
           "sourceSymbol": "gnsi.credentialz.v1.KeyGen",
           "deprecated": false,
@@ -145896,7 +145896,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-credentialz-v1-key-type",
           "kind": "enum",
-          "label": "enum gnsi.credentialz.v1.KeyType",
+          "label": "gnsi.credentialz.v1.KeyType",
           "description": "Key encryption type.",
           "sourceSymbol": "gnsi.credentialz.v1.KeyType",
           "deprecated": false,
@@ -146007,7 +146007,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-credentialz-v1-option-standard-option",
           "kind": "enum",
-          "label": "enum gnsi.credentialz.v1.Option.StandardOption",
+          "label": "gnsi.credentialz.v1.Option.StandardOption",
           "description": "An option that is specified for an authorized user, key entry, or\nauthorized principal tool.\nFor example, for OpenSSH, an entry can have an option\n`from=\"*.sales.example.net,!pc.sales.example.net\"`\nFor such option the `key.id` would be `FROM` (6) while the `value`\nwould be `*.sales.example.net,!pc.sales.example.net`.\n\nIf a specified option is unknown then the whole request should be rejected.",
           "sourceSymbol": "gnsi.credentialz.v1.Option.StandardOption",
           "deprecated": false,
@@ -146298,7 +146298,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-credentialz-v1-password-request-crypto-hash-hash-type",
           "kind": "enum",
-          "label": "enum gnsi.credentialz.v1.PasswordRequest.CryptoHash.HashType",
+          "label": "gnsi.credentialz.v1.PasswordRequest.CryptoHash.HashType",
           "description": "Hash type's",
           "sourceSymbol": "gnsi.credentialz.v1.PasswordRequest.CryptoHash.HashType",
           "deprecated": false,
@@ -146874,7 +146874,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-pathz-v1-action",
           "kind": "enum",
-          "label": "enum gnsi.pathz.v1.Action",
+          "label": "gnsi.pathz.v1.Action",
           "description": "Action is the defined action for an AuthorizationPolicy.",
           "sourceSymbol": "gnsi.pathz.v1.Action",
           "deprecated": false,
@@ -147139,7 +147139,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-pathz-v1-mode",
           "kind": "enum",
-          "label": "enum gnsi.pathz.v1.Mode",
+          "label": "gnsi.pathz.v1.Mode",
           "description": "Mode is:\nREAD: Ability to read/subscribe to data from the model.\nWRITE: Ability to mutate/write updates to data in the model.",
           "sourceSymbol": "gnsi.pathz.v1.Mode",
           "deprecated": false,
@@ -147179,7 +147179,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-pathz-v1-policy-instance",
           "kind": "enum",
-          "label": "enum gnsi.pathz.v1.PolicyInstance",
+          "label": "gnsi.pathz.v1.PolicyInstance",
           "sourceSymbol": "gnsi.pathz.v1.PolicyInstance",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.7.0/pathz/pathz.proto#L180",
@@ -149779,7 +149779,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-acctz-v1-auth-detail-authen-status",
           "kind": "enum",
-          "label": "enum gnsi.acctz.v1.AuthDetail.AuthenStatus",
+          "label": "gnsi.acctz.v1.AuthDetail.AuthenStatus",
           "description": "authentication status",
           "sourceSymbol": "gnsi.acctz.v1.AuthDetail.AuthenStatus",
           "deprecated": false,
@@ -149860,7 +149860,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-acctz-v1-authn-detail-authn-status",
           "kind": "enum",
-          "label": "enum gnsi.acctz.v1.AuthnDetail.AuthnStatus",
+          "label": "gnsi.acctz.v1.AuthnDetail.AuthnStatus",
           "description": "authentication status",
           "sourceSymbol": "gnsi.acctz.v1.AuthnDetail.AuthnStatus",
           "deprecated": false,
@@ -149906,7 +149906,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-acctz-v1-authn-detail-authn-type",
           "kind": "enum",
-          "label": "enum gnsi.acctz.v1.AuthnDetail.AuthnType",
+          "label": "gnsi.acctz.v1.AuthnDetail.AuthnType",
           "description": "authentication type",
           "sourceSymbol": "gnsi.acctz.v1.AuthnDetail.AuthnType",
           "deprecated": false,
@@ -150011,7 +150011,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-acctz-v1-authz-detail-authz-status",
           "kind": "enum",
-          "label": "enum gnsi.acctz.v1.AuthzDetail.AuthzStatus",
+          "label": "gnsi.acctz.v1.AuthzDetail.AuthzStatus",
           "description": "authorization status",
           "sourceSymbol": "gnsi.acctz.v1.AuthzDetail.AuthzStatus",
           "deprecated": false,
@@ -150120,7 +150120,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-acctz-v1-command-service-cmd-service-type",
           "kind": "enum",
-          "label": "enum gnsi.acctz.v1.CommandService.CmdServiceType",
+          "label": "gnsi.acctz.v1.CommandService.CmdServiceType",
           "sourceSymbol": "gnsi.acctz.v1.CommandService.CmdServiceType",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.6.0/acctz/acctz.proto#L249",
@@ -150251,7 +150251,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-acctz-v1-grpc-service-grpc-service-type",
           "kind": "enum",
-          "label": "enum gnsi.acctz.v1.GrpcService.GrpcServiceType",
+          "label": "gnsi.acctz.v1.GrpcService.GrpcServiceType",
           "sourceSymbol": "gnsi.acctz.v1.GrpcService.GrpcServiceType",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.6.0/acctz/acctz.proto#L286",
@@ -150510,7 +150510,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-acctz-v1-session-info-session-status",
           "kind": "enum",
-          "label": "enum gnsi.acctz.v1.SessionInfo.SessionStatus",
+          "label": "gnsi.acctz.v1.SessionInfo.SessionStatus",
           "description": "session status",
           "sourceSymbol": "gnsi.acctz.v1.SessionInfo.SessionStatus",
           "deprecated": false,
@@ -150778,7 +150778,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-authz-v1-probe-response-action",
           "kind": "enum",
-          "label": "enum gnsi.authz.v1.ProbeResponse.Action",
+          "label": "gnsi.authz.v1.ProbeResponse.Action",
           "description": "Action is the defined action for an gRPC-level Authorization Policy.",
           "sourceSymbol": "gnsi.authz.v1.ProbeResponse.Action",
           "deprecated": false,
@@ -151181,7 +151181,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-certz-v1-certificate-cert-source",
           "kind": "enum",
-          "label": "enum gnsi.certz.v1.Certificate.CertSource",
+          "label": "gnsi.certz.v1.Certificate.CertSource",
           "sourceSymbol": "gnsi.certz.v1.Certificate.CertSource",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.6.0/certz/certz.proto#L470",
@@ -151221,7 +151221,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-certz-v1-certificate-key-source",
           "kind": "enum",
-          "label": "enum gnsi.certz.v1.Certificate.KeySource",
+          "label": "gnsi.certz.v1.Certificate.KeySource",
           "sourceSymbol": "gnsi.certz.v1.Certificate.KeySource",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.6.0/certz/certz.proto#L488",
@@ -151297,7 +151297,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-certz-v1-certificate-encoding",
           "kind": "enum",
-          "label": "enum gnsi.certz.v1.CertificateEncoding",
+          "label": "gnsi.certz.v1.CertificateEncoding",
           "sourceSymbol": "gnsi.certz.v1.CertificateEncoding",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.6.0/certz/certz.proto#L429",
@@ -151463,7 +151463,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-certz-v1-certificate-type",
           "kind": "enum",
-          "label": "enum gnsi.certz.v1.CertificateType",
+          "label": "gnsi.certz.v1.CertificateType",
           "description": "Types of certificates.",
           "sourceSymbol": "gnsi.certz.v1.CertificateType",
           "deprecated": false,
@@ -151587,7 +151587,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-certz-v1-csrsuite",
           "kind": "enum",
-          "label": "enum gnsi.certz.v1.CSRSuite",
+          "label": "gnsi.certz.v1.CSRSuite",
           "description": "CSRSuite specifies the valid types of keys and digests that can be used\nto generate CSRs",
           "sourceSymbol": "gnsi.certz.v1.CSRSuite",
           "deprecated": false,
@@ -151902,7 +151902,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-certz-v1-existing-entity-entity-type",
           "kind": "enum",
-          "label": "enum gnsi.certz.v1.ExistingEntity.EntityType",
+          "label": "gnsi.certz.v1.ExistingEntity.EntityType",
           "sourceSymbol": "gnsi.certz.v1.ExistingEntity.EntityType",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.6.0/certz/certz.proto#L581",
@@ -152444,7 +152444,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-credentialz-v1-authentication-type",
           "kind": "enum",
-          "label": "enum gnsi.credentialz.v1.AuthenticationType",
+          "label": "gnsi.credentialz.v1.AuthenticationType",
           "sourceSymbol": "gnsi.credentialz.v1.AuthenticationType",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.6.0/credentialz/credentialz.proto#L637",
@@ -152565,7 +152565,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-credentialz-v1-authorized-principal-check-request-tool",
           "kind": "enum",
-          "label": "enum gnsi.credentialz.v1.AuthorizedPrincipalCheckRequest.Tool",
+          "label": "gnsi.credentialz.v1.AuthorizedPrincipalCheckRequest.Tool",
           "sourceSymbol": "gnsi.credentialz.v1.AuthorizedPrincipalCheckRequest.Tool",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.6.0/credentialz/credentialz.proto#L676",
@@ -152922,7 +152922,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-credentialz-v1-key-gen",
           "kind": "enum",
-          "label": "enum gnsi.credentialz.v1.KeyGen",
+          "label": "gnsi.credentialz.v1.KeyGen",
           "description": "KeyGen specifies the valid types of keys and their lengths that\ncan be used.",
           "sourceSymbol": "gnsi.credentialz.v1.KeyGen",
           "deprecated": false,
@@ -152980,7 +152980,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-credentialz-v1-key-type",
           "kind": "enum",
-          "label": "enum gnsi.credentialz.v1.KeyType",
+          "label": "gnsi.credentialz.v1.KeyType",
           "description": "Key encryption type.",
           "sourceSymbol": "gnsi.credentialz.v1.KeyType",
           "deprecated": false,
@@ -153079,7 +153079,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-credentialz-v1-option-standard-option",
           "kind": "enum",
-          "label": "enum gnsi.credentialz.v1.Option.StandardOption",
+          "label": "gnsi.credentialz.v1.Option.StandardOption",
           "description": "An option that is specified for an authorized user, key entry, or\nauthorized principal tool.\nFor example, for OpenSSH, an entry can have an option\n`from=\"*.sales.example.net,!pc.sales.example.net\"`\nFor such option the `key.id` would be `FROM` (6) while the `value`\nwould be `*.sales.example.net,!pc.sales.example.net`.\n\nIf a specified option is unknown then the whole request should be rejected.",
           "sourceSymbol": "gnsi.credentialz.v1.Option.StandardOption",
           "deprecated": false,
@@ -153370,7 +153370,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-credentialz-v1-password-request-crypto-hash-hash-type",
           "kind": "enum",
-          "label": "enum gnsi.credentialz.v1.PasswordRequest.CryptoHash.HashType",
+          "label": "gnsi.credentialz.v1.PasswordRequest.CryptoHash.HashType",
           "description": "Hash type's",
           "sourceSymbol": "gnsi.credentialz.v1.PasswordRequest.CryptoHash.HashType",
           "deprecated": false,
@@ -153925,7 +153925,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-pathz-v1-action",
           "kind": "enum",
-          "label": "enum gnsi.pathz.v1.Action",
+          "label": "gnsi.pathz.v1.Action",
           "description": "Action is the defined action for an AuthorizationPolicy.",
           "sourceSymbol": "gnsi.pathz.v1.Action",
           "deprecated": false,
@@ -154190,7 +154190,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-pathz-v1-mode",
           "kind": "enum",
-          "label": "enum gnsi.pathz.v1.Mode",
+          "label": "gnsi.pathz.v1.Mode",
           "description": "Mode is:\nREAD: Ability to read/subscribe to data from the model.\nWRITE: Ability to mutate/write updates to data in the model.",
           "sourceSymbol": "gnsi.pathz.v1.Mode",
           "deprecated": false,
@@ -154230,7 +154230,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-pathz-v1-policy-instance",
           "kind": "enum",
-          "label": "enum gnsi.pathz.v1.PolicyInstance",
+          "label": "gnsi.pathz.v1.PolicyInstance",
           "sourceSymbol": "gnsi.pathz.v1.PolicyInstance",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.6.0/pathz/pathz.proto#L180",
@@ -156758,7 +156758,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-acctz-v1-auth-detail-authen-status",
           "kind": "enum",
-          "label": "enum gnsi.acctz.v1.AuthDetail.AuthenStatus",
+          "label": "gnsi.acctz.v1.AuthDetail.AuthenStatus",
           "description": "authentication status",
           "sourceSymbol": "gnsi.acctz.v1.AuthDetail.AuthenStatus",
           "deprecated": false,
@@ -156839,7 +156839,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-acctz-v1-authn-detail-authn-status",
           "kind": "enum",
-          "label": "enum gnsi.acctz.v1.AuthnDetail.AuthnStatus",
+          "label": "gnsi.acctz.v1.AuthnDetail.AuthnStatus",
           "description": "authentication status",
           "sourceSymbol": "gnsi.acctz.v1.AuthnDetail.AuthnStatus",
           "deprecated": false,
@@ -156885,7 +156885,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-acctz-v1-authn-detail-authn-type",
           "kind": "enum",
-          "label": "enum gnsi.acctz.v1.AuthnDetail.AuthnType",
+          "label": "gnsi.acctz.v1.AuthnDetail.AuthnType",
           "description": "authentication type",
           "sourceSymbol": "gnsi.acctz.v1.AuthnDetail.AuthnType",
           "deprecated": false,
@@ -156990,7 +156990,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-acctz-v1-authz-detail-authz-status",
           "kind": "enum",
-          "label": "enum gnsi.acctz.v1.AuthzDetail.AuthzStatus",
+          "label": "gnsi.acctz.v1.AuthzDetail.AuthzStatus",
           "description": "authorization status",
           "sourceSymbol": "gnsi.acctz.v1.AuthzDetail.AuthzStatus",
           "deprecated": false,
@@ -157099,7 +157099,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-acctz-v1-command-service-cmd-service-type",
           "kind": "enum",
-          "label": "enum gnsi.acctz.v1.CommandService.CmdServiceType",
+          "label": "gnsi.acctz.v1.CommandService.CmdServiceType",
           "sourceSymbol": "gnsi.acctz.v1.CommandService.CmdServiceType",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.5.0/acctz/acctz.proto#L249",
@@ -157230,7 +157230,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-acctz-v1-grpc-service-grpc-service-type",
           "kind": "enum",
-          "label": "enum gnsi.acctz.v1.GrpcService.GrpcServiceType",
+          "label": "gnsi.acctz.v1.GrpcService.GrpcServiceType",
           "sourceSymbol": "gnsi.acctz.v1.GrpcService.GrpcServiceType",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.5.0/acctz/acctz.proto#L286",
@@ -157489,7 +157489,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-acctz-v1-session-info-session-status",
           "kind": "enum",
-          "label": "enum gnsi.acctz.v1.SessionInfo.SessionStatus",
+          "label": "gnsi.acctz.v1.SessionInfo.SessionStatus",
           "description": "session status",
           "sourceSymbol": "gnsi.acctz.v1.SessionInfo.SessionStatus",
           "deprecated": false,
@@ -157757,7 +157757,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-authz-v1-probe-response-action",
           "kind": "enum",
-          "label": "enum gnsi.authz.v1.ProbeResponse.Action",
+          "label": "gnsi.authz.v1.ProbeResponse.Action",
           "description": "Action is the defined action for an gRPC-level Authorization Policy.",
           "sourceSymbol": "gnsi.authz.v1.ProbeResponse.Action",
           "deprecated": false,
@@ -158153,7 +158153,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-certz-v1-certificate-cert-source",
           "kind": "enum",
-          "label": "enum gnsi.certz.v1.Certificate.CertSource",
+          "label": "gnsi.certz.v1.Certificate.CertSource",
           "sourceSymbol": "gnsi.certz.v1.Certificate.CertSource",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.5.0/certz/certz.proto#L470",
@@ -158193,7 +158193,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-certz-v1-certificate-key-source",
           "kind": "enum",
-          "label": "enum gnsi.certz.v1.Certificate.KeySource",
+          "label": "gnsi.certz.v1.Certificate.KeySource",
           "sourceSymbol": "gnsi.certz.v1.Certificate.KeySource",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.5.0/certz/certz.proto#L488",
@@ -158269,7 +158269,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-certz-v1-certificate-encoding",
           "kind": "enum",
-          "label": "enum gnsi.certz.v1.CertificateEncoding",
+          "label": "gnsi.certz.v1.CertificateEncoding",
           "sourceSymbol": "gnsi.certz.v1.CertificateEncoding",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.5.0/certz/certz.proto#L429",
@@ -158435,7 +158435,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-certz-v1-certificate-type",
           "kind": "enum",
-          "label": "enum gnsi.certz.v1.CertificateType",
+          "label": "gnsi.certz.v1.CertificateType",
           "description": "Types of certificates.",
           "sourceSymbol": "gnsi.certz.v1.CertificateType",
           "deprecated": false,
@@ -158559,7 +158559,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-certz-v1-csrsuite",
           "kind": "enum",
-          "label": "enum gnsi.certz.v1.CSRSuite",
+          "label": "gnsi.certz.v1.CSRSuite",
           "description": "CSRSuite specifies the valid types of keys and digests that can be used\nto generate CSRs",
           "sourceSymbol": "gnsi.certz.v1.CSRSuite",
           "deprecated": false,
@@ -158864,7 +158864,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-certz-v1-existing-entity-entity-type",
           "kind": "enum",
-          "label": "enum gnsi.certz.v1.ExistingEntity.EntityType",
+          "label": "gnsi.certz.v1.ExistingEntity.EntityType",
           "sourceSymbol": "gnsi.certz.v1.ExistingEntity.EntityType",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.5.0/certz/certz.proto#L580",
@@ -159406,7 +159406,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-credentialz-v1-authentication-type",
           "kind": "enum",
-          "label": "enum gnsi.credentialz.v1.AuthenticationType",
+          "label": "gnsi.credentialz.v1.AuthenticationType",
           "sourceSymbol": "gnsi.credentialz.v1.AuthenticationType",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.5.0/credentialz/credentialz.proto#L637",
@@ -159527,7 +159527,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-credentialz-v1-authorized-principal-check-request-tool",
           "kind": "enum",
-          "label": "enum gnsi.credentialz.v1.AuthorizedPrincipalCheckRequest.Tool",
+          "label": "gnsi.credentialz.v1.AuthorizedPrincipalCheckRequest.Tool",
           "sourceSymbol": "gnsi.credentialz.v1.AuthorizedPrincipalCheckRequest.Tool",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.5.0/credentialz/credentialz.proto#L676",
@@ -159884,7 +159884,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-credentialz-v1-key-gen",
           "kind": "enum",
-          "label": "enum gnsi.credentialz.v1.KeyGen",
+          "label": "gnsi.credentialz.v1.KeyGen",
           "description": "KeyGen specifies the valid types of keys and their lengths that\ncan be used.",
           "sourceSymbol": "gnsi.credentialz.v1.KeyGen",
           "deprecated": false,
@@ -159942,7 +159942,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-credentialz-v1-key-type",
           "kind": "enum",
-          "label": "enum gnsi.credentialz.v1.KeyType",
+          "label": "gnsi.credentialz.v1.KeyType",
           "description": "Key encryption type.",
           "sourceSymbol": "gnsi.credentialz.v1.KeyType",
           "deprecated": false,
@@ -160041,7 +160041,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-credentialz-v1-option-standard-option",
           "kind": "enum",
-          "label": "enum gnsi.credentialz.v1.Option.StandardOption",
+          "label": "gnsi.credentialz.v1.Option.StandardOption",
           "description": "An option that is specified for an authorized user, key entry, or\nauthorized principal tool.\nFor example, for OpenSSH, an entry can have an option\n`from=\"*.sales.example.net,!pc.sales.example.net\"`\nFor such option the `key.id` would be `FROM` (6) while the `value`\nwould be `*.sales.example.net,!pc.sales.example.net`.\n\nIf a specified option is unknown then the whole request should be rejected.",
           "sourceSymbol": "gnsi.credentialz.v1.Option.StandardOption",
           "deprecated": false,
@@ -160332,7 +160332,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-credentialz-v1-password-request-crypto-hash-hash-type",
           "kind": "enum",
-          "label": "enum gnsi.credentialz.v1.PasswordRequest.CryptoHash.HashType",
+          "label": "gnsi.credentialz.v1.PasswordRequest.CryptoHash.HashType",
           "description": "Hash type's",
           "sourceSymbol": "gnsi.credentialz.v1.PasswordRequest.CryptoHash.HashType",
           "deprecated": false,
@@ -160887,7 +160887,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-pathz-v1-action",
           "kind": "enum",
-          "label": "enum gnsi.pathz.v1.Action",
+          "label": "gnsi.pathz.v1.Action",
           "description": "Action is the defined action for an AuthorizationPolicy.",
           "sourceSymbol": "gnsi.pathz.v1.Action",
           "deprecated": false,
@@ -161152,7 +161152,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-pathz-v1-mode",
           "kind": "enum",
-          "label": "enum gnsi.pathz.v1.Mode",
+          "label": "gnsi.pathz.v1.Mode",
           "description": "Mode is:\nREAD: Ability to read/subscribe to data from the model.\nWRITE: Ability to mutate/write updates to data in the model.",
           "sourceSymbol": "gnsi.pathz.v1.Mode",
           "deprecated": false,
@@ -161192,7 +161192,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-pathz-v1-policy-instance",
           "kind": "enum",
-          "label": "enum gnsi.pathz.v1.PolicyInstance",
+          "label": "gnsi.pathz.v1.PolicyInstance",
           "sourceSymbol": "gnsi.pathz.v1.PolicyInstance",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.5.0/pathz/pathz.proto#L180",
@@ -163713,7 +163713,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-acctz-v1-auth-detail-authen-status",
           "kind": "enum",
-          "label": "enum gnsi.acctz.v1.AuthDetail.AuthenStatus",
+          "label": "gnsi.acctz.v1.AuthDetail.AuthenStatus",
           "description": "authentication status",
           "sourceSymbol": "gnsi.acctz.v1.AuthDetail.AuthenStatus",
           "deprecated": false,
@@ -163794,7 +163794,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-acctz-v1-authn-detail-authn-status",
           "kind": "enum",
-          "label": "enum gnsi.acctz.v1.AuthnDetail.AuthnStatus",
+          "label": "gnsi.acctz.v1.AuthnDetail.AuthnStatus",
           "description": "authentication status",
           "sourceSymbol": "gnsi.acctz.v1.AuthnDetail.AuthnStatus",
           "deprecated": false,
@@ -163840,7 +163840,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-acctz-v1-authn-detail-authn-type",
           "kind": "enum",
-          "label": "enum gnsi.acctz.v1.AuthnDetail.AuthnType",
+          "label": "gnsi.acctz.v1.AuthnDetail.AuthnType",
           "description": "authentication type",
           "sourceSymbol": "gnsi.acctz.v1.AuthnDetail.AuthnType",
           "deprecated": false,
@@ -163945,7 +163945,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-acctz-v1-authz-detail-authz-status",
           "kind": "enum",
-          "label": "enum gnsi.acctz.v1.AuthzDetail.AuthzStatus",
+          "label": "gnsi.acctz.v1.AuthzDetail.AuthzStatus",
           "description": "authorization status",
           "sourceSymbol": "gnsi.acctz.v1.AuthzDetail.AuthzStatus",
           "deprecated": false,
@@ -164054,7 +164054,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-acctz-v1-command-service-cmd-service-type",
           "kind": "enum",
-          "label": "enum gnsi.acctz.v1.CommandService.CmdServiceType",
+          "label": "gnsi.acctz.v1.CommandService.CmdServiceType",
           "sourceSymbol": "gnsi.acctz.v1.CommandService.CmdServiceType",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.4.6/acctz/acctz.proto#L251",
@@ -164185,7 +164185,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-acctz-v1-grpc-service-grpc-service-type",
           "kind": "enum",
-          "label": "enum gnsi.acctz.v1.GrpcService.GrpcServiceType",
+          "label": "gnsi.acctz.v1.GrpcService.GrpcServiceType",
           "sourceSymbol": "gnsi.acctz.v1.GrpcService.GrpcServiceType",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.4.6/acctz/acctz.proto#L288",
@@ -164444,7 +164444,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-acctz-v1-session-info-session-status",
           "kind": "enum",
-          "label": "enum gnsi.acctz.v1.SessionInfo.SessionStatus",
+          "label": "gnsi.acctz.v1.SessionInfo.SessionStatus",
           "description": "session status",
           "sourceSymbol": "gnsi.acctz.v1.SessionInfo.SessionStatus",
           "deprecated": false,
@@ -164712,7 +164712,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-authz-v1-probe-response-action",
           "kind": "enum",
-          "label": "enum gnsi.authz.v1.ProbeResponse.Action",
+          "label": "gnsi.authz.v1.ProbeResponse.Action",
           "description": "Action is the defined action for an gRPC-level Authorization Policy.",
           "sourceSymbol": "gnsi.authz.v1.ProbeResponse.Action",
           "deprecated": false,
@@ -165108,7 +165108,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-certz-v1-certificate-cert-source",
           "kind": "enum",
-          "label": "enum gnsi.certz.v1.Certificate.CertSource",
+          "label": "gnsi.certz.v1.Certificate.CertSource",
           "sourceSymbol": "gnsi.certz.v1.Certificate.CertSource",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.4.6/certz/certz.proto#L471",
@@ -165148,7 +165148,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-certz-v1-certificate-key-source",
           "kind": "enum",
-          "label": "enum gnsi.certz.v1.Certificate.KeySource",
+          "label": "gnsi.certz.v1.Certificate.KeySource",
           "sourceSymbol": "gnsi.certz.v1.Certificate.KeySource",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.4.6/certz/certz.proto#L489",
@@ -165224,7 +165224,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-certz-v1-certificate-encoding",
           "kind": "enum",
-          "label": "enum gnsi.certz.v1.CertificateEncoding",
+          "label": "gnsi.certz.v1.CertificateEncoding",
           "sourceSymbol": "gnsi.certz.v1.CertificateEncoding",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.4.6/certz/certz.proto#L430",
@@ -165390,7 +165390,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-certz-v1-certificate-type",
           "kind": "enum",
-          "label": "enum gnsi.certz.v1.CertificateType",
+          "label": "gnsi.certz.v1.CertificateType",
           "description": "Types of certificates.",
           "sourceSymbol": "gnsi.certz.v1.CertificateType",
           "deprecated": false,
@@ -165514,7 +165514,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-certz-v1-csrsuite",
           "kind": "enum",
-          "label": "enum gnsi.certz.v1.CSRSuite",
+          "label": "gnsi.certz.v1.CSRSuite",
           "description": "CSRSuite specifies the valid types of keys and digests that can be used\nto generate CSRs",
           "sourceSymbol": "gnsi.certz.v1.CSRSuite",
           "deprecated": false,
@@ -165819,7 +165819,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-certz-v1-existing-entity-entity-type",
           "kind": "enum",
-          "label": "enum gnsi.certz.v1.ExistingEntity.EntityType",
+          "label": "gnsi.certz.v1.ExistingEntity.EntityType",
           "sourceSymbol": "gnsi.certz.v1.ExistingEntity.EntityType",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.4.6/certz/certz.proto#L581",
@@ -166361,7 +166361,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-credentialz-v1-authentication-type",
           "kind": "enum",
-          "label": "enum gnsi.credentialz.v1.AuthenticationType",
+          "label": "gnsi.credentialz.v1.AuthenticationType",
           "sourceSymbol": "gnsi.credentialz.v1.AuthenticationType",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.4.6/credentialz/credentialz.proto#L639",
@@ -166482,7 +166482,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-credentialz-v1-authorized-principal-check-request-tool",
           "kind": "enum",
-          "label": "enum gnsi.credentialz.v1.AuthorizedPrincipalCheckRequest.Tool",
+          "label": "gnsi.credentialz.v1.AuthorizedPrincipalCheckRequest.Tool",
           "sourceSymbol": "gnsi.credentialz.v1.AuthorizedPrincipalCheckRequest.Tool",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.4.6/credentialz/credentialz.proto#L678",
@@ -166839,7 +166839,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-credentialz-v1-key-gen",
           "kind": "enum",
-          "label": "enum gnsi.credentialz.v1.KeyGen",
+          "label": "gnsi.credentialz.v1.KeyGen",
           "description": "KeyGen specifies the valid types of keys and their lengths that\ncan be used.",
           "sourceSymbol": "gnsi.credentialz.v1.KeyGen",
           "deprecated": false,
@@ -166897,7 +166897,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-credentialz-v1-key-type",
           "kind": "enum",
-          "label": "enum gnsi.credentialz.v1.KeyType",
+          "label": "gnsi.credentialz.v1.KeyType",
           "description": "Key encryption type.",
           "sourceSymbol": "gnsi.credentialz.v1.KeyType",
           "deprecated": false,
@@ -166996,7 +166996,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-credentialz-v1-option-standard-option",
           "kind": "enum",
-          "label": "enum gnsi.credentialz.v1.Option.StandardOption",
+          "label": "gnsi.credentialz.v1.Option.StandardOption",
           "description": "An option that is specified for an authorized user, key entry, or\nauthorized principal tool.\nFor example, for OpenSSH, an entry can have an option\n`from=\"*.sales.example.net,!pc.sales.example.net\"`\nFor such option the `key.id` would be `FROM` (6) while the `value`\nwould be `*.sales.example.net,!pc.sales.example.net`.\n\nIf a specified option is unknown then the whole request should be rejected.",
           "sourceSymbol": "gnsi.credentialz.v1.Option.StandardOption",
           "deprecated": false,
@@ -167287,7 +167287,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-credentialz-v1-password-request-crypto-hash-hash-type",
           "kind": "enum",
-          "label": "enum gnsi.credentialz.v1.PasswordRequest.CryptoHash.HashType",
+          "label": "gnsi.credentialz.v1.PasswordRequest.CryptoHash.HashType",
           "description": "Hash type's",
           "sourceSymbol": "gnsi.credentialz.v1.PasswordRequest.CryptoHash.HashType",
           "deprecated": false,
@@ -167842,7 +167842,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-pathz-v1-action",
           "kind": "enum",
-          "label": "enum gnsi.pathz.v1.Action",
+          "label": "gnsi.pathz.v1.Action",
           "description": "Action is the defined action for an AuthorizationPolicy.",
           "sourceSymbol": "gnsi.pathz.v1.Action",
           "deprecated": false,
@@ -168107,7 +168107,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-pathz-v1-mode",
           "kind": "enum",
-          "label": "enum gnsi.pathz.v1.Mode",
+          "label": "gnsi.pathz.v1.Mode",
           "description": "Mode is:\nREAD: Ability to read/subscribe to data from the model.\nWRITE: Ability to mutate/write updates to data in the model.",
           "sourceSymbol": "gnsi.pathz.v1.Mode",
           "deprecated": false,
@@ -168147,7 +168147,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-pathz-v1-policy-instance",
           "kind": "enum",
-          "label": "enum gnsi.pathz.v1.PolicyInstance",
+          "label": "gnsi.pathz.v1.PolicyInstance",
           "sourceSymbol": "gnsi.pathz.v1.PolicyInstance",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.4.6/pathz/pathz.proto#L181",
@@ -170668,7 +170668,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-acctz-v1-auth-detail-authen-status",
           "kind": "enum",
-          "label": "enum gnsi.acctz.v1.AuthDetail.AuthenStatus",
+          "label": "gnsi.acctz.v1.AuthDetail.AuthenStatus",
           "description": "authentication status",
           "sourceSymbol": "gnsi.acctz.v1.AuthDetail.AuthenStatus",
           "deprecated": false,
@@ -170749,7 +170749,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-acctz-v1-authn-detail-authn-status",
           "kind": "enum",
-          "label": "enum gnsi.acctz.v1.AuthnDetail.AuthnStatus",
+          "label": "gnsi.acctz.v1.AuthnDetail.AuthnStatus",
           "description": "authentication status",
           "sourceSymbol": "gnsi.acctz.v1.AuthnDetail.AuthnStatus",
           "deprecated": false,
@@ -170795,7 +170795,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-acctz-v1-authn-detail-authn-type",
           "kind": "enum",
-          "label": "enum gnsi.acctz.v1.AuthnDetail.AuthnType",
+          "label": "gnsi.acctz.v1.AuthnDetail.AuthnType",
           "description": "authentication type",
           "sourceSymbol": "gnsi.acctz.v1.AuthnDetail.AuthnType",
           "deprecated": false,
@@ -170900,7 +170900,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-acctz-v1-authz-detail-authz-status",
           "kind": "enum",
-          "label": "enum gnsi.acctz.v1.AuthzDetail.AuthzStatus",
+          "label": "gnsi.acctz.v1.AuthzDetail.AuthzStatus",
           "description": "authorization status",
           "sourceSymbol": "gnsi.acctz.v1.AuthzDetail.AuthzStatus",
           "deprecated": false,
@@ -171009,7 +171009,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-acctz-v1-command-service-cmd-service-type",
           "kind": "enum",
-          "label": "enum gnsi.acctz.v1.CommandService.CmdServiceType",
+          "label": "gnsi.acctz.v1.CommandService.CmdServiceType",
           "sourceSymbol": "gnsi.acctz.v1.CommandService.CmdServiceType",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.4.5/acctz/acctz.proto#L251",
@@ -171140,7 +171140,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-acctz-v1-grpc-service-grpc-service-type",
           "kind": "enum",
-          "label": "enum gnsi.acctz.v1.GrpcService.GrpcServiceType",
+          "label": "gnsi.acctz.v1.GrpcService.GrpcServiceType",
           "sourceSymbol": "gnsi.acctz.v1.GrpcService.GrpcServiceType",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.4.5/acctz/acctz.proto#L288",
@@ -171399,7 +171399,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-acctz-v1-session-info-session-status",
           "kind": "enum",
-          "label": "enum gnsi.acctz.v1.SessionInfo.SessionStatus",
+          "label": "gnsi.acctz.v1.SessionInfo.SessionStatus",
           "description": "session status",
           "sourceSymbol": "gnsi.acctz.v1.SessionInfo.SessionStatus",
           "deprecated": false,
@@ -171667,7 +171667,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-authz-v1-probe-response-action",
           "kind": "enum",
-          "label": "enum gnsi.authz.v1.ProbeResponse.Action",
+          "label": "gnsi.authz.v1.ProbeResponse.Action",
           "description": "Action is the defined action for an gRPC-level Authorization Policy.",
           "sourceSymbol": "gnsi.authz.v1.ProbeResponse.Action",
           "deprecated": false,
@@ -172063,7 +172063,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-certz-v1-certificate-cert-source",
           "kind": "enum",
-          "label": "enum gnsi.certz.v1.Certificate.CertSource",
+          "label": "gnsi.certz.v1.Certificate.CertSource",
           "sourceSymbol": "gnsi.certz.v1.Certificate.CertSource",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.4.5/certz/certz.proto#L471",
@@ -172103,7 +172103,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-certz-v1-certificate-key-source",
           "kind": "enum",
-          "label": "enum gnsi.certz.v1.Certificate.KeySource",
+          "label": "gnsi.certz.v1.Certificate.KeySource",
           "sourceSymbol": "gnsi.certz.v1.Certificate.KeySource",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.4.5/certz/certz.proto#L489",
@@ -172179,7 +172179,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-certz-v1-certificate-encoding",
           "kind": "enum",
-          "label": "enum gnsi.certz.v1.CertificateEncoding",
+          "label": "gnsi.certz.v1.CertificateEncoding",
           "sourceSymbol": "gnsi.certz.v1.CertificateEncoding",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.4.5/certz/certz.proto#L430",
@@ -172345,7 +172345,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-certz-v1-certificate-type",
           "kind": "enum",
-          "label": "enum gnsi.certz.v1.CertificateType",
+          "label": "gnsi.certz.v1.CertificateType",
           "description": "Types of certificates.",
           "sourceSymbol": "gnsi.certz.v1.CertificateType",
           "deprecated": false,
@@ -172469,7 +172469,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-certz-v1-csrsuite",
           "kind": "enum",
-          "label": "enum gnsi.certz.v1.CSRSuite",
+          "label": "gnsi.certz.v1.CSRSuite",
           "description": "CSRSuite specifies the valid types of keys and digests that can be used\nto generate CSRs",
           "sourceSymbol": "gnsi.certz.v1.CSRSuite",
           "deprecated": false,
@@ -172774,7 +172774,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-certz-v1-existing-entity-entity-type",
           "kind": "enum",
-          "label": "enum gnsi.certz.v1.ExistingEntity.EntityType",
+          "label": "gnsi.certz.v1.ExistingEntity.EntityType",
           "sourceSymbol": "gnsi.certz.v1.ExistingEntity.EntityType",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.4.5/certz/certz.proto#L581",
@@ -173316,7 +173316,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-credentialz-v1-authentication-type",
           "kind": "enum",
-          "label": "enum gnsi.credentialz.v1.AuthenticationType",
+          "label": "gnsi.credentialz.v1.AuthenticationType",
           "sourceSymbol": "gnsi.credentialz.v1.AuthenticationType",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.4.5/credentialz/credentialz.proto#L639",
@@ -173437,7 +173437,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-credentialz-v1-authorized-principal-check-request-tool",
           "kind": "enum",
-          "label": "enum gnsi.credentialz.v1.AuthorizedPrincipalCheckRequest.Tool",
+          "label": "gnsi.credentialz.v1.AuthorizedPrincipalCheckRequest.Tool",
           "sourceSymbol": "gnsi.credentialz.v1.AuthorizedPrincipalCheckRequest.Tool",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.4.5/credentialz/credentialz.proto#L678",
@@ -173794,7 +173794,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-credentialz-v1-key-gen",
           "kind": "enum",
-          "label": "enum gnsi.credentialz.v1.KeyGen",
+          "label": "gnsi.credentialz.v1.KeyGen",
           "description": "KeyGen specifies the valid types of keys and their lengths that\ncan be used.",
           "sourceSymbol": "gnsi.credentialz.v1.KeyGen",
           "deprecated": false,
@@ -173852,7 +173852,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-credentialz-v1-key-type",
           "kind": "enum",
-          "label": "enum gnsi.credentialz.v1.KeyType",
+          "label": "gnsi.credentialz.v1.KeyType",
           "description": "Key encryption type.",
           "sourceSymbol": "gnsi.credentialz.v1.KeyType",
           "deprecated": false,
@@ -173951,7 +173951,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-credentialz-v1-option-standard-option",
           "kind": "enum",
-          "label": "enum gnsi.credentialz.v1.Option.StandardOption",
+          "label": "gnsi.credentialz.v1.Option.StandardOption",
           "description": "An option that is specified for an authorized user, key entry, or\nauthorized principal tool.\nFor example, for OpenSSH, an entry can have an option\n`from=\"*.sales.example.net,!pc.sales.example.net\"`\nFor such option the `key.id` would be `FROM` (6) while the `value`\nwould be `*.sales.example.net,!pc.sales.example.net`.\n\nIf a specified option is unknown then the whole request should be rejected.",
           "sourceSymbol": "gnsi.credentialz.v1.Option.StandardOption",
           "deprecated": false,
@@ -174242,7 +174242,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-credentialz-v1-password-request-crypto-hash-hash-type",
           "kind": "enum",
-          "label": "enum gnsi.credentialz.v1.PasswordRequest.CryptoHash.HashType",
+          "label": "gnsi.credentialz.v1.PasswordRequest.CryptoHash.HashType",
           "description": "Hash type's",
           "sourceSymbol": "gnsi.credentialz.v1.PasswordRequest.CryptoHash.HashType",
           "deprecated": false,
@@ -174797,7 +174797,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-pathz-v1-action",
           "kind": "enum",
-          "label": "enum gnsi.pathz.v1.Action",
+          "label": "gnsi.pathz.v1.Action",
           "description": "Action is the defined action for an AuthorizationPolicy.",
           "sourceSymbol": "gnsi.pathz.v1.Action",
           "deprecated": false,
@@ -175062,7 +175062,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-pathz-v1-mode",
           "kind": "enum",
-          "label": "enum gnsi.pathz.v1.Mode",
+          "label": "gnsi.pathz.v1.Mode",
           "description": "Mode is:\nREAD: Ability to read/subscribe to data from the model.\nWRITE: Ability to mutate/write updates to data in the model.",
           "sourceSymbol": "gnsi.pathz.v1.Mode",
           "deprecated": false,
@@ -175102,7 +175102,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-pathz-v1-policy-instance",
           "kind": "enum",
-          "label": "enum gnsi.pathz.v1.PolicyInstance",
+          "label": "gnsi.pathz.v1.PolicyInstance",
           "sourceSymbol": "gnsi.pathz.v1.PolicyInstance",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.4.5/pathz/pathz.proto#L181",
@@ -177623,7 +177623,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-acctz-v1-auth-detail-authen-status",
           "kind": "enum",
-          "label": "enum gnsi.acctz.v1.AuthDetail.AuthenStatus",
+          "label": "gnsi.acctz.v1.AuthDetail.AuthenStatus",
           "description": "authentication status",
           "sourceSymbol": "gnsi.acctz.v1.AuthDetail.AuthenStatus",
           "deprecated": false,
@@ -177704,7 +177704,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-acctz-v1-authn-detail-authn-status",
           "kind": "enum",
-          "label": "enum gnsi.acctz.v1.AuthnDetail.AuthnStatus",
+          "label": "gnsi.acctz.v1.AuthnDetail.AuthnStatus",
           "description": "authentication status",
           "sourceSymbol": "gnsi.acctz.v1.AuthnDetail.AuthnStatus",
           "deprecated": false,
@@ -177750,7 +177750,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-acctz-v1-authn-detail-authn-type",
           "kind": "enum",
-          "label": "enum gnsi.acctz.v1.AuthnDetail.AuthnType",
+          "label": "gnsi.acctz.v1.AuthnDetail.AuthnType",
           "description": "authentication type",
           "sourceSymbol": "gnsi.acctz.v1.AuthnDetail.AuthnType",
           "deprecated": false,
@@ -177855,7 +177855,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-acctz-v1-authz-detail-authz-status",
           "kind": "enum",
-          "label": "enum gnsi.acctz.v1.AuthzDetail.AuthzStatus",
+          "label": "gnsi.acctz.v1.AuthzDetail.AuthzStatus",
           "description": "authorization status",
           "sourceSymbol": "gnsi.acctz.v1.AuthzDetail.AuthzStatus",
           "deprecated": false,
@@ -177964,7 +177964,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-acctz-v1-command-service-cmd-service-type",
           "kind": "enum",
-          "label": "enum gnsi.acctz.v1.CommandService.CmdServiceType",
+          "label": "gnsi.acctz.v1.CommandService.CmdServiceType",
           "sourceSymbol": "gnsi.acctz.v1.CommandService.CmdServiceType",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.4.4/acctz/acctz.proto#L251",
@@ -178095,7 +178095,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-acctz-v1-grpc-service-grpc-service-type",
           "kind": "enum",
-          "label": "enum gnsi.acctz.v1.GrpcService.GrpcServiceType",
+          "label": "gnsi.acctz.v1.GrpcService.GrpcServiceType",
           "sourceSymbol": "gnsi.acctz.v1.GrpcService.GrpcServiceType",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.4.4/acctz/acctz.proto#L288",
@@ -178354,7 +178354,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-acctz-v1-session-info-session-status",
           "kind": "enum",
-          "label": "enum gnsi.acctz.v1.SessionInfo.SessionStatus",
+          "label": "gnsi.acctz.v1.SessionInfo.SessionStatus",
           "description": "session status",
           "sourceSymbol": "gnsi.acctz.v1.SessionInfo.SessionStatus",
           "deprecated": false,
@@ -178622,7 +178622,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-authz-v1-probe-response-action",
           "kind": "enum",
-          "label": "enum gnsi.authz.v1.ProbeResponse.Action",
+          "label": "gnsi.authz.v1.ProbeResponse.Action",
           "description": "Action is the defined action for an gRPC-level Authorization Policy.",
           "sourceSymbol": "gnsi.authz.v1.ProbeResponse.Action",
           "deprecated": false,
@@ -179018,7 +179018,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-certz-v1-certificate-cert-source",
           "kind": "enum",
-          "label": "enum gnsi.certz.v1.Certificate.CertSource",
+          "label": "gnsi.certz.v1.Certificate.CertSource",
           "sourceSymbol": "gnsi.certz.v1.Certificate.CertSource",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.4.4/certz/certz.proto#L471",
@@ -179058,7 +179058,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-certz-v1-certificate-key-source",
           "kind": "enum",
-          "label": "enum gnsi.certz.v1.Certificate.KeySource",
+          "label": "gnsi.certz.v1.Certificate.KeySource",
           "sourceSymbol": "gnsi.certz.v1.Certificate.KeySource",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.4.4/certz/certz.proto#L489",
@@ -179134,7 +179134,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-certz-v1-certificate-encoding",
           "kind": "enum",
-          "label": "enum gnsi.certz.v1.CertificateEncoding",
+          "label": "gnsi.certz.v1.CertificateEncoding",
           "sourceSymbol": "gnsi.certz.v1.CertificateEncoding",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.4.4/certz/certz.proto#L430",
@@ -179300,7 +179300,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-certz-v1-certificate-type",
           "kind": "enum",
-          "label": "enum gnsi.certz.v1.CertificateType",
+          "label": "gnsi.certz.v1.CertificateType",
           "description": "Types of certificates.",
           "sourceSymbol": "gnsi.certz.v1.CertificateType",
           "deprecated": false,
@@ -179424,7 +179424,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-certz-v1-csrsuite",
           "kind": "enum",
-          "label": "enum gnsi.certz.v1.CSRSuite",
+          "label": "gnsi.certz.v1.CSRSuite",
           "description": "CSRSuite specifies the valid types of keys and digests that can be used\nto generate CSRs",
           "sourceSymbol": "gnsi.certz.v1.CSRSuite",
           "deprecated": false,
@@ -179729,7 +179729,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-certz-v1-existing-entity-entity-type",
           "kind": "enum",
-          "label": "enum gnsi.certz.v1.ExistingEntity.EntityType",
+          "label": "gnsi.certz.v1.ExistingEntity.EntityType",
           "sourceSymbol": "gnsi.certz.v1.ExistingEntity.EntityType",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.4.4/certz/certz.proto#L581",
@@ -180271,7 +180271,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-credentialz-v1-authentication-type",
           "kind": "enum",
-          "label": "enum gnsi.credentialz.v1.AuthenticationType",
+          "label": "gnsi.credentialz.v1.AuthenticationType",
           "sourceSymbol": "gnsi.credentialz.v1.AuthenticationType",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.4.4/credentialz/credentialz.proto#L639",
@@ -180392,7 +180392,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-credentialz-v1-authorized-principal-check-request-tool",
           "kind": "enum",
-          "label": "enum gnsi.credentialz.v1.AuthorizedPrincipalCheckRequest.Tool",
+          "label": "gnsi.credentialz.v1.AuthorizedPrincipalCheckRequest.Tool",
           "sourceSymbol": "gnsi.credentialz.v1.AuthorizedPrincipalCheckRequest.Tool",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.4.4/credentialz/credentialz.proto#L678",
@@ -180749,7 +180749,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-credentialz-v1-key-gen",
           "kind": "enum",
-          "label": "enum gnsi.credentialz.v1.KeyGen",
+          "label": "gnsi.credentialz.v1.KeyGen",
           "description": "KeyGen specifies the valid types of keys and their lengths that\ncan be used.",
           "sourceSymbol": "gnsi.credentialz.v1.KeyGen",
           "deprecated": false,
@@ -180807,7 +180807,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-credentialz-v1-key-type",
           "kind": "enum",
-          "label": "enum gnsi.credentialz.v1.KeyType",
+          "label": "gnsi.credentialz.v1.KeyType",
           "description": "Key encryption type.",
           "sourceSymbol": "gnsi.credentialz.v1.KeyType",
           "deprecated": false,
@@ -180906,7 +180906,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-credentialz-v1-option-standard-option",
           "kind": "enum",
-          "label": "enum gnsi.credentialz.v1.Option.StandardOption",
+          "label": "gnsi.credentialz.v1.Option.StandardOption",
           "description": "An option that is specified for an authorized user, key entry, or\nauthorized principal tool.\nFor example, for OpenSSH, an entry can have an option\n`from=\"*.sales.example.net,!pc.sales.example.net\"`\nFor such option the `key.id` would be `FROM` (6) while the `value`\nwould be `*.sales.example.net,!pc.sales.example.net`.\n\nIf a specified option is unknown then the whole request should be rejected.",
           "sourceSymbol": "gnsi.credentialz.v1.Option.StandardOption",
           "deprecated": false,
@@ -181197,7 +181197,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-credentialz-v1-password-request-crypto-hash-hash-type",
           "kind": "enum",
-          "label": "enum gnsi.credentialz.v1.PasswordRequest.CryptoHash.HashType",
+          "label": "gnsi.credentialz.v1.PasswordRequest.CryptoHash.HashType",
           "description": "Hash type's",
           "sourceSymbol": "gnsi.credentialz.v1.PasswordRequest.CryptoHash.HashType",
           "deprecated": false,
@@ -181752,7 +181752,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-pathz-v1-action",
           "kind": "enum",
-          "label": "enum gnsi.pathz.v1.Action",
+          "label": "gnsi.pathz.v1.Action",
           "description": "Action is the defined action for an AuthorizationPolicy.",
           "sourceSymbol": "gnsi.pathz.v1.Action",
           "deprecated": false,
@@ -182017,7 +182017,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-pathz-v1-mode",
           "kind": "enum",
-          "label": "enum gnsi.pathz.v1.Mode",
+          "label": "gnsi.pathz.v1.Mode",
           "description": "Mode is:\nREAD: Ability to read/subscribe to data from the model.\nWRITE: Ability to mutate/write updates to data in the model.",
           "sourceSymbol": "gnsi.pathz.v1.Mode",
           "deprecated": false,
@@ -182057,7 +182057,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-pathz-v1-policy-instance",
           "kind": "enum",
-          "label": "enum gnsi.pathz.v1.PolicyInstance",
+          "label": "gnsi.pathz.v1.PolicyInstance",
           "sourceSymbol": "gnsi.pathz.v1.PolicyInstance",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.4.4/pathz/pathz.proto#L181",
@@ -184578,7 +184578,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-acctz-v1-auth-detail-authen-status",
           "kind": "enum",
-          "label": "enum gnsi.acctz.v1.AuthDetail.AuthenStatus",
+          "label": "gnsi.acctz.v1.AuthDetail.AuthenStatus",
           "description": "authentication status",
           "sourceSymbol": "gnsi.acctz.v1.AuthDetail.AuthenStatus",
           "deprecated": false,
@@ -184659,7 +184659,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-acctz-v1-authn-detail-authn-status",
           "kind": "enum",
-          "label": "enum gnsi.acctz.v1.AuthnDetail.AuthnStatus",
+          "label": "gnsi.acctz.v1.AuthnDetail.AuthnStatus",
           "description": "authentication status",
           "sourceSymbol": "gnsi.acctz.v1.AuthnDetail.AuthnStatus",
           "deprecated": false,
@@ -184705,7 +184705,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-acctz-v1-authn-detail-authn-type",
           "kind": "enum",
-          "label": "enum gnsi.acctz.v1.AuthnDetail.AuthnType",
+          "label": "gnsi.acctz.v1.AuthnDetail.AuthnType",
           "description": "authentication type",
           "sourceSymbol": "gnsi.acctz.v1.AuthnDetail.AuthnType",
           "deprecated": false,
@@ -184810,7 +184810,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-acctz-v1-authz-detail-authz-status",
           "kind": "enum",
-          "label": "enum gnsi.acctz.v1.AuthzDetail.AuthzStatus",
+          "label": "gnsi.acctz.v1.AuthzDetail.AuthzStatus",
           "description": "authorization status",
           "sourceSymbol": "gnsi.acctz.v1.AuthzDetail.AuthzStatus",
           "deprecated": false,
@@ -184919,7 +184919,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-acctz-v1-command-service-cmd-service-type",
           "kind": "enum",
-          "label": "enum gnsi.acctz.v1.CommandService.CmdServiceType",
+          "label": "gnsi.acctz.v1.CommandService.CmdServiceType",
           "sourceSymbol": "gnsi.acctz.v1.CommandService.CmdServiceType",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.4.3/acctz/acctz.proto#L251",
@@ -185050,7 +185050,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-acctz-v1-grpc-service-grpc-service-type",
           "kind": "enum",
-          "label": "enum gnsi.acctz.v1.GrpcService.GrpcServiceType",
+          "label": "gnsi.acctz.v1.GrpcService.GrpcServiceType",
           "sourceSymbol": "gnsi.acctz.v1.GrpcService.GrpcServiceType",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.4.3/acctz/acctz.proto#L288",
@@ -185309,7 +185309,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-acctz-v1-session-info-session-status",
           "kind": "enum",
-          "label": "enum gnsi.acctz.v1.SessionInfo.SessionStatus",
+          "label": "gnsi.acctz.v1.SessionInfo.SessionStatus",
           "description": "session status",
           "sourceSymbol": "gnsi.acctz.v1.SessionInfo.SessionStatus",
           "deprecated": false,
@@ -185577,7 +185577,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-authz-v1-probe-response-action",
           "kind": "enum",
-          "label": "enum gnsi.authz.v1.ProbeResponse.Action",
+          "label": "gnsi.authz.v1.ProbeResponse.Action",
           "description": "Action is the defined action for an gRPC-level Authorization Policy.",
           "sourceSymbol": "gnsi.authz.v1.ProbeResponse.Action",
           "deprecated": false,
@@ -185973,7 +185973,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-certz-v1-certificate-cert-source",
           "kind": "enum",
-          "label": "enum gnsi.certz.v1.Certificate.CertSource",
+          "label": "gnsi.certz.v1.Certificate.CertSource",
           "sourceSymbol": "gnsi.certz.v1.Certificate.CertSource",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.4.3/certz/certz.proto#L471",
@@ -186013,7 +186013,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-certz-v1-certificate-key-source",
           "kind": "enum",
-          "label": "enum gnsi.certz.v1.Certificate.KeySource",
+          "label": "gnsi.certz.v1.Certificate.KeySource",
           "sourceSymbol": "gnsi.certz.v1.Certificate.KeySource",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.4.3/certz/certz.proto#L489",
@@ -186089,7 +186089,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-certz-v1-certificate-encoding",
           "kind": "enum",
-          "label": "enum gnsi.certz.v1.CertificateEncoding",
+          "label": "gnsi.certz.v1.CertificateEncoding",
           "sourceSymbol": "gnsi.certz.v1.CertificateEncoding",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.4.3/certz/certz.proto#L430",
@@ -186255,7 +186255,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-certz-v1-certificate-type",
           "kind": "enum",
-          "label": "enum gnsi.certz.v1.CertificateType",
+          "label": "gnsi.certz.v1.CertificateType",
           "description": "Types of certificates.",
           "sourceSymbol": "gnsi.certz.v1.CertificateType",
           "deprecated": false,
@@ -186379,7 +186379,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-certz-v1-csrsuite",
           "kind": "enum",
-          "label": "enum gnsi.certz.v1.CSRSuite",
+          "label": "gnsi.certz.v1.CSRSuite",
           "description": "CSRSuite specifies the valid types of keys and digests that can be used\nto generate CSRs",
           "sourceSymbol": "gnsi.certz.v1.CSRSuite",
           "deprecated": false,
@@ -186684,7 +186684,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-certz-v1-existing-entity-entity-type",
           "kind": "enum",
-          "label": "enum gnsi.certz.v1.ExistingEntity.EntityType",
+          "label": "gnsi.certz.v1.ExistingEntity.EntityType",
           "sourceSymbol": "gnsi.certz.v1.ExistingEntity.EntityType",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.4.3/certz/certz.proto#L581",
@@ -187226,7 +187226,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-credentialz-v1-authentication-type",
           "kind": "enum",
-          "label": "enum gnsi.credentialz.v1.AuthenticationType",
+          "label": "gnsi.credentialz.v1.AuthenticationType",
           "sourceSymbol": "gnsi.credentialz.v1.AuthenticationType",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.4.3/credentialz/credentialz.proto#L639",
@@ -187347,7 +187347,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-credentialz-v1-authorized-principal-check-request-tool",
           "kind": "enum",
-          "label": "enum gnsi.credentialz.v1.AuthorizedPrincipalCheckRequest.Tool",
+          "label": "gnsi.credentialz.v1.AuthorizedPrincipalCheckRequest.Tool",
           "sourceSymbol": "gnsi.credentialz.v1.AuthorizedPrincipalCheckRequest.Tool",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.4.3/credentialz/credentialz.proto#L678",
@@ -187704,7 +187704,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-credentialz-v1-key-gen",
           "kind": "enum",
-          "label": "enum gnsi.credentialz.v1.KeyGen",
+          "label": "gnsi.credentialz.v1.KeyGen",
           "description": "KeyGen specifies the valid types of keys and their lengths that\ncan be used.",
           "sourceSymbol": "gnsi.credentialz.v1.KeyGen",
           "deprecated": false,
@@ -187762,7 +187762,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-credentialz-v1-key-type",
           "kind": "enum",
-          "label": "enum gnsi.credentialz.v1.KeyType",
+          "label": "gnsi.credentialz.v1.KeyType",
           "description": "Key encryption type.",
           "sourceSymbol": "gnsi.credentialz.v1.KeyType",
           "deprecated": false,
@@ -187861,7 +187861,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-credentialz-v1-option-standard-option",
           "kind": "enum",
-          "label": "enum gnsi.credentialz.v1.Option.StandardOption",
+          "label": "gnsi.credentialz.v1.Option.StandardOption",
           "description": "An option that is specified for an authorized user, key entry, or\nauthorized principal tool.\nFor example, for OpenSSH, an entry can have an option\n`from=\"*.sales.example.net,!pc.sales.example.net\"`\nFor such option the `key.id` would be `FROM` (6) while the `value`\nwould be `*.sales.example.net,!pc.sales.example.net`.\n\nIf a specified option is unknown then the whole request should be rejected.",
           "sourceSymbol": "gnsi.credentialz.v1.Option.StandardOption",
           "deprecated": false,
@@ -188152,7 +188152,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-credentialz-v1-password-request-crypto-hash-hash-type",
           "kind": "enum",
-          "label": "enum gnsi.credentialz.v1.PasswordRequest.CryptoHash.HashType",
+          "label": "gnsi.credentialz.v1.PasswordRequest.CryptoHash.HashType",
           "description": "Hash type's",
           "sourceSymbol": "gnsi.credentialz.v1.PasswordRequest.CryptoHash.HashType",
           "deprecated": false,
@@ -188707,7 +188707,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-pathz-v1-action",
           "kind": "enum",
-          "label": "enum gnsi.pathz.v1.Action",
+          "label": "gnsi.pathz.v1.Action",
           "description": "Action is the defined action for an AuthorizationPolicy.",
           "sourceSymbol": "gnsi.pathz.v1.Action",
           "deprecated": false,
@@ -188972,7 +188972,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-pathz-v1-mode",
           "kind": "enum",
-          "label": "enum gnsi.pathz.v1.Mode",
+          "label": "gnsi.pathz.v1.Mode",
           "description": "Mode is:\nREAD: Ability to read/subscribe to data from the model.\nWRITE: Ability to mutate/write updates to data in the model.",
           "sourceSymbol": "gnsi.pathz.v1.Mode",
           "deprecated": false,
@@ -189012,7 +189012,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-pathz-v1-policy-instance",
           "kind": "enum",
-          "label": "enum gnsi.pathz.v1.PolicyInstance",
+          "label": "gnsi.pathz.v1.PolicyInstance",
           "sourceSymbol": "gnsi.pathz.v1.PolicyInstance",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.4.3/pathz/pathz.proto#L181",
@@ -191533,7 +191533,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-acctz-v1-auth-detail-authen-status",
           "kind": "enum",
-          "label": "enum gnsi.acctz.v1.AuthDetail.AuthenStatus",
+          "label": "gnsi.acctz.v1.AuthDetail.AuthenStatus",
           "description": "authentication status",
           "sourceSymbol": "gnsi.acctz.v1.AuthDetail.AuthenStatus",
           "deprecated": false,
@@ -191614,7 +191614,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-acctz-v1-authn-detail-authn-status",
           "kind": "enum",
-          "label": "enum gnsi.acctz.v1.AuthnDetail.AuthnStatus",
+          "label": "gnsi.acctz.v1.AuthnDetail.AuthnStatus",
           "description": "authentication status",
           "sourceSymbol": "gnsi.acctz.v1.AuthnDetail.AuthnStatus",
           "deprecated": false,
@@ -191660,7 +191660,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-acctz-v1-authn-detail-authn-type",
           "kind": "enum",
-          "label": "enum gnsi.acctz.v1.AuthnDetail.AuthnType",
+          "label": "gnsi.acctz.v1.AuthnDetail.AuthnType",
           "description": "authentication type",
           "sourceSymbol": "gnsi.acctz.v1.AuthnDetail.AuthnType",
           "deprecated": false,
@@ -191765,7 +191765,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-acctz-v1-authz-detail-authz-status",
           "kind": "enum",
-          "label": "enum gnsi.acctz.v1.AuthzDetail.AuthzStatus",
+          "label": "gnsi.acctz.v1.AuthzDetail.AuthzStatus",
           "description": "authorization status",
           "sourceSymbol": "gnsi.acctz.v1.AuthzDetail.AuthzStatus",
           "deprecated": false,
@@ -191874,7 +191874,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-acctz-v1-command-service-cmd-service-type",
           "kind": "enum",
-          "label": "enum gnsi.acctz.v1.CommandService.CmdServiceType",
+          "label": "gnsi.acctz.v1.CommandService.CmdServiceType",
           "sourceSymbol": "gnsi.acctz.v1.CommandService.CmdServiceType",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.4.2/acctz/acctz.proto#L251",
@@ -192005,7 +192005,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-acctz-v1-grpc-service-grpc-service-type",
           "kind": "enum",
-          "label": "enum gnsi.acctz.v1.GrpcService.GrpcServiceType",
+          "label": "gnsi.acctz.v1.GrpcService.GrpcServiceType",
           "sourceSymbol": "gnsi.acctz.v1.GrpcService.GrpcServiceType",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.4.2/acctz/acctz.proto#L288",
@@ -192264,7 +192264,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-acctz-v1-session-info-session-status",
           "kind": "enum",
-          "label": "enum gnsi.acctz.v1.SessionInfo.SessionStatus",
+          "label": "gnsi.acctz.v1.SessionInfo.SessionStatus",
           "description": "session status",
           "sourceSymbol": "gnsi.acctz.v1.SessionInfo.SessionStatus",
           "deprecated": false,
@@ -192532,7 +192532,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-authz-v1-probe-response-action",
           "kind": "enum",
-          "label": "enum gnsi.authz.v1.ProbeResponse.Action",
+          "label": "gnsi.authz.v1.ProbeResponse.Action",
           "description": "Action is the defined action for an gRPC-level Authorization Policy.",
           "sourceSymbol": "gnsi.authz.v1.ProbeResponse.Action",
           "deprecated": false,
@@ -192928,7 +192928,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-certz-v1-certificate-cert-source",
           "kind": "enum",
-          "label": "enum gnsi.certz.v1.Certificate.CertSource",
+          "label": "gnsi.certz.v1.Certificate.CertSource",
           "sourceSymbol": "gnsi.certz.v1.Certificate.CertSource",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.4.2/certz/certz.proto#L471",
@@ -192968,7 +192968,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-certz-v1-certificate-key-source",
           "kind": "enum",
-          "label": "enum gnsi.certz.v1.Certificate.KeySource",
+          "label": "gnsi.certz.v1.Certificate.KeySource",
           "sourceSymbol": "gnsi.certz.v1.Certificate.KeySource",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.4.2/certz/certz.proto#L489",
@@ -193044,7 +193044,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-certz-v1-certificate-encoding",
           "kind": "enum",
-          "label": "enum gnsi.certz.v1.CertificateEncoding",
+          "label": "gnsi.certz.v1.CertificateEncoding",
           "sourceSymbol": "gnsi.certz.v1.CertificateEncoding",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.4.2/certz/certz.proto#L430",
@@ -193210,7 +193210,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-certz-v1-certificate-type",
           "kind": "enum",
-          "label": "enum gnsi.certz.v1.CertificateType",
+          "label": "gnsi.certz.v1.CertificateType",
           "description": "Types of certificates.",
           "sourceSymbol": "gnsi.certz.v1.CertificateType",
           "deprecated": false,
@@ -193334,7 +193334,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-certz-v1-csrsuite",
           "kind": "enum",
-          "label": "enum gnsi.certz.v1.CSRSuite",
+          "label": "gnsi.certz.v1.CSRSuite",
           "description": "CSRSuite specifies the valid types of keys and digests that can be used\nto generate CSRs",
           "sourceSymbol": "gnsi.certz.v1.CSRSuite",
           "deprecated": false,
@@ -193639,7 +193639,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-certz-v1-existing-entity-entity-type",
           "kind": "enum",
-          "label": "enum gnsi.certz.v1.ExistingEntity.EntityType",
+          "label": "gnsi.certz.v1.ExistingEntity.EntityType",
           "sourceSymbol": "gnsi.certz.v1.ExistingEntity.EntityType",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.4.2/certz/certz.proto#L581",
@@ -194181,7 +194181,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-credentialz-v1-authentication-type",
           "kind": "enum",
-          "label": "enum gnsi.credentialz.v1.AuthenticationType",
+          "label": "gnsi.credentialz.v1.AuthenticationType",
           "sourceSymbol": "gnsi.credentialz.v1.AuthenticationType",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.4.2/credentialz/credentialz.proto#L639",
@@ -194302,7 +194302,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-credentialz-v1-authorized-principal-check-request-tool",
           "kind": "enum",
-          "label": "enum gnsi.credentialz.v1.AuthorizedPrincipalCheckRequest.Tool",
+          "label": "gnsi.credentialz.v1.AuthorizedPrincipalCheckRequest.Tool",
           "sourceSymbol": "gnsi.credentialz.v1.AuthorizedPrincipalCheckRequest.Tool",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.4.2/credentialz/credentialz.proto#L678",
@@ -194659,7 +194659,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-credentialz-v1-key-gen",
           "kind": "enum",
-          "label": "enum gnsi.credentialz.v1.KeyGen",
+          "label": "gnsi.credentialz.v1.KeyGen",
           "description": "KeyGen specifies the valid types of keys and their lengths that\ncan be used.",
           "sourceSymbol": "gnsi.credentialz.v1.KeyGen",
           "deprecated": false,
@@ -194717,7 +194717,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-credentialz-v1-key-type",
           "kind": "enum",
-          "label": "enum gnsi.credentialz.v1.KeyType",
+          "label": "gnsi.credentialz.v1.KeyType",
           "description": "Key encryption type.",
           "sourceSymbol": "gnsi.credentialz.v1.KeyType",
           "deprecated": false,
@@ -194816,7 +194816,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-credentialz-v1-option-standard-option",
           "kind": "enum",
-          "label": "enum gnsi.credentialz.v1.Option.StandardOption",
+          "label": "gnsi.credentialz.v1.Option.StandardOption",
           "description": "An option that is specified for an authorized user, key entry, or\nauthorized principal tool.\nFor example, for OpenSSH, an entry can have an option\n`from=\"*.sales.example.net,!pc.sales.example.net\"`\nFor such option the `key.id` would be `FROM` (6) while the `value`\nwould be `*.sales.example.net,!pc.sales.example.net`.\n\nIf a specified option is unknown then the whole request should be rejected.",
           "sourceSymbol": "gnsi.credentialz.v1.Option.StandardOption",
           "deprecated": false,
@@ -195107,7 +195107,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-credentialz-v1-password-request-crypto-hash-hash-type",
           "kind": "enum",
-          "label": "enum gnsi.credentialz.v1.PasswordRequest.CryptoHash.HashType",
+          "label": "gnsi.credentialz.v1.PasswordRequest.CryptoHash.HashType",
           "description": "Hash type's",
           "sourceSymbol": "gnsi.credentialz.v1.PasswordRequest.CryptoHash.HashType",
           "deprecated": false,
@@ -195662,7 +195662,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-pathz-v1-action",
           "kind": "enum",
-          "label": "enum gnsi.pathz.v1.Action",
+          "label": "gnsi.pathz.v1.Action",
           "description": "Action is the defined action for an AuthorizationPolicy.",
           "sourceSymbol": "gnsi.pathz.v1.Action",
           "deprecated": false,
@@ -195927,7 +195927,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-pathz-v1-mode",
           "kind": "enum",
-          "label": "enum gnsi.pathz.v1.Mode",
+          "label": "gnsi.pathz.v1.Mode",
           "description": "Mode is:\nREAD: Ability to read/subscribe to data from the model.\nWRITE: Ability to mutate/write updates to data in the model.",
           "sourceSymbol": "gnsi.pathz.v1.Mode",
           "deprecated": false,
@@ -195967,7 +195967,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-pathz-v1-policy-instance",
           "kind": "enum",
-          "label": "enum gnsi.pathz.v1.PolicyInstance",
+          "label": "gnsi.pathz.v1.PolicyInstance",
           "sourceSymbol": "gnsi.pathz.v1.PolicyInstance",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.4.2/pathz/pathz.proto#L181",
@@ -198489,7 +198489,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-acctz-v1-auth-detail-authen-status",
           "kind": "enum",
-          "label": "enum gnsi.acctz.v1.AuthDetail.AuthenStatus",
+          "label": "gnsi.acctz.v1.AuthDetail.AuthenStatus",
           "description": "authentication status",
           "sourceSymbol": "gnsi.acctz.v1.AuthDetail.AuthenStatus",
           "deprecated": false,
@@ -198570,7 +198570,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-acctz-v1-authn-detail-authn-status",
           "kind": "enum",
-          "label": "enum gnsi.acctz.v1.AuthnDetail.AuthnStatus",
+          "label": "gnsi.acctz.v1.AuthnDetail.AuthnStatus",
           "description": "authentication status",
           "sourceSymbol": "gnsi.acctz.v1.AuthnDetail.AuthnStatus",
           "deprecated": false,
@@ -198616,7 +198616,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-acctz-v1-authn-detail-authn-type",
           "kind": "enum",
-          "label": "enum gnsi.acctz.v1.AuthnDetail.AuthnType",
+          "label": "gnsi.acctz.v1.AuthnDetail.AuthnType",
           "description": "authentication type",
           "sourceSymbol": "gnsi.acctz.v1.AuthnDetail.AuthnType",
           "deprecated": false,
@@ -198721,7 +198721,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-acctz-v1-authz-detail-authz-status",
           "kind": "enum",
-          "label": "enum gnsi.acctz.v1.AuthzDetail.AuthzStatus",
+          "label": "gnsi.acctz.v1.AuthzDetail.AuthzStatus",
           "description": "authorization status",
           "sourceSymbol": "gnsi.acctz.v1.AuthzDetail.AuthzStatus",
           "deprecated": false,
@@ -198830,7 +198830,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-acctz-v1-command-service-cmd-service-type",
           "kind": "enum",
-          "label": "enum gnsi.acctz.v1.CommandService.CmdServiceType",
+          "label": "gnsi.acctz.v1.CommandService.CmdServiceType",
           "sourceSymbol": "gnsi.acctz.v1.CommandService.CmdServiceType",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.4.1/acctz/acctz.proto#L251",
@@ -198961,7 +198961,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-acctz-v1-grpc-service-grpc-service-type",
           "kind": "enum",
-          "label": "enum gnsi.acctz.v1.GrpcService.GrpcServiceType",
+          "label": "gnsi.acctz.v1.GrpcService.GrpcServiceType",
           "sourceSymbol": "gnsi.acctz.v1.GrpcService.GrpcServiceType",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.4.1/acctz/acctz.proto#L288",
@@ -199220,7 +199220,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-acctz-v1-session-info-session-status",
           "kind": "enum",
-          "label": "enum gnsi.acctz.v1.SessionInfo.SessionStatus",
+          "label": "gnsi.acctz.v1.SessionInfo.SessionStatus",
           "description": "session status",
           "sourceSymbol": "gnsi.acctz.v1.SessionInfo.SessionStatus",
           "deprecated": false,
@@ -199488,7 +199488,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-authz-v1-probe-response-action",
           "kind": "enum",
-          "label": "enum gnsi.authz.v1.ProbeResponse.Action",
+          "label": "gnsi.authz.v1.ProbeResponse.Action",
           "description": "Action is the defined action for an gRPC-level Authorization Policy.",
           "sourceSymbol": "gnsi.authz.v1.ProbeResponse.Action",
           "deprecated": false,
@@ -199884,7 +199884,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-certz-v1-certificate-cert-source",
           "kind": "enum",
-          "label": "enum gnsi.certz.v1.Certificate.CertSource",
+          "label": "gnsi.certz.v1.Certificate.CertSource",
           "sourceSymbol": "gnsi.certz.v1.Certificate.CertSource",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.4.1/certz/certz.proto#L471",
@@ -199924,7 +199924,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-certz-v1-certificate-key-source",
           "kind": "enum",
-          "label": "enum gnsi.certz.v1.Certificate.KeySource",
+          "label": "gnsi.certz.v1.Certificate.KeySource",
           "sourceSymbol": "gnsi.certz.v1.Certificate.KeySource",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.4.1/certz/certz.proto#L489",
@@ -200000,7 +200000,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-certz-v1-certificate-encoding",
           "kind": "enum",
-          "label": "enum gnsi.certz.v1.CertificateEncoding",
+          "label": "gnsi.certz.v1.CertificateEncoding",
           "sourceSymbol": "gnsi.certz.v1.CertificateEncoding",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.4.1/certz/certz.proto#L430",
@@ -200166,7 +200166,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-certz-v1-certificate-type",
           "kind": "enum",
-          "label": "enum gnsi.certz.v1.CertificateType",
+          "label": "gnsi.certz.v1.CertificateType",
           "description": "Types of certificates.",
           "sourceSymbol": "gnsi.certz.v1.CertificateType",
           "deprecated": false,
@@ -200290,7 +200290,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-certz-v1-csrsuite",
           "kind": "enum",
-          "label": "enum gnsi.certz.v1.CSRSuite",
+          "label": "gnsi.certz.v1.CSRSuite",
           "description": "CSRSuite specifies the valid types of keys and digests that can be used\nto generate CSRs",
           "sourceSymbol": "gnsi.certz.v1.CSRSuite",
           "deprecated": false,
@@ -200595,7 +200595,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-certz-v1-existing-entity-entity-type",
           "kind": "enum",
-          "label": "enum gnsi.certz.v1.ExistingEntity.EntityType",
+          "label": "gnsi.certz.v1.ExistingEntity.EntityType",
           "sourceSymbol": "gnsi.certz.v1.ExistingEntity.EntityType",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.4.1/certz/certz.proto#L581",
@@ -201137,7 +201137,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-credentialz-v1-authentication-type",
           "kind": "enum",
-          "label": "enum gnsi.credentialz.v1.AuthenticationType",
+          "label": "gnsi.credentialz.v1.AuthenticationType",
           "sourceSymbol": "gnsi.credentialz.v1.AuthenticationType",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.4.1/credentialz/credentialz.proto#L639",
@@ -201258,7 +201258,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-credentialz-v1-authorized-principal-check-request-tool",
           "kind": "enum",
-          "label": "enum gnsi.credentialz.v1.AuthorizedPrincipalCheckRequest.Tool",
+          "label": "gnsi.credentialz.v1.AuthorizedPrincipalCheckRequest.Tool",
           "sourceSymbol": "gnsi.credentialz.v1.AuthorizedPrincipalCheckRequest.Tool",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.4.1/credentialz/credentialz.proto#L678",
@@ -201615,7 +201615,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-credentialz-v1-key-gen",
           "kind": "enum",
-          "label": "enum gnsi.credentialz.v1.KeyGen",
+          "label": "gnsi.credentialz.v1.KeyGen",
           "description": "KeyGen specifies the valid types of keys and their lengths that\ncan be used.",
           "sourceSymbol": "gnsi.credentialz.v1.KeyGen",
           "deprecated": false,
@@ -201673,7 +201673,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-credentialz-v1-key-type",
           "kind": "enum",
-          "label": "enum gnsi.credentialz.v1.KeyType",
+          "label": "gnsi.credentialz.v1.KeyType",
           "description": "Key encryption type.",
           "sourceSymbol": "gnsi.credentialz.v1.KeyType",
           "deprecated": false,
@@ -201772,7 +201772,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-credentialz-v1-option-standard-option",
           "kind": "enum",
-          "label": "enum gnsi.credentialz.v1.Option.StandardOption",
+          "label": "gnsi.credentialz.v1.Option.StandardOption",
           "description": "An option that is specified for an authorized user, key entry, or\nauthorized principal tool.\nFor example, for OpenSSH, an entry can have an option\n`from=\"*.sales.example.net,!pc.sales.example.net\"`\nFor such option the `key.id` would be `FROM` (6) while the `value`\nwould be `*.sales.example.net,!pc.sales.example.net`.\n\nIf a specified option is unknown then the whole request should be rejected.",
           "sourceSymbol": "gnsi.credentialz.v1.Option.StandardOption",
           "deprecated": false,
@@ -202063,7 +202063,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-credentialz-v1-password-request-crypto-hash-hash-type",
           "kind": "enum",
-          "label": "enum gnsi.credentialz.v1.PasswordRequest.CryptoHash.HashType",
+          "label": "gnsi.credentialz.v1.PasswordRequest.CryptoHash.HashType",
           "description": "Hash type's",
           "sourceSymbol": "gnsi.credentialz.v1.PasswordRequest.CryptoHash.HashType",
           "deprecated": false,
@@ -202618,7 +202618,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-pathz-action",
           "kind": "enum",
-          "label": "enum gnsi.pathz.Action",
+          "label": "gnsi.pathz.Action",
           "description": "Action is the defined action for an AuthorizationPolicy.",
           "sourceSymbol": "gnsi.pathz.Action",
           "deprecated": false,
@@ -202790,7 +202790,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-pathz-mode",
           "kind": "enum",
-          "label": "enum gnsi.pathz.Mode",
+          "label": "gnsi.pathz.Mode",
           "description": "Mode is:\nREAD: Ability to read/subscribe to data from the model.\nWRITE: Ability to mutate/write updates to data in the model.",
           "sourceSymbol": "gnsi.pathz.Mode",
           "deprecated": false,
@@ -202951,7 +202951,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-pathz-v1-policy-instance",
           "kind": "enum",
-          "label": "enum gnsi.pathz.v1.PolicyInstance",
+          "label": "gnsi.pathz.v1.PolicyInstance",
           "sourceSymbol": "gnsi.pathz.v1.PolicyInstance",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.4.1/pathz/pathz.proto#L162",
@@ -205437,7 +205437,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-acctz-v1-authn-detail-authn-status",
           "kind": "enum",
-          "label": "enum gnsi.acctz.v1.AuthnDetail.AuthnStatus",
+          "label": "gnsi.acctz.v1.AuthnDetail.AuthnStatus",
           "description": "authentication status",
           "sourceSymbol": "gnsi.acctz.v1.AuthnDetail.AuthnStatus",
           "deprecated": false,
@@ -205483,7 +205483,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-acctz-v1-authn-detail-authn-type",
           "kind": "enum",
-          "label": "enum gnsi.acctz.v1.AuthnDetail.AuthnType",
+          "label": "gnsi.acctz.v1.AuthnDetail.AuthnType",
           "description": "authentication type",
           "sourceSymbol": "gnsi.acctz.v1.AuthnDetail.AuthnType",
           "deprecated": false,
@@ -205588,7 +205588,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-acctz-v1-authz-detail-authz-status",
           "kind": "enum",
-          "label": "enum gnsi.acctz.v1.AuthzDetail.AuthzStatus",
+          "label": "gnsi.acctz.v1.AuthzDetail.AuthzStatus",
           "description": "authorization status",
           "sourceSymbol": "gnsi.acctz.v1.AuthzDetail.AuthzStatus",
           "deprecated": false,
@@ -205697,7 +205697,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-acctz-v1-command-service-cmd-service-type",
           "kind": "enum",
-          "label": "enum gnsi.acctz.v1.CommandService.CmdServiceType",
+          "label": "gnsi.acctz.v1.CommandService.CmdServiceType",
           "sourceSymbol": "gnsi.acctz.v1.CommandService.CmdServiceType",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.4.0/acctz/acctz.proto#L228",
@@ -205810,7 +205810,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-acctz-v1-grpc-service-grpc-service-type",
           "kind": "enum",
-          "label": "enum gnsi.acctz.v1.GrpcService.GrpcServiceType",
+          "label": "gnsi.acctz.v1.GrpcService.GrpcServiceType",
           "sourceSymbol": "gnsi.acctz.v1.GrpcService.GrpcServiceType",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.4.0/acctz/acctz.proto#L265",
@@ -206060,7 +206060,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-acctz-v1-session-info-session-status",
           "kind": "enum",
-          "label": "enum gnsi.acctz.v1.SessionInfo.SessionStatus",
+          "label": "gnsi.acctz.v1.SessionInfo.SessionStatus",
           "description": "session status",
           "sourceSymbol": "gnsi.acctz.v1.SessionInfo.SessionStatus",
           "deprecated": false,
@@ -206328,7 +206328,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-authz-v1-probe-response-action",
           "kind": "enum",
-          "label": "enum gnsi.authz.v1.ProbeResponse.Action",
+          "label": "gnsi.authz.v1.ProbeResponse.Action",
           "description": "Action is the defined action for an gRPC-level Authorization Policy.",
           "sourceSymbol": "gnsi.authz.v1.ProbeResponse.Action",
           "deprecated": false,
@@ -206722,7 +206722,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-certz-v1-certificate-encoding",
           "kind": "enum",
-          "label": "enum gnsi.certz.v1.CertificateEncoding",
+          "label": "gnsi.certz.v1.CertificateEncoding",
           "sourceSymbol": "gnsi.certz.v1.CertificateEncoding",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.4.0/certz/certz.proto#L430",
@@ -206888,7 +206888,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-certz-v1-certificate-type",
           "kind": "enum",
-          "label": "enum gnsi.certz.v1.CertificateType",
+          "label": "gnsi.certz.v1.CertificateType",
           "description": "Types of certificates.",
           "sourceSymbol": "gnsi.certz.v1.CertificateType",
           "deprecated": false,
@@ -207012,7 +207012,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-certz-v1-csrsuite",
           "kind": "enum",
-          "label": "enum gnsi.certz.v1.CSRSuite",
+          "label": "gnsi.certz.v1.CSRSuite",
           "description": "CSRSuite specifies the valid types of keys and digests that can be used\nto generate CSRs",
           "sourceSymbol": "gnsi.certz.v1.CSRSuite",
           "deprecated": false,
@@ -207310,7 +207310,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-certz-v1-existing-entity-entity-type",
           "kind": "enum",
-          "label": "enum gnsi.certz.v1.ExistingEntity.EntityType",
+          "label": "gnsi.certz.v1.ExistingEntity.EntityType",
           "sourceSymbol": "gnsi.certz.v1.ExistingEntity.EntityType",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.4.0/certz/certz.proto#L528",
@@ -207824,7 +207824,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-credentialz-v1-authentication-type",
           "kind": "enum",
-          "label": "enum gnsi.credentialz.v1.AuthenticationType",
+          "label": "gnsi.credentialz.v1.AuthenticationType",
           "sourceSymbol": "gnsi.credentialz.v1.AuthenticationType",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.4.0/credentialz/credentialz.proto#L639",
@@ -207945,7 +207945,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-credentialz-v1-authorized-principal-check-request-tool",
           "kind": "enum",
-          "label": "enum gnsi.credentialz.v1.AuthorizedPrincipalCheckRequest.Tool",
+          "label": "gnsi.credentialz.v1.AuthorizedPrincipalCheckRequest.Tool",
           "sourceSymbol": "gnsi.credentialz.v1.AuthorizedPrincipalCheckRequest.Tool",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.4.0/credentialz/credentialz.proto#L678",
@@ -208302,7 +208302,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-credentialz-v1-key-gen",
           "kind": "enum",
-          "label": "enum gnsi.credentialz.v1.KeyGen",
+          "label": "gnsi.credentialz.v1.KeyGen",
           "description": "KeyGen specifies the valid types of keys and their lengths that\ncan be used.",
           "sourceSymbol": "gnsi.credentialz.v1.KeyGen",
           "deprecated": false,
@@ -208360,7 +208360,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-credentialz-v1-key-type",
           "kind": "enum",
-          "label": "enum gnsi.credentialz.v1.KeyType",
+          "label": "gnsi.credentialz.v1.KeyType",
           "description": "Key encryption type.",
           "sourceSymbol": "gnsi.credentialz.v1.KeyType",
           "deprecated": false,
@@ -208459,7 +208459,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-credentialz-v1-option-standard-option",
           "kind": "enum",
-          "label": "enum gnsi.credentialz.v1.Option.StandardOption",
+          "label": "gnsi.credentialz.v1.Option.StandardOption",
           "description": "An option that is specified for an authorized user, key entry, or\nauthorized principal tool.\nFor example, for OpenSSH, an entry can have an option\n`from=\"*.sales.example.net,!pc.sales.example.net\"`\nFor such option the `key.id` would be `FROM` (6) while the `value`\nwould be `*.sales.example.net,!pc.sales.example.net`.\n\nIf a specified option is unknown then the whole request should be rejected.",
           "sourceSymbol": "gnsi.credentialz.v1.Option.StandardOption",
           "deprecated": false,
@@ -208750,7 +208750,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-credentialz-v1-password-request-crypto-hash-hash-type",
           "kind": "enum",
-          "label": "enum gnsi.credentialz.v1.PasswordRequest.CryptoHash.HashType",
+          "label": "gnsi.credentialz.v1.PasswordRequest.CryptoHash.HashType",
           "description": "Hash type's",
           "sourceSymbol": "gnsi.credentialz.v1.PasswordRequest.CryptoHash.HashType",
           "deprecated": false,
@@ -209305,7 +209305,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-pathz-action",
           "kind": "enum",
-          "label": "enum gnsi.pathz.Action",
+          "label": "gnsi.pathz.Action",
           "description": "Action is the defined action for an AuthorizationPolicy.",
           "sourceSymbol": "gnsi.pathz.Action",
           "deprecated": false,
@@ -209477,7 +209477,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-pathz-mode",
           "kind": "enum",
-          "label": "enum gnsi.pathz.Mode",
+          "label": "gnsi.pathz.Mode",
           "description": "Mode is:\nREAD: Ability to read/subscribe to data from the model.\nWRITE: Ability to mutate/write updates to data in the model.",
           "sourceSymbol": "gnsi.pathz.Mode",
           "deprecated": false,
@@ -209638,7 +209638,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-pathz-v1-policy-instance",
           "kind": "enum",
-          "label": "enum gnsi.pathz.v1.PolicyInstance",
+          "label": "gnsi.pathz.v1.PolicyInstance",
           "sourceSymbol": "gnsi.pathz.v1.PolicyInstance",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.4.0/pathz/pathz.proto#L162",
@@ -212076,7 +212076,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-acctz-v1-authn-detail-authn-status",
           "kind": "enum",
-          "label": "enum gnsi.acctz.v1.AuthnDetail.AuthnStatus",
+          "label": "gnsi.acctz.v1.AuthnDetail.AuthnStatus",
           "description": "authentication status",
           "sourceSymbol": "gnsi.acctz.v1.AuthnDetail.AuthnStatus",
           "deprecated": false,
@@ -212122,7 +212122,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-acctz-v1-authn-detail-authn-type",
           "kind": "enum",
-          "label": "enum gnsi.acctz.v1.AuthnDetail.AuthnType",
+          "label": "gnsi.acctz.v1.AuthnDetail.AuthnType",
           "description": "authentication type",
           "sourceSymbol": "gnsi.acctz.v1.AuthnDetail.AuthnType",
           "deprecated": false,
@@ -212227,7 +212227,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-acctz-v1-authz-detail-authz-status",
           "kind": "enum",
-          "label": "enum gnsi.acctz.v1.AuthzDetail.AuthzStatus",
+          "label": "gnsi.acctz.v1.AuthzDetail.AuthzStatus",
           "description": "authorization status",
           "sourceSymbol": "gnsi.acctz.v1.AuthzDetail.AuthzStatus",
           "deprecated": false,
@@ -212336,7 +212336,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-acctz-v1-command-service-cmd-service-type",
           "kind": "enum",
-          "label": "enum gnsi.acctz.v1.CommandService.CmdServiceType",
+          "label": "gnsi.acctz.v1.CommandService.CmdServiceType",
           "sourceSymbol": "gnsi.acctz.v1.CommandService.CmdServiceType",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.3.0/acctz/acctz.proto#L228",
@@ -212449,7 +212449,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-acctz-v1-grpc-service-grpc-service-type",
           "kind": "enum",
-          "label": "enum gnsi.acctz.v1.GrpcService.GrpcServiceType",
+          "label": "gnsi.acctz.v1.GrpcService.GrpcServiceType",
           "sourceSymbol": "gnsi.acctz.v1.GrpcService.GrpcServiceType",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.3.0/acctz/acctz.proto#L265",
@@ -212699,7 +212699,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-acctz-v1-session-info-session-status",
           "kind": "enum",
-          "label": "enum gnsi.acctz.v1.SessionInfo.SessionStatus",
+          "label": "gnsi.acctz.v1.SessionInfo.SessionStatus",
           "description": "session status",
           "sourceSymbol": "gnsi.acctz.v1.SessionInfo.SessionStatus",
           "deprecated": false,
@@ -212967,7 +212967,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-authz-v1-probe-response-action",
           "kind": "enum",
-          "label": "enum gnsi.authz.v1.ProbeResponse.Action",
+          "label": "gnsi.authz.v1.ProbeResponse.Action",
           "description": "Action is the defined action for an gRPC-level Authorization Policy.",
           "sourceSymbol": "gnsi.authz.v1.ProbeResponse.Action",
           "deprecated": false,
@@ -213361,7 +213361,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-certz-v1-certificate-encoding",
           "kind": "enum",
-          "label": "enum gnsi.certz.v1.CertificateEncoding",
+          "label": "gnsi.certz.v1.CertificateEncoding",
           "sourceSymbol": "gnsi.certz.v1.CertificateEncoding",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.3.0/certz/certz.proto#L429",
@@ -213527,7 +213527,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-certz-v1-certificate-type",
           "kind": "enum",
-          "label": "enum gnsi.certz.v1.CertificateType",
+          "label": "gnsi.certz.v1.CertificateType",
           "description": "Types of certificates.",
           "sourceSymbol": "gnsi.certz.v1.CertificateType",
           "deprecated": false,
@@ -213651,7 +213651,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-certz-v1-csrsuite",
           "kind": "enum",
-          "label": "enum gnsi.certz.v1.CSRSuite",
+          "label": "gnsi.certz.v1.CSRSuite",
           "description": "CSRSuite specifies the valid types of keys and digests that can be used\nto generate CSRs",
           "sourceSymbol": "gnsi.certz.v1.CSRSuite",
           "deprecated": false,
@@ -214371,7 +214371,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-credentialz-v1-authentication-type",
           "kind": "enum",
-          "label": "enum gnsi.credentialz.v1.AuthenticationType",
+          "label": "gnsi.credentialz.v1.AuthenticationType",
           "sourceSymbol": "gnsi.credentialz.v1.AuthenticationType",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.3.0/credentialz/credentialz.proto#L639",
@@ -214492,7 +214492,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-credentialz-v1-authorized-principal-check-request-tool",
           "kind": "enum",
-          "label": "enum gnsi.credentialz.v1.AuthorizedPrincipalCheckRequest.Tool",
+          "label": "gnsi.credentialz.v1.AuthorizedPrincipalCheckRequest.Tool",
           "sourceSymbol": "gnsi.credentialz.v1.AuthorizedPrincipalCheckRequest.Tool",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.3.0/credentialz/credentialz.proto#L678",
@@ -214849,7 +214849,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-credentialz-v1-key-gen",
           "kind": "enum",
-          "label": "enum gnsi.credentialz.v1.KeyGen",
+          "label": "gnsi.credentialz.v1.KeyGen",
           "description": "KeyGen specifies the valid types of keys and their lengths that\ncan be used.",
           "sourceSymbol": "gnsi.credentialz.v1.KeyGen",
           "deprecated": false,
@@ -214907,7 +214907,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-credentialz-v1-key-type",
           "kind": "enum",
-          "label": "enum gnsi.credentialz.v1.KeyType",
+          "label": "gnsi.credentialz.v1.KeyType",
           "description": "Key encryption type.",
           "sourceSymbol": "gnsi.credentialz.v1.KeyType",
           "deprecated": false,
@@ -215006,7 +215006,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-credentialz-v1-option-standard-option",
           "kind": "enum",
-          "label": "enum gnsi.credentialz.v1.Option.StandardOption",
+          "label": "gnsi.credentialz.v1.Option.StandardOption",
           "description": "An option that is specified for an authorized user, key entry, or\nauthorized principal tool.\nFor example, for OpenSSH, an entry can have an option\n`from=\"*.sales.example.net,!pc.sales.example.net\"`\nFor such option the `key.id` would be `FROM` (6) while the `value`\nwould be `*.sales.example.net,!pc.sales.example.net`.\n\nIf a specified option is unknown then the whole request should be rejected.",
           "sourceSymbol": "gnsi.credentialz.v1.Option.StandardOption",
           "deprecated": false,
@@ -215297,7 +215297,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-credentialz-v1-password-request-crypto-hash-hash-type",
           "kind": "enum",
-          "label": "enum gnsi.credentialz.v1.PasswordRequest.CryptoHash.HashType",
+          "label": "gnsi.credentialz.v1.PasswordRequest.CryptoHash.HashType",
           "description": "Hash type's",
           "sourceSymbol": "gnsi.credentialz.v1.PasswordRequest.CryptoHash.HashType",
           "deprecated": false,
@@ -215852,7 +215852,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-pathz-action",
           "kind": "enum",
-          "label": "enum gnsi.pathz.Action",
+          "label": "gnsi.pathz.Action",
           "description": "Action is the defined action for an AuthorizationPolicy.",
           "sourceSymbol": "gnsi.pathz.Action",
           "deprecated": false,
@@ -216024,7 +216024,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-pathz-mode",
           "kind": "enum",
-          "label": "enum gnsi.pathz.Mode",
+          "label": "gnsi.pathz.Mode",
           "description": "Mode is:\nREAD: Ability to read/subscribe to data from the model.\nWRITE: Ability to mutate/write updates to data in the model.",
           "sourceSymbol": "gnsi.pathz.Mode",
           "deprecated": false,
@@ -216185,7 +216185,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-pathz-v1-policy-instance",
           "kind": "enum",
-          "label": "enum gnsi.pathz.v1.PolicyInstance",
+          "label": "gnsi.pathz.v1.PolicyInstance",
           "sourceSymbol": "gnsi.pathz.v1.PolicyInstance",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.3.0/pathz/pathz.proto#L162",
@@ -218540,7 +218540,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-acctz-v1-authn-detail-authn-status",
           "kind": "enum",
-          "label": "enum gnsi.acctz.v1.AuthnDetail.AuthnStatus",
+          "label": "gnsi.acctz.v1.AuthnDetail.AuthnStatus",
           "description": "authentication status",
           "sourceSymbol": "gnsi.acctz.v1.AuthnDetail.AuthnStatus",
           "deprecated": false,
@@ -218586,7 +218586,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-acctz-v1-authn-detail-authn-type",
           "kind": "enum",
-          "label": "enum gnsi.acctz.v1.AuthnDetail.AuthnType",
+          "label": "gnsi.acctz.v1.AuthnDetail.AuthnType",
           "description": "authentication type",
           "sourceSymbol": "gnsi.acctz.v1.AuthnDetail.AuthnType",
           "deprecated": false,
@@ -218691,7 +218691,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-acctz-v1-authz-detail-authz-status",
           "kind": "enum",
-          "label": "enum gnsi.acctz.v1.AuthzDetail.AuthzStatus",
+          "label": "gnsi.acctz.v1.AuthzDetail.AuthzStatus",
           "description": "authorization status",
           "sourceSymbol": "gnsi.acctz.v1.AuthzDetail.AuthzStatus",
           "deprecated": false,
@@ -218800,7 +218800,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-acctz-v1-command-service-cmd-service-type",
           "kind": "enum",
-          "label": "enum gnsi.acctz.v1.CommandService.CmdServiceType",
+          "label": "gnsi.acctz.v1.CommandService.CmdServiceType",
           "sourceSymbol": "gnsi.acctz.v1.CommandService.CmdServiceType",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.2.5/acctz/acctz.proto#L195",
@@ -218913,7 +218913,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-acctz-v1-grpc-service-grpc-service-type",
           "kind": "enum",
-          "label": "enum gnsi.acctz.v1.GrpcService.GrpcServiceType",
+          "label": "gnsi.acctz.v1.GrpcService.GrpcServiceType",
           "sourceSymbol": "gnsi.acctz.v1.GrpcService.GrpcServiceType",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.2.5/acctz/acctz.proto#L232",
@@ -219163,7 +219163,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-acctz-v1-session-info-session-status",
           "kind": "enum",
-          "label": "enum gnsi.acctz.v1.SessionInfo.SessionStatus",
+          "label": "gnsi.acctz.v1.SessionInfo.SessionStatus",
           "description": "session status",
           "sourceSymbol": "gnsi.acctz.v1.SessionInfo.SessionStatus",
           "deprecated": false,
@@ -219431,7 +219431,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-authz-v1-probe-response-action",
           "kind": "enum",
-          "label": "enum gnsi.authz.v1.ProbeResponse.Action",
+          "label": "gnsi.authz.v1.ProbeResponse.Action",
           "description": "Action is the defined action for an gRPC-level Authorization Policy.",
           "sourceSymbol": "gnsi.authz.v1.ProbeResponse.Action",
           "deprecated": false,
@@ -219825,7 +219825,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-certz-v1-certificate-encoding",
           "kind": "enum",
-          "label": "enum gnsi.certz.v1.CertificateEncoding",
+          "label": "gnsi.certz.v1.CertificateEncoding",
           "sourceSymbol": "gnsi.certz.v1.CertificateEncoding",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.2.5/certz/certz.proto#L429",
@@ -219991,7 +219991,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-certz-v1-certificate-type",
           "kind": "enum",
-          "label": "enum gnsi.certz.v1.CertificateType",
+          "label": "gnsi.certz.v1.CertificateType",
           "description": "Types of certificates.",
           "sourceSymbol": "gnsi.certz.v1.CertificateType",
           "deprecated": false,
@@ -220115,7 +220115,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-certz-v1-csrsuite",
           "kind": "enum",
-          "label": "enum gnsi.certz.v1.CSRSuite",
+          "label": "gnsi.certz.v1.CSRSuite",
           "description": "CSRSuite specifies the valid types of keys and digests that can be used\nto generate CSRs",
           "sourceSymbol": "gnsi.certz.v1.CSRSuite",
           "deprecated": false,
@@ -220835,7 +220835,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-credentialz-v1-authentication-type",
           "kind": "enum",
-          "label": "enum gnsi.credentialz.v1.AuthenticationType",
+          "label": "gnsi.credentialz.v1.AuthenticationType",
           "sourceSymbol": "gnsi.credentialz.v1.AuthenticationType",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.2.5/credentialz/credentialz.proto#L639",
@@ -220956,7 +220956,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-credentialz-v1-authorized-principal-check-request-tool",
           "kind": "enum",
-          "label": "enum gnsi.credentialz.v1.AuthorizedPrincipalCheckRequest.Tool",
+          "label": "gnsi.credentialz.v1.AuthorizedPrincipalCheckRequest.Tool",
           "sourceSymbol": "gnsi.credentialz.v1.AuthorizedPrincipalCheckRequest.Tool",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.2.5/credentialz/credentialz.proto#L678",
@@ -221313,7 +221313,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-credentialz-v1-key-gen",
           "kind": "enum",
-          "label": "enum gnsi.credentialz.v1.KeyGen",
+          "label": "gnsi.credentialz.v1.KeyGen",
           "description": "KeyGen specifies the valid types of keys and their lengths that\ncan be used.",
           "sourceSymbol": "gnsi.credentialz.v1.KeyGen",
           "deprecated": false,
@@ -221371,7 +221371,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-credentialz-v1-key-type",
           "kind": "enum",
-          "label": "enum gnsi.credentialz.v1.KeyType",
+          "label": "gnsi.credentialz.v1.KeyType",
           "description": "Key encryption type.",
           "sourceSymbol": "gnsi.credentialz.v1.KeyType",
           "deprecated": false,
@@ -221470,7 +221470,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-credentialz-v1-option-standard-option",
           "kind": "enum",
-          "label": "enum gnsi.credentialz.v1.Option.StandardOption",
+          "label": "gnsi.credentialz.v1.Option.StandardOption",
           "description": "An option that is specified for an authorized user, key entry, or\nauthorized principal tool.\nFor example, for OpenSSH, an entry can have an option\n`from=\"*.sales.example.net,!pc.sales.example.net\"`\nFor such option the `key.id` would be `FROM` (6) while the `value`\nwould be `*.sales.example.net,!pc.sales.example.net`.\n\nIf a specified option is unknown then the whole request should be rejected.",
           "sourceSymbol": "gnsi.credentialz.v1.Option.StandardOption",
           "deprecated": false,
@@ -221761,7 +221761,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-credentialz-v1-password-request-crypto-hash-hash-type",
           "kind": "enum",
-          "label": "enum gnsi.credentialz.v1.PasswordRequest.CryptoHash.HashType",
+          "label": "gnsi.credentialz.v1.PasswordRequest.CryptoHash.HashType",
           "description": "Hash type's",
           "sourceSymbol": "gnsi.credentialz.v1.PasswordRequest.CryptoHash.HashType",
           "deprecated": false,
@@ -222316,7 +222316,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-pathz-action",
           "kind": "enum",
-          "label": "enum gnsi.pathz.Action",
+          "label": "gnsi.pathz.Action",
           "description": "Action is the defined action for an AuthorizationPolicy.",
           "sourceSymbol": "gnsi.pathz.Action",
           "deprecated": false,
@@ -222488,7 +222488,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-pathz-mode",
           "kind": "enum",
-          "label": "enum gnsi.pathz.Mode",
+          "label": "gnsi.pathz.Mode",
           "description": "Mode is:\nREAD: Ability to read/subscribe to data from the model.\nWRITE: Ability to mutate/write updates to data in the model.",
           "sourceSymbol": "gnsi.pathz.Mode",
           "deprecated": false,
@@ -222649,7 +222649,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-pathz-v1-policy-instance",
           "kind": "enum",
-          "label": "enum gnsi.pathz.v1.PolicyInstance",
+          "label": "gnsi.pathz.v1.PolicyInstance",
           "sourceSymbol": "gnsi.pathz.v1.PolicyInstance",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.2.5/pathz/pathz.proto#L162",
@@ -224980,7 +224980,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-acctz-v1-authn-detail-authn-status",
           "kind": "enum",
-          "label": "enum gnsi.acctz.v1.AuthnDetail.AuthnStatus",
+          "label": "gnsi.acctz.v1.AuthnDetail.AuthnStatus",
           "description": "authentication status",
           "sourceSymbol": "gnsi.acctz.v1.AuthnDetail.AuthnStatus",
           "deprecated": false,
@@ -225026,7 +225026,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-acctz-v1-authn-detail-authn-type",
           "kind": "enum",
-          "label": "enum gnsi.acctz.v1.AuthnDetail.AuthnType",
+          "label": "gnsi.acctz.v1.AuthnDetail.AuthnType",
           "description": "authentication type",
           "sourceSymbol": "gnsi.acctz.v1.AuthnDetail.AuthnType",
           "deprecated": false,
@@ -225131,7 +225131,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-acctz-v1-authz-detail-authz-status",
           "kind": "enum",
-          "label": "enum gnsi.acctz.v1.AuthzDetail.AuthzStatus",
+          "label": "gnsi.acctz.v1.AuthzDetail.AuthzStatus",
           "description": "authorization status",
           "sourceSymbol": "gnsi.acctz.v1.AuthzDetail.AuthzStatus",
           "deprecated": false,
@@ -225240,7 +225240,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-acctz-v1-command-service-cmd-service-type",
           "kind": "enum",
-          "label": "enum gnsi.acctz.v1.CommandService.CmdServiceType",
+          "label": "gnsi.acctz.v1.CommandService.CmdServiceType",
           "sourceSymbol": "gnsi.acctz.v1.CommandService.CmdServiceType",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.2.4/acctz/acctz.proto#L186",
@@ -225353,7 +225353,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-acctz-v1-grpc-service-grpc-service-type",
           "kind": "enum",
-          "label": "enum gnsi.acctz.v1.GrpcService.GrpcServiceType",
+          "label": "gnsi.acctz.v1.GrpcService.GrpcServiceType",
           "sourceSymbol": "gnsi.acctz.v1.GrpcService.GrpcServiceType",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.2.4/acctz/acctz.proto#L223",
@@ -225596,7 +225596,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-acctz-v1-session-info-session-status",
           "kind": "enum",
-          "label": "enum gnsi.acctz.v1.SessionInfo.SessionStatus",
+          "label": "gnsi.acctz.v1.SessionInfo.SessionStatus",
           "description": "session status",
           "sourceSymbol": "gnsi.acctz.v1.SessionInfo.SessionStatus",
           "deprecated": false,
@@ -225857,7 +225857,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-authz-v1-probe-response-action",
           "kind": "enum",
-          "label": "enum gnsi.authz.v1.ProbeResponse.Action",
+          "label": "gnsi.authz.v1.ProbeResponse.Action",
           "description": "Action is the defined action for an gRPC-level Authorization Policy.",
           "sourceSymbol": "gnsi.authz.v1.ProbeResponse.Action",
           "deprecated": false,
@@ -226251,7 +226251,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-certz-v1-certificate-encoding",
           "kind": "enum",
-          "label": "enum gnsi.certz.v1.CertificateEncoding",
+          "label": "gnsi.certz.v1.CertificateEncoding",
           "sourceSymbol": "gnsi.certz.v1.CertificateEncoding",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.2.4/certz/certz.proto#L429",
@@ -226417,7 +226417,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-certz-v1-certificate-type",
           "kind": "enum",
-          "label": "enum gnsi.certz.v1.CertificateType",
+          "label": "gnsi.certz.v1.CertificateType",
           "description": "Types of certificates.",
           "sourceSymbol": "gnsi.certz.v1.CertificateType",
           "deprecated": false,
@@ -226541,7 +226541,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-certz-v1-csrsuite",
           "kind": "enum",
-          "label": "enum gnsi.certz.v1.CSRSuite",
+          "label": "gnsi.certz.v1.CSRSuite",
           "description": "CSRSuite specifies the valid types of keys and digests that can be used\nto generate CSRs",
           "sourceSymbol": "gnsi.certz.v1.CSRSuite",
           "deprecated": false,
@@ -227261,7 +227261,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-credentialz-v1-authentication-type",
           "kind": "enum",
-          "label": "enum gnsi.credentialz.v1.AuthenticationType",
+          "label": "gnsi.credentialz.v1.AuthenticationType",
           "sourceSymbol": "gnsi.credentialz.v1.AuthenticationType",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.2.4/credentialz/credentialz.proto#L639",
@@ -227382,7 +227382,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-credentialz-v1-authorized-principal-check-request-tool",
           "kind": "enum",
-          "label": "enum gnsi.credentialz.v1.AuthorizedPrincipalCheckRequest.Tool",
+          "label": "gnsi.credentialz.v1.AuthorizedPrincipalCheckRequest.Tool",
           "sourceSymbol": "gnsi.credentialz.v1.AuthorizedPrincipalCheckRequest.Tool",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.2.4/credentialz/credentialz.proto#L678",
@@ -227739,7 +227739,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-credentialz-v1-key-gen",
           "kind": "enum",
-          "label": "enum gnsi.credentialz.v1.KeyGen",
+          "label": "gnsi.credentialz.v1.KeyGen",
           "description": "KeyGen specifies the valid types of keys and their lengths that\ncan be used.",
           "sourceSymbol": "gnsi.credentialz.v1.KeyGen",
           "deprecated": false,
@@ -227797,7 +227797,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-credentialz-v1-key-type",
           "kind": "enum",
-          "label": "enum gnsi.credentialz.v1.KeyType",
+          "label": "gnsi.credentialz.v1.KeyType",
           "description": "Key encryption type.",
           "sourceSymbol": "gnsi.credentialz.v1.KeyType",
           "deprecated": false,
@@ -227896,7 +227896,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-credentialz-v1-option-standard-option",
           "kind": "enum",
-          "label": "enum gnsi.credentialz.v1.Option.StandardOption",
+          "label": "gnsi.credentialz.v1.Option.StandardOption",
           "description": "An option that is specified for an authorized user, key entry, or\nauthorized principal tool.\nFor example, for OpenSSH, an entry can have an option\n`from=\"*.sales.example.net,!pc.sales.example.net\"`\nFor such option the `key.id` would be `FROM` (6) while the `value`\nwould be `*.sales.example.net,!pc.sales.example.net`.\n\nIf a specified option is unknown then the whole request should be rejected.",
           "sourceSymbol": "gnsi.credentialz.v1.Option.StandardOption",
           "deprecated": false,
@@ -228187,7 +228187,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-credentialz-v1-password-request-crypto-hash-hash-type",
           "kind": "enum",
-          "label": "enum gnsi.credentialz.v1.PasswordRequest.CryptoHash.HashType",
+          "label": "gnsi.credentialz.v1.PasswordRequest.CryptoHash.HashType",
           "description": "Hash type's",
           "sourceSymbol": "gnsi.credentialz.v1.PasswordRequest.CryptoHash.HashType",
           "deprecated": false,
@@ -228742,7 +228742,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-pathz-action",
           "kind": "enum",
-          "label": "enum gnsi.pathz.Action",
+          "label": "gnsi.pathz.Action",
           "description": "Action is the defined action for an AuthorizationPolicy.",
           "sourceSymbol": "gnsi.pathz.Action",
           "deprecated": false,
@@ -228914,7 +228914,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-pathz-mode",
           "kind": "enum",
-          "label": "enum gnsi.pathz.Mode",
+          "label": "gnsi.pathz.Mode",
           "description": "Mode is:\nREAD: Ability to read/subscribe to data from the model.\nWRITE: Ability to mutate/write updates to data in the model.",
           "sourceSymbol": "gnsi.pathz.Mode",
           "deprecated": false,
@@ -229075,7 +229075,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-pathz-v1-policy-instance",
           "kind": "enum",
-          "label": "enum gnsi.pathz.v1.PolicyInstance",
+          "label": "gnsi.pathz.v1.PolicyInstance",
           "sourceSymbol": "gnsi.pathz.v1.PolicyInstance",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.2.4/pathz/pathz.proto#L162",
@@ -231414,7 +231414,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-acctz-v1-auth-detail-authen-status",
           "kind": "enum",
-          "label": "enum gnsi.acctz.v1.AuthDetail.AuthenStatus",
+          "label": "gnsi.acctz.v1.AuthDetail.AuthenStatus",
           "description": "authentication status",
           "sourceSymbol": "gnsi.acctz.v1.AuthDetail.AuthenStatus",
           "deprecated": false,
@@ -231510,7 +231510,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-acctz-v1-command-service-cmd-service-type",
           "kind": "enum",
-          "label": "enum gnsi.acctz.v1.CommandService.CmdServiceType",
+          "label": "gnsi.acctz.v1.CommandService.CmdServiceType",
           "sourceSymbol": "gnsi.acctz.v1.CommandService.CmdServiceType",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.2.3/acctz/acctz.proto#L123",
@@ -231617,7 +231617,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-acctz-v1-grpc-service-grpc-service-type",
           "kind": "enum",
-          "label": "enum gnsi.acctz.v1.GrpcService.GrpcServiceType",
+          "label": "gnsi.acctz.v1.GrpcService.GrpcServiceType",
           "sourceSymbol": "gnsi.acctz.v1.GrpcService.GrpcServiceType",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.2.3/acctz/acctz.proto#L157",
@@ -231995,7 +231995,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-authz-v1-probe-response-action",
           "kind": "enum",
-          "label": "enum gnsi.authz.v1.ProbeResponse.Action",
+          "label": "gnsi.authz.v1.ProbeResponse.Action",
           "description": "Action is the defined action for an gRPC-level Authorization Policy.",
           "sourceSymbol": "gnsi.authz.v1.ProbeResponse.Action",
           "deprecated": false,
@@ -232389,7 +232389,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-certz-v1-certificate-encoding",
           "kind": "enum",
-          "label": "enum gnsi.certz.v1.CertificateEncoding",
+          "label": "gnsi.certz.v1.CertificateEncoding",
           "sourceSymbol": "gnsi.certz.v1.CertificateEncoding",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.2.3/certz/certz.proto#L429",
@@ -232555,7 +232555,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-certz-v1-certificate-type",
           "kind": "enum",
-          "label": "enum gnsi.certz.v1.CertificateType",
+          "label": "gnsi.certz.v1.CertificateType",
           "description": "Types of certificates.",
           "sourceSymbol": "gnsi.certz.v1.CertificateType",
           "deprecated": false,
@@ -232679,7 +232679,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-certz-v1-csrsuite",
           "kind": "enum",
-          "label": "enum gnsi.certz.v1.CSRSuite",
+          "label": "gnsi.certz.v1.CSRSuite",
           "description": "CSRSuite specifies the valid types of keys and digests that can be used\nto generate CSRs",
           "sourceSymbol": "gnsi.certz.v1.CSRSuite",
           "deprecated": false,
@@ -233399,7 +233399,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-credentialz-v1-authentication-type",
           "kind": "enum",
-          "label": "enum gnsi.credentialz.v1.AuthenticationType",
+          "label": "gnsi.credentialz.v1.AuthenticationType",
           "sourceSymbol": "gnsi.credentialz.v1.AuthenticationType",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.2.3/credentialz/credentialz.proto#L633",
@@ -233520,7 +233520,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-credentialz-v1-authorized-principal-check-request-tool",
           "kind": "enum",
-          "label": "enum gnsi.credentialz.v1.AuthorizedPrincipalCheckRequest.Tool",
+          "label": "gnsi.credentialz.v1.AuthorizedPrincipalCheckRequest.Tool",
           "sourceSymbol": "gnsi.credentialz.v1.AuthorizedPrincipalCheckRequest.Tool",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.2.3/credentialz/credentialz.proto#L672",
@@ -233877,7 +233877,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-credentialz-v1-key-gen",
           "kind": "enum",
-          "label": "enum gnsi.credentialz.v1.KeyGen",
+          "label": "gnsi.credentialz.v1.KeyGen",
           "description": "KeyGen specifies the valid types of keys and their lengths that\ncan be used.",
           "sourceSymbol": "gnsi.credentialz.v1.KeyGen",
           "deprecated": false,
@@ -233935,7 +233935,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-credentialz-v1-key-type",
           "kind": "enum",
-          "label": "enum gnsi.credentialz.v1.KeyType",
+          "label": "gnsi.credentialz.v1.KeyType",
           "description": "Key encryption type.",
           "sourceSymbol": "gnsi.credentialz.v1.KeyType",
           "deprecated": false,
@@ -234034,7 +234034,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-credentialz-v1-option-standard-option",
           "kind": "enum",
-          "label": "enum gnsi.credentialz.v1.Option.StandardOption",
+          "label": "gnsi.credentialz.v1.Option.StandardOption",
           "description": "An option that is specified for an authorized user, key entry, or\nauthorized principal tool.\nFor example, for OpenSSH, an entry can have an option\n`from=\"*.sales.example.net,!pc.sales.example.net\"`\nFor such option the `key.id` would be `FROM` (6) while the `value`\nwould be `*.sales.example.net,!pc.sales.example.net`.\n\nIf a specified option is unknown then the whole request should be rejected.",
           "sourceSymbol": "gnsi.credentialz.v1.Option.StandardOption",
           "deprecated": false,
@@ -234325,7 +234325,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-credentialz-v1-password-request-crypto-hash-hash-type",
           "kind": "enum",
-          "label": "enum gnsi.credentialz.v1.PasswordRequest.CryptoHash.HashType",
+          "label": "gnsi.credentialz.v1.PasswordRequest.CryptoHash.HashType",
           "description": "Hash type's",
           "sourceSymbol": "gnsi.credentialz.v1.PasswordRequest.CryptoHash.HashType",
           "deprecated": false,
@@ -234880,7 +234880,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-pathz-action",
           "kind": "enum",
-          "label": "enum gnsi.pathz.Action",
+          "label": "gnsi.pathz.Action",
           "description": "Action is the defined action for an AuthorizationPolicy.",
           "sourceSymbol": "gnsi.pathz.Action",
           "deprecated": false,
@@ -235052,7 +235052,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-pathz-mode",
           "kind": "enum",
-          "label": "enum gnsi.pathz.Mode",
+          "label": "gnsi.pathz.Mode",
           "description": "Mode is:\nREAD: Ability to read/subscribe to data from the model.\nWRITE: Ability to mutate/write updates to data in the model.",
           "sourceSymbol": "gnsi.pathz.Mode",
           "deprecated": false,
@@ -235213,7 +235213,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-pathz-v1-policy-instance",
           "kind": "enum",
-          "label": "enum gnsi.pathz.v1.PolicyInstance",
+          "label": "gnsi.pathz.v1.PolicyInstance",
           "sourceSymbol": "gnsi.pathz.v1.PolicyInstance",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.2.3/pathz/pathz.proto#L162",
@@ -237571,7 +237571,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-accounting-v1-auth-detail-authen-status",
           "kind": "enum",
-          "label": "enum gnsi.accounting.v1.AuthDetail.AuthenStatus",
+          "label": "gnsi.accounting.v1.AuthDetail.AuthenStatus",
           "description": "authentication status",
           "sourceSymbol": "gnsi.accounting.v1.AuthDetail.AuthenStatus",
           "deprecated": false,
@@ -237653,7 +237653,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-accounting-v1-command-service-cmd-service-type",
           "kind": "enum",
-          "label": "enum gnsi.accounting.v1.CommandService.CmdServiceType",
+          "label": "gnsi.accounting.v1.CommandService.CmdServiceType",
           "sourceSymbol": "gnsi.accounting.v1.CommandService.CmdServiceType",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.2.2/accounting/acct.proto#L140",
@@ -237760,7 +237760,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-accounting-v1-grpc-service-grpc-service-type",
           "kind": "enum",
-          "label": "enum gnsi.accounting.v1.GrpcService.GrpcServiceType",
+          "label": "gnsi.accounting.v1.GrpcService.GrpcServiceType",
           "sourceSymbol": "gnsi.accounting.v1.GrpcService.GrpcServiceType",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.2.2/accounting/acct.proto#L159",
@@ -237896,7 +237896,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-accounting-v1-record-service-status",
           "kind": "enum",
-          "label": "enum gnsi.accounting.v1.Record.ServiceStatus",
+          "label": "gnsi.accounting.v1.Record.ServiceStatus",
           "description": "Service processing status at the time of event reporting.",
           "sourceSymbol": "gnsi.accounting.v1.Record.ServiceStatus",
           "deprecated": false,
@@ -238181,7 +238181,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-authz-v1-probe-response-action",
           "kind": "enum",
-          "label": "enum gnsi.authz.v1.ProbeResponse.Action",
+          "label": "gnsi.authz.v1.ProbeResponse.Action",
           "description": "Action is the defined action for an gRPC-level Authorization Policy.",
           "sourceSymbol": "gnsi.authz.v1.ProbeResponse.Action",
           "deprecated": false,
@@ -238575,7 +238575,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-certz-v1-certificate-encoding",
           "kind": "enum",
-          "label": "enum gnsi.certz.v1.CertificateEncoding",
+          "label": "gnsi.certz.v1.CertificateEncoding",
           "sourceSymbol": "gnsi.certz.v1.CertificateEncoding",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.2.2/certz/certz.proto#L429",
@@ -238741,7 +238741,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-certz-v1-certificate-type",
           "kind": "enum",
-          "label": "enum gnsi.certz.v1.CertificateType",
+          "label": "gnsi.certz.v1.CertificateType",
           "description": "Types of certificates.",
           "sourceSymbol": "gnsi.certz.v1.CertificateType",
           "deprecated": false,
@@ -238865,7 +238865,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-certz-v1-csrsuite",
           "kind": "enum",
-          "label": "enum gnsi.certz.v1.CSRSuite",
+          "label": "gnsi.certz.v1.CSRSuite",
           "description": "CSRSuite specifies the valid types of keys and digests that can be used\nto generate CSRs",
           "sourceSymbol": "gnsi.certz.v1.CSRSuite",
           "deprecated": false,
@@ -239585,7 +239585,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-credentialz-v1-authentication-type",
           "kind": "enum",
-          "label": "enum gnsi.credentialz.v1.AuthenticationType",
+          "label": "gnsi.credentialz.v1.AuthenticationType",
           "sourceSymbol": "gnsi.credentialz.v1.AuthenticationType",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.2.2/credentialz/credentialz.proto#L639",
@@ -239705,7 +239705,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-credentialz-v1-authorized-principal-check-request-tool",
           "kind": "enum",
-          "label": "enum gnsi.credentialz.v1.AuthorizedPrincipalCheckRequest.Tool",
+          "label": "gnsi.credentialz.v1.AuthorizedPrincipalCheckRequest.Tool",
           "sourceSymbol": "gnsi.credentialz.v1.AuthorizedPrincipalCheckRequest.Tool",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.2.2/credentialz/credentialz.proto#L678",
@@ -240048,7 +240048,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-credentialz-v1-key-gen",
           "kind": "enum",
-          "label": "enum gnsi.credentialz.v1.KeyGen",
+          "label": "gnsi.credentialz.v1.KeyGen",
           "description": "KeyGen specifies the valid types of keys and their lengths that\ncan be used.",
           "sourceSymbol": "gnsi.credentialz.v1.KeyGen",
           "deprecated": false,
@@ -240106,7 +240106,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-credentialz-v1-key-type",
           "kind": "enum",
-          "label": "enum gnsi.credentialz.v1.KeyType",
+          "label": "gnsi.credentialz.v1.KeyType",
           "description": "Key encryption type.",
           "sourceSymbol": "gnsi.credentialz.v1.KeyType",
           "deprecated": false,
@@ -240205,7 +240205,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-credentialz-v1-option-standard-option",
           "kind": "enum",
-          "label": "enum gnsi.credentialz.v1.Option.StandardOption",
+          "label": "gnsi.credentialz.v1.Option.StandardOption",
           "description": "An option that is specified for an authorized user, key entry, or\nauthorized principal tool.\nFor example, for OpenSSH, an entry can have an option\n`from=\"*.sales.example.net,!pc.sales.example.net\"`\nFor such option the `key.id` would be `FROM` (6) while the `value`\nwould be `*.sales.example.net,!pc.sales.example.net`.\n\nIf a specified option is unknown then the whole request should be rejected.",
           "sourceSymbol": "gnsi.credentialz.v1.Option.StandardOption",
           "deprecated": false,
@@ -240496,7 +240496,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-credentialz-v1-password-request-crypto-hash-hash-type",
           "kind": "enum",
-          "label": "enum gnsi.credentialz.v1.PasswordRequest.CryptoHash.HashType",
+          "label": "gnsi.credentialz.v1.PasswordRequest.CryptoHash.HashType",
           "description": "Hash type's",
           "sourceSymbol": "gnsi.credentialz.v1.PasswordRequest.CryptoHash.HashType",
           "deprecated": false,
@@ -241051,7 +241051,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-pathz-action",
           "kind": "enum",
-          "label": "enum gnsi.pathz.Action",
+          "label": "gnsi.pathz.Action",
           "description": "Action is the defined action for an AuthorizationPolicy.",
           "sourceSymbol": "gnsi.pathz.Action",
           "deprecated": false,
@@ -241223,7 +241223,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-pathz-mode",
           "kind": "enum",
-          "label": "enum gnsi.pathz.Mode",
+          "label": "gnsi.pathz.Mode",
           "description": "Mode is:\nREAD: Ability to read/subscribe to data from the model.\nWRITE: Ability to mutate/write updates to data in the model.",
           "sourceSymbol": "gnsi.pathz.Mode",
           "deprecated": false,
@@ -241384,7 +241384,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-pathz-v1-policy-instance",
           "kind": "enum",
-          "label": "enum gnsi.pathz.v1.PolicyInstance",
+          "label": "gnsi.pathz.v1.PolicyInstance",
           "sourceSymbol": "gnsi.pathz.v1.PolicyInstance",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.2.2/pathz/pathz.proto#L164",
@@ -243774,7 +243774,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-accounting-v1-auth-detail-authen-status",
           "kind": "enum",
-          "label": "enum gnsi.accounting.v1.AuthDetail.AuthenStatus",
+          "label": "gnsi.accounting.v1.AuthDetail.AuthenStatus",
           "description": "authentication status",
           "sourceSymbol": "gnsi.accounting.v1.AuthDetail.AuthenStatus",
           "deprecated": false,
@@ -243856,7 +243856,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-accounting-v1-command-service-cmd-service-type",
           "kind": "enum",
-          "label": "enum gnsi.accounting.v1.CommandService.CmdServiceType",
+          "label": "gnsi.accounting.v1.CommandService.CmdServiceType",
           "sourceSymbol": "gnsi.accounting.v1.CommandService.CmdServiceType",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.2.1/accounting/acct.proto#L140",
@@ -243944,7 +243944,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-accounting-v1-grpc-service-grpc-service-type",
           "kind": "enum",
-          "label": "enum gnsi.accounting.v1.GrpcService.GrpcServiceType",
+          "label": "gnsi.accounting.v1.GrpcService.GrpcServiceType",
           "sourceSymbol": "gnsi.accounting.v1.GrpcService.GrpcServiceType",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.2.1/accounting/acct.proto#L156",
@@ -244073,7 +244073,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-accounting-v1-record-service-status",
           "kind": "enum",
-          "label": "enum gnsi.accounting.v1.Record.ServiceStatus",
+          "label": "gnsi.accounting.v1.Record.ServiceStatus",
           "description": "Service processing status at the time of event reporting.",
           "sourceSymbol": "gnsi.accounting.v1.Record.ServiceStatus",
           "deprecated": false,
@@ -244358,7 +244358,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-authz-v1-probe-response-action",
           "kind": "enum",
-          "label": "enum gnsi.authz.v1.ProbeResponse.Action",
+          "label": "gnsi.authz.v1.ProbeResponse.Action",
           "description": "Action is the defined action for an gRPC-level Authorization Policy.",
           "sourceSymbol": "gnsi.authz.v1.ProbeResponse.Action",
           "deprecated": false,
@@ -244752,7 +244752,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-certz-v1-certificate-encoding",
           "kind": "enum",
-          "label": "enum gnsi.certz.v1.CertificateEncoding",
+          "label": "gnsi.certz.v1.CertificateEncoding",
           "sourceSymbol": "gnsi.certz.v1.CertificateEncoding",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.2.1/certz/certz.proto#L429",
@@ -244918,7 +244918,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-certz-v1-certificate-type",
           "kind": "enum",
-          "label": "enum gnsi.certz.v1.CertificateType",
+          "label": "gnsi.certz.v1.CertificateType",
           "description": "Types of certificates.",
           "sourceSymbol": "gnsi.certz.v1.CertificateType",
           "deprecated": false,
@@ -245042,7 +245042,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-certz-v1-csrsuite",
           "kind": "enum",
-          "label": "enum gnsi.certz.v1.CSRSuite",
+          "label": "gnsi.certz.v1.CSRSuite",
           "description": "CSRSuite specifies the valid types of keys and digests that can be used\nto generate CSRs",
           "sourceSymbol": "gnsi.certz.v1.CSRSuite",
           "deprecated": false,
@@ -246052,7 +246052,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-credentialz-v1-key-gen",
           "kind": "enum",
-          "label": "enum gnsi.credentialz.v1.KeyGen",
+          "label": "gnsi.credentialz.v1.KeyGen",
           "description": "KeyGen specifies the valid types of keys and their lengths that\ncan be used.",
           "sourceSymbol": "gnsi.credentialz.v1.KeyGen",
           "deprecated": false,
@@ -246110,7 +246110,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-credentialz-v1-key-type",
           "kind": "enum",
-          "label": "enum gnsi.credentialz.v1.KeyType",
+          "label": "gnsi.credentialz.v1.KeyType",
           "description": "Key encryption type.",
           "sourceSymbol": "gnsi.credentialz.v1.KeyType",
           "deprecated": false,
@@ -246209,7 +246209,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-credentialz-v1-option-standard-option",
           "kind": "enum",
-          "label": "enum gnsi.credentialz.v1.Option.StandardOption",
+          "label": "gnsi.credentialz.v1.Option.StandardOption",
           "description": "An option that is specified for an authorized user, key entry, or\nauthorized principal tool.\nFor example, for OpenSSH, an entry can have an option\n`from=\"*.sales.example.net,!pc.sales.example.net\"`\nFor such option the `key.id` would be `FROM` (6) while the `value`\nwould be `*.sales.example.net,!pc.sales.example.net`.\n\nIf a specified option is unknown then the whole request should be rejected.",
           "sourceSymbol": "gnsi.credentialz.v1.Option.StandardOption",
           "deprecated": false,
@@ -246500,7 +246500,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-credentialz-v1-password-request-crypto-hash-hash-type",
           "kind": "enum",
-          "label": "enum gnsi.credentialz.v1.PasswordRequest.CryptoHash.HashType",
+          "label": "gnsi.credentialz.v1.PasswordRequest.CryptoHash.HashType",
           "description": "Hash type's",
           "sourceSymbol": "gnsi.credentialz.v1.PasswordRequest.CryptoHash.HashType",
           "deprecated": false,
@@ -247008,7 +247008,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-credentialz-v1-user-policy-authorized-principal-check-tool",
           "kind": "enum",
-          "label": "enum gnsi.credentialz.v1.UserPolicy.AuthorizedPrincipalCheck.Tool",
+          "label": "gnsi.credentialz.v1.UserPolicy.AuthorizedPrincipalCheck.Tool",
           "sourceSymbol": "gnsi.credentialz.v1.UserPolicy.AuthorizedPrincipalCheck.Tool",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.2.1/credentialz/credentialz.proto#L497",
@@ -247103,7 +247103,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-pathz-action",
           "kind": "enum",
-          "label": "enum gnsi.pathz.Action",
+          "label": "gnsi.pathz.Action",
           "description": "Action is the defined action for an AuthorizationPolicy.",
           "sourceSymbol": "gnsi.pathz.Action",
           "deprecated": false,
@@ -247275,7 +247275,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-pathz-mode",
           "kind": "enum",
-          "label": "enum gnsi.pathz.Mode",
+          "label": "gnsi.pathz.Mode",
           "description": "Mode is:\nREAD: Ability to read/subscribe to data from the model.\nWRITE: Ability to mutate/write updates to data in the model.",
           "sourceSymbol": "gnsi.pathz.Mode",
           "deprecated": false,
@@ -247436,7 +247436,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-pathz-v1-policy-instance",
           "kind": "enum",
-          "label": "enum gnsi.pathz.v1.PolicyInstance",
+          "label": "gnsi.pathz.v1.PolicyInstance",
           "sourceSymbol": "gnsi.pathz.v1.PolicyInstance",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.2.1/pathz/pathz.proto#L164",
@@ -249802,7 +249802,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-accounting-v1-auth-detail-authen-status",
           "kind": "enum",
-          "label": "enum gnsi.accounting.v1.AuthDetail.AuthenStatus",
+          "label": "gnsi.accounting.v1.AuthDetail.AuthenStatus",
           "description": "authentication status",
           "sourceSymbol": "gnsi.accounting.v1.AuthDetail.AuthenStatus",
           "deprecated": false,
@@ -249884,7 +249884,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-accounting-v1-command-service-cmd-service-type",
           "kind": "enum",
-          "label": "enum gnsi.accounting.v1.CommandService.CmdServiceType",
+          "label": "gnsi.accounting.v1.CommandService.CmdServiceType",
           "sourceSymbol": "gnsi.accounting.v1.CommandService.CmdServiceType",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.2.0/accounting/acct.proto#L140",
@@ -249972,7 +249972,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-accounting-v1-grpc-service-grpc-service-type",
           "kind": "enum",
-          "label": "enum gnsi.accounting.v1.GrpcService.GrpcServiceType",
+          "label": "gnsi.accounting.v1.GrpcService.GrpcServiceType",
           "sourceSymbol": "gnsi.accounting.v1.GrpcService.GrpcServiceType",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.2.0/accounting/acct.proto#L156",
@@ -250101,7 +250101,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-accounting-v1-record-service-status",
           "kind": "enum",
-          "label": "enum gnsi.accounting.v1.Record.ServiceStatus",
+          "label": "gnsi.accounting.v1.Record.ServiceStatus",
           "description": "Service processing status at the time of event reporting.",
           "sourceSymbol": "gnsi.accounting.v1.Record.ServiceStatus",
           "deprecated": false,
@@ -250386,7 +250386,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-authz-v1-probe-response-action",
           "kind": "enum",
-          "label": "enum gnsi.authz.v1.ProbeResponse.Action",
+          "label": "gnsi.authz.v1.ProbeResponse.Action",
           "description": "Action is the defined action for an gRPC-level Authorization Policy.",
           "sourceSymbol": "gnsi.authz.v1.ProbeResponse.Action",
           "deprecated": false,
@@ -250780,7 +250780,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-certz-v1-certificate-encoding",
           "kind": "enum",
-          "label": "enum gnsi.certz.v1.CertificateEncoding",
+          "label": "gnsi.certz.v1.CertificateEncoding",
           "sourceSymbol": "gnsi.certz.v1.CertificateEncoding",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.2.0/certz/certz.proto#L429",
@@ -250946,7 +250946,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-certz-v1-certificate-type",
           "kind": "enum",
-          "label": "enum gnsi.certz.v1.CertificateType",
+          "label": "gnsi.certz.v1.CertificateType",
           "description": "Types of certificates.",
           "sourceSymbol": "gnsi.certz.v1.CertificateType",
           "deprecated": false,
@@ -251070,7 +251070,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-certz-v1-csrsuite",
           "kind": "enum",
-          "label": "enum gnsi.certz.v1.CSRSuite",
+          "label": "gnsi.certz.v1.CSRSuite",
           "description": "CSRSuite specifies the valid types of keys and digests that can be used\nto generate CSRs",
           "sourceSymbol": "gnsi.certz.v1.CSRSuite",
           "deprecated": false,
@@ -252080,7 +252080,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-credentialz-v1-key-gen",
           "kind": "enum",
-          "label": "enum gnsi.credentialz.v1.KeyGen",
+          "label": "gnsi.credentialz.v1.KeyGen",
           "description": "KeyGen specifies the valid types of keys and their lengths that\ncan be used.",
           "sourceSymbol": "gnsi.credentialz.v1.KeyGen",
           "deprecated": false,
@@ -252138,7 +252138,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-credentialz-v1-key-type",
           "kind": "enum",
-          "label": "enum gnsi.credentialz.v1.KeyType",
+          "label": "gnsi.credentialz.v1.KeyType",
           "description": "Key encryption type.",
           "sourceSymbol": "gnsi.credentialz.v1.KeyType",
           "deprecated": false,
@@ -252237,7 +252237,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-credentialz-v1-option-standard-option",
           "kind": "enum",
-          "label": "enum gnsi.credentialz.v1.Option.StandardOption",
+          "label": "gnsi.credentialz.v1.Option.StandardOption",
           "description": "An option that is specified for an authorized user, key entry, or\nauthorized principal tool.\nFor example, for OpenSSH, an entry can have an option\n`from=\"*.sales.example.net,!pc.sales.example.net\"`\nFor such option the `key.id` would be `FROM` (6) while the `value`\nwould be `*.sales.example.net,!pc.sales.example.net`.\n\nIf a specified option is unknown then the whole request should be rejected.",
           "sourceSymbol": "gnsi.credentialz.v1.Option.StandardOption",
           "deprecated": false,
@@ -252528,7 +252528,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-credentialz-v1-password-request-crypto-hash-hash-type",
           "kind": "enum",
-          "label": "enum gnsi.credentialz.v1.PasswordRequest.CryptoHash.HashType",
+          "label": "gnsi.credentialz.v1.PasswordRequest.CryptoHash.HashType",
           "description": "Hash type's",
           "sourceSymbol": "gnsi.credentialz.v1.PasswordRequest.CryptoHash.HashType",
           "deprecated": false,
@@ -253036,7 +253036,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-credentialz-v1-user-policy-authorized-principal-check-tool",
           "kind": "enum",
-          "label": "enum gnsi.credentialz.v1.UserPolicy.AuthorizedPrincipalCheck.Tool",
+          "label": "gnsi.credentialz.v1.UserPolicy.AuthorizedPrincipalCheck.Tool",
           "sourceSymbol": "gnsi.credentialz.v1.UserPolicy.AuthorizedPrincipalCheck.Tool",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.2.0/credentialz/credentialz.proto#L497",
@@ -253131,7 +253131,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-pathz-action",
           "kind": "enum",
-          "label": "enum gnsi.pathz.Action",
+          "label": "gnsi.pathz.Action",
           "description": "Action is the defined action for an AuthorizationPolicy.",
           "sourceSymbol": "gnsi.pathz.Action",
           "deprecated": false,
@@ -253303,7 +253303,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-pathz-mode",
           "kind": "enum",
-          "label": "enum gnsi.pathz.Mode",
+          "label": "gnsi.pathz.Mode",
           "description": "Mode is:\nREAD: Ability to read/subscribe to data from the model.\nWRITE: Ability to mutate/write updates to data in the model.",
           "sourceSymbol": "gnsi.pathz.Mode",
           "deprecated": false,
@@ -253464,7 +253464,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-pathz-v1-policy-instance",
           "kind": "enum",
-          "label": "enum gnsi.pathz.v1.PolicyInstance",
+          "label": "gnsi.pathz.v1.PolicyInstance",
           "sourceSymbol": "gnsi.pathz.v1.PolicyInstance",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v1.2.0/pathz/pathz.proto#L164",
@@ -255791,7 +255791,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-accounting-v1-auth-detail-authen-status",
           "kind": "enum",
-          "label": "enum gnsi.accounting.v1.AuthDetail.AuthenStatus",
+          "label": "gnsi.accounting.v1.AuthDetail.AuthenStatus",
           "description": "authentication status",
           "sourceSymbol": "gnsi.accounting.v1.AuthDetail.AuthenStatus",
           "deprecated": false,
@@ -255873,7 +255873,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-accounting-v1-command-service-cmd-service-type",
           "kind": "enum",
-          "label": "enum gnsi.accounting.v1.CommandService.CmdServiceType",
+          "label": "gnsi.accounting.v1.CommandService.CmdServiceType",
           "sourceSymbol": "gnsi.accounting.v1.CommandService.CmdServiceType",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v0.2.1/accounting/acct.proto#L140",
@@ -255961,7 +255961,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-accounting-v1-grpc-service-grpc-service-type",
           "kind": "enum",
-          "label": "enum gnsi.accounting.v1.GrpcService.GrpcServiceType",
+          "label": "gnsi.accounting.v1.GrpcService.GrpcServiceType",
           "sourceSymbol": "gnsi.accounting.v1.GrpcService.GrpcServiceType",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v0.2.1/accounting/acct.proto#L156",
@@ -256090,7 +256090,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-accounting-v1-record-service-status",
           "kind": "enum",
-          "label": "enum gnsi.accounting.v1.Record.ServiceStatus",
+          "label": "gnsi.accounting.v1.Record.ServiceStatus",
           "description": "Service processing status at the time of event reporting.",
           "sourceSymbol": "gnsi.accounting.v1.Record.ServiceStatus",
           "deprecated": false,
@@ -256375,7 +256375,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-authz-v1-probe-response-action",
           "kind": "enum",
-          "label": "enum gnsi.authz.v1.ProbeResponse.Action",
+          "label": "gnsi.authz.v1.ProbeResponse.Action",
           "description": "Action is the defined action for an gRPC-level Authorization Policy.",
           "sourceSymbol": "gnsi.authz.v1.ProbeResponse.Action",
           "deprecated": false,
@@ -256740,7 +256740,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-certz-v1-certificate-encoding",
           "kind": "enum",
-          "label": "enum gnsi.certz.v1.CertificateEncoding",
+          "label": "gnsi.certz.v1.CertificateEncoding",
           "sourceSymbol": "gnsi.certz.v1.CertificateEncoding",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v0.2.1/certz/certz.proto#L402",
@@ -256906,7 +256906,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-certz-v1-certificate-type",
           "kind": "enum",
-          "label": "enum gnsi.certz.v1.CertificateType",
+          "label": "gnsi.certz.v1.CertificateType",
           "description": "Types of certificates.",
           "sourceSymbol": "gnsi.certz.v1.CertificateType",
           "deprecated": false,
@@ -257030,7 +257030,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-certz-v1-csrsuite",
           "kind": "enum",
-          "label": "enum gnsi.certz.v1.CSRSuite",
+          "label": "gnsi.certz.v1.CSRSuite",
           "description": "CSRSuite specifies the valid types of keys and digests that can be used\nto generate CSRs",
           "sourceSymbol": "gnsi.certz.v1.CSRSuite",
           "deprecated": false,
@@ -257985,7 +257985,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-credentialz-v1-key-gen",
           "kind": "enum",
-          "label": "enum gnsi.credentialz.v1.KeyGen",
+          "label": "gnsi.credentialz.v1.KeyGen",
           "description": "KeyGen specifies the valid types of keys and their lengths that\ncan be used.",
           "sourceSymbol": "gnsi.credentialz.v1.KeyGen",
           "deprecated": false,
@@ -258037,7 +258037,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-credentialz-v1-key-type",
           "kind": "enum",
-          "label": "enum gnsi.credentialz.v1.KeyType",
+          "label": "gnsi.credentialz.v1.KeyType",
           "description": "Key encryption type.",
           "sourceSymbol": "gnsi.credentialz.v1.KeyType",
           "deprecated": false,
@@ -258130,7 +258130,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-credentialz-v1-option-standard-option",
           "kind": "enum",
-          "label": "enum gnsi.credentialz.v1.Option.StandardOption",
+          "label": "gnsi.credentialz.v1.Option.StandardOption",
           "description": "An option that is specified for an authorized user, key entry, or\nauthorized principal tool.\nFor example, for OpenSSH, an entry can have an option\n`from=\"*.sales.example.net,!pc.sales.example.net\"`\nFor such option the `key.id` would be `FROM` (6) while the `value`\nwould be `*.sales.example.net,!pc.sales.example.net`.\n\nIf a specified option is unknown then the whole request should be rejected.",
           "sourceSymbol": "gnsi.credentialz.v1.Option.StandardOption",
           "deprecated": false,
@@ -258421,7 +258421,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-credentialz-v1-password-request-crypto-hash-hash-type",
           "kind": "enum",
-          "label": "enum gnsi.credentialz.v1.PasswordRequest.CryptoHash.HashType",
+          "label": "gnsi.credentialz.v1.PasswordRequest.CryptoHash.HashType",
           "description": "Hash type's",
           "sourceSymbol": "gnsi.credentialz.v1.PasswordRequest.CryptoHash.HashType",
           "deprecated": false,
@@ -258928,7 +258928,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-credentialz-v1-user-policy-authorized-principal-check-tool",
           "kind": "enum",
-          "label": "enum gnsi.credentialz.v1.UserPolicy.AuthorizedPrincipalCheck.Tool",
+          "label": "gnsi.credentialz.v1.UserPolicy.AuthorizedPrincipalCheck.Tool",
           "sourceSymbol": "gnsi.credentialz.v1.UserPolicy.AuthorizedPrincipalCheck.Tool",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v0.2.1/credentialz/credentialz.proto#L467",
@@ -259023,7 +259023,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-pathz-action",
           "kind": "enum",
-          "label": "enum gnsi.pathz.Action",
+          "label": "gnsi.pathz.Action",
           "description": "Action is the defined action for an AuthorizationPolicy.",
           "sourceSymbol": "gnsi.pathz.Action",
           "deprecated": false,
@@ -259195,7 +259195,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-pathz-mode",
           "kind": "enum",
-          "label": "enum gnsi.pathz.Mode",
+          "label": "gnsi.pathz.Mode",
           "description": "Mode is:\nREAD: Ability to read/subscribe to data from the model.\nWRITE: Ability to mutate/write updates to data in the model.",
           "sourceSymbol": "gnsi.pathz.Mode",
           "deprecated": false,
@@ -259356,7 +259356,7 @@ export const gnsiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gnsi-pathz-v1-policy-instance",
           "kind": "enum",
-          "label": "enum gnsi.pathz.v1.PolicyInstance",
+          "label": "gnsi.pathz.v1.PolicyInstance",
           "sourceSymbol": "gnsi.pathz.v1.PolicyInstance",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gnsi/blob/v0.2.1/pathz/pathz.proto#L164",
@@ -262389,7 +262389,7 @@ export const gribiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gribi-aft-enums-openconfig-aft-types-encapsulation-header-type",
           "kind": "enum",
-          "label": "enum gribi_aft.enums.OpenconfigAftTypesEncapsulationHeaderType",
+          "label": "gribi_aft.enums.OpenconfigAftTypesEncapsulationHeaderType",
           "description": "OpenconfigAftTypesEncapsulationHeaderType represents an enumerated type generated for the YANG enumerated type encapsulation-header-type.",
           "sourceSymbol": "gribi_aft.enums.OpenconfigAftTypesEncapsulationHeaderType",
           "deprecated": false,
@@ -262465,7 +262465,7 @@ export const gribiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gribi-aft-enums-openconfig-mpls-types-mpls-label-enum",
           "kind": "enum",
-          "label": "enum gribi_aft.enums.OpenconfigMplsTypesMplsLabelEnum",
+          "label": "gribi_aft.enums.OpenconfigMplsTypesMplsLabelEnum",
           "description": "OpenconfigMplsTypesMplsLabelEnum represents an enumerated type generated for the YANG enumerated type mpls-label.",
           "sourceSymbol": "gribi_aft.enums.OpenconfigMplsTypesMplsLabelEnum",
           "deprecated": false,
@@ -262529,7 +262529,7 @@ export const gribiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gribi-aft-enums-openconfig-packet-match-types-ipprotocol",
           "kind": "enum",
-          "label": "enum gribi_aft.enums.OpenconfigPacketMatchTypesIPPROTOCOL",
+          "label": "gribi_aft.enums.OpenconfigPacketMatchTypesIPPROTOCOL",
           "description": "OpenconfigPacketMatchTypesIPPROTOCOL represents an enumerated type generated for the YANG identity IP_PROTOCOL.",
           "sourceSymbol": "gribi_aft.enums.OpenconfigPacketMatchTypesIPPROTOCOL",
           "deprecated": false,
@@ -262710,7 +262710,7 @@ export const gribiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gribi-aftentry-status",
           "kind": "enum",
-          "label": "enum gribi.AFTEntry.Status",
+          "label": "gribi.AFTEntry.Status",
           "sourceSymbol": "gribi.AFTEntry.Status",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gribi/blob/v1.9.1/v1/proto/service/gribi.proto#L483",
@@ -262884,7 +262884,7 @@ export const gribiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gribi-aftoperation-operation",
           "kind": "enum",
-          "label": "enum gribi.AFTOperation.Operation",
+          "label": "gribi.AFTOperation.Operation",
           "description": "The operation that this request is - either add, replace, or delete\nany entry from the specific AFT.",
           "sourceSymbol": "gribi.AFTOperation.Operation",
           "deprecated": false,
@@ -262983,7 +262983,7 @@ export const gribiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gribi-aftresult-status",
           "kind": "enum",
-          "label": "enum gribi.AFTResult.Status",
+          "label": "gribi.AFTResult.Status",
           "description": "Status of the operation. Since this is within a\nstream we do not use status.proto to respond since\nthis would fail the entire RPC connection, and hence\nhave in-band errors.",
           "sourceSymbol": "gribi.AFTResult.Status",
           "deprecated": false,
@@ -263046,7 +263046,7 @@ export const gribiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gribi-afttype",
           "kind": "enum",
-          "label": "enum gribi.AFTType",
+          "label": "gribi.AFTType",
           "description": "AFT describes the set of AFTs that are supported in the\ngRIBI protocol.",
           "sourceSymbol": "gribi.AFTType",
           "deprecated": false,
@@ -263232,7 +263232,7 @@ export const gribiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gribi-flush-response-result",
           "kind": "enum",
-          "label": "enum gribi.FlushResponse.Result",
+          "label": "gribi.FlushResponse.Result",
           "sourceSymbol": "gribi.FlushResponse.Result",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gribi/blob/v1.9.1/v1/proto/service/gribi.proto#L557",
@@ -263301,7 +263301,7 @@ export const gribiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gribi-flush-response-error-reason",
           "kind": "enum",
-          "label": "enum gribi.FlushResponseError.Reason",
+          "label": "gribi.FlushResponseError.Reason",
           "sourceSymbol": "gribi.FlushResponseError.Reason",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gribi/blob/v1.9.1/v1/proto/service/gribi.proto#L574",
@@ -263564,7 +263564,7 @@ export const gribiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gribi-modify-rpcerror-details-reason",
           "kind": "enum",
-          "label": "enum gribi.ModifyRPCErrorDetails.Reason",
+          "label": "gribi.ModifyRPCErrorDetails.Reason",
           "sourceSymbol": "gribi.ModifyRPCErrorDetails.Reason",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gribi/blob/v1.9.1/v1/proto/service/gribi.proto#L324",
@@ -263659,7 +263659,7 @@ export const gribiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gribi-session-parameters-aftpersistence",
           "kind": "enum",
-          "label": "enum gribi.SessionParameters.AFTPersistence",
+          "label": "gribi.SessionParameters.AFTPersistence",
           "description": "The desired behavior when a client disconnects from\nthe network element.",
           "sourceSymbol": "gribi.SessionParameters.AFTPersistence",
           "deprecated": false,
@@ -263695,7 +263695,7 @@ export const gribiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gribi-session-parameters-aftresult-status-type",
           "kind": "enum",
-          "label": "enum gribi.SessionParameters.AFTResultStatusType",
+          "label": "gribi.SessionParameters.AFTResultStatusType",
           "description": "The type of response that the client expects from the\nnetwork element in AFTResult.status",
           "sourceSymbol": "gribi.SessionParameters.AFTResultStatusType",
           "deprecated": false,
@@ -263731,7 +263731,7 @@ export const gribiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gribi-session-parameters-client-redundancy",
           "kind": "enum",
-          "label": "enum gribi.SessionParameters.ClientRedundancy",
+          "label": "gribi.SessionParameters.ClientRedundancy",
           "description": "The type of redundancy amongst the external entities",
           "sourceSymbol": "gribi.SessionParameters.ClientRedundancy",
           "deprecated": false,
@@ -263795,7 +263795,7 @@ export const gribiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gribi-session-parameters-result-status",
           "kind": "enum",
-          "label": "enum gribi.SessionParametersResult.Status",
+          "label": "gribi.SessionParametersResult.Status",
           "sourceSymbol": "gribi.SessionParametersResult.Status",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gribi/blob/v1.9.1/v1/proto/service/gribi.proto#L352",
@@ -266622,7 +266622,7 @@ export const gribiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gribi-aft-enums-openconfig-aft-types-encapsulation-header-type",
           "kind": "enum",
-          "label": "enum gribi_aft.enums.OpenconfigAftTypesEncapsulationHeaderType",
+          "label": "gribi_aft.enums.OpenconfigAftTypesEncapsulationHeaderType",
           "description": "OpenconfigAftTypesEncapsulationHeaderType represents an enumerated type generated for the YANG enumerated type encapsulation-header-type.",
           "sourceSymbol": "gribi_aft.enums.OpenconfigAftTypesEncapsulationHeaderType",
           "deprecated": false,
@@ -266698,7 +266698,7 @@ export const gribiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gribi-aft-enums-openconfig-mpls-types-mpls-label-enum",
           "kind": "enum",
-          "label": "enum gribi_aft.enums.OpenconfigMplsTypesMplsLabelEnum",
+          "label": "gribi_aft.enums.OpenconfigMplsTypesMplsLabelEnum",
           "description": "OpenconfigMplsTypesMplsLabelEnum represents an enumerated type generated for the YANG enumerated type mpls-label.",
           "sourceSymbol": "gribi_aft.enums.OpenconfigMplsTypesMplsLabelEnum",
           "deprecated": false,
@@ -266762,7 +266762,7 @@ export const gribiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gribi-aft-enums-openconfig-packet-match-types-ipprotocol",
           "kind": "enum",
-          "label": "enum gribi_aft.enums.OpenconfigPacketMatchTypesIPPROTOCOL",
+          "label": "gribi_aft.enums.OpenconfigPacketMatchTypesIPPROTOCOL",
           "description": "OpenconfigPacketMatchTypesIPPROTOCOL represents an enumerated type generated for the YANG identity IP_PROTOCOL.",
           "sourceSymbol": "gribi_aft.enums.OpenconfigPacketMatchTypesIPPROTOCOL",
           "deprecated": false,
@@ -266943,7 +266943,7 @@ export const gribiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gribi-aftentry-status",
           "kind": "enum",
-          "label": "enum gribi.AFTEntry.Status",
+          "label": "gribi.AFTEntry.Status",
           "sourceSymbol": "gribi.AFTEntry.Status",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gribi/blob/v1.9.0/v1/proto/service/gribi.proto#L483",
@@ -267117,7 +267117,7 @@ export const gribiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gribi-aftoperation-operation",
           "kind": "enum",
-          "label": "enum gribi.AFTOperation.Operation",
+          "label": "gribi.AFTOperation.Operation",
           "description": "The operation that this request is - either add, replace, or delete\nany entry from the specific AFT.",
           "sourceSymbol": "gribi.AFTOperation.Operation",
           "deprecated": false,
@@ -267216,7 +267216,7 @@ export const gribiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gribi-aftresult-status",
           "kind": "enum",
-          "label": "enum gribi.AFTResult.Status",
+          "label": "gribi.AFTResult.Status",
           "description": "Status of the operation. Since this is within a\nstream we do not use status.proto to respond since\nthis would fail the entire RPC connection, and hence\nhave in-band errors.",
           "sourceSymbol": "gribi.AFTResult.Status",
           "deprecated": false,
@@ -267279,7 +267279,7 @@ export const gribiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gribi-afttype",
           "kind": "enum",
-          "label": "enum gribi.AFTType",
+          "label": "gribi.AFTType",
           "description": "AFT describes the set of AFTs that are supported in the\ngRIBI protocol.",
           "sourceSymbol": "gribi.AFTType",
           "deprecated": false,
@@ -267465,7 +267465,7 @@ export const gribiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gribi-flush-response-result",
           "kind": "enum",
-          "label": "enum gribi.FlushResponse.Result",
+          "label": "gribi.FlushResponse.Result",
           "sourceSymbol": "gribi.FlushResponse.Result",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gribi/blob/v1.9.0/v1/proto/service/gribi.proto#L557",
@@ -267534,7 +267534,7 @@ export const gribiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gribi-flush-response-error-reason",
           "kind": "enum",
-          "label": "enum gribi.FlushResponseError.Reason",
+          "label": "gribi.FlushResponseError.Reason",
           "sourceSymbol": "gribi.FlushResponseError.Reason",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gribi/blob/v1.9.0/v1/proto/service/gribi.proto#L574",
@@ -267797,7 +267797,7 @@ export const gribiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gribi-modify-rpcerror-details-reason",
           "kind": "enum",
-          "label": "enum gribi.ModifyRPCErrorDetails.Reason",
+          "label": "gribi.ModifyRPCErrorDetails.Reason",
           "sourceSymbol": "gribi.ModifyRPCErrorDetails.Reason",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gribi/blob/v1.9.0/v1/proto/service/gribi.proto#L324",
@@ -267892,7 +267892,7 @@ export const gribiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gribi-session-parameters-aftpersistence",
           "kind": "enum",
-          "label": "enum gribi.SessionParameters.AFTPersistence",
+          "label": "gribi.SessionParameters.AFTPersistence",
           "description": "The desired behavior when a client disconnects from\nthe network element.",
           "sourceSymbol": "gribi.SessionParameters.AFTPersistence",
           "deprecated": false,
@@ -267928,7 +267928,7 @@ export const gribiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gribi-session-parameters-aftresult-status-type",
           "kind": "enum",
-          "label": "enum gribi.SessionParameters.AFTResultStatusType",
+          "label": "gribi.SessionParameters.AFTResultStatusType",
           "description": "The type of response that the client expects from the\nnetwork element in AFTResult.status",
           "sourceSymbol": "gribi.SessionParameters.AFTResultStatusType",
           "deprecated": false,
@@ -267964,7 +267964,7 @@ export const gribiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gribi-session-parameters-client-redundancy",
           "kind": "enum",
-          "label": "enum gribi.SessionParameters.ClientRedundancy",
+          "label": "gribi.SessionParameters.ClientRedundancy",
           "description": "The type of redundancy amongst the external entities",
           "sourceSymbol": "gribi.SessionParameters.ClientRedundancy",
           "deprecated": false,
@@ -268028,7 +268028,7 @@ export const gribiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gribi-session-parameters-result-status",
           "kind": "enum",
-          "label": "enum gribi.SessionParametersResult.Status",
+          "label": "gribi.SessionParametersResult.Status",
           "sourceSymbol": "gribi.SessionParametersResult.Status",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gribi/blob/v1.9.0/v1/proto/service/gribi.proto#L352",
@@ -270855,7 +270855,7 @@ export const gribiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gribi-aft-enums-openconfig-aft-types-encapsulation-header-type",
           "kind": "enum",
-          "label": "enum gribi_aft.enums.OpenconfigAftTypesEncapsulationHeaderType",
+          "label": "gribi_aft.enums.OpenconfigAftTypesEncapsulationHeaderType",
           "description": "OpenconfigAftTypesEncapsulationHeaderType represents an enumerated type generated for the YANG enumerated type encapsulation-header-type.",
           "sourceSymbol": "gribi_aft.enums.OpenconfigAftTypesEncapsulationHeaderType",
           "deprecated": false,
@@ -270919,7 +270919,7 @@ export const gribiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gribi-aft-enums-openconfig-mpls-types-mpls-label-enum",
           "kind": "enum",
-          "label": "enum gribi_aft.enums.OpenconfigMplsTypesMplsLabelEnum",
+          "label": "gribi_aft.enums.OpenconfigMplsTypesMplsLabelEnum",
           "description": "OpenconfigMplsTypesMplsLabelEnum represents an enumerated type generated for the YANG enumerated type mpls-label.",
           "sourceSymbol": "gribi_aft.enums.OpenconfigMplsTypesMplsLabelEnum",
           "deprecated": false,
@@ -270983,7 +270983,7 @@ export const gribiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gribi-aft-enums-openconfig-packet-match-types-ipprotocol",
           "kind": "enum",
-          "label": "enum gribi_aft.enums.OpenconfigPacketMatchTypesIPPROTOCOL",
+          "label": "gribi_aft.enums.OpenconfigPacketMatchTypesIPPROTOCOL",
           "description": "OpenconfigPacketMatchTypesIPPROTOCOL represents an enumerated type generated for the YANG identity IP_PROTOCOL.",
           "sourceSymbol": "gribi_aft.enums.OpenconfigPacketMatchTypesIPPROTOCOL",
           "deprecated": false,
@@ -271164,7 +271164,7 @@ export const gribiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gribi-aftentry-status",
           "kind": "enum",
-          "label": "enum gribi.AFTEntry.Status",
+          "label": "gribi.AFTEntry.Status",
           "sourceSymbol": "gribi.AFTEntry.Status",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gribi/blob/v1.8.1/v1/proto/service/gribi.proto#L483",
@@ -271338,7 +271338,7 @@ export const gribiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gribi-aftoperation-operation",
           "kind": "enum",
-          "label": "enum gribi.AFTOperation.Operation",
+          "label": "gribi.AFTOperation.Operation",
           "description": "The operation that this request is - either add, replace, or delete\nany entry from the specific AFT.",
           "sourceSymbol": "gribi.AFTOperation.Operation",
           "deprecated": false,
@@ -271437,7 +271437,7 @@ export const gribiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gribi-aftresult-status",
           "kind": "enum",
-          "label": "enum gribi.AFTResult.Status",
+          "label": "gribi.AFTResult.Status",
           "description": "Status of the operation. Since this is within a\nstream we do not use status.proto to respond since\nthis would fail the entire RPC connection, and hence\nhave in-band errors.",
           "sourceSymbol": "gribi.AFTResult.Status",
           "deprecated": false,
@@ -271500,7 +271500,7 @@ export const gribiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gribi-afttype",
           "kind": "enum",
-          "label": "enum gribi.AFTType",
+          "label": "gribi.AFTType",
           "description": "AFT describes the set of AFTs that are supported in the\ngRIBI protocol.",
           "sourceSymbol": "gribi.AFTType",
           "deprecated": false,
@@ -271686,7 +271686,7 @@ export const gribiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gribi-flush-response-result",
           "kind": "enum",
-          "label": "enum gribi.FlushResponse.Result",
+          "label": "gribi.FlushResponse.Result",
           "sourceSymbol": "gribi.FlushResponse.Result",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gribi/blob/v1.8.1/v1/proto/service/gribi.proto#L557",
@@ -271755,7 +271755,7 @@ export const gribiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gribi-flush-response-error-reason",
           "kind": "enum",
-          "label": "enum gribi.FlushResponseError.Reason",
+          "label": "gribi.FlushResponseError.Reason",
           "sourceSymbol": "gribi.FlushResponseError.Reason",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gribi/blob/v1.8.1/v1/proto/service/gribi.proto#L574",
@@ -272018,7 +272018,7 @@ export const gribiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gribi-modify-rpcerror-details-reason",
           "kind": "enum",
-          "label": "enum gribi.ModifyRPCErrorDetails.Reason",
+          "label": "gribi.ModifyRPCErrorDetails.Reason",
           "sourceSymbol": "gribi.ModifyRPCErrorDetails.Reason",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gribi/blob/v1.8.1/v1/proto/service/gribi.proto#L324",
@@ -272113,7 +272113,7 @@ export const gribiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gribi-session-parameters-aftpersistence",
           "kind": "enum",
-          "label": "enum gribi.SessionParameters.AFTPersistence",
+          "label": "gribi.SessionParameters.AFTPersistence",
           "description": "The desired behavior when a client disconnects from\nthe network element.",
           "sourceSymbol": "gribi.SessionParameters.AFTPersistence",
           "deprecated": false,
@@ -272149,7 +272149,7 @@ export const gribiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gribi-session-parameters-aftresult-status-type",
           "kind": "enum",
-          "label": "enum gribi.SessionParameters.AFTResultStatusType",
+          "label": "gribi.SessionParameters.AFTResultStatusType",
           "description": "The type of response that the client expects from the\nnetwork element in AFTResult.status",
           "sourceSymbol": "gribi.SessionParameters.AFTResultStatusType",
           "deprecated": false,
@@ -272185,7 +272185,7 @@ export const gribiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gribi-session-parameters-client-redundancy",
           "kind": "enum",
-          "label": "enum gribi.SessionParameters.ClientRedundancy",
+          "label": "gribi.SessionParameters.ClientRedundancy",
           "description": "The type of redundancy amongst the external entities",
           "sourceSymbol": "gribi.SessionParameters.ClientRedundancy",
           "deprecated": false,
@@ -272249,7 +272249,7 @@ export const gribiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gribi-session-parameters-result-status",
           "kind": "enum",
-          "label": "enum gribi.SessionParametersResult.Status",
+          "label": "gribi.SessionParametersResult.Status",
           "sourceSymbol": "gribi.SessionParametersResult.Status",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gribi/blob/v1.8.1/v1/proto/service/gribi.proto#L352",
@@ -275076,7 +275076,7 @@ export const gribiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gribi-aft-enums-openconfig-aft-types-encapsulation-header-type",
           "kind": "enum",
-          "label": "enum gribi_aft.enums.OpenconfigAftTypesEncapsulationHeaderType",
+          "label": "gribi_aft.enums.OpenconfigAftTypesEncapsulationHeaderType",
           "description": "OpenconfigAftTypesEncapsulationHeaderType represents an enumerated type generated for the YANG enumerated type encapsulation-header-type.",
           "sourceSymbol": "gribi_aft.enums.OpenconfigAftTypesEncapsulationHeaderType",
           "deprecated": false,
@@ -275140,7 +275140,7 @@ export const gribiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gribi-aft-enums-openconfig-mpls-types-mpls-label-enum",
           "kind": "enum",
-          "label": "enum gribi_aft.enums.OpenconfigMplsTypesMplsLabelEnum",
+          "label": "gribi_aft.enums.OpenconfigMplsTypesMplsLabelEnum",
           "description": "OpenconfigMplsTypesMplsLabelEnum represents an enumerated type generated for the YANG enumerated type mpls-label.",
           "sourceSymbol": "gribi_aft.enums.OpenconfigMplsTypesMplsLabelEnum",
           "deprecated": false,
@@ -275204,7 +275204,7 @@ export const gribiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gribi-aft-enums-openconfig-packet-match-types-ipprotocol",
           "kind": "enum",
-          "label": "enum gribi_aft.enums.OpenconfigPacketMatchTypesIPPROTOCOL",
+          "label": "gribi_aft.enums.OpenconfigPacketMatchTypesIPPROTOCOL",
           "description": "OpenconfigPacketMatchTypesIPPROTOCOL represents an enumerated type generated for the YANG identity IP_PROTOCOL.",
           "sourceSymbol": "gribi_aft.enums.OpenconfigPacketMatchTypesIPPROTOCOL",
           "deprecated": false,
@@ -275385,7 +275385,7 @@ export const gribiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gribi-aftentry-status",
           "kind": "enum",
-          "label": "enum gribi.AFTEntry.Status",
+          "label": "gribi.AFTEntry.Status",
           "sourceSymbol": "gribi.AFTEntry.Status",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gribi/blob/v1.8.0/v1/proto/service/gribi.proto#L483",
@@ -275559,7 +275559,7 @@ export const gribiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gribi-aftoperation-operation",
           "kind": "enum",
-          "label": "enum gribi.AFTOperation.Operation",
+          "label": "gribi.AFTOperation.Operation",
           "description": "The operation that this request is - either add, replace, or delete\nany entry from the specific AFT.",
           "sourceSymbol": "gribi.AFTOperation.Operation",
           "deprecated": false,
@@ -275658,7 +275658,7 @@ export const gribiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gribi-aftresult-status",
           "kind": "enum",
-          "label": "enum gribi.AFTResult.Status",
+          "label": "gribi.AFTResult.Status",
           "description": "Status of the operation. Since this is within a\nstream we do not use status.proto to respond since\nthis would fail the entire RPC connection, and hence\nhave in-band errors.",
           "sourceSymbol": "gribi.AFTResult.Status",
           "deprecated": false,
@@ -275721,7 +275721,7 @@ export const gribiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gribi-afttype",
           "kind": "enum",
-          "label": "enum gribi.AFTType",
+          "label": "gribi.AFTType",
           "description": "AFT describes the set of AFTs that are supported in the\ngRIBI protocol.",
           "sourceSymbol": "gribi.AFTType",
           "deprecated": false,
@@ -275907,7 +275907,7 @@ export const gribiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gribi-flush-response-result",
           "kind": "enum",
-          "label": "enum gribi.FlushResponse.Result",
+          "label": "gribi.FlushResponse.Result",
           "sourceSymbol": "gribi.FlushResponse.Result",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gribi/blob/v1.8.0/v1/proto/service/gribi.proto#L557",
@@ -275976,7 +275976,7 @@ export const gribiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gribi-flush-response-error-reason",
           "kind": "enum",
-          "label": "enum gribi.FlushResponseError.Reason",
+          "label": "gribi.FlushResponseError.Reason",
           "sourceSymbol": "gribi.FlushResponseError.Reason",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gribi/blob/v1.8.0/v1/proto/service/gribi.proto#L574",
@@ -276239,7 +276239,7 @@ export const gribiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gribi-modify-rpcerror-details-reason",
           "kind": "enum",
-          "label": "enum gribi.ModifyRPCErrorDetails.Reason",
+          "label": "gribi.ModifyRPCErrorDetails.Reason",
           "sourceSymbol": "gribi.ModifyRPCErrorDetails.Reason",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gribi/blob/v1.8.0/v1/proto/service/gribi.proto#L324",
@@ -276334,7 +276334,7 @@ export const gribiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gribi-session-parameters-aftpersistence",
           "kind": "enum",
-          "label": "enum gribi.SessionParameters.AFTPersistence",
+          "label": "gribi.SessionParameters.AFTPersistence",
           "description": "The desired behavior when a client disconnects from\nthe network element.",
           "sourceSymbol": "gribi.SessionParameters.AFTPersistence",
           "deprecated": false,
@@ -276370,7 +276370,7 @@ export const gribiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gribi-session-parameters-aftresult-status-type",
           "kind": "enum",
-          "label": "enum gribi.SessionParameters.AFTResultStatusType",
+          "label": "gribi.SessionParameters.AFTResultStatusType",
           "description": "The type of response that the client expects from the\nnetwork element in AFTResult.status",
           "sourceSymbol": "gribi.SessionParameters.AFTResultStatusType",
           "deprecated": false,
@@ -276406,7 +276406,7 @@ export const gribiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gribi-session-parameters-client-redundancy",
           "kind": "enum",
-          "label": "enum gribi.SessionParameters.ClientRedundancy",
+          "label": "gribi.SessionParameters.ClientRedundancy",
           "description": "The type of redundancy amongst the external entities",
           "sourceSymbol": "gribi.SessionParameters.ClientRedundancy",
           "deprecated": false,
@@ -276470,7 +276470,7 @@ export const gribiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gribi-session-parameters-result-status",
           "kind": "enum",
-          "label": "enum gribi.SessionParametersResult.Status",
+          "label": "gribi.SessionParametersResult.Status",
           "sourceSymbol": "gribi.SessionParametersResult.Status",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gribi/blob/v1.8.0/v1/proto/service/gribi.proto#L352",
@@ -278865,7 +278865,7 @@ export const gribiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gribi-aft-enums-openconfig-aft-types-encapsulation-header-type",
           "kind": "enum",
-          "label": "enum gribi_aft.enums.OpenconfigAftTypesEncapsulationHeaderType",
+          "label": "gribi_aft.enums.OpenconfigAftTypesEncapsulationHeaderType",
           "description": "OpenconfigAftTypesEncapsulationHeaderType represents an enumerated type generated for the YANG enumerated type encapsulation-header-type.",
           "sourceSymbol": "gribi_aft.enums.OpenconfigAftTypesEncapsulationHeaderType",
           "deprecated": false,
@@ -278923,7 +278923,7 @@ export const gribiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gribi-aft-enums-openconfig-mpls-types-mpls-label-enum",
           "kind": "enum",
-          "label": "enum gribi_aft.enums.OpenconfigMplsTypesMplsLabelEnum",
+          "label": "gribi_aft.enums.OpenconfigMplsTypesMplsLabelEnum",
           "description": "OpenconfigMplsTypesMplsLabelEnum represents an enumerated type generated for the YANG enumerated type mpls-label.",
           "sourceSymbol": "gribi_aft.enums.OpenconfigMplsTypesMplsLabelEnum",
           "deprecated": false,
@@ -278987,7 +278987,7 @@ export const gribiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gribi-aft-enums-openconfig-packet-match-types-ipprotocol",
           "kind": "enum",
-          "label": "enum gribi_aft.enums.OpenconfigPacketMatchTypesIPPROTOCOL",
+          "label": "gribi_aft.enums.OpenconfigPacketMatchTypesIPPROTOCOL",
           "description": "OpenconfigPacketMatchTypesIPPROTOCOL represents an enumerated type generated for the YANG identity IP_PROTOCOL.",
           "sourceSymbol": "gribi_aft.enums.OpenconfigPacketMatchTypesIPPROTOCOL",
           "deprecated": false,
@@ -279168,7 +279168,7 @@ export const gribiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gribi-aftentry-status",
           "kind": "enum",
-          "label": "enum gribi.AFTEntry.Status",
+          "label": "gribi.AFTEntry.Status",
           "sourceSymbol": "gribi.AFTEntry.Status",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gribi/blob/v1.7.1/v1/proto/service/gribi.proto#L483",
@@ -279342,7 +279342,7 @@ export const gribiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gribi-aftoperation-operation",
           "kind": "enum",
-          "label": "enum gribi.AFTOperation.Operation",
+          "label": "gribi.AFTOperation.Operation",
           "description": "The operation that this request is - either add, replace, or delete\nany entry from the specific AFT.",
           "sourceSymbol": "gribi.AFTOperation.Operation",
           "deprecated": false,
@@ -279441,7 +279441,7 @@ export const gribiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gribi-aftresult-status",
           "kind": "enum",
-          "label": "enum gribi.AFTResult.Status",
+          "label": "gribi.AFTResult.Status",
           "description": "Status of the operation. Since this is within a\nstream we do not use status.proto to respond since\nthis would fail the entire RPC connection, and hence\nhave in-band errors.",
           "sourceSymbol": "gribi.AFTResult.Status",
           "deprecated": false,
@@ -279504,7 +279504,7 @@ export const gribiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gribi-afttype",
           "kind": "enum",
-          "label": "enum gribi.AFTType",
+          "label": "gribi.AFTType",
           "description": "AFT describes the set of AFTs that are supported in the\ngRIBI protocol.",
           "sourceSymbol": "gribi.AFTType",
           "deprecated": false,
@@ -279690,7 +279690,7 @@ export const gribiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gribi-flush-response-result",
           "kind": "enum",
-          "label": "enum gribi.FlushResponse.Result",
+          "label": "gribi.FlushResponse.Result",
           "sourceSymbol": "gribi.FlushResponse.Result",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gribi/blob/v1.7.1/v1/proto/service/gribi.proto#L557",
@@ -279759,7 +279759,7 @@ export const gribiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gribi-flush-response-error-reason",
           "kind": "enum",
-          "label": "enum gribi.FlushResponseError.Reason",
+          "label": "gribi.FlushResponseError.Reason",
           "sourceSymbol": "gribi.FlushResponseError.Reason",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gribi/blob/v1.7.1/v1/proto/service/gribi.proto#L574",
@@ -280022,7 +280022,7 @@ export const gribiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gribi-modify-rpcerror-details-reason",
           "kind": "enum",
-          "label": "enum gribi.ModifyRPCErrorDetails.Reason",
+          "label": "gribi.ModifyRPCErrorDetails.Reason",
           "sourceSymbol": "gribi.ModifyRPCErrorDetails.Reason",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gribi/blob/v1.7.1/v1/proto/service/gribi.proto#L324",
@@ -280117,7 +280117,7 @@ export const gribiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gribi-session-parameters-aftpersistence",
           "kind": "enum",
-          "label": "enum gribi.SessionParameters.AFTPersistence",
+          "label": "gribi.SessionParameters.AFTPersistence",
           "description": "The desired behavior when a client disconnects from\nthe network element.",
           "sourceSymbol": "gribi.SessionParameters.AFTPersistence",
           "deprecated": false,
@@ -280153,7 +280153,7 @@ export const gribiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gribi-session-parameters-aftresult-status-type",
           "kind": "enum",
-          "label": "enum gribi.SessionParameters.AFTResultStatusType",
+          "label": "gribi.SessionParameters.AFTResultStatusType",
           "description": "The type of response that the client expects from the\nnetwork element in AFTResult.status",
           "sourceSymbol": "gribi.SessionParameters.AFTResultStatusType",
           "deprecated": false,
@@ -280189,7 +280189,7 @@ export const gribiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gribi-session-parameters-client-redundancy",
           "kind": "enum",
-          "label": "enum gribi.SessionParameters.ClientRedundancy",
+          "label": "gribi.SessionParameters.ClientRedundancy",
           "description": "The type of redundancy amongst the external entities",
           "sourceSymbol": "gribi.SessionParameters.ClientRedundancy",
           "deprecated": false,
@@ -280253,7 +280253,7 @@ export const gribiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gribi-session-parameters-result-status",
           "kind": "enum",
-          "label": "enum gribi.SessionParametersResult.Status",
+          "label": "gribi.SessionParametersResult.Status",
           "sourceSymbol": "gribi.SessionParametersResult.Status",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gribi/blob/v1.7.1/v1/proto/service/gribi.proto#L352",
@@ -282368,7 +282368,7 @@ export const gribiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gribi-aft-enums-openconfig-aft-types-encapsulation-header-type",
           "kind": "enum",
-          "label": "enum gribi_aft.enums.OpenconfigAftTypesEncapsulationHeaderType",
+          "label": "gribi_aft.enums.OpenconfigAftTypesEncapsulationHeaderType",
           "description": "OpenconfigAftTypesEncapsulationHeaderType represents an enumerated type generated for the YANG enumerated type encapsulation-header-type.",
           "sourceSymbol": "gribi_aft.enums.OpenconfigAftTypesEncapsulationHeaderType",
           "deprecated": false,
@@ -282426,7 +282426,7 @@ export const gribiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gribi-aft-enums-openconfig-mpls-types-mpls-label-enum",
           "kind": "enum",
-          "label": "enum gribi_aft.enums.OpenconfigMplsTypesMplsLabelEnum",
+          "label": "gribi_aft.enums.OpenconfigMplsTypesMplsLabelEnum",
           "description": "OpenconfigMplsTypesMplsLabelEnum represents an enumerated type generated for the YANG enumerated type mpls-label.",
           "sourceSymbol": "gribi_aft.enums.OpenconfigMplsTypesMplsLabelEnum",
           "deprecated": false,
@@ -282490,7 +282490,7 @@ export const gribiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gribi-aft-enums-openconfig-packet-match-types-ipprotocol",
           "kind": "enum",
-          "label": "enum gribi_aft.enums.OpenconfigPacketMatchTypesIPPROTOCOL",
+          "label": "gribi_aft.enums.OpenconfigPacketMatchTypesIPPROTOCOL",
           "description": "OpenconfigPacketMatchTypesIPPROTOCOL represents an enumerated type generated for the YANG identity IP_PROTOCOL.",
           "sourceSymbol": "gribi_aft.enums.OpenconfigPacketMatchTypesIPPROTOCOL",
           "deprecated": false,
@@ -282671,7 +282671,7 @@ export const gribiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gribi-aftentry-status",
           "kind": "enum",
-          "label": "enum gribi.AFTEntry.Status",
+          "label": "gribi.AFTEntry.Status",
           "sourceSymbol": "gribi.AFTEntry.Status",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gribi/blob/v1.0.0/v1/proto/service/gribi.proto#L477",
@@ -282845,7 +282845,7 @@ export const gribiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gribi-aftoperation-operation",
           "kind": "enum",
-          "label": "enum gribi.AFTOperation.Operation",
+          "label": "gribi.AFTOperation.Operation",
           "description": "The operation that this request is - either add, replace, or delete\nany entry from the specific AFT.",
           "sourceSymbol": "gribi.AFTOperation.Operation",
           "deprecated": false,
@@ -282944,7 +282944,7 @@ export const gribiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gribi-aftresult-status",
           "kind": "enum",
-          "label": "enum gribi.AFTResult.Status",
+          "label": "gribi.AFTResult.Status",
           "description": "Status of the operation. Since this is within a\nstream we do not use status.proto to respond since\nthis would fail the entire RPC connection, and hence\nhave in-band errors.",
           "sourceSymbol": "gribi.AFTResult.Status",
           "deprecated": false,
@@ -283007,7 +283007,7 @@ export const gribiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gribi-afttype",
           "kind": "enum",
-          "label": "enum gribi.AFTType",
+          "label": "gribi.AFTType",
           "description": "AFT describes the set of AFTs that are supported in the\ngRIBI protocol.",
           "sourceSymbol": "gribi.AFTType",
           "deprecated": false,
@@ -283193,7 +283193,7 @@ export const gribiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gribi-flush-response-result",
           "kind": "enum",
-          "label": "enum gribi.FlushResponse.Result",
+          "label": "gribi.FlushResponse.Result",
           "sourceSymbol": "gribi.FlushResponse.Result",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gribi/blob/v1.0.0/v1/proto/service/gribi.proto#L551",
@@ -283262,7 +283262,7 @@ export const gribiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gribi-flush-response-error-reason",
           "kind": "enum",
-          "label": "enum gribi.FlushResponseError.Reason",
+          "label": "gribi.FlushResponseError.Reason",
           "sourceSymbol": "gribi.FlushResponseError.Reason",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gribi/blob/v1.0.0/v1/proto/service/gribi.proto#L568",
@@ -283525,7 +283525,7 @@ export const gribiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gribi-modify-rpcerror-details-reason",
           "kind": "enum",
-          "label": "enum gribi.ModifyRPCErrorDetails.Reason",
+          "label": "gribi.ModifyRPCErrorDetails.Reason",
           "sourceSymbol": "gribi.ModifyRPCErrorDetails.Reason",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gribi/blob/v1.0.0/v1/proto/service/gribi.proto#L318",
@@ -283620,7 +283620,7 @@ export const gribiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gribi-session-parameters-aftpersistence",
           "kind": "enum",
-          "label": "enum gribi.SessionParameters.AFTPersistence",
+          "label": "gribi.SessionParameters.AFTPersistence",
           "description": "The desired behavior when a client disconnects from\nthe network element.",
           "sourceSymbol": "gribi.SessionParameters.AFTPersistence",
           "deprecated": false,
@@ -283656,7 +283656,7 @@ export const gribiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gribi-session-parameters-aftresult-status-type",
           "kind": "enum",
-          "label": "enum gribi.SessionParameters.AFTResultStatusType",
+          "label": "gribi.SessionParameters.AFTResultStatusType",
           "description": "The type of response that the client expects from the\nnetwork element in AFTResult.status",
           "sourceSymbol": "gribi.SessionParameters.AFTResultStatusType",
           "deprecated": false,
@@ -283692,7 +283692,7 @@ export const gribiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gribi-session-parameters-client-redundancy",
           "kind": "enum",
-          "label": "enum gribi.SessionParameters.ClientRedundancy",
+          "label": "gribi.SessionParameters.ClientRedundancy",
           "description": "The type of redundancy amongst the external entities",
           "sourceSymbol": "gribi.SessionParameters.ClientRedundancy",
           "deprecated": false,
@@ -283756,7 +283756,7 @@ export const gribiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gribi-session-parameters-result-status",
           "kind": "enum",
-          "label": "enum gribi.SessionParametersResult.Status",
+          "label": "gribi.SessionParametersResult.Status",
           "sourceSymbol": "gribi.SessionParametersResult.Status",
           "deprecated": false,
           "protoUrl": "https://github.com/openconfig/gribi/blob/v1.0.0/v1/proto/service/gribi.proto#L346",
@@ -285723,7 +285723,7 @@ export const gribiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gribi-aft-enums-openconfig-aft-types-encapsulation-header-type",
           "kind": "enum",
-          "label": "enum gribi_aft.enums.OpenconfigAftTypesEncapsulationHeaderType",
+          "label": "gribi_aft.enums.OpenconfigAftTypesEncapsulationHeaderType",
           "description": "OpenconfigAftTypesEncapsulationHeaderType represents an enumerated type generated for the YANG enumerated type encapsulation-header-type.",
           "sourceSymbol": "gribi_aft.enums.OpenconfigAftTypesEncapsulationHeaderType",
           "deprecated": false,
@@ -285775,7 +285775,7 @@ export const gribiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gribi-aft-enums-openconfig-mpls-types-mpls-label-enum",
           "kind": "enum",
-          "label": "enum gribi_aft.enums.OpenconfigMplsTypesMplsLabelEnum",
+          "label": "gribi_aft.enums.OpenconfigMplsTypesMplsLabelEnum",
           "description": "OpenconfigMplsTypesMplsLabelEnum represents an enumerated type generated for the YANG enumerated type mpls-label.",
           "sourceSymbol": "gribi_aft.enums.OpenconfigMplsTypesMplsLabelEnum",
           "deprecated": false,
@@ -285839,7 +285839,7 @@ export const gribiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gribi-aft-enums-openconfig-packet-match-types-ipprotocol",
           "kind": "enum",
-          "label": "enum gribi_aft.enums.OpenconfigPacketMatchTypesIPPROTOCOL",
+          "label": "gribi_aft.enums.OpenconfigPacketMatchTypesIPPROTOCOL",
           "description": "OpenconfigPacketMatchTypesIPPROTOCOL represents an enumerated type generated for the YANG identity IP_PROTOCOL.",
           "sourceSymbol": "gribi_aft.enums.OpenconfigPacketMatchTypesIPPROTOCOL",
           "deprecated": false,
@@ -286003,7 +286003,7 @@ export const gribiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gribi-aftoperation-operation",
           "kind": "enum",
-          "label": "enum gribi.AFTOperation.Operation",
+          "label": "gribi.AFTOperation.Operation",
           "description": "The operation that this request is - either add, replace, or delete\nany entry from the specific AFT.",
           "sourceSymbol": "gribi.AFTOperation.Operation",
           "deprecated": false,
@@ -286088,7 +286088,7 @@ export const gribiMapVariants: GeneratedServiceMapVariant[] = [
         "data": {
           "id": "gribi-aftresult-status",
           "kind": "enum",
-          "label": "enum gribi.AFTResult.Status",
+          "label": "gribi.AFTResult.Status",
           "description": "Status of the operation. Since this is within a\nstream we do not use status.proto to respond since\nthis would fail the entire RPC connection, and hence\nhave in-band errors.",
           "sourceSymbol": "gribi.AFTResult.Status",
           "deprecated": false,

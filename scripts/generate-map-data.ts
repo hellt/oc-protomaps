@@ -535,7 +535,7 @@ function schemaNode(
     data: {
       id: node.id,
       kind: node.data.kind,
-      label: node.data.label,
+      label: node.data.kind === 'enum' ? titleFromNode(node) : node.data.label,
       ...(description ? { description } : {}),
       sourceSymbol: symbol,
       deprecated,

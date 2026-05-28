@@ -597,7 +597,7 @@ function schemaNode(
     data: {
       id: nodeIdForSymbol(symbol),
       kind,
-      label: kind === 'enum' ? `enum ${symbol}` : symbol,
+      label: symbol,
       ...(description ? { description } : {}),
       sourceSymbol: symbol,
       deprecated,

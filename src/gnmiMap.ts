@@ -853,7 +853,7 @@ export const mapVariants: GnmiMapVariant[] = [
         "data": {
           "id": "operation",
           "kind": "enum",
-          "label": "enum Operation",
+          "label": "Operation",
           "description": "The operation that was associated with the Path specified.",
           "sourceSymbol": "gnmi.UpdateResult.Operation",
           "deprecated": false,
@@ -1045,7 +1045,7 @@ export const mapVariants: GnmiMapVariant[] = [
         "data": {
           "id": "mode",
           "kind": "enum",
-          "label": "enum Mode",
+          "label": "Mode",
           "description": "Mode of the subscription.",
           "sourceSymbol": "gnmi.SubscriptionList.Mode",
           "deprecated": false,
@@ -1147,7 +1147,7 @@ export const mapVariants: GnmiMapVariant[] = [
         "data": {
           "id": "subscription-mode",
           "kind": "enum",
-          "label": "enum SubscriptionMode",
+          "label": "SubscriptionMode",
           "description": "SubscriptionMode is the mode of the subscription, specifying how the\ntarget must return values in a subscription.\nReference: gNMI Specification Section 3.5.1.3",
           "sourceSymbol": "gnmi.SubscriptionMode",
           "deprecated": false,
@@ -1191,7 +1191,7 @@ export const mapVariants: GnmiMapVariant[] = [
         "data": {
           "id": "data-type",
           "kind": "enum",
-          "label": "enum DataType",
+          "label": "DataType",
           "description": "Type of elements within the data tree.",
           "sourceSymbol": "gnmi.GetRequest.DataType",
           "deprecated": false,
@@ -1286,7 +1286,7 @@ export const mapVariants: GnmiMapVariant[] = [
         "data": {
           "id": "encoding",
           "kind": "enum",
-          "label": "enum Encoding",
+          "label": "Encoding",
           "description": "Encoding defines the value encoding formats that are supported by the gNMI\nprotocol. These encodings are used by both the client (when sending Set\nmessages to modify the state of the target) and the target when serializing\ndata to be returned to the client (in both Subscribe and Get RPCs).\nReference: gNMI Specification Section 2.3",
           "sourceSymbol": "gnmi.Encoding",
           "deprecated": false,
@@ -1933,7 +1933,7 @@ export const mapVariants: GnmiMapVariant[] = [
         "data": {
           "id": "extension-id",
           "kind": "enum",
-          "label": "enum gnmi_ext.ExtensionID",
+          "label": "gnmi_ext.ExtensionID",
           "description": "RegisteredExtension is an enumeration acting as a registry for extensions\ndefined by external sources.",
           "sourceSymbol": "gnmi_ext.ExtensionID",
           "deprecated": false,
@@ -3880,7 +3880,7 @@ export const mapVariants: GnmiMapVariant[] = [
         "data": {
           "id": "operation",
           "kind": "enum",
-          "label": "enum Operation",
+          "label": "Operation",
           "description": "The operation that was associated with the Path specified.",
           "sourceSymbol": "gnmi.UpdateResult.Operation",
           "deprecated": false,
@@ -4065,7 +4065,7 @@ export const mapVariants: GnmiMapVariant[] = [
         "data": {
           "id": "mode",
           "kind": "enum",
-          "label": "enum Mode",
+          "label": "Mode",
           "description": "Mode of the subscription.",
           "sourceSymbol": "gnmi.SubscriptionList.Mode",
           "deprecated": false,
@@ -4167,7 +4167,7 @@ export const mapVariants: GnmiMapVariant[] = [
         "data": {
           "id": "subscription-mode",
           "kind": "enum",
-          "label": "enum SubscriptionMode",
+          "label": "SubscriptionMode",
           "description": "SubscriptionMode is the mode of the subscription, specifying how the\ntarget must return values in a subscription.\nReference: gNMI Specification Section 3.5.1.3",
           "sourceSymbol": "gnmi.SubscriptionMode",
           "deprecated": false,
@@ -4211,7 +4211,7 @@ export const mapVariants: GnmiMapVariant[] = [
         "data": {
           "id": "data-type",
           "kind": "enum",
-          "label": "enum DataType",
+          "label": "DataType",
           "description": "Type of elements within the data tree.",
           "sourceSymbol": "gnmi.GetRequest.DataType",
           "deprecated": false,
@@ -4306,7 +4306,7 @@ export const mapVariants: GnmiMapVariant[] = [
         "data": {
           "id": "encoding",
           "kind": "enum",
-          "label": "enum Encoding",
+          "label": "Encoding",
           "description": "Encoding defines the value encoding formats that are supported by the gNMI\nprotocol. These encodings are used by both the client (when sending Set\nmessages to modify the state of the target) and the target when serializing\ndata to be returned to the client (in both Subscribe and Get RPCs).\nReference: gNMI Specification Section 2.3",
           "sourceSymbol": "gnmi.Encoding",
           "deprecated": false,
@@ -4929,7 +4929,7 @@ export const mapVariants: GnmiMapVariant[] = [
         "data": {
           "id": "extension-id",
           "kind": "enum",
-          "label": "enum gnmi_ext.ExtensionID",
+          "label": "gnmi_ext.ExtensionID",
           "description": "RegisteredExtension is an enumeration acting as a registry for extensions\ndefined by external sources.",
           "sourceSymbol": "gnmi_ext.ExtensionID",
           "deprecated": false,
@@ -6489,7 +6489,7 @@ export const mapVariants: GnmiMapVariant[] = [
         "data": {
           "id": "operation",
           "kind": "enum",
-          "label": "enum Operation",
+          "label": "Operation",
           "description": "The operation that was associated with the Path specified.",
           "sourceSymbol": "gnmi.UpdateResult.Operation",
           "deprecated": false,
@@ -6674,7 +6674,7 @@ export const mapVariants: GnmiMapVariant[] = [
         "data": {
           "id": "mode",
           "kind": "enum",
-          "label": "enum Mode",
+          "label": "Mode",
           "description": "Mode of the subscription.",
           "sourceSymbol": "gnmi.SubscriptionList.Mode",
           "deprecated": false,
@@ -6776,7 +6776,7 @@ export const mapVariants: GnmiMapVariant[] = [
         "data": {
           "id": "subscription-mode",
           "kind": "enum",
-          "label": "enum SubscriptionMode",
+          "label": "SubscriptionMode",
           "description": "SubscriptionMode is the mode of the subscription, specifying how the\ntarget must return values in a subscription.\nReference: gNMI Specification Section 3.5.1.3",
           "sourceSymbol": "gnmi.SubscriptionMode",
           "deprecated": false,
@@ -6820,7 +6820,7 @@ export const mapVariants: GnmiMapVariant[] = [
         "data": {
           "id": "data-type",
           "kind": "enum",
-          "label": "enum DataType",
+          "label": "DataType",
           "description": "Type of elements within the data tree.",
           "sourceSymbol": "gnmi.GetRequest.DataType",
           "deprecated": false,
@@ -6915,7 +6915,7 @@ export const mapVariants: GnmiMapVariant[] = [
         "data": {
           "id": "encoding",
           "kind": "enum",
-          "label": "enum Encoding",
+          "label": "Encoding",
           "description": "Encoding defines the value encoding formats that are supported by the gNMI\nprotocol. These encodings are used by both the client (when sending Set\nmessages to modify the state of the target) and the target when serializing\ndata to be returned to the client (in both Subscribe and Get RPCs).\nReference: gNMI Specification Section 2.3",
           "sourceSymbol": "gnmi.Encoding",
           "deprecated": false,
@@ -7539,7 +7539,7 @@ export const mapVariants: GnmiMapVariant[] = [
         "data": {
           "id": "extension-id",
           "kind": "enum",
-          "label": "enum gnmi_ext.ExtensionID",
+          "label": "gnmi_ext.ExtensionID",
           "description": "RegisteredExtension is an enumeration acting as a registry for extensions\ndefined by external sources.",
           "sourceSymbol": "gnmi_ext.ExtensionID",
           "deprecated": false,
