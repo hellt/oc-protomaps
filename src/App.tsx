@@ -55,6 +55,7 @@ import CodeOutlinedIcon from '@mui/icons-material/CodeOutlined';
 import DarkModeOutlinedIcon from '@mui/icons-material/DarkModeOutlined';
 import DataObjectOutlinedIcon from '@mui/icons-material/DataObjectOutlined';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import FavoriteIcon from '@mui/icons-material/Favorite';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import FitScreenOutlinedIcon from '@mui/icons-material/FitScreenOutlined';
 import HubOutlinedIcon from '@mui/icons-material/HubOutlined';
@@ -1333,6 +1334,11 @@ function AppShell({ themeMode, onToggleTheme }: AppShellProps) {
         >
           <Background color="var(--background-pattern)" gap={34} size={1.1} />
           <Controls position="bottom-left" />
+          <div className="map-attribution" aria-label="Created with love by Florian Schwarz and Roman Dodin">
+            <span>Created with</span>
+            <FavoriteIcon className="map-attribution-heart" aria-hidden="true" />
+            <span>by Florian Schwarz / Roman Dodin</span>
+          </div>
         </ReactFlow>
 
         <div className="inspector-shell" role="complementary" aria-label="Details panel">
