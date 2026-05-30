@@ -1,8 +1,8 @@
-# OpenConfig Proto Maps
+# Interactive map for OpenConfig gRPC services
 
-**Open the app:** https://protomap.netdevops.me/
+<https://protomap.netdevops.me/>
 
-Interactive maps for OpenConfig gNxI protobuf services.
+> Demo: <https://www.youtube.com/watch?v=FsVc0eHzyJw>
 
 The app helps you inspect how OpenConfig services, RPCs, messages, enums, fields, and external
 protobuf types relate to each other. It currently includes maps for gNMI, gNOI, gNSI, and gRIBI.
@@ -16,21 +16,6 @@ All maps are available in the app:
 - gNSI
 - gRIBI
 
-## Using The App
-
-- Choose a service family with the top navigation.
-- Select a concrete service from the service selector.
-- Use the RPC selector to focus the map on one RPC.
-- Use the diff selector to compare the selected service version with another checked-in version.
-- Search for messages, fields, enums, groups, or badges.
-- Open protobuf source links from nodes where available.
-- Toggle extension relationships and deprecated fields/types from the view menu.
-- Export the current view as PDF or SVG.
-- Share the current view with the browser URL.
-
-Deprecated fields and types are hidden by default. Extension relationships are also hidden by
-default to keep the first view focused.
-
 ## Run Locally
 
 ```bash
@@ -38,7 +23,7 @@ pnpm install
 pnpm run dev
 ```
 
-Open the Vite URL printed in the terminal.
+## Build
 
 For a production build:
 
