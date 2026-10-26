@@ -260786,15 +260786,24 @@ export const gribiMapSource = {
   "id": "gribi",
   "label": "gRIBI",
   "repository": "openconfig/gribi",
-  "tag": "v1.9.1",
-  "githubBase": "https://github.com/openconfig/gribi/blob/v1.9.1",
-  "rawBase": "https://raw.githubusercontent.com/openconfig/gribi/v1.9.1",
+  "tag": "v1.10.0",
+  "githubBase": "https://github.com/openconfig/gribi/blob/v1.10.0",
+  "rawBase": "https://raw.githubusercontent.com/openconfig/gribi/v1.10.0",
   "protoFiles": [
     "v1/proto/gribi_aft/enums/enums.proto",
     "v1/proto/gribi_aft/gribi_aft.proto",
     "v1/proto/service/gribi.proto"
   ],
   "services": [
+    {
+      "nodeId": "service-gribi-g-ribi",
+      "name": "gRIBI",
+      "symbol": "gribi.gRIBI",
+      "version": "v1.10.0",
+      "choiceId": "service-gribi-g-ribi@v1.10.0",
+      "focusNodeId": "service-gribi-g-ribi",
+      "sourceTag": "v1.10.0"
+    },
     {
       "nodeId": "service-gribi-g-ribi",
       "name": "gRIBI",
@@ -260862,6 +260871,4351 @@ export const gribiMapSource = {
 };
 
 export const gribiMapVariants: GeneratedServiceMapVariant[] = [
+  {
+    "tag": "v1.10.0",
+    "githubBase": "https://github.com/openconfig/gribi/blob/v1.10.0",
+    "rawBase": "https://raw.githubusercontent.com/openconfig/gribi/v1.10.0",
+    "protoFiles": [
+      "v1/proto/gribi_aft/enums/enums.proto",
+      "v1/proto/gribi_aft/gribi_aft.proto",
+      "v1/proto/service/gribi.proto"
+    ],
+    "services": [
+      {
+        "nodeId": "service-gribi-g-ribi",
+        "name": "gRIBI",
+        "symbol": "gribi.gRIBI",
+        "version": "v1.10.0"
+      }
+    ],
+    "nodes": [
+      {
+        "id": "service-gribi-g-ribi",
+        "type": "schema",
+        "position": {
+          "x": 60,
+          "y": 60
+        },
+        "style": {
+          "width": 370
+        },
+        "data": {
+          "id": "service-gribi-g-ribi",
+          "kind": "service",
+          "label": "gRIBI v1.10.0",
+          "description": "gRIBI is a gRPC service which provides an external entity a mechanism through\nwhich to programmatically inject and remove entries from the system's RIB.",
+          "sourceSymbol": "gribi.gRIBI",
+          "protoUrl": "https://github.com/openconfig/gribi/blob/v1.10.0/v1/proto/service/gribi.proto#L25",
+          "fields": [
+            {
+              "id": "modify",
+              "type": "rpc",
+              "name": "Modify",
+              "description": "Modify provides a bidirectional streaming RPC that can be used to issue\nmodifications to the AFT in the form of ModifyRequest(s).\nThe network element responds (asynchronously) with a ModifyResponse\nfor each ModifyRequest indicating what action was taken, once each\nOperation within the request has been completed.",
+              "ref": "rpc-gribi-g-ribi-modify",
+              "badge": "stream"
+            },
+            {
+              "id": "get",
+              "type": "rpc",
+              "name": "Get",
+              "description": "Get provides a client a means to retrieve the contents of the installed\nAFTs from the gRIBI daemon. The client requests a Get, and the server\nresponds with the set of currently installed entries (that have been ACK'd\naccording to the underlying resource to be programmed to) via the\nGetResponse stream. Once all entries have been sent, the server closes the\nRPC.\n\nThe Get RPC is typically used to allow reconcilation between a client and\na server or for periodical consistency checking.",
+              "ref": "rpc-gribi-g-ribi-get",
+              "badge": "stream"
+            },
+            {
+              "id": "flush",
+              "type": "rpc",
+              "name": "Flush",
+              "description": "Flush allows a client to remove all entries currently installed on the\nserver via gRIBI. The client requests a Flush, and the server removes all\nentries that match the context described by the FlushRequest.",
+              "ref": "rpc-gribi-g-ribi-flush"
+            }
+          ]
+        }
+      },
+      {
+        "id": "rpc-gribi-g-ribi-modify",
+        "type": "schema",
+        "position": {
+          "x": 500,
+          "y": 60
+        },
+        "style": {
+          "width": 280
+        },
+        "data": {
+          "id": "rpc-gribi-g-ribi-modify",
+          "kind": "rpc",
+          "label": "Modify",
+          "description": "Modify provides a bidirectional streaming RPC that can be used to issue\nmodifications to the AFT in the form of ModifyRequest(s).\nThe network element responds (asynchronously) with a ModifyResponse\nfor each ModifyRequest indicating what action was taken, once each\nOperation within the request has been completed.",
+          "protoUrl": "https://github.com/openconfig/gribi/blob/v1.10.0/v1/proto/service/gribi.proto#L31",
+          "fields": [
+            {
+              "id": "takes",
+              "type": "takes stream",
+              "name": "ModifyRequest",
+              "ref": "gribi-modify-request"
+            },
+            {
+              "id": "returns",
+              "type": "returns stream",
+              "name": "ModifyResponse",
+              "ref": "gribi-modify-response"
+            }
+          ]
+        }
+      },
+      {
+        "id": "rpc-gribi-g-ribi-get",
+        "type": "schema",
+        "position": {
+          "x": 500,
+          "y": 165
+        },
+        "style": {
+          "width": 280
+        },
+        "data": {
+          "id": "rpc-gribi-g-ribi-get",
+          "kind": "rpc",
+          "label": "Get",
+          "description": "Get provides a client a means to retrieve the contents of the installed\nAFTs from the gRIBI daemon. The client requests a Get, and the server\nresponds with the set of currently installed entries (that have been ACK'd\naccording to the underlying resource to be programmed to) via the\nGetResponse stream. Once all entries have been sent, the server closes the\nRPC.\n\nThe Get RPC is typically used to allow reconcilation between a client and\na server or for periodical consistency checking.",
+          "protoUrl": "https://github.com/openconfig/gribi/blob/v1.10.0/v1/proto/service/gribi.proto#L42",
+          "fields": [
+            {
+              "id": "takes",
+              "type": "takes",
+              "name": "GetRequest",
+              "ref": "gribi-get-request"
+            },
+            {
+              "id": "returns",
+              "type": "returns stream",
+              "name": "GetResponse",
+              "ref": "gribi-get-response"
+            }
+          ]
+        }
+      },
+      {
+        "id": "rpc-gribi-g-ribi-flush",
+        "type": "schema",
+        "position": {
+          "x": 500,
+          "y": 270
+        },
+        "style": {
+          "width": 280
+        },
+        "data": {
+          "id": "rpc-gribi-g-ribi-flush",
+          "kind": "rpc",
+          "label": "Flush",
+          "description": "Flush allows a client to remove all entries currently installed on the\nserver via gRIBI. The client requests a Flush, and the server removes all\nentries that match the context described by the FlushRequest.",
+          "protoUrl": "https://github.com/openconfig/gribi/blob/v1.10.0/v1/proto/service/gribi.proto#L47",
+          "fields": [
+            {
+              "id": "takes",
+              "type": "takes",
+              "name": "FlushRequest",
+              "ref": "gribi-flush-request"
+            },
+            {
+              "id": "returns",
+              "type": "returns",
+              "name": "FlushResponse",
+              "ref": "gribi-flush-response"
+            }
+          ]
+        }
+      },
+      {
+        "id": "gribi-aft-afts",
+        "type": "schema",
+        "position": {
+          "x": 900,
+          "y": 60
+        },
+        "style": {
+          "width": 340
+        },
+        "data": {
+          "id": "gribi-aft-afts",
+          "kind": "message",
+          "label": "gribi_aft.Afts",
+          "sourceSymbol": "gribi_aft.Afts",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gribi/blob/v1.10.0/v1/proto/gribi_aft/gribi_aft.proto#L23",
+          "fields": [
+            {
+              "id": "backup-activation",
+              "type": "repeated BackupActivationKey",
+              "name": "backup_activation",
+              "ref": "gribi-aft-afts-backup-activation-key"
+            },
+            {
+              "id": "ipv4-entry",
+              "type": "repeated Ipv4EntryKey",
+              "name": "ipv4_entry",
+              "ref": "gribi-aft-afts-ipv4-entry-key"
+            },
+            {
+              "id": "ipv6-entry",
+              "type": "repeated Ipv6EntryKey",
+              "name": "ipv6_entry",
+              "ref": "gribi-aft-afts-ipv6-entry-key"
+            },
+            {
+              "id": "label-entry",
+              "type": "repeated LabelEntryKey",
+              "name": "label_entry",
+              "ref": "gribi-aft-afts-label-entry-key"
+            },
+            {
+              "id": "mac-entry",
+              "type": "repeated MacEntryKey",
+              "name": "mac_entry",
+              "ref": "gribi-aft-afts-mac-entry-key"
+            },
+            {
+              "id": "next-hop",
+              "type": "repeated NextHopKey",
+              "name": "next_hop",
+              "ref": "gribi-aft-afts-next-hop-group-next-hop-key"
+            },
+            {
+              "id": "next-hop-group",
+              "type": "repeated NextHopGroupKey",
+              "name": "next_hop_group",
+              "ref": "gribi-aft-afts-next-hop-group-key"
+            },
+            {
+              "id": "policy-forwarding-entry",
+              "type": "repeated PolicyForwardingEntryKey",
+              "name": "policy_forwarding_entry",
+              "ref": "gribi-aft-afts-policy-forwarding-entry-key"
+            }
+          ]
+        }
+      },
+      {
+        "id": "gribi-aft-afts-backup-activation",
+        "type": "schema",
+        "position": {
+          "x": 1290,
+          "y": 60
+        },
+        "style": {
+          "width": 340
+        },
+        "data": {
+          "id": "gribi-aft-afts-backup-activation",
+          "kind": "message",
+          "label": "gribi_aft.Afts.BackupActivation",
+          "sourceSymbol": "gribi_aft.Afts.BackupActivation",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gribi/blob/v1.10.0/v1/proto/gribi_aft/gribi_aft.proto#L24",
+          "fields": []
+        }
+      },
+      {
+        "id": "gribi-aft-afts-backup-activation-key",
+        "type": "schema",
+        "position": {
+          "x": 1680,
+          "y": 60
+        },
+        "style": {
+          "width": 340
+        },
+        "data": {
+          "id": "gribi-aft-afts-backup-activation-key",
+          "kind": "message",
+          "label": "gribi_aft.Afts.BackupActivationKey",
+          "sourceSymbol": "gribi_aft.Afts.BackupActivationKey",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gribi/blob/v1.10.0/v1/proto/gribi_aft/gribi_aft.proto#L26",
+          "fields": [
+            {
+              "id": "next-hop-group",
+              "type": "uint64",
+              "name": "next_hop_group",
+              "ref": null
+            },
+            {
+              "id": "backup-activation",
+              "type": "BackupActivation",
+              "name": "backup_activation",
+              "ref": "gribi-aft-afts-backup-activation"
+            }
+          ]
+        }
+      },
+      {
+        "id": "gribi-aft-afts-ipv4-entry",
+        "type": "schema",
+        "position": {
+          "x": 900,
+          "y": 180
+        },
+        "style": {
+          "width": 340
+        },
+        "data": {
+          "id": "gribi-aft-afts-ipv4-entry",
+          "kind": "message",
+          "label": "gribi_aft.Afts.Ipv4Entry",
+          "sourceSymbol": "gribi_aft.Afts.Ipv4Entry",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gribi/blob/v1.10.0/v1/proto/gribi_aft/gribi_aft.proto#L30",
+          "fields": [
+            {
+              "id": "decapsulate-header",
+              "type": "gribi_aft.enums.OpenconfigAftTypesEncapsulationHeaderType",
+              "name": "decapsulate_header",
+              "ref": "gribi-aft-enums-openconfig-aft-types-encapsulation-header-type"
+            },
+            {
+              "id": "entry-metadata",
+              "type": "ywrapper.BytesValue",
+              "name": "entry_metadata",
+              "ref": "external-ywrapper-bytes-value"
+            },
+            {
+              "id": "next-hop-group",
+              "type": "ywrapper.UintValue",
+              "name": "next_hop_group",
+              "ref": "external-ywrapper-uint-value"
+            },
+            {
+              "id": "next-hop-group-network-instance",
+              "type": "ywrapper.StringValue",
+              "name": "next_hop_group_network_instance",
+              "ref": "external-ywrapper-string-value"
+            }
+          ]
+        }
+      },
+      {
+        "id": "gribi-aft-afts-ipv4-entry-key",
+        "type": "schema",
+        "position": {
+          "x": 1290,
+          "y": 180
+        },
+        "style": {
+          "width": 340
+        },
+        "data": {
+          "id": "gribi-aft-afts-ipv4-entry-key",
+          "kind": "message",
+          "label": "gribi_aft.Afts.Ipv4EntryKey",
+          "sourceSymbol": "gribi_aft.Afts.Ipv4EntryKey",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gribi/blob/v1.10.0/v1/proto/gribi_aft/gribi_aft.proto#L36",
+          "fields": [
+            {
+              "id": "prefix",
+              "type": "string",
+              "name": "prefix",
+              "ref": null
+            },
+            {
+              "id": "ipv4-entry",
+              "type": "Ipv4Entry",
+              "name": "ipv4_entry",
+              "ref": "gribi-aft-afts-ipv4-entry"
+            }
+          ]
+        }
+      },
+      {
+        "id": "gribi-aft-afts-ipv6-entry",
+        "type": "schema",
+        "position": {
+          "x": 1680,
+          "y": 180
+        },
+        "style": {
+          "width": 340
+        },
+        "data": {
+          "id": "gribi-aft-afts-ipv6-entry",
+          "kind": "message",
+          "label": "gribi_aft.Afts.Ipv6Entry",
+          "sourceSymbol": "gribi_aft.Afts.Ipv6Entry",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gribi/blob/v1.10.0/v1/proto/gribi_aft/gribi_aft.proto#L40",
+          "fields": [
+            {
+              "id": "decapsulate-header",
+              "type": "gribi_aft.enums.OpenconfigAftTypesEncapsulationHeaderType",
+              "name": "decapsulate_header",
+              "ref": "gribi-aft-enums-openconfig-aft-types-encapsulation-header-type"
+            },
+            {
+              "id": "entry-metadata",
+              "type": "ywrapper.BytesValue",
+              "name": "entry_metadata",
+              "ref": "external-ywrapper-bytes-value"
+            },
+            {
+              "id": "next-hop-group",
+              "type": "ywrapper.UintValue",
+              "name": "next_hop_group",
+              "ref": "external-ywrapper-uint-value"
+            },
+            {
+              "id": "next-hop-group-network-instance",
+              "type": "ywrapper.StringValue",
+              "name": "next_hop_group_network_instance",
+              "ref": "external-ywrapper-string-value"
+            }
+          ]
+        }
+      },
+      {
+        "id": "gribi-aft-afts-ipv6-entry-key",
+        "type": "schema",
+        "position": {
+          "x": 900,
+          "y": 300
+        },
+        "style": {
+          "width": 340
+        },
+        "data": {
+          "id": "gribi-aft-afts-ipv6-entry-key",
+          "kind": "message",
+          "label": "gribi_aft.Afts.Ipv6EntryKey",
+          "sourceSymbol": "gribi_aft.Afts.Ipv6EntryKey",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gribi/blob/v1.10.0/v1/proto/gribi_aft/gribi_aft.proto#L46",
+          "fields": [
+            {
+              "id": "prefix",
+              "type": "string",
+              "name": "prefix",
+              "ref": null
+            },
+            {
+              "id": "ipv6-entry",
+              "type": "Ipv6Entry",
+              "name": "ipv6_entry",
+              "ref": "gribi-aft-afts-ipv6-entry"
+            }
+          ]
+        }
+      },
+      {
+        "id": "gribi-aft-afts-label-entry",
+        "type": "schema",
+        "position": {
+          "x": 1290,
+          "y": 300
+        },
+        "style": {
+          "width": 340
+        },
+        "data": {
+          "id": "gribi-aft-afts-label-entry",
+          "kind": "message",
+          "label": "gribi_aft.Afts.LabelEntry",
+          "sourceSymbol": "gribi_aft.Afts.LabelEntry",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gribi/blob/v1.10.0/v1/proto/gribi_aft/gribi_aft.proto#L50",
+          "fields": [
+            {
+              "id": "entry-metadata",
+              "type": "ywrapper.BytesValue",
+              "name": "entry_metadata",
+              "ref": "external-ywrapper-bytes-value"
+            },
+            {
+              "id": "next-hop-group",
+              "type": "ywrapper.UintValue",
+              "name": "next_hop_group",
+              "ref": "external-ywrapper-uint-value"
+            },
+            {
+              "id": "next-hop-group-network-instance",
+              "type": "ywrapper.StringValue",
+              "name": "next_hop_group_network_instance",
+              "ref": "external-ywrapper-string-value"
+            },
+            {
+              "id": "popped-mpls-label-stack",
+              "type": "repeated PoppedMplsLabelStackUnion",
+              "name": "popped_mpls_label_stack",
+              "ref": "gribi-aft-afts-label-entry-popped-mpls-label-stack-union"
+            }
+          ]
+        }
+      },
+      {
+        "id": "gribi-aft-afts-label-entry-popped-mpls-label-stack-union",
+        "type": "schema",
+        "position": {
+          "x": 1680,
+          "y": 300
+        },
+        "style": {
+          "width": 340
+        },
+        "data": {
+          "id": "gribi-aft-afts-label-entry-popped-mpls-label-stack-union",
+          "kind": "message",
+          "label": "gribi_aft.Afts.LabelEntry.PoppedMplsLabelStackUnion",
+          "sourceSymbol": "gribi_aft.Afts.LabelEntry.PoppedMplsLabelStackUnion",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gribi/blob/v1.10.0/v1/proto/gribi_aft/gribi_aft.proto#L51",
+          "fields": [
+            {
+              "id": "popped-mpls-label-stack-openconfigmplstypesmplslabelenum",
+              "type": "gribi_aft.enums.OpenconfigMplsTypesMplsLabelEnum",
+              "name": "popped_mpls_label_stack_openconfigmplstypesmplslabelenum",
+              "ref": "gribi-aft-enums-openconfig-mpls-types-mpls-label-enum"
+            },
+            {
+              "id": "popped-mpls-label-stack-uint64",
+              "type": "uint64",
+              "name": "popped_mpls_label_stack_uint64",
+              "ref": null
+            }
+          ]
+        }
+      },
+      {
+        "id": "gribi-aft-afts-label-entry-key",
+        "type": "schema",
+        "position": {
+          "x": 900,
+          "y": 420
+        },
+        "style": {
+          "width": 340
+        },
+        "data": {
+          "id": "gribi-aft-afts-label-entry-key",
+          "kind": "message",
+          "label": "gribi_aft.Afts.LabelEntryKey",
+          "sourceSymbol": "gribi_aft.Afts.LabelEntryKey",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gribi/blob/v1.10.0/v1/proto/gribi_aft/gribi_aft.proto#L60",
+          "fields": [
+            {
+              "id": "label-openconfigmplstypesmplslabelenum",
+              "type": "gribi_aft.enums.OpenconfigMplsTypesMplsLabelEnum",
+              "name": "label_openconfigmplstypesmplslabelenum",
+              "ref": "gribi-aft-enums-openconfig-mpls-types-mpls-label-enum",
+              "group": "oneof label"
+            },
+            {
+              "id": "label-uint64",
+              "type": "uint64",
+              "name": "label_uint64",
+              "ref": null,
+              "group": "oneof label"
+            },
+            {
+              "id": "label-entry",
+              "type": "LabelEntry",
+              "name": "label_entry",
+              "ref": "gribi-aft-afts-label-entry"
+            }
+          ]
+        }
+      },
+      {
+        "id": "gribi-aft-afts-mac-entry",
+        "type": "schema",
+        "position": {
+          "x": 1290,
+          "y": 420
+        },
+        "style": {
+          "width": 340
+        },
+        "data": {
+          "id": "gribi-aft-afts-mac-entry",
+          "kind": "message",
+          "label": "gribi_aft.Afts.MacEntry",
+          "sourceSymbol": "gribi_aft.Afts.MacEntry",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gribi/blob/v1.10.0/v1/proto/gribi_aft/gribi_aft.proto#L67",
+          "fields": [
+            {
+              "id": "entry-metadata",
+              "type": "ywrapper.BytesValue",
+              "name": "entry_metadata",
+              "ref": "external-ywrapper-bytes-value"
+            },
+            {
+              "id": "next-hop-group",
+              "type": "ywrapper.UintValue",
+              "name": "next_hop_group",
+              "ref": "external-ywrapper-uint-value"
+            },
+            {
+              "id": "next-hop-group-network-instance",
+              "type": "ywrapper.StringValue",
+              "name": "next_hop_group_network_instance",
+              "ref": "external-ywrapper-string-value"
+            }
+          ]
+        }
+      },
+      {
+        "id": "gribi-aft-afts-mac-entry-key",
+        "type": "schema",
+        "position": {
+          "x": 1680,
+          "y": 420
+        },
+        "style": {
+          "width": 340
+        },
+        "data": {
+          "id": "gribi-aft-afts-mac-entry-key",
+          "kind": "message",
+          "label": "gribi_aft.Afts.MacEntryKey",
+          "sourceSymbol": "gribi_aft.Afts.MacEntryKey",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gribi/blob/v1.10.0/v1/proto/gribi_aft/gribi_aft.proto#L72",
+          "fields": [
+            {
+              "id": "mac-address",
+              "type": "string",
+              "name": "mac_address",
+              "ref": null
+            },
+            {
+              "id": "mac-entry",
+              "type": "MacEntry",
+              "name": "mac_entry",
+              "ref": "gribi-aft-afts-mac-entry"
+            }
+          ]
+        }
+      },
+      {
+        "id": "gribi-aft-afts-next-hop",
+        "type": "schema",
+        "position": {
+          "x": 900,
+          "y": 540
+        },
+        "style": {
+          "width": 340
+        },
+        "data": {
+          "id": "gribi-aft-afts-next-hop",
+          "kind": "message",
+          "label": "gribi_aft.Afts.NextHop",
+          "sourceSymbol": "gribi_aft.Afts.NextHop",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gribi/blob/v1.10.0/v1/proto/gribi_aft/gribi_aft.proto#L76",
+          "fields": [
+            {
+              "id": "decapsulate-header",
+              "type": "gribi_aft.enums.OpenconfigAftTypesEncapsulationHeaderType",
+              "name": "decapsulate_header",
+              "ref": "gribi-aft-enums-openconfig-aft-types-encapsulation-header-type"
+            },
+            {
+              "id": "encap-header",
+              "type": "repeated EncapHeaderKey",
+              "name": "encap_header",
+              "ref": "gribi-aft-afts-next-hop-encap-header-key"
+            },
+            {
+              "id": "encapsulate-header",
+              "type": "gribi_aft.enums.OpenconfigAftTypesEncapsulationHeaderType",
+              "name": "encapsulate_header",
+              "ref": "gribi-aft-enums-openconfig-aft-types-encapsulation-header-type"
+            },
+            {
+              "id": "gre",
+              "type": "Gre",
+              "name": "gre",
+              "ref": "gribi-aft-afts-next-hop-encap-header-gre"
+            },
+            {
+              "id": "interface-ref",
+              "type": "InterfaceRef",
+              "name": "interface_ref",
+              "ref": "gribi-aft-afts-next-hop-interface-ref"
+            },
+            {
+              "id": "ip-address",
+              "type": "ywrapper.StringValue",
+              "name": "ip_address",
+              "ref": "external-ywrapper-string-value"
+            },
+            {
+              "id": "ip-in-ip",
+              "type": "IpInIp",
+              "name": "ip_in_ip",
+              "ref": "gribi-aft-afts-next-hop-ip-in-ip"
+            },
+            {
+              "id": "mac-address",
+              "type": "ywrapper.StringValue",
+              "name": "mac_address",
+              "ref": "external-ywrapper-string-value"
+            },
+            {
+              "id": "network-instance",
+              "type": "ywrapper.StringValue",
+              "name": "network_instance",
+              "ref": "external-ywrapper-string-value"
+            },
+            {
+              "id": "pop-top-label",
+              "type": "ywrapper.BoolValue",
+              "name": "pop_top_label",
+              "ref": "external-ywrapper-bool-value"
+            },
+            {
+              "id": "pushed-mpls-label-stack",
+              "type": "repeated PushedMplsLabelStackUnion",
+              "name": "pushed_mpls_label_stack",
+              "ref": "gribi-aft-afts-next-hop-pushed-mpls-label-stack-union"
+            },
+            {
+              "id": "tunnel-src-ip-address",
+              "type": "ywrapper.StringValue",
+              "name": "tunnel_src_ip_address",
+              "ref": "external-ywrapper-string-value"
+            },
+            {
+              "id": "vni-label",
+              "type": "ywrapper.UintValue",
+              "name": "vni_label",
+              "ref": "external-ywrapper-uint-value"
+            }
+          ]
+        }
+      },
+      {
+        "id": "gribi-aft-afts-next-hop-encap-header",
+        "type": "schema",
+        "position": {
+          "x": 1290,
+          "y": 540
+        },
+        "style": {
+          "width": 340
+        },
+        "data": {
+          "id": "gribi-aft-afts-next-hop-encap-header",
+          "kind": "message",
+          "label": "gribi_aft.Afts.NextHop.EncapHeader",
+          "sourceSymbol": "gribi_aft.Afts.NextHop.EncapHeader",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gribi/blob/v1.10.0/v1/proto/gribi_aft/gribi_aft.proto#L77",
+          "fields": [
+            {
+              "id": "gre",
+              "type": "Gre",
+              "name": "gre",
+              "ref": "gribi-aft-afts-next-hop-gre"
+            },
+            {
+              "id": "ipv4",
+              "type": "Ipv4",
+              "name": "ipv4",
+              "ref": "gribi-aft-afts-next-hop-encap-header-ipv4"
+            },
+            {
+              "id": "ipv6",
+              "type": "Ipv6",
+              "name": "ipv6",
+              "ref": "gribi-aft-afts-next-hop-encap-header-ipv6"
+            },
+            {
+              "id": "mpls",
+              "type": "Mpls",
+              "name": "mpls",
+              "ref": "gribi-aft-afts-next-hop-encap-header-mpls"
+            },
+            {
+              "id": "type",
+              "type": "gribi_aft.enums.OpenconfigAftTypesEncapsulationHeaderType",
+              "name": "type",
+              "ref": "gribi-aft-enums-openconfig-aft-types-encapsulation-header-type"
+            },
+            {
+              "id": "udp-v4",
+              "type": "UdpV4",
+              "name": "udp_v4",
+              "ref": "gribi-aft-afts-next-hop-encap-header-udp-v4"
+            },
+            {
+              "id": "udp-v6",
+              "type": "UdpV6",
+              "name": "udp_v6",
+              "ref": "gribi-aft-afts-next-hop-encap-header-udp-v6"
+            }
+          ]
+        }
+      },
+      {
+        "id": "gribi-aft-afts-next-hop-encap-header-gre",
+        "type": "schema",
+        "position": {
+          "x": 1680,
+          "y": 540
+        },
+        "style": {
+          "width": 340
+        },
+        "data": {
+          "id": "gribi-aft-afts-next-hop-encap-header-gre",
+          "kind": "message",
+          "label": "gribi_aft.Afts.NextHop.EncapHeader.Gre",
+          "sourceSymbol": "gribi_aft.Afts.NextHop.EncapHeader.Gre",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gribi/blob/v1.10.0/v1/proto/gribi_aft/gribi_aft.proto#L78",
+          "fields": [
+            {
+              "id": "dst-ip",
+              "type": "ywrapper.StringValue",
+              "name": "dst_ip",
+              "ref": "external-ywrapper-string-value"
+            },
+            {
+              "id": "src-ip",
+              "type": "ywrapper.StringValue",
+              "name": "src_ip",
+              "ref": "external-ywrapper-string-value"
+            },
+            {
+              "id": "ttl",
+              "type": "ywrapper.UintValue",
+              "name": "ttl",
+              "ref": "external-ywrapper-uint-value"
+            }
+          ]
+        }
+      },
+      {
+        "id": "gribi-aft-afts-next-hop-encap-header-ipv4",
+        "type": "schema",
+        "position": {
+          "x": 900,
+          "y": 660
+        },
+        "style": {
+          "width": 340
+        },
+        "data": {
+          "id": "gribi-aft-afts-next-hop-encap-header-ipv4",
+          "kind": "message",
+          "label": "gribi_aft.Afts.NextHop.EncapHeader.Ipv4",
+          "sourceSymbol": "gribi_aft.Afts.NextHop.EncapHeader.Ipv4",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gribi/blob/v1.10.0/v1/proto/gribi_aft/gribi_aft.proto#L83",
+          "fields": [
+            {
+              "id": "dst-ip",
+              "type": "ywrapper.StringValue",
+              "name": "dst_ip",
+              "ref": "external-ywrapper-string-value"
+            },
+            {
+              "id": "src-ip",
+              "type": "ywrapper.StringValue",
+              "name": "src_ip",
+              "ref": "external-ywrapper-string-value"
+            }
+          ]
+        }
+      },
+      {
+        "id": "gribi-aft-afts-next-hop-encap-header-ipv6",
+        "type": "schema",
+        "position": {
+          "x": 1290,
+          "y": 660
+        },
+        "style": {
+          "width": 340
+        },
+        "data": {
+          "id": "gribi-aft-afts-next-hop-encap-header-ipv6",
+          "kind": "message",
+          "label": "gribi_aft.Afts.NextHop.EncapHeader.Ipv6",
+          "sourceSymbol": "gribi_aft.Afts.NextHop.EncapHeader.Ipv6",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gribi/blob/v1.10.0/v1/proto/gribi_aft/gribi_aft.proto#L87",
+          "fields": [
+            {
+              "id": "dst-ip",
+              "type": "ywrapper.StringValue",
+              "name": "dst_ip",
+              "ref": "external-ywrapper-string-value"
+            },
+            {
+              "id": "src-ip",
+              "type": "ywrapper.StringValue",
+              "name": "src_ip",
+              "ref": "external-ywrapper-string-value"
+            }
+          ]
+        }
+      },
+      {
+        "id": "gribi-aft-afts-next-hop-encap-header-mpls",
+        "type": "schema",
+        "position": {
+          "x": 1680,
+          "y": 660
+        },
+        "style": {
+          "width": 340
+        },
+        "data": {
+          "id": "gribi-aft-afts-next-hop-encap-header-mpls",
+          "kind": "message",
+          "label": "gribi_aft.Afts.NextHop.EncapHeader.Mpls",
+          "sourceSymbol": "gribi_aft.Afts.NextHop.EncapHeader.Mpls",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gribi/blob/v1.10.0/v1/proto/gribi_aft/gribi_aft.proto#L91",
+          "fields": [
+            {
+              "id": "mpls-label-stack",
+              "type": "repeated MplsLabelStackUnion",
+              "name": "mpls_label_stack",
+              "ref": "gribi-aft-afts-next-hop-encap-header-mpls-mpls-label-stack-union"
+            },
+            {
+              "id": "traffic-class",
+              "type": "ywrapper.UintValue",
+              "name": "traffic_class",
+              "ref": "external-ywrapper-uint-value"
+            }
+          ]
+        }
+      },
+      {
+        "id": "gribi-aft-afts-next-hop-encap-header-mpls-mpls-label-stack-union",
+        "type": "schema",
+        "position": {
+          "x": 900,
+          "y": 780
+        },
+        "style": {
+          "width": 340
+        },
+        "data": {
+          "id": "gribi-aft-afts-next-hop-encap-header-mpls-mpls-label-stack-union",
+          "kind": "message",
+          "label": "gribi_aft.Afts.NextHop.EncapHeader.Mpls.MplsLabelStackUnion",
+          "sourceSymbol": "gribi_aft.Afts.NextHop.EncapHeader.Mpls.MplsLabelStackUnion",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gribi/blob/v1.10.0/v1/proto/gribi_aft/gribi_aft.proto#L92",
+          "fields": [
+            {
+              "id": "mpls-label-stack-openconfigmplstypesmplslabelenum",
+              "type": "gribi_aft.enums.OpenconfigMplsTypesMplsLabelEnum",
+              "name": "mpls_label_stack_openconfigmplstypesmplslabelenum",
+              "ref": "gribi-aft-enums-openconfig-mpls-types-mpls-label-enum"
+            },
+            {
+              "id": "mpls-label-stack-uint64",
+              "type": "uint64",
+              "name": "mpls_label_stack_uint64",
+              "ref": null
+            }
+          ]
+        }
+      },
+      {
+        "id": "gribi-aft-afts-next-hop-encap-header-udp-v4",
+        "type": "schema",
+        "position": {
+          "x": 1290,
+          "y": 780
+        },
+        "style": {
+          "width": 340
+        },
+        "data": {
+          "id": "gribi-aft-afts-next-hop-encap-header-udp-v4",
+          "kind": "message",
+          "label": "gribi_aft.Afts.NextHop.EncapHeader.UdpV4",
+          "sourceSymbol": "gribi_aft.Afts.NextHop.EncapHeader.UdpV4",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gribi/blob/v1.10.0/v1/proto/gribi_aft/gribi_aft.proto#L99",
+          "fields": [
+            {
+              "id": "dscp",
+              "type": "ywrapper.UintValue",
+              "name": "dscp",
+              "ref": "external-ywrapper-uint-value"
+            },
+            {
+              "id": "dst-ip",
+              "type": "ywrapper.StringValue",
+              "name": "dst_ip",
+              "ref": "external-ywrapper-string-value"
+            },
+            {
+              "id": "dst-udp-port",
+              "type": "ywrapper.UintValue",
+              "name": "dst_udp_port",
+              "ref": "external-ywrapper-uint-value"
+            },
+            {
+              "id": "ip-ttl",
+              "type": "ywrapper.UintValue",
+              "name": "ip_ttl",
+              "ref": "external-ywrapper-uint-value"
+            },
+            {
+              "id": "src-ip",
+              "type": "ywrapper.StringValue",
+              "name": "src_ip",
+              "ref": "external-ywrapper-string-value"
+            },
+            {
+              "id": "src-udp-port",
+              "type": "ywrapper.UintValue",
+              "name": "src_udp_port",
+              "ref": "external-ywrapper-uint-value"
+            }
+          ]
+        }
+      },
+      {
+        "id": "gribi-aft-afts-next-hop-encap-header-udp-v6",
+        "type": "schema",
+        "position": {
+          "x": 1680,
+          "y": 780
+        },
+        "style": {
+          "width": 340
+        },
+        "data": {
+          "id": "gribi-aft-afts-next-hop-encap-header-udp-v6",
+          "kind": "message",
+          "label": "gribi_aft.Afts.NextHop.EncapHeader.UdpV6",
+          "sourceSymbol": "gribi_aft.Afts.NextHop.EncapHeader.UdpV6",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gribi/blob/v1.10.0/v1/proto/gribi_aft/gribi_aft.proto#L107",
+          "fields": [
+            {
+              "id": "dscp",
+              "type": "ywrapper.UintValue",
+              "name": "dscp",
+              "ref": "external-ywrapper-uint-value"
+            },
+            {
+              "id": "dst-ip",
+              "type": "ywrapper.StringValue",
+              "name": "dst_ip",
+              "ref": "external-ywrapper-string-value"
+            },
+            {
+              "id": "dst-udp-port",
+              "type": "ywrapper.UintValue",
+              "name": "dst_udp_port",
+              "ref": "external-ywrapper-uint-value"
+            },
+            {
+              "id": "ip-ttl",
+              "type": "ywrapper.UintValue",
+              "name": "ip_ttl",
+              "ref": "external-ywrapper-uint-value"
+            },
+            {
+              "id": "src-ip",
+              "type": "ywrapper.StringValue",
+              "name": "src_ip",
+              "ref": "external-ywrapper-string-value"
+            },
+            {
+              "id": "src-udp-port",
+              "type": "ywrapper.UintValue",
+              "name": "src_udp_port",
+              "ref": "external-ywrapper-uint-value"
+            }
+          ]
+        }
+      },
+      {
+        "id": "gribi-aft-afts-next-hop-encap-header-key",
+        "type": "schema",
+        "position": {
+          "x": 900,
+          "y": 900
+        },
+        "style": {
+          "width": 340
+        },
+        "data": {
+          "id": "gribi-aft-afts-next-hop-encap-header-key",
+          "kind": "message",
+          "label": "gribi_aft.Afts.NextHop.EncapHeaderKey",
+          "sourceSymbol": "gribi_aft.Afts.NextHop.EncapHeaderKey",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gribi/blob/v1.10.0/v1/proto/gribi_aft/gribi_aft.proto#L123",
+          "fields": [
+            {
+              "id": "index",
+              "type": "uint64",
+              "name": "index",
+              "ref": null
+            },
+            {
+              "id": "encap-header",
+              "type": "EncapHeader",
+              "name": "encap_header",
+              "ref": "gribi-aft-afts-next-hop-encap-header"
+            }
+          ]
+        }
+      },
+      {
+        "id": "gribi-aft-afts-next-hop-gre",
+        "type": "schema",
+        "position": {
+          "x": 1290,
+          "y": 900
+        },
+        "style": {
+          "width": 340
+        },
+        "data": {
+          "id": "gribi-aft-afts-next-hop-gre",
+          "kind": "message",
+          "label": "gribi_aft.Afts.NextHop.Gre",
+          "sourceSymbol": "gribi_aft.Afts.NextHop.Gre",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gribi/blob/v1.10.0/v1/proto/gribi_aft/gribi_aft.proto#L127",
+          "fields": [
+            {
+              "id": "dst-ip",
+              "type": "ywrapper.StringValue",
+              "name": "dst_ip",
+              "ref": "external-ywrapper-string-value"
+            },
+            {
+              "id": "src-ip",
+              "type": "ywrapper.StringValue",
+              "name": "src_ip",
+              "ref": "external-ywrapper-string-value"
+            },
+            {
+              "id": "ttl",
+              "type": "ywrapper.UintValue",
+              "name": "ttl",
+              "ref": "external-ywrapper-uint-value"
+            }
+          ]
+        }
+      },
+      {
+        "id": "gribi-aft-afts-next-hop-interface-ref",
+        "type": "schema",
+        "position": {
+          "x": 1680,
+          "y": 900
+        },
+        "style": {
+          "width": 340
+        },
+        "data": {
+          "id": "gribi-aft-afts-next-hop-interface-ref",
+          "kind": "message",
+          "label": "gribi_aft.Afts.NextHop.InterfaceRef",
+          "sourceSymbol": "gribi_aft.Afts.NextHop.InterfaceRef",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gribi/blob/v1.10.0/v1/proto/gribi_aft/gribi_aft.proto#L132",
+          "fields": [
+            {
+              "id": "interface",
+              "type": "ywrapper.StringValue",
+              "name": "interface",
+              "ref": "external-ywrapper-string-value"
+            },
+            {
+              "id": "subinterface",
+              "type": "ywrapper.UintValue",
+              "name": "subinterface",
+              "ref": "external-ywrapper-uint-value"
+            }
+          ]
+        }
+      },
+      {
+        "id": "gribi-aft-afts-next-hop-ip-in-ip",
+        "type": "schema",
+        "position": {
+          "x": 900,
+          "y": 1020
+        },
+        "style": {
+          "width": 340
+        },
+        "data": {
+          "id": "gribi-aft-afts-next-hop-ip-in-ip",
+          "kind": "message",
+          "label": "gribi_aft.Afts.NextHop.IpInIp",
+          "sourceSymbol": "gribi_aft.Afts.NextHop.IpInIp",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gribi/blob/v1.10.0/v1/proto/gribi_aft/gribi_aft.proto#L136",
+          "fields": [
+            {
+              "id": "dst-ip",
+              "type": "ywrapper.StringValue",
+              "name": "dst_ip",
+              "ref": "external-ywrapper-string-value"
+            },
+            {
+              "id": "src-ip",
+              "type": "ywrapper.StringValue",
+              "name": "src_ip",
+              "ref": "external-ywrapper-string-value"
+            }
+          ]
+        }
+      },
+      {
+        "id": "gribi-aft-afts-next-hop-pushed-mpls-label-stack-union",
+        "type": "schema",
+        "position": {
+          "x": 1290,
+          "y": 1020
+        },
+        "style": {
+          "width": 340
+        },
+        "data": {
+          "id": "gribi-aft-afts-next-hop-pushed-mpls-label-stack-union",
+          "kind": "message",
+          "label": "gribi_aft.Afts.NextHop.PushedMplsLabelStackUnion",
+          "sourceSymbol": "gribi_aft.Afts.NextHop.PushedMplsLabelStackUnion",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gribi/blob/v1.10.0/v1/proto/gribi_aft/gribi_aft.proto#L140",
+          "fields": [
+            {
+              "id": "pushed-mpls-label-stack-openconfigmplstypesmplslabelenum",
+              "type": "gribi_aft.enums.OpenconfigMplsTypesMplsLabelEnum",
+              "name": "pushed_mpls_label_stack_openconfigmplstypesmplslabelenum",
+              "ref": "gribi-aft-enums-openconfig-mpls-types-mpls-label-enum"
+            },
+            {
+              "id": "pushed-mpls-label-stack-uint64",
+              "type": "uint64",
+              "name": "pushed_mpls_label_stack_uint64",
+              "ref": null
+            }
+          ]
+        }
+      },
+      {
+        "id": "gribi-aft-afts-next-hop-group",
+        "type": "schema",
+        "position": {
+          "x": 1680,
+          "y": 1020
+        },
+        "style": {
+          "width": 340
+        },
+        "data": {
+          "id": "gribi-aft-afts-next-hop-group",
+          "kind": "message",
+          "label": "gribi_aft.Afts.NextHopGroup",
+          "sourceSymbol": "gribi_aft.Afts.NextHopGroup",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gribi/blob/v1.10.0/v1/proto/gribi_aft/gribi_aft.proto#L158",
+          "fields": [
+            {
+              "id": "backup-next-hop-group",
+              "type": "ywrapper.UintValue",
+              "name": "backup_next_hop_group",
+              "ref": "external-ywrapper-uint-value"
+            },
+            {
+              "id": "color",
+              "type": "ywrapper.UintValue",
+              "name": "color",
+              "ref": "external-ywrapper-uint-value"
+            },
+            {
+              "id": "next-hop",
+              "type": "repeated NextHopKey",
+              "name": "next_hop",
+              "ref": "gribi-aft-afts-next-hop-key"
+            }
+          ]
+        }
+      },
+      {
+        "id": "gribi-aft-afts-next-hop-group-next-hop",
+        "type": "schema",
+        "position": {
+          "x": 900,
+          "y": 1140
+        },
+        "style": {
+          "width": 340
+        },
+        "data": {
+          "id": "gribi-aft-afts-next-hop-group-next-hop",
+          "kind": "message",
+          "label": "gribi_aft.Afts.NextHopGroup.NextHop",
+          "sourceSymbol": "gribi_aft.Afts.NextHopGroup.NextHop",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gribi/blob/v1.10.0/v1/proto/gribi_aft/gribi_aft.proto#L159",
+          "fields": [
+            {
+              "id": "weight",
+              "type": "ywrapper.UintValue",
+              "name": "weight",
+              "ref": "external-ywrapper-uint-value"
+            }
+          ]
+        }
+      },
+      {
+        "id": "gribi-aft-afts-next-hop-group-next-hop-key",
+        "type": "schema",
+        "position": {
+          "x": 1290,
+          "y": 1140
+        },
+        "style": {
+          "width": 340
+        },
+        "data": {
+          "id": "gribi-aft-afts-next-hop-group-next-hop-key",
+          "kind": "message",
+          "label": "gribi_aft.Afts.NextHopGroup.NextHopKey",
+          "sourceSymbol": "gribi_aft.Afts.NextHopGroup.NextHopKey",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gribi/blob/v1.10.0/v1/proto/gribi_aft/gribi_aft.proto#L162",
+          "fields": [
+            {
+              "id": "index",
+              "type": "uint64",
+              "name": "index",
+              "ref": null
+            },
+            {
+              "id": "next-hop",
+              "type": "NextHop",
+              "name": "next_hop",
+              "ref": "gribi-aft-afts-next-hop-group-next-hop"
+            }
+          ]
+        }
+      },
+      {
+        "id": "gribi-aft-afts-next-hop-group-key",
+        "type": "schema",
+        "position": {
+          "x": 1680,
+          "y": 1140
+        },
+        "style": {
+          "width": 340
+        },
+        "data": {
+          "id": "gribi-aft-afts-next-hop-group-key",
+          "kind": "message",
+          "label": "gribi_aft.Afts.NextHopGroupKey",
+          "sourceSymbol": "gribi_aft.Afts.NextHopGroupKey",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gribi/blob/v1.10.0/v1/proto/gribi_aft/gribi_aft.proto#L170",
+          "fields": [
+            {
+              "id": "id",
+              "type": "uint64",
+              "name": "id",
+              "ref": null
+            },
+            {
+              "id": "next-hop-group",
+              "type": "NextHopGroup",
+              "name": "next_hop_group",
+              "ref": "gribi-aft-afts-next-hop-group"
+            }
+          ]
+        }
+      },
+      {
+        "id": "gribi-aft-afts-next-hop-key",
+        "type": "schema",
+        "position": {
+          "x": 900,
+          "y": 1260
+        },
+        "style": {
+          "width": 340
+        },
+        "data": {
+          "id": "gribi-aft-afts-next-hop-key",
+          "kind": "message",
+          "label": "gribi_aft.Afts.NextHopKey",
+          "sourceSymbol": "gribi_aft.Afts.NextHopKey",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gribi/blob/v1.10.0/v1/proto/gribi_aft/gribi_aft.proto#L174",
+          "fields": [
+            {
+              "id": "index",
+              "type": "uint64",
+              "name": "index",
+              "ref": null
+            },
+            {
+              "id": "next-hop",
+              "type": "NextHop",
+              "name": "next_hop",
+              "ref": "gribi-aft-afts-next-hop"
+            }
+          ]
+        }
+      },
+      {
+        "id": "gribi-aft-afts-policy-forwarding-entry",
+        "type": "schema",
+        "position": {
+          "x": 1290,
+          "y": 1260
+        },
+        "style": {
+          "width": 340
+        },
+        "data": {
+          "id": "gribi-aft-afts-policy-forwarding-entry",
+          "kind": "message",
+          "label": "gribi_aft.Afts.PolicyForwardingEntry",
+          "sourceSymbol": "gribi_aft.Afts.PolicyForwardingEntry",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gribi/blob/v1.10.0/v1/proto/gribi_aft/gribi_aft.proto#L178",
+          "fields": [
+            {
+              "id": "entry-metadata",
+              "type": "ywrapper.BytesValue",
+              "name": "entry_metadata",
+              "ref": "external-ywrapper-bytes-value"
+            },
+            {
+              "id": "ip-dscp",
+              "type": "ywrapper.UintValue",
+              "name": "ip_dscp",
+              "ref": "external-ywrapper-uint-value"
+            },
+            {
+              "id": "ip-prefix",
+              "type": "ywrapper.StringValue",
+              "name": "ip_prefix",
+              "ref": "external-ywrapper-string-value"
+            },
+            {
+              "id": "ip-protocol-openconfigpacketmatchtypesipprotocol",
+              "type": "gribi_aft.enums.OpenconfigPacketMatchTypesIPPROTOCOL",
+              "name": "ip_protocol_openconfigpacketmatchtypesipprotocol",
+              "ref": "gribi-aft-enums-openconfig-packet-match-types-ipprotocol",
+              "group": "oneof ip_protocol"
+            },
+            {
+              "id": "ip-protocol-uint64",
+              "type": "uint64",
+              "name": "ip_protocol_uint64",
+              "ref": null,
+              "group": "oneof ip_protocol"
+            },
+            {
+              "id": "l4-dst-port",
+              "type": "ywrapper.UintValue",
+              "name": "l4_dst_port",
+              "ref": "external-ywrapper-uint-value"
+            },
+            {
+              "id": "l4-src-port",
+              "type": "ywrapper.UintValue",
+              "name": "l4_src_port",
+              "ref": "external-ywrapper-uint-value"
+            },
+            {
+              "id": "mac-address",
+              "type": "ywrapper.StringValue",
+              "name": "mac_address",
+              "ref": "external-ywrapper-string-value"
+            },
+            {
+              "id": "mpls-label-openconfigmplstypesmplslabelenum",
+              "type": "gribi_aft.enums.OpenconfigMplsTypesMplsLabelEnum",
+              "name": "mpls_label_openconfigmplstypesmplslabelenum",
+              "ref": "gribi-aft-enums-openconfig-mpls-types-mpls-label-enum",
+              "group": "oneof mpls_label"
+            },
+            {
+              "id": "mpls-label-uint64",
+              "type": "uint64",
+              "name": "mpls_label_uint64",
+              "ref": null,
+              "group": "oneof mpls_label"
+            },
+            {
+              "id": "mpls-tc",
+              "type": "ywrapper.UintValue",
+              "name": "mpls_tc",
+              "ref": "external-ywrapper-uint-value"
+            },
+            {
+              "id": "next-hop-group",
+              "type": "ywrapper.UintValue",
+              "name": "next_hop_group",
+              "ref": "external-ywrapper-uint-value"
+            },
+            {
+              "id": "next-hop-group-network-instance",
+              "type": "ywrapper.StringValue",
+              "name": "next_hop_group_network_instance",
+              "ref": "external-ywrapper-string-value"
+            }
+          ]
+        }
+      },
+      {
+        "id": "gribi-aft-afts-policy-forwarding-entry-key",
+        "type": "schema",
+        "position": {
+          "x": 1680,
+          "y": 1260
+        },
+        "style": {
+          "width": 340
+        },
+        "data": {
+          "id": "gribi-aft-afts-policy-forwarding-entry-key",
+          "kind": "message",
+          "label": "gribi_aft.Afts.PolicyForwardingEntryKey",
+          "sourceSymbol": "gribi_aft.Afts.PolicyForwardingEntryKey",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gribi/blob/v1.10.0/v1/proto/gribi_aft/gribi_aft.proto#L197",
+          "fields": [
+            {
+              "id": "index",
+              "type": "uint64",
+              "name": "index",
+              "ref": null
+            },
+            {
+              "id": "policy-forwarding-entry",
+              "type": "PolicyForwardingEntry",
+              "name": "policy_forwarding_entry",
+              "ref": "gribi-aft-afts-policy-forwarding-entry"
+            }
+          ]
+        }
+      },
+      {
+        "id": "gribi-aft-device",
+        "type": "schema",
+        "position": {
+          "x": 900,
+          "y": 1380
+        },
+        "style": {
+          "width": 340
+        },
+        "data": {
+          "id": "gribi-aft-device",
+          "kind": "message",
+          "label": "gribi_aft.Device",
+          "sourceSymbol": "gribi_aft.Device",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gribi/blob/v1.10.0/v1/proto/gribi_aft/gribi_aft.proto#L19",
+          "fields": [
+            {
+              "id": "afts",
+              "type": "Afts",
+              "name": "afts",
+              "ref": "gribi-aft-afts"
+            }
+          ]
+        }
+      },
+      {
+        "id": "gribi-aft-enums-openconfig-aft-types-encapsulation-header-type",
+        "type": "schema",
+        "position": {
+          "x": 1290,
+          "y": 1380
+        },
+        "style": {
+          "width": 310
+        },
+        "data": {
+          "id": "gribi-aft-enums-openconfig-aft-types-encapsulation-header-type",
+          "kind": "enum",
+          "label": "gribi_aft.enums.OpenconfigAftTypesEncapsulationHeaderType",
+          "description": "OpenconfigAftTypesEncapsulationHeaderType represents an enumerated type generated for the YANG enumerated type encapsulation-header-type.",
+          "sourceSymbol": "gribi_aft.enums.OpenconfigAftTypesEncapsulationHeaderType",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gribi/blob/v1.10.0/v1/proto/gribi_aft/enums/enums.proto#L18",
+          "fields": [
+            {
+              "id": "openconfigafttypesencapsulationheadertype-unset",
+              "type": "0",
+              "name": "OPENCONFIGAFTTYPESENCAPSULATIONHEADERTYPE_UNSET",
+              "ref": null
+            },
+            {
+              "id": "openconfigafttypesencapsulationheadertype-gre",
+              "type": "1",
+              "name": "OPENCONFIGAFTTYPESENCAPSULATIONHEADERTYPE_GRE",
+              "ref": null
+            },
+            {
+              "id": "openconfigafttypesencapsulationheadertype-ipv4",
+              "type": "2",
+              "name": "OPENCONFIGAFTTYPESENCAPSULATIONHEADERTYPE_IPV4",
+              "ref": null
+            },
+            {
+              "id": "openconfigafttypesencapsulationheadertype-ipv6",
+              "type": "3",
+              "name": "OPENCONFIGAFTTYPESENCAPSULATIONHEADERTYPE_IPV6",
+              "ref": null
+            },
+            {
+              "id": "openconfigafttypesencapsulationheadertype-mpls",
+              "type": "4",
+              "name": "OPENCONFIGAFTTYPESENCAPSULATIONHEADERTYPE_MPLS",
+              "ref": null
+            },
+            {
+              "id": "openconfigafttypesencapsulationheadertype-vxlan",
+              "type": "5",
+              "name": "OPENCONFIGAFTTYPESENCAPSULATIONHEADERTYPE_VXLAN",
+              "ref": null
+            },
+            {
+              "id": "openconfigafttypesencapsulationheadertype-udp",
+              "type": "6",
+              "name": "OPENCONFIGAFTTYPESENCAPSULATIONHEADERTYPE_UDP",
+              "ref": null
+            },
+            {
+              "id": "openconfigafttypesencapsulationheadertype-udpv4",
+              "type": "7",
+              "name": "OPENCONFIGAFTTYPESENCAPSULATIONHEADERTYPE_UDPV4",
+              "ref": null
+            },
+            {
+              "id": "openconfigafttypesencapsulationheadertype-udpv6",
+              "type": "8",
+              "name": "OPENCONFIGAFTTYPESENCAPSULATIONHEADERTYPE_UDPV6",
+              "ref": null
+            }
+          ]
+        }
+      },
+      {
+        "id": "gribi-aft-enums-openconfig-mpls-types-mpls-label-enum",
+        "type": "schema",
+        "position": {
+          "x": 1680,
+          "y": 1380
+        },
+        "style": {
+          "width": 310
+        },
+        "data": {
+          "id": "gribi-aft-enums-openconfig-mpls-types-mpls-label-enum",
+          "kind": "enum",
+          "label": "gribi_aft.enums.OpenconfigMplsTypesMplsLabelEnum",
+          "description": "OpenconfigMplsTypesMplsLabelEnum represents an enumerated type generated for the YANG enumerated type mpls-label.",
+          "sourceSymbol": "gribi_aft.enums.OpenconfigMplsTypesMplsLabelEnum",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gribi/blob/v1.10.0/v1/proto/gribi_aft/enums/enums.proto#L31",
+          "fields": [
+            {
+              "id": "openconfigmplstypesmplslabelenum-unset",
+              "type": "0",
+              "name": "OPENCONFIGMPLSTYPESMPLSLABELENUM_UNSET",
+              "ref": null
+            },
+            {
+              "id": "openconfigmplstypesmplslabelenum-ipv4-explicit-null",
+              "type": "1",
+              "name": "OPENCONFIGMPLSTYPESMPLSLABELENUM_IPV4_EXPLICIT_NULL",
+              "ref": null
+            },
+            {
+              "id": "openconfigmplstypesmplslabelenum-router-alert",
+              "type": "2",
+              "name": "OPENCONFIGMPLSTYPESMPLSLABELENUM_ROUTER_ALERT",
+              "ref": null
+            },
+            {
+              "id": "openconfigmplstypesmplslabelenum-ipv6-explicit-null",
+              "type": "3",
+              "name": "OPENCONFIGMPLSTYPESMPLSLABELENUM_IPV6_EXPLICIT_NULL",
+              "ref": null
+            },
+            {
+              "id": "openconfigmplstypesmplslabelenum-implicit-null",
+              "type": "4",
+              "name": "OPENCONFIGMPLSTYPESMPLSLABELENUM_IMPLICIT_NULL",
+              "ref": null
+            },
+            {
+              "id": "openconfigmplstypesmplslabelenum-entropy-label-indicator",
+              "type": "8",
+              "name": "OPENCONFIGMPLSTYPESMPLSLABELENUM_ENTROPY_LABEL_INDICATOR",
+              "ref": null
+            },
+            {
+              "id": "openconfigmplstypesmplslabelenum-no-label",
+              "type": "9",
+              "name": "OPENCONFIGMPLSTYPESMPLSLABELENUM_NO_LABEL",
+              "ref": null
+            }
+          ]
+        }
+      },
+      {
+        "id": "gribi-aft-enums-openconfig-packet-match-types-ipprotocol",
+        "type": "schema",
+        "position": {
+          "x": 900,
+          "y": 1500
+        },
+        "style": {
+          "width": 310
+        },
+        "data": {
+          "id": "gribi-aft-enums-openconfig-packet-match-types-ipprotocol",
+          "kind": "enum",
+          "label": "gribi_aft.enums.OpenconfigPacketMatchTypesIPPROTOCOL",
+          "description": "OpenconfigPacketMatchTypesIPPROTOCOL represents an enumerated type generated for the YANG identity IP_PROTOCOL.",
+          "sourceSymbol": "gribi_aft.enums.OpenconfigPacketMatchTypesIPPROTOCOL",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gribi/blob/v1.10.0/v1/proto/gribi_aft/enums/enums.proto#L42",
+          "fields": [
+            {
+              "id": "openconfigpacketmatchtypesipprotocol-unset",
+              "type": "0",
+              "name": "OPENCONFIGPACKETMATCHTYPESIPPROTOCOL_UNSET",
+              "ref": null
+            },
+            {
+              "id": "openconfigpacketmatchtypesipprotocol-ip-gre",
+              "type": "24050007",
+              "name": "OPENCONFIGPACKETMATCHTYPESIPPROTOCOL_IP_GRE",
+              "ref": null
+            },
+            {
+              "id": "openconfigpacketmatchtypesipprotocol-ip-tcp",
+              "type": "38721802",
+              "name": "OPENCONFIGPACKETMATCHTYPESIPPROTOCOL_IP_TCP",
+              "ref": null
+            },
+            {
+              "id": "openconfigpacketmatchtypesipprotocol-ip-l2-tp",
+              "type": "81903923",
+              "name": "OPENCONFIGPACKETMATCHTYPESIPPROTOCOL_IP_L2TP",
+              "ref": null
+            },
+            {
+              "id": "openconfigpacketmatchtypesipprotocol-ip-auth",
+              "type": "203904199",
+              "name": "OPENCONFIGPACKETMATCHTYPESIPPROTOCOL_IP_AUTH",
+              "ref": null
+            },
+            {
+              "id": "openconfigpacketmatchtypesipprotocol-ip-pim",
+              "type": "272904165",
+              "name": "OPENCONFIGPACKETMATCHTYPESIPPROTOCOL_IP_PIM",
+              "ref": null
+            },
+            {
+              "id": "openconfigpacketmatchtypesipprotocol-ip-in-ip",
+              "type": "309674436",
+              "name": "OPENCONFIGPACKETMATCHTYPESIPPROTOCOL_IP_IN_IP",
+              "ref": null
+            },
+            {
+              "id": "openconfigpacketmatchtypesipprotocol-ip-igmp",
+              "type": "512271866",
+              "name": "OPENCONFIGPACKETMATCHTYPESIPPROTOCOL_IP_IGMP",
+              "ref": null
+            },
+            {
+              "id": "openconfigpacketmatchtypesipprotocol-ip-icmp",
+              "type": "512860246",
+              "name": "OPENCONFIGPACKETMATCHTYPESIPPROTOCOL_IP_ICMP",
+              "ref": null
+            },
+            {
+              "id": "openconfigpacketmatchtypesipprotocol-ip-udp",
+              "type": "525100026",
+              "name": "OPENCONFIGPACKETMATCHTYPESIPPROTOCOL_IP_UDP",
+              "ref": null
+            },
+            {
+              "id": "openconfigpacketmatchtypesipprotocol-ip-rsvp",
+              "type": "530070378",
+              "name": "OPENCONFIGPACKETMATCHTYPESIPPROTOCOL_IP_RSVP",
+              "ref": null
+            }
+          ]
+        }
+      },
+      {
+        "id": "gribi-aftentry",
+        "type": "schema",
+        "position": {
+          "x": 1290,
+          "y": 1500
+        },
+        "style": {
+          "width": 340
+        },
+        "data": {
+          "id": "gribi-aftentry",
+          "kind": "message",
+          "label": "gribi.AFTEntry",
+          "description": "An individual AFTEntry that is installed on the device.",
+          "sourceSymbol": "gribi.AFTEntry",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gribi/blob/v1.10.0/v1/proto/service/gribi.proto#L472",
+          "fields": [
+            {
+              "id": "network-instance",
+              "type": "string",
+              "name": "network_instance",
+              "description": "The network_instance for which the response is being returned.",
+              "ref": null
+            },
+            {
+              "id": "ipv4",
+              "type": "gribi_aft.Afts.Ipv4EntryKey",
+              "name": "ipv4",
+              "description": "Each openconfig.AFT.* message is a protobuf transformed\nmessage corresponding to the OpenConfig AFT for that\nschema. The auto-generated paths can be found in the definition\nof the AFTOperation.",
+              "ref": "gribi-aft-afts-ipv4-entry-key",
+              "group": "oneof entry"
+            },
+            {
+              "id": "ipv6",
+              "type": "gribi_aft.Afts.Ipv6EntryKey",
+              "name": "ipv6",
+              "ref": "gribi-aft-afts-ipv6-entry-key",
+              "group": "oneof entry"
+            },
+            {
+              "id": "mpls",
+              "type": "gribi_aft.Afts.LabelEntryKey",
+              "name": "mpls",
+              "ref": "gribi-aft-afts-label-entry-key",
+              "group": "oneof entry"
+            },
+            {
+              "id": "next-hop-group",
+              "type": "gribi_aft.Afts.NextHopGroupKey",
+              "name": "next_hop_group",
+              "ref": "gribi-aft-afts-next-hop-group-key",
+              "group": "oneof entry"
+            },
+            {
+              "id": "next-hop",
+              "type": "gribi_aft.Afts.NextHopKey",
+              "name": "next_hop",
+              "ref": "gribi-aft-afts-next-hop-key",
+              "group": "oneof entry"
+            },
+            {
+              "id": "mac-entry",
+              "type": "gribi_aft.Afts.MacEntryKey",
+              "name": "mac_entry",
+              "ref": "gribi-aft-afts-mac-entry-key",
+              "group": "oneof entry"
+            },
+            {
+              "id": "policy-forwarding-entry",
+              "type": "gribi_aft.Afts.PolicyForwardingEntryKey",
+              "name": "policy_forwarding_entry",
+              "ref": "gribi-aft-afts-policy-forwarding-entry-key",
+              "group": "oneof entry"
+            },
+            {
+              "id": "backup-activation",
+              "type": "gribi_aft.Afts.BackupActivationKey",
+              "name": "backup_activation",
+              "ref": "gribi-aft-afts-backup-activation-key",
+              "group": "oneof entry"
+            },
+            {
+              "id": "rib-status",
+              "type": "Status",
+              "name": "rib_status",
+              "description": "RIB programming status of the entry.",
+              "ref": "gribi-aftresult-status"
+            },
+            {
+              "id": "fib-status",
+              "type": "Status",
+              "name": "fib_status",
+              "description": "FIB programming status of the entry.",
+              "ref": "gribi-aftresult-status"
+            }
+          ]
+        }
+      },
+      {
+        "id": "gribi-aftentry-status",
+        "type": "schema",
+        "position": {
+          "x": 1680,
+          "y": 1500
+        },
+        "style": {
+          "width": 310
+        },
+        "data": {
+          "id": "gribi-aftentry-status",
+          "kind": "enum",
+          "label": "gribi.AFTEntry.Status",
+          "sourceSymbol": "gribi.AFTEntry.Status",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gribi/blob/v1.10.0/v1/proto/service/gribi.proto#L489",
+          "fields": [
+            {
+              "id": "unavailable",
+              "type": "0",
+              "name": "UNAVAILABLE",
+              "description": "The programming status is not available.\nWhen the session parameter is set to RIB ack only, the device might\nnot keep track of FIB programming status.",
+              "ref": null
+            },
+            {
+              "id": "programmed",
+              "type": "1",
+              "name": "PROGRAMMED",
+              "ref": null
+            },
+            {
+              "id": "not-programmed",
+              "type": "2",
+              "name": "NOT_PROGRAMMED",
+              "ref": null
+            }
+          ]
+        }
+      },
+      {
+        "id": "gribi-afterror-details",
+        "type": "schema",
+        "position": {
+          "x": 900,
+          "y": 1620
+        },
+        "style": {
+          "width": 340
+        },
+        "data": {
+          "id": "gribi-afterror-details",
+          "kind": "message",
+          "label": "gribi.AFTErrorDetails",
+          "description": "Populated in 'error_details' in AFTResult for failed operations.",
+          "sourceSymbol": "gribi.AFTErrorDetails",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gribi/blob/v1.10.0/v1/proto/service/gribi.proto#L319",
+          "fields": [
+            {
+              "id": "error-message",
+              "type": "string",
+              "name": "error_message",
+              "description": "Human-readable error message in the case that status is FAILED\nor FIB_FAILED.",
+              "ref": null
+            }
+          ]
+        }
+      },
+      {
+        "id": "gribi-aftoperation",
+        "type": "schema",
+        "position": {
+          "x": 1290,
+          "y": 1620
+        },
+        "style": {
+          "width": 340
+        },
+        "data": {
+          "id": "gribi-aftoperation",
+          "kind": "message",
+          "label": "gribi.AFTOperation",
+          "description": "A single request to add/modify/remove a single AFT entry",
+          "sourceSymbol": "gribi.AFTOperation",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gribi/blob/v1.10.0/v1/proto/service/gribi.proto#L155",
+          "fields": [
+            {
+              "id": "id",
+              "type": "uint64",
+              "name": "id",
+              "description": "Associate an ID with this specific request since this allows the client\nto determine exactly which modifications have been completed in the\ncase that are multiple operations within the AFT.",
+              "ref": null
+            },
+            {
+              "id": "network-instance",
+              "type": "string",
+              "name": "network_instance",
+              "description": "Network Instance (aka vrf aka routing-instance) to apply to.\nIf it is not specified, or is the empty string \"\",\nthen the request is considered invalid and the server should\nrespond with the INVALID_ARGUMENT error code in the status.proto\ncarried along with the RPC response.",
+              "ref": null
+            },
+            {
+              "id": "op",
+              "type": "Operation",
+              "name": "op",
+              "ref": "gribi-aftoperation-operation"
+            },
+            {
+              "id": "ipv4",
+              "type": "gribi_aft.Afts.Ipv4EntryKey",
+              "name": "ipv4",
+              "description": "Each openconfig.AFT.* message is a protobuf transformed\nmessage corresponding to the OpenConfig AFT for that\nschema.\nSchema for ipv4 is generated from\n/network-instances/network-instance/afts/ipv4-unicast/ipv4-entry",
+              "ref": "gribi-aft-afts-ipv4-entry-key",
+              "group": "oneof entry"
+            },
+            {
+              "id": "ipv6",
+              "type": "gribi_aft.Afts.Ipv6EntryKey",
+              "name": "ipv6",
+              "description": "Schema for ipv6 is generated from\n/network-instances/network-instance/afts/ipv6-unicast/ipv6-entry",
+              "ref": "gribi-aft-afts-ipv6-entry-key",
+              "group": "oneof entry"
+            },
+            {
+              "id": "mpls",
+              "type": "gribi_aft.Afts.LabelEntryKey",
+              "name": "mpls",
+              "description": "Schema for mpls is generated from\n/network-instances/network-instance/afts/mpls/label-entry",
+              "ref": "gribi-aft-afts-label-entry-key",
+              "group": "oneof entry"
+            },
+            {
+              "id": "next-hop-group",
+              "type": "gribi_aft.Afts.NextHopGroupKey",
+              "name": "next_hop_group",
+              "description": "Schema for next_hop_group is generated from\n/network-instances/network-instance/afts/next-hop-groups/next-hop-group",
+              "ref": "gribi-aft-afts-next-hop-group-key",
+              "group": "oneof entry"
+            },
+            {
+              "id": "next-hop",
+              "type": "gribi_aft.Afts.NextHopKey",
+              "name": "next_hop",
+              "description": "Schema for next_hop is generated from\n/network-instances/network-instance/afts/next-hops/next-hop.",
+              "ref": "gribi-aft-afts-next-hop-key",
+              "group": "oneof entry"
+            },
+            {
+              "id": "mac-entry",
+              "type": "gribi_aft.Afts.MacEntryKey",
+              "name": "mac_entry",
+              "description": "Schema for mac_entry is generated from\n/network-instances/network-instance/afts/ethernet/mac-entry",
+              "ref": "gribi-aft-afts-mac-entry-key",
+              "group": "oneof entry"
+            },
+            {
+              "id": "policy-forwarding-entry",
+              "type": "gribi_aft.Afts.PolicyForwardingEntryKey",
+              "name": "policy_forwarding_entry",
+              "description": "Schema for policy_forwarding_entry is generated from\n/network-instances/network-instance/afts/policy-forwarding/\npolicy-forwarding-entry",
+              "ref": "gribi-aft-afts-policy-forwarding-entry-key",
+              "group": "oneof entry"
+            },
+            {
+              "id": "backup-activation",
+              "type": "gribi_aft.Afts.BackupActivationKey",
+              "name": "backup_activation",
+              "description": "Schema for backup_activation is generated from\n/network-instances/network-instance/afts/backup-activations/\nbackup-activation",
+              "ref": "gribi-aft-afts-backup-activation-key",
+              "group": "oneof entry"
+            },
+            {
+              "id": "election-id",
+              "type": "Uint128",
+              "name": "election_id",
+              "description": "Election ID of the client.\nIn SINGLE_PRIMARY redundancy model, used by the server to determine\nwhether to process the AFTOperation.\nThe server processes the AFTOperation if\n1. the election_id in the AFTOperation is equal to the election_id last\nadvertised in a ModifyRequest by the client\nAND\n2. the election_id in the AFTOperation is the highest election_id\namongst all the election IDs that the server knows about, ie.\nthe client is the primary client\nIf the election_id in the AFTOperation does not meet these criteria\nthe server discards the AFTOperation and returns FAILED in AFTResult",
+              "ref": "gribi-uint128"
+            }
+          ]
+        }
+      },
+      {
+        "id": "gribi-aftoperation-operation",
+        "type": "schema",
+        "position": {
+          "x": 1680,
+          "y": 1620
+        },
+        "style": {
+          "width": 310
+        },
+        "data": {
+          "id": "gribi-aftoperation-operation",
+          "kind": "enum",
+          "label": "gribi.AFTOperation.Operation",
+          "description": "The operation that this request is - either add, replace, or delete\nany entry from the specific AFT.",
+          "sourceSymbol": "gribi.AFTOperation.Operation",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gribi/blob/v1.10.0/v1/proto/service/gribi.proto#L170",
+          "fields": [
+            {
+              "id": "invalid",
+              "type": "0",
+              "name": "INVALID",
+              "description": "INVALID indicates that the sender did not set the operation, and\nshould be considered an error.",
+              "ref": null
+            },
+            {
+              "id": "add",
+              "type": "1",
+              "name": "ADD",
+              "description": "ADD creates an entry within the table. If the entry already exists\nwithin the specified table, the ADD should be treated as replacing\nthe existing entry with the entry specified in the operation.",
+              "ref": null
+            },
+            {
+              "id": "replace",
+              "type": "2",
+              "name": "REPLACE",
+              "description": "REPLACE replaces an existing entry within a table, it should fail if\nthe entry does not exist. A replace operation should contain all of\nthe relevant fields, such that existing entry is completely replaced\nwith the specified entry.",
+              "ref": null
+            },
+            {
+              "id": "delete",
+              "type": "3",
+              "name": "DELETE",
+              "description": "DELETE removes an entry from the table. It should be idempotent as to\nthe table state. The idempotent behavior should also cover the response.\nFor example, if the entry does not exist, the device should return\nFIB_PROGRAMMED (in the session of ack_type=RIB_AND_FIB_ACK).",
+              "ref": null
+            }
+          ]
+        }
+      },
+      {
+        "id": "gribi-aftresult",
+        "type": "schema",
+        "position": {
+          "x": 900,
+          "y": 1740
+        },
+        "style": {
+          "width": 340
+        },
+        "data": {
+          "id": "gribi-aftresult",
+          "kind": "message",
+          "label": "gribi.AFTResult",
+          "description": "A response to add/modify/remove a single AFT entry",
+          "sourceSymbol": "gribi.AFTResult",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gribi/blob/v1.10.0/v1/proto/service/gribi.proto#L259",
+          "fields": [
+            {
+              "id": "id",
+              "type": "uint64",
+              "name": "id",
+              "description": "The ID corresponds to the operation ID that was\nspecified in the AFTOperation.",
+              "ref": null
+            },
+            {
+              "id": "status",
+              "type": "Status",
+              "name": "status",
+              "ref": "gribi-aftresult-status"
+            },
+            {
+              "id": "timestamp",
+              "type": "int64",
+              "name": "timestamp",
+              "description": "Timestamp corresponding to the success or failure case being reported.\nThe timestamp reflects the time at which the gRIBI daemon received and\nprocessed the acknowledgement that the entry was programmed. The typical\nuse for this timestamp is to provide tracking of programming SLIs at the\ndevice.\n\nThe timestamp is expressed as nanoseconds since the Unix Epoch in UTC.",
+              "ref": null
+            },
+            {
+              "id": "error-details",
+              "type": "AFTErrorDetails",
+              "name": "error_details",
+              "description": "Contains error details if status is FAILED or FIB_FAILED.",
+              "ref": "gribi-afterror-details"
+            }
+          ]
+        }
+      },
+      {
+        "id": "gribi-aftresult-status",
+        "type": "schema",
+        "position": {
+          "x": 1290,
+          "y": 1740
+        },
+        "style": {
+          "width": 310
+        },
+        "data": {
+          "id": "gribi-aftresult-status",
+          "kind": "enum",
+          "label": "gribi.AFTResult.Status",
+          "description": "Status of the operation. Since this is within a\nstream we do not use status.proto to respond since\nthis would fail the entire RPC connection, and hence\nhave in-band errors.",
+          "sourceSymbol": "gribi.AFTResult.Status",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gribi/blob/v1.10.0/v1/proto/service/gribi.proto#L268",
+          "fields": [
+            {
+              "id": "unset",
+              "type": "0",
+              "name": "UNSET",
+              "ref": null
+            },
+            {
+              "id": "ok",
+              "type": "1",
+              "name": "OK",
+              "description": "Deprecate the OK status for a modify operation since\nthere are likely to be more different cases that we\nwant to use here - e.g., RIB_PROGRAMMED and FIB_PROGRAMMED.",
+              "ref": null
+            },
+            {
+              "id": "failed",
+              "type": "2",
+              "name": "FAILED",
+              "description": "FAILED is used to indicate that operation that was provided\ncannot be programmed, for example, due to invalid message\ncontents, or missing references.",
+              "ref": null
+            },
+            {
+              "id": "rib-programmed",
+              "type": "3",
+              "name": "RIB_PROGRAMMED",
+              "description": "RIB programmed indicates that the received operation was\nsyntactically valid, and was programmed successfully into\nthe RIB.",
+              "ref": null
+            },
+            {
+              "id": "fib-programmed",
+              "type": "4",
+              "name": "FIB_PROGRAMMED",
+              "description": "FIB_PROGRAMMED indicates that the received operation was\nsuccessfully programmed into the FIB. \"Programmed into the FIB\" is\ndefined as the forwarding entry being operational in the underlying\nforwarding resources across the system that it is relevant to (e.g.,\nall linecards that host a particular VRF etc). This notification may\nnot always be sent for a particular operation since:\n\na) the entry may be duplicate for another gRIBI client.\nb) the entry may not be the preferred system route (e.g., there\nmay be a higher-preference RIB client that has a matching\nentry, and hence the FIB is unchanged).\n\nIn cases where the FIB was meant to be programmed, but an error\ncode was received from the underlying hardware abstraction layer\nthe FIB_FAILED error code is returned.",
+              "ref": null
+            },
+            {
+              "id": "fib-failed",
+              "type": "5",
+              "name": "FIB_FAILED",
+              "description": "FIB_FAILED indicates that the received operation failed FIB\nprogramming. It is used when the operation has been accepted by\ngRIBI, but FIB programming failed.",
+              "ref": null
+            }
+          ]
+        }
+      },
+      {
+        "id": "gribi-afttype",
+        "type": "schema",
+        "position": {
+          "x": 1680,
+          "y": 1740
+        },
+        "style": {
+          "width": 310
+        },
+        "data": {
+          "id": "gribi-afttype",
+          "kind": "enum",
+          "label": "gribi.AFTType",
+          "description": "AFT describes the set of AFTs that are supported in the\ngRIBI protocol.",
+          "sourceSymbol": "gribi.AFTType",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gribi/blob/v1.10.0/v1/proto/service/gribi.proto#L432",
+          "fields": [
+            {
+              "id": "invalid",
+              "type": "0",
+              "name": "INVALID",
+              "ref": null
+            },
+            {
+              "id": "all",
+              "type": "1",
+              "name": "ALL",
+              "ref": null
+            },
+            {
+              "id": "ipv4",
+              "type": "2",
+              "name": "IPV4",
+              "ref": null
+            },
+            {
+              "id": "ipv6",
+              "type": "3",
+              "name": "IPV6",
+              "ref": null
+            },
+            {
+              "id": "mpls",
+              "type": "4",
+              "name": "MPLS",
+              "ref": null
+            },
+            {
+              "id": "nexthop",
+              "type": "5",
+              "name": "NEXTHOP",
+              "ref": null
+            },
+            {
+              "id": "nexthop-group",
+              "type": "6",
+              "name": "NEXTHOP_GROUP",
+              "ref": null
+            },
+            {
+              "id": "mac",
+              "type": "7",
+              "name": "MAC",
+              "ref": null
+            },
+            {
+              "id": "policy-forwarding",
+              "type": "8",
+              "name": "POLICY_FORWARDING",
+              "ref": null
+            },
+            {
+              "id": "backup-activate",
+              "type": "9",
+              "name": "BACKUP_ACTIVATE",
+              "ref": null
+            }
+          ]
+        }
+      },
+      {
+        "id": "gribi-empty",
+        "type": "schema",
+        "position": {
+          "x": 900,
+          "y": 1860
+        },
+        "style": {
+          "width": 340
+        },
+        "data": {
+          "id": "gribi-empty",
+          "kind": "message",
+          "label": "gribi.Empty",
+          "description": "Empty is a specific message that is used as a marker where\npresence of a non-nil value indicates a particular function.",
+          "sourceSymbol": "gribi.Empty",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gribi/blob/v1.10.0/v1/proto/service/gribi.proto#L447",
+          "fields": []
+        }
+      },
+      {
+        "id": "gribi-flush-request",
+        "type": "schema",
+        "position": {
+          "x": 1290,
+          "y": 1860
+        },
+        "style": {
+          "width": 340
+        },
+        "data": {
+          "id": "gribi-flush-request",
+          "kind": "message",
+          "label": "gribi.FlushRequest",
+          "description": "FlushRequest is the request sent from the client to the server when a Flush\nRPC is called.",
+          "sourceSymbol": "gribi.FlushRequest",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gribi/blob/v1.10.0/v1/proto/service/gribi.proto#L510",
+          "fields": [
+            {
+              "id": "id",
+              "type": "Uint128",
+              "name": "id",
+              "description": "id indicates that the Flush ID supplied should be compared to the\nexisting election ID on the server. The logic\nfor whether the Flush RPC is accepted is the same as that which is\nimplemented for Modify. In summary:\n\n- if the election ID is equal to the previous highest known ID, the\nFlush is accepted.\n- if the election ID is greater than the previous highest known ID,\nthe Flush is accepted.\n- if the election ID is less than the previous highest known ID, the\nFlush is rejected and an error with reason NOT_PRIMARY is returned.\nThe canonical error code used should be FAILED_PRECONDITION.\n\nIf the server is currently operating in ALL_PRIMARY mode the server\nshould return an error specifying ELECTION_ID_IN_ALL_PRIMARY reason. The\nstatus (canonical error code) should be FAILED_PRECONDITION.",
+              "ref": "gribi-uint128",
+              "group": "oneof election"
+            },
+            {
+              "id": "override",
+              "type": "Empty",
+              "name": "override",
+              "description": "override indicates that the client explicitly requests that the election\nID should not be compared, regardless of whether there are SINGLE_PRIMARY\nclients on the server.",
+              "ref": "gribi-empty",
+              "group": "oneof election"
+            },
+            {
+              "id": "name",
+              "type": "string",
+              "name": "name",
+              "description": "The network instance from which the entries should be flushed.\nIf name is set to \"\", this is considered invalid, and an error specifying\nthe INVALID_ARGUMENT canonical error code, and the\nINVALID_NETWORK_INSTANCE reason should be specified. If the network\ninstance specified does not exist the INVALID_ARGUMENT canonical error\ncode, with the NO_SUCH_NETWORK_INSTANCE code should be specified.",
+              "ref": null,
+              "group": "oneof network_instance"
+            },
+            {
+              "id": "all",
+              "type": "Empty",
+              "name": "all",
+              "description": "all indicates that entries for all network instances should be\nflushed.",
+              "ref": "gribi-empty",
+              "group": "oneof network_instance"
+            }
+          ]
+        }
+      },
+      {
+        "id": "gribi-flush-response",
+        "type": "schema",
+        "position": {
+          "x": 1680,
+          "y": 1860
+        },
+        "style": {
+          "width": 340
+        },
+        "data": {
+          "id": "gribi-flush-response",
+          "kind": "message",
+          "label": "gribi.FlushResponse",
+          "description": "FlushResponse is the response from the server to the client to the Flush RPC.",
+          "sourceSymbol": "gribi.FlushResponse",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gribi/blob/v1.10.0/v1/proto/service/gribi.proto#L559",
+          "fields": [
+            {
+              "id": "timestamp",
+              "type": "int64",
+              "name": "timestamp",
+              "description": "The timestamp at which the Flush operation succeeded and was returned to\nthe client. It is specified in nanoseconds since the Unix epoch.",
+              "ref": null
+            },
+            {
+              "id": "result",
+              "type": "Result",
+              "name": "result",
+              "ref": "gribi-flush-response-result"
+            }
+          ]
+        }
+      },
+      {
+        "id": "gribi-flush-response-result",
+        "type": "schema",
+        "position": {
+          "x": 900,
+          "y": 1980
+        },
+        "style": {
+          "width": 310
+        },
+        "data": {
+          "id": "gribi-flush-response-result",
+          "kind": "enum",
+          "label": "gribi.FlushResponse.Result",
+          "sourceSymbol": "gribi.FlushResponse.Result",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gribi/blob/v1.10.0/v1/proto/service/gribi.proto#L563",
+          "fields": [
+            {
+              "id": "unset",
+              "type": "0",
+              "name": "UNSET",
+              "ref": null
+            },
+            {
+              "id": "ok",
+              "type": "1",
+              "name": "OK",
+              "description": "The device has removed all gRIBI objects in the specified network\ninstance.",
+              "ref": null
+            },
+            {
+              "id": "non-zero-reference-remain",
+              "type": "2",
+              "name": "NON_ZERO_REFERENCE_REMAIN",
+              "description": "The specified network instance contains gRIBI NextHops or NextHopGroups\nthat are referenced by other network instances.\nThe device has removed all gRIBI objects except the non-zero referenced\nNextHops and NextHopGroups in the network instance.",
+              "ref": null
+            }
+          ]
+        }
+      },
+      {
+        "id": "gribi-flush-response-error",
+        "type": "schema",
+        "position": {
+          "x": 1290,
+          "y": 1980
+        },
+        "style": {
+          "width": 340
+        },
+        "data": {
+          "id": "gribi-flush-response-error",
+          "kind": "message",
+          "label": "gribi.FlushResponseError",
+          "description": "FlushResponseError is used in the details of the gRPC status in the case that\nthe Flush RPC encounters an error.",
+          "sourceSymbol": "gribi.FlushResponseError",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gribi/blob/v1.10.0/v1/proto/service/gribi.proto#L579",
+          "fields": [
+            {
+              "id": "status",
+              "type": "Reason",
+              "name": "status",
+              "ref": "gribi-modify-rpcerror-details-reason"
+            }
+          ]
+        }
+      },
+      {
+        "id": "gribi-flush-response-error-reason",
+        "type": "schema",
+        "position": {
+          "x": 1680,
+          "y": 1980
+        },
+        "style": {
+          "width": 310
+        },
+        "data": {
+          "id": "gribi-flush-response-error-reason",
+          "kind": "enum",
+          "label": "gribi.FlushResponseError.Reason",
+          "sourceSymbol": "gribi.FlushResponseError.Reason",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gribi/blob/v1.10.0/v1/proto/service/gribi.proto#L580",
+          "fields": [
+            {
+              "id": "unknown",
+              "type": "0",
+              "name": "UNKNOWN",
+              "description": "An unknown failure occurred.",
+              "ref": null
+            },
+            {
+              "id": "no-such-network-instance",
+              "type": "1",
+              "name": "NO_SUCH_NETWORK_INSTANCE",
+              "description": "The network instance specified was unknown.",
+              "ref": null
+            },
+            {
+              "id": "not-primary",
+              "type": "2",
+              "name": "NOT_PRIMARY",
+              "description": "The election ID that was specified was not the current primary.",
+              "ref": null
+            },
+            {
+              "id": "election-id-in-all-primary",
+              "type": "3",
+              "name": "ELECTION_ID_IN_ALL_PRIMARY",
+              "description": "An election ID was supplied when the server is operating in ALL_PRIMARY\nmode.",
+              "ref": null
+            },
+            {
+              "id": "unspecified-election-behavior",
+              "type": "4",
+              "name": "UNSPECIFIED_ELECTION_BEHAVIOR",
+              "description": "The server is operating in SINGLE_PRIMARY mode and neither an election ID\nnor an override was specified.",
+              "ref": null
+            },
+            {
+              "id": "invalid-election-id",
+              "type": "5",
+              "name": "INVALID_ELECTION_ID",
+              "description": "The client supplied an election ID value that is invalid (i.e., 0).",
+              "ref": null
+            },
+            {
+              "id": "unspecified-network-instance",
+              "type": "6",
+              "name": "UNSPECIFIED_NETWORK_INSTANCE",
+              "description": "The client did not specify a network instance to flush.",
+              "ref": null
+            },
+            {
+              "id": "invalid-network-instance",
+              "type": "7",
+              "name": "INVALID_NETWORK_INSTANCE",
+              "description": "The client specified a network instance that was invalid.",
+              "ref": null
+            }
+          ]
+        }
+      },
+      {
+        "id": "gribi-get-request",
+        "type": "schema",
+        "position": {
+          "x": 900,
+          "y": 2100
+        },
+        "style": {
+          "width": 340
+        },
+        "data": {
+          "id": "gribi-get-request",
+          "kind": "message",
+          "label": "gribi.GetRequest",
+          "sourceSymbol": "gribi.GetRequest",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gribi/blob/v1.10.0/v1/proto/service/gribi.proto#L450",
+          "fields": [
+            {
+              "id": "name",
+              "type": "string",
+              "name": "name",
+              "description": "The network instance from which the entries should be retrieved.\nIf `network_instance` is nil (`name` and `all` not specified),\nor if `name` is specified and it is the empty string \"\",\nthen the request is considered invalid and the server should\nrespond with the INVALID_ARGUMENT error code in the status.proto\ncarried along with the RPC response.",
+              "ref": null,
+              "group": "oneof network_instance"
+            },
+            {
+              "id": "all",
+              "type": "Empty",
+              "name": "all",
+              "description": "all indicates that entries for all network instances for the\nshould be returned.",
+              "ref": "gribi-empty",
+              "group": "oneof network_instance"
+            },
+            {
+              "id": "aft",
+              "type": "AFTType",
+              "name": "aft",
+              "description": "The AFT for which entries should be retrieved. If the AFT is\ninvalid, the server should respond with the INVALID_ARGUMENT\nerror code. If the AFT is unsupported, it should respond with\nUNIMPLEMENTED in the status.proto carried along with the RPC\nresponse.",
+              "ref": "gribi-afttype"
+            }
+          ]
+        }
+      },
+      {
+        "id": "gribi-get-response",
+        "type": "schema",
+        "position": {
+          "x": 1290,
+          "y": 2100
+        },
+        "style": {
+          "width": 340
+        },
+        "data": {
+          "id": "gribi-get-response",
+          "kind": "message",
+          "label": "gribi.GetResponse",
+          "sourceSymbol": "gribi.GetResponse",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gribi/blob/v1.10.0/v1/proto/service/gribi.proto#L503",
+          "fields": [
+            {
+              "id": "entry",
+              "type": "repeated AFTEntry",
+              "name": "entry",
+              "description": "A set of entries that are installed on the device.",
+              "ref": "gribi-aftentry"
+            }
+          ]
+        }
+      },
+      {
+        "id": "gribi-modify-request",
+        "type": "schema",
+        "position": {
+          "x": 1680,
+          "y": 2100
+        },
+        "style": {
+          "width": 340
+        },
+        "data": {
+          "id": "gribi-modify-request",
+          "kind": "message",
+          "label": "gribi.ModifyRequest",
+          "description": "ModifyRequest is a message used by the client to manipulate the state of\nthe RIB on the target device.\n\nWithin a single ModifyRequest only one of 'operation', 'params' and\n'election_id' may be specified (see the individual fields for how\nthese fields are used). If a client specifies >1 of these fields\nin the same message the server should return an error specifying\nthe `INVALID_ARGUMENT` canonical error code.",
+          "sourceSymbol": "gribi.ModifyRequest",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gribi/blob/v1.10.0/v1/proto/service/gribi.proto#L58",
+          "fields": [
+            {
+              "id": "operation",
+              "type": "repeated AFTOperation",
+              "name": "operation",
+              "description": "A group of requests to add/modify/remove a single AFT entry.\n\nA gRIBI server :\n* Should process AFTOperations per the received order.\n* Should not close the RPC session due to errors encountered in an\nAFTOperation. Invalid AFTOperations should be responded to with\nfailures within the stream.\n* May finish pending AFTOperations if existing RPC session is\ndropped/closed/cancelled.",
+              "ref": "gribi-aftoperation"
+            },
+            {
+              "id": "params",
+              "type": "SessionParameters",
+              "name": "params",
+              "description": "Meta information that the external entity sends to the network\nelement. If a non default set of parameters is required, then\n`params` MUST be sent by the external entity before\nit sends the network element any AFTOperations.\nIt's possible that the default set of parameters isn't supported\nby a network element. In such a case, if the client hasn't sent\nany session parameters, then the network element closes the Modify RPC\nstream when the first AFTOperation is received in a ModifyRequest and\nsets status.code\n(http://tinyurl.com/grpc-status-proto)\nto `UNIMPLEMENTED` and reason to `UNSUPPORTED_PARAMS`\nin ModifyRPCErrorDetails. ModifyRPCErrorDetails is filled in\nstatus.details.\n\n`params` MUST be sent only once during the lifetime of the session.\nAll clients programming a network element's RIB,\nMUST send the same values of all the attributes of `params`\n\nThe network element responds with session_params_result.status = OK in\nModifyResponse if it processed `params` without any error.\n\nThe network element does not respond with session_params_result if\nthere's an error while processing `params`, instead it disconnects\nthe session and sets the RPC error code based on status.proto\n(http://tinyurl.com/grpc-status-proto)\nstatus.code is set to\n- UNIMPLEMENTED when it encounters an unsupported `persistence`\nor `ack_type` or `redundancy`\n- FAILED_PRECONDITION for the other cases\nstatus.details is filled with the ModifyRPCErrorDetails message with\nan appropriate `reason`.\n\nIf the client does not send session_parameters, then the network element\nassumes the following defaults:\n- ALL_PRIMARY for client redundancy\n- A client disconnect is treated as if the client issued DELETE\nAFTOperation for all the AFT entries that client ADDed.\n- Each AFTOperation is acknowledged with OK or FAILED in\nin the AFTResult of the ModifyResponse.",
+              "ref": "gribi-session-parameters"
+            },
+            {
+              "id": "election-id",
+              "type": "Uint128",
+              "name": "election_id",
+              "description": "election_id is used by the network element to\nselect a primary client when the client redundancy mode\nis SINGLE_PRIMARY.\n\nA client sends a ModifyRequest with only the election_id\nfield populated after it connects to the network element,\nand everytime its election_id is updated (usually as a\nresult of an election amongst clients). The network element\nresponds with a ModifyResponse that has only the election_id\nfield populated. The election_id in the ModifyResponse is the\nhighest election_id that the network element has learnt\nfrom any client.\n\nThe network element selects the client with the highest\nelection_id as the primary. If the election_id sent by the\nclient matches the previous highest value, the newer client is\nconsidered primary, in order to allow for a client to reconnect\nwithout an external election having taken place.\n\nUpon discovering a failover, the server:\n* SHOULD stop processing pending AFTOperations that were sent by\nthe previous primary.\n* MUST not send responses for AFTOperations of the previous primary\nto the acquiring-primary.\n\nOnly AFT operations from the primary client are acted upon by\nthe network element. AFT operations from non-primary clients\nare not actioned, and a failure response is sent to the client.\n\nIf the client redundancy mode is ALL_PRIMARY, but a client\nsends election_id, the network element closes the Modify RPC\nstream, sets FAILED_PRECONDITION in\nstatus.proto's `code` and sets ModifyRPCErrorDetails.reason\nto ELECTION_ID_IN_ALL_PRIMARY.\n\nThe election_id MUST be non zero. When a network element receives\nan election_id of 0, it closes the stream with status.code\nset to INVALID_ARGUMENT.\nThe election_id can only be increased monotonically by a client\nduring a RPC session. This simplifies server implementation.",
+              "ref": "gribi-uint128"
+            }
+          ]
+        }
+      },
+      {
+        "id": "gribi-modify-response",
+        "type": "schema",
+        "position": {
+          "x": 900,
+          "y": 2220
+        },
+        "style": {
+          "width": 340
+        },
+        "data": {
+          "id": "gribi-modify-response",
+          "kind": "message",
+          "label": "gribi.ModifyResponse",
+          "description": "A set of AFT responses.",
+          "sourceSymbol": "gribi.ModifyResponse",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gribi/blob/v1.10.0/v1/proto/service/gribi.proto#L239",
+          "fields": [
+            {
+              "id": "result",
+              "type": "repeated AFTResult",
+              "name": "result",
+              "description": "One or more responses to requests. Clients should expect that\nthe ModifyResponse *does not* correlate to the ModifyRequest’s\ncontents.",
+              "ref": "gribi-aftresult"
+            },
+            {
+              "id": "session-params-result",
+              "type": "SessionParametersResult",
+              "name": "session_params_result",
+              "description": "Response to the session_parameters in a ModifyRequest\nwhen there are no errors.\nIf there's an error then ModifyRPCErrorDetails is filled\nin status.proto's `details` attribute.",
+              "ref": "gribi-session-parameters-result"
+            },
+            {
+              "id": "election-id",
+              "type": "Uint128",
+              "name": "election_id",
+              "description": "Response to a ModifyRequest that contains only the election_id field.\nThe network element sends a ModifyResponse with only the election_id\npopulated. The value populated is the highest election_id that the\nnetwork element has learnt from any client.",
+              "ref": "gribi-uint128"
+            }
+          ]
+        }
+      },
+      {
+        "id": "gribi-modify-rpcerror-details",
+        "type": "schema",
+        "position": {
+          "x": 1290,
+          "y": 2220
+        },
+        "style": {
+          "width": 340
+        },
+        "data": {
+          "id": "gribi-modify-rpcerror-details",
+          "kind": "message",
+          "label": "gribi.ModifyRPCErrorDetails",
+          "description": "Populated in `details` in status.proto when an error that causes the network\nelement to close the stream.",
+          "sourceSymbol": "gribi.ModifyRPCErrorDetails",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gribi/blob/v1.10.0/v1/proto/service/gribi.proto#L327",
+          "fields": [
+            {
+              "id": "reason",
+              "type": "Reason",
+              "name": "reason",
+              "ref": "gribi-modify-rpcerror-details-reason"
+            }
+          ]
+        }
+      },
+      {
+        "id": "gribi-modify-rpcerror-details-reason",
+        "type": "schema",
+        "position": {
+          "x": 1680,
+          "y": 2220
+        },
+        "style": {
+          "width": 310
+        },
+        "data": {
+          "id": "gribi-modify-rpcerror-details-reason",
+          "kind": "enum",
+          "label": "gribi.ModifyRPCErrorDetails.Reason",
+          "sourceSymbol": "gribi.ModifyRPCErrorDetails.Reason",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gribi/blob/v1.10.0/v1/proto/service/gribi.proto#L328",
+          "fields": [
+            {
+              "id": "unknown",
+              "type": "0",
+              "name": "UNKNOWN",
+              "description": "Error with an unknown cause.",
+              "ref": null
+            },
+            {
+              "id": "unsupported-params",
+              "type": "1",
+              "name": "UNSUPPORTED_PARAMS",
+              "description": "The network element cannot support the\naft_persistence or aft_result_status_type\nrequested in session parameters in ModifyRequest\nIf the client didn't send any session parameters, then\nthe network element doesn't support the default values.",
+              "ref": null
+            },
+            {
+              "id": "modify-not-allowed",
+              "type": "2",
+              "name": "MODIFY_NOT_ALLOWED",
+              "description": "A session_parameters message in a ModifyRequest was received with\naft_persistence or aft_result_status_type more\nthan once; or was received after one or more AFTOperations\nwas issued.",
+              "ref": null
+            },
+            {
+              "id": "params-differ-from-other-clients",
+              "type": "3",
+              "name": "PARAMS_DIFFER_FROM_OTHER_CLIENTS",
+              "description": "The attribute values of atleast one session parameter\nreceived in the ModifyRequest differs from the values received\nfrom existing clients",
+              "ref": null
+            },
+            {
+              "id": "election-id-in-all-primary",
+              "type": "4",
+              "name": "ELECTION_ID_IN_ALL_PRIMARY",
+              "description": "election_id in a ModifyRequest is not supported in ALL_PRIMARY\nredundancy mode.",
+              "ref": null
+            }
+          ]
+        }
+      },
+      {
+        "id": "gribi-session-parameters",
+        "type": "schema",
+        "position": {
+          "x": 900,
+          "y": 2340
+        },
+        "style": {
+          "width": 340
+        },
+        "data": {
+          "id": "gribi-session-parameters",
+          "kind": "message",
+          "label": "gribi.SessionParameters",
+          "sourceSymbol": "gribi.SessionParameters",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gribi/blob/v1.10.0/v1/proto/service/gribi.proto#L369",
+          "fields": [
+            {
+              "id": "redundancy",
+              "type": "ClientRedundancy",
+              "name": "redundancy",
+              "ref": "gribi-session-parameters-client-redundancy"
+            },
+            {
+              "id": "persistence",
+              "type": "AFTPersistence",
+              "name": "persistence",
+              "ref": "gribi-session-parameters-aftpersistence"
+            },
+            {
+              "id": "ack-type",
+              "type": "AFTResultStatusType",
+              "name": "ack_type",
+              "ref": "gribi-session-parameters-aftresult-status-type"
+            }
+          ]
+        }
+      },
+      {
+        "id": "gribi-session-parameters-aftpersistence",
+        "type": "schema",
+        "position": {
+          "x": 1290,
+          "y": 2340
+        },
+        "style": {
+          "width": 310
+        },
+        "data": {
+          "id": "gribi-session-parameters-aftpersistence",
+          "kind": "enum",
+          "label": "gribi.SessionParameters.AFTPersistence",
+          "description": "The desired behavior when a client disconnects from\nthe network element.",
+          "sourceSymbol": "gribi.SessionParameters.AFTPersistence",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gribi/blob/v1.10.0/v1/proto/service/gribi.proto#L396",
+          "fields": [
+            {
+              "id": "delete",
+              "type": "0",
+              "name": "DELETE",
+              "description": "When a client disconnects, the network element deletes\nall AFT entries received from that client.",
+              "ref": null
+            },
+            {
+              "id": "preserve",
+              "type": "1",
+              "name": "PRESERVE",
+              "description": "When the primary client disconects, the network element\npreserves the gRIBI process' RIB, system RIB and system\nFIB.\nWhen a non primary client disconnects, there's no action\nrequired as all network element state is conveyed by the\nprimary client",
+              "ref": null
+            }
+          ]
+        }
+      },
+      {
+        "id": "gribi-session-parameters-aftresult-status-type",
+        "type": "schema",
+        "position": {
+          "x": 1680,
+          "y": 2340
+        },
+        "style": {
+          "width": 310
+        },
+        "data": {
+          "id": "gribi-session-parameters-aftresult-status-type",
+          "kind": "enum",
+          "label": "gribi.SessionParameters.AFTResultStatusType",
+          "description": "The type of response that the client expects from the\nnetwork element in AFTResult.status",
+          "sourceSymbol": "gribi.SessionParameters.AFTResultStatusType",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gribi/blob/v1.10.0/v1/proto/service/gribi.proto#L412",
+          "fields": [
+            {
+              "id": "rib-ack",
+              "type": "0",
+              "name": "RIB_ACK",
+              "description": "network element must respond with RIB_PROGRAMMED\non a successful update to the gRIBI process' RIB.",
+              "ref": null
+            },
+            {
+              "id": "rib-and-fib-ack",
+              "type": "1",
+              "name": "RIB_AND_FIB_ACK",
+              "description": "network element must respond with RIB_PROGRAMMED\non a successful update to the gRIBI process' RIB.\nIf the AFT entry is also programmed in the network\nelement's FIB, a FIB_PROGRAMMED response must be sent\nA FIB_PROGRAMMED response is a combined\nacknowledgement that the AFT entry is programmed in\nthe gRIBI process' RIB and the FIB, so there's no need\nto send both RIB_PROGRAMMED and FIB_PROGRAMMED when\nthe AFT entry is programmed in the FIB.",
+              "ref": null
+            }
+          ]
+        }
+      },
+      {
+        "id": "gribi-session-parameters-client-redundancy",
+        "type": "schema",
+        "position": {
+          "x": 900,
+          "y": 2460
+        },
+        "style": {
+          "width": 310
+        },
+        "data": {
+          "id": "gribi-session-parameters-client-redundancy",
+          "kind": "enum",
+          "label": "gribi.SessionParameters.ClientRedundancy",
+          "description": "The type of redundancy amongst the external entities",
+          "sourceSymbol": "gribi.SessionParameters.ClientRedundancy",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gribi/blob/v1.10.0/v1/proto/service/gribi.proto#L371",
+          "fields": [
+            {
+              "id": "all-primary",
+              "type": "0",
+              "name": "ALL_PRIMARY",
+              "description": "Accept AFTOperations from all clients. The network element assumes\nthat all clients convey the same AFT state. The network element\nuses \"add on first ADD operation and delete on last DELETE operation\nsemantics, ie., it Adds an AFT entry to its gRIBI state when the\nnetwork element receives the first ADD AFTOperation from any client;\nand the AFT entry is deleted from the network element's gRIBI state\nwhen the network element has processed DELETE for the AFT entry\nfrom all clients that issued an ADD for that AFT entry.\nIn other words, the AFT entries are reference counted, where\nthe reference count is the number of clients that have issued\nADD AFTOperation for that AFT entry.\nREPLACE AFTOperations from all clients are processed for any\nAFT entries.",
+              "ref": null
+            },
+            {
+              "id": "single-primary",
+              "type": "1",
+              "name": "SINGLE_PRIMARY",
+              "description": "Clients take part in an election process that leads to\na single client becoming the primary client. The\nprimary client has the highest election ID. The network element\naccepts AFTOperations from the primary client only.",
+              "ref": null
+            }
+          ]
+        }
+      },
+      {
+        "id": "gribi-session-parameters-result",
+        "type": "schema",
+        "position": {
+          "x": 1290,
+          "y": 2460
+        },
+        "style": {
+          "width": 340
+        },
+        "data": {
+          "id": "gribi-session-parameters-result",
+          "kind": "message",
+          "label": "gribi.SessionParametersResult",
+          "description": "Response when ModifyRequest.params is syntactically valid and all\nrequested parameters are supported by the network element.",
+          "sourceSymbol": "gribi.SessionParametersResult",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gribi/blob/v1.10.0/v1/proto/service/gribi.proto#L355",
+          "fields": [
+            {
+              "id": "status",
+              "type": "Status",
+              "name": "status",
+              "ref": "gribi-aftresult-status"
+            }
+          ]
+        }
+      },
+      {
+        "id": "gribi-session-parameters-result-status",
+        "type": "schema",
+        "position": {
+          "x": 1680,
+          "y": 2460
+        },
+        "style": {
+          "width": 310
+        },
+        "data": {
+          "id": "gribi-session-parameters-result-status",
+          "kind": "enum",
+          "label": "gribi.SessionParametersResult.Status",
+          "sourceSymbol": "gribi.SessionParametersResult.Status",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gribi/blob/v1.10.0/v1/proto/service/gribi.proto#L356",
+          "fields": [
+            {
+              "id": "ok",
+              "type": "0",
+              "name": "OK",
+              "description": "No errors, network element supports requested\nparameters",
+              "ref": null
+            }
+          ]
+        }
+      },
+      {
+        "id": "gribi-uint128",
+        "type": "schema",
+        "position": {
+          "x": 900,
+          "y": 2580
+        },
+        "style": {
+          "width": 340
+        },
+        "data": {
+          "id": "gribi-uint128",
+          "kind": "message",
+          "label": "gribi.Uint128",
+          "sourceSymbol": "gribi.Uint128",
+          "deprecated": false,
+          "protoUrl": "https://github.com/openconfig/gribi/blob/v1.10.0/v1/proto/service/gribi.proto#L364",
+          "fields": [
+            {
+              "id": "high",
+              "type": "uint64",
+              "name": "high",
+              "ref": null
+            },
+            {
+              "id": "low",
+              "type": "uint64",
+              "name": "low",
+              "ref": null
+            }
+          ]
+        }
+      },
+      {
+        "id": "external-ywrapper-bool-value",
+        "type": "schema",
+        "position": {
+          "x": 2100,
+          "y": 60
+        },
+        "style": {
+          "width": 310
+        },
+        "data": {
+          "id": "external-ywrapper-bool-value",
+          "kind": "external",
+          "label": "ywrapper.BoolValue",
+          "fields": []
+        }
+      },
+      {
+        "id": "external-ywrapper-bytes-value",
+        "type": "schema",
+        "position": {
+          "x": 2100,
+          "y": 165
+        },
+        "style": {
+          "width": 310
+        },
+        "data": {
+          "id": "external-ywrapper-bytes-value",
+          "kind": "external",
+          "label": "ywrapper.BytesValue",
+          "fields": []
+        }
+      },
+      {
+        "id": "external-ywrapper-string-value",
+        "type": "schema",
+        "position": {
+          "x": 2100,
+          "y": 270
+        },
+        "style": {
+          "width": 310
+        },
+        "data": {
+          "id": "external-ywrapper-string-value",
+          "kind": "external",
+          "label": "ywrapper.StringValue",
+          "fields": []
+        }
+      },
+      {
+        "id": "external-ywrapper-uint-value",
+        "type": "schema",
+        "position": {
+          "x": 2100,
+          "y": 375
+        },
+        "style": {
+          "width": 310
+        },
+        "data": {
+          "id": "external-ywrapper-uint-value",
+          "kind": "external",
+          "label": "ywrapper.UintValue",
+          "fields": []
+        }
+      }
+    ],
+    "edges": [
+      {
+        "id": "service-gribi-g-ribi:modify->rpc-gribi-g-ribi-modify",
+        "source": "service-gribi-g-ribi",
+        "sourceHandle": "modify",
+        "target": "rpc-gribi-g-ribi-modify",
+        "kind": "rpc",
+        "deprecated": false
+      },
+      {
+        "id": "service-gribi-g-ribi:get->rpc-gribi-g-ribi-get",
+        "source": "service-gribi-g-ribi",
+        "sourceHandle": "get",
+        "target": "rpc-gribi-g-ribi-get",
+        "kind": "rpc",
+        "deprecated": false
+      },
+      {
+        "id": "service-gribi-g-ribi:flush->rpc-gribi-g-ribi-flush",
+        "source": "service-gribi-g-ribi",
+        "sourceHandle": "flush",
+        "target": "rpc-gribi-g-ribi-flush",
+        "kind": "rpc",
+        "deprecated": false
+      },
+      {
+        "id": "rpc-gribi-g-ribi-modify:takes->gribi-modify-request",
+        "source": "rpc-gribi-g-ribi-modify",
+        "sourceHandle": "takes",
+        "target": "gribi-modify-request",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "rpc-gribi-g-ribi-modify:returns->gribi-modify-response",
+        "source": "rpc-gribi-g-ribi-modify",
+        "sourceHandle": "returns",
+        "target": "gribi-modify-response",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "rpc-gribi-g-ribi-get:takes->gribi-get-request",
+        "source": "rpc-gribi-g-ribi-get",
+        "sourceHandle": "takes",
+        "target": "gribi-get-request",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "rpc-gribi-g-ribi-get:returns->gribi-get-response",
+        "source": "rpc-gribi-g-ribi-get",
+        "sourceHandle": "returns",
+        "target": "gribi-get-response",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "rpc-gribi-g-ribi-flush:takes->gribi-flush-request",
+        "source": "rpc-gribi-g-ribi-flush",
+        "sourceHandle": "takes",
+        "target": "gribi-flush-request",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "rpc-gribi-g-ribi-flush:returns->gribi-flush-response",
+        "source": "rpc-gribi-g-ribi-flush",
+        "sourceHandle": "returns",
+        "target": "gribi-flush-response",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-aft-afts:backup-activation->gribi-aft-afts-backup-activation-key",
+        "source": "gribi-aft-afts",
+        "sourceHandle": "backup-activation",
+        "target": "gribi-aft-afts-backup-activation-key",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-aft-afts:ipv4-entry->gribi-aft-afts-ipv4-entry-key",
+        "source": "gribi-aft-afts",
+        "sourceHandle": "ipv4-entry",
+        "target": "gribi-aft-afts-ipv4-entry-key",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-aft-afts:ipv6-entry->gribi-aft-afts-ipv6-entry-key",
+        "source": "gribi-aft-afts",
+        "sourceHandle": "ipv6-entry",
+        "target": "gribi-aft-afts-ipv6-entry-key",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-aft-afts:label-entry->gribi-aft-afts-label-entry-key",
+        "source": "gribi-aft-afts",
+        "sourceHandle": "label-entry",
+        "target": "gribi-aft-afts-label-entry-key",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-aft-afts:mac-entry->gribi-aft-afts-mac-entry-key",
+        "source": "gribi-aft-afts",
+        "sourceHandle": "mac-entry",
+        "target": "gribi-aft-afts-mac-entry-key",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-aft-afts:next-hop->gribi-aft-afts-next-hop-group-next-hop-key",
+        "source": "gribi-aft-afts",
+        "sourceHandle": "next-hop",
+        "target": "gribi-aft-afts-next-hop-group-next-hop-key",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-aft-afts:next-hop-group->gribi-aft-afts-next-hop-group-key",
+        "source": "gribi-aft-afts",
+        "sourceHandle": "next-hop-group",
+        "target": "gribi-aft-afts-next-hop-group-key",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-aft-afts:policy-forwarding-entry->gribi-aft-afts-policy-forwarding-entry-key",
+        "source": "gribi-aft-afts",
+        "sourceHandle": "policy-forwarding-entry",
+        "target": "gribi-aft-afts-policy-forwarding-entry-key",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-aft-afts-backup-activation-key:backup-activation->gribi-aft-afts-backup-activation",
+        "source": "gribi-aft-afts-backup-activation-key",
+        "sourceHandle": "backup-activation",
+        "target": "gribi-aft-afts-backup-activation",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-aft-afts-ipv4-entry:decapsulate-header->gribi-aft-enums-openconfig-aft-types-encapsulation-header-type",
+        "source": "gribi-aft-afts-ipv4-entry",
+        "sourceHandle": "decapsulate-header",
+        "target": "gribi-aft-enums-openconfig-aft-types-encapsulation-header-type",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-aft-afts-ipv4-entry:entry-metadata->external-ywrapper-bytes-value",
+        "source": "gribi-aft-afts-ipv4-entry",
+        "sourceHandle": "entry-metadata",
+        "target": "external-ywrapper-bytes-value",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-aft-afts-ipv4-entry:next-hop-group->external-ywrapper-uint-value",
+        "source": "gribi-aft-afts-ipv4-entry",
+        "sourceHandle": "next-hop-group",
+        "target": "external-ywrapper-uint-value",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-aft-afts-ipv4-entry:next-hop-group-network-instance->external-ywrapper-string-value",
+        "source": "gribi-aft-afts-ipv4-entry",
+        "sourceHandle": "next-hop-group-network-instance",
+        "target": "external-ywrapper-string-value",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-aft-afts-ipv4-entry-key:ipv4-entry->gribi-aft-afts-ipv4-entry",
+        "source": "gribi-aft-afts-ipv4-entry-key",
+        "sourceHandle": "ipv4-entry",
+        "target": "gribi-aft-afts-ipv4-entry",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-aft-afts-ipv6-entry:decapsulate-header->gribi-aft-enums-openconfig-aft-types-encapsulation-header-type",
+        "source": "gribi-aft-afts-ipv6-entry",
+        "sourceHandle": "decapsulate-header",
+        "target": "gribi-aft-enums-openconfig-aft-types-encapsulation-header-type",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-aft-afts-ipv6-entry:entry-metadata->external-ywrapper-bytes-value",
+        "source": "gribi-aft-afts-ipv6-entry",
+        "sourceHandle": "entry-metadata",
+        "target": "external-ywrapper-bytes-value",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-aft-afts-ipv6-entry:next-hop-group->external-ywrapper-uint-value",
+        "source": "gribi-aft-afts-ipv6-entry",
+        "sourceHandle": "next-hop-group",
+        "target": "external-ywrapper-uint-value",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-aft-afts-ipv6-entry:next-hop-group-network-instance->external-ywrapper-string-value",
+        "source": "gribi-aft-afts-ipv6-entry",
+        "sourceHandle": "next-hop-group-network-instance",
+        "target": "external-ywrapper-string-value",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-aft-afts-ipv6-entry-key:ipv6-entry->gribi-aft-afts-ipv6-entry",
+        "source": "gribi-aft-afts-ipv6-entry-key",
+        "sourceHandle": "ipv6-entry",
+        "target": "gribi-aft-afts-ipv6-entry",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-aft-afts-label-entry:entry-metadata->external-ywrapper-bytes-value",
+        "source": "gribi-aft-afts-label-entry",
+        "sourceHandle": "entry-metadata",
+        "target": "external-ywrapper-bytes-value",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-aft-afts-label-entry:next-hop-group->external-ywrapper-uint-value",
+        "source": "gribi-aft-afts-label-entry",
+        "sourceHandle": "next-hop-group",
+        "target": "external-ywrapper-uint-value",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-aft-afts-label-entry:next-hop-group-network-instance->external-ywrapper-string-value",
+        "source": "gribi-aft-afts-label-entry",
+        "sourceHandle": "next-hop-group-network-instance",
+        "target": "external-ywrapper-string-value",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-aft-afts-label-entry:popped-mpls-label-stack->gribi-aft-afts-label-entry-popped-mpls-label-stack-union",
+        "source": "gribi-aft-afts-label-entry",
+        "sourceHandle": "popped-mpls-label-stack",
+        "target": "gribi-aft-afts-label-entry-popped-mpls-label-stack-union",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-aft-afts-label-entry-popped-mpls-label-stack-union:popped-mpls-label-stack-openconfigmplstypesmplslabelenum->gribi-aft-enums-openconfig-mpls-types-mpls-label-enum",
+        "source": "gribi-aft-afts-label-entry-popped-mpls-label-stack-union",
+        "sourceHandle": "popped-mpls-label-stack-openconfigmplstypesmplslabelenum",
+        "target": "gribi-aft-enums-openconfig-mpls-types-mpls-label-enum",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-aft-afts-label-entry-key:label-openconfigmplstypesmplslabelenum->gribi-aft-enums-openconfig-mpls-types-mpls-label-enum",
+        "source": "gribi-aft-afts-label-entry-key",
+        "sourceHandle": "label-openconfigmplstypesmplslabelenum",
+        "target": "gribi-aft-enums-openconfig-mpls-types-mpls-label-enum",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-aft-afts-label-entry-key:label-entry->gribi-aft-afts-label-entry",
+        "source": "gribi-aft-afts-label-entry-key",
+        "sourceHandle": "label-entry",
+        "target": "gribi-aft-afts-label-entry",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-aft-afts-mac-entry:entry-metadata->external-ywrapper-bytes-value",
+        "source": "gribi-aft-afts-mac-entry",
+        "sourceHandle": "entry-metadata",
+        "target": "external-ywrapper-bytes-value",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-aft-afts-mac-entry:next-hop-group->external-ywrapper-uint-value",
+        "source": "gribi-aft-afts-mac-entry",
+        "sourceHandle": "next-hop-group",
+        "target": "external-ywrapper-uint-value",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-aft-afts-mac-entry:next-hop-group-network-instance->external-ywrapper-string-value",
+        "source": "gribi-aft-afts-mac-entry",
+        "sourceHandle": "next-hop-group-network-instance",
+        "target": "external-ywrapper-string-value",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-aft-afts-mac-entry-key:mac-entry->gribi-aft-afts-mac-entry",
+        "source": "gribi-aft-afts-mac-entry-key",
+        "sourceHandle": "mac-entry",
+        "target": "gribi-aft-afts-mac-entry",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-aft-afts-next-hop:decapsulate-header->gribi-aft-enums-openconfig-aft-types-encapsulation-header-type",
+        "source": "gribi-aft-afts-next-hop",
+        "sourceHandle": "decapsulate-header",
+        "target": "gribi-aft-enums-openconfig-aft-types-encapsulation-header-type",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-aft-afts-next-hop:encap-header->gribi-aft-afts-next-hop-encap-header-key",
+        "source": "gribi-aft-afts-next-hop",
+        "sourceHandle": "encap-header",
+        "target": "gribi-aft-afts-next-hop-encap-header-key",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-aft-afts-next-hop:encapsulate-header->gribi-aft-enums-openconfig-aft-types-encapsulation-header-type",
+        "source": "gribi-aft-afts-next-hop",
+        "sourceHandle": "encapsulate-header",
+        "target": "gribi-aft-enums-openconfig-aft-types-encapsulation-header-type",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-aft-afts-next-hop:gre->gribi-aft-afts-next-hop-encap-header-gre",
+        "source": "gribi-aft-afts-next-hop",
+        "sourceHandle": "gre",
+        "target": "gribi-aft-afts-next-hop-encap-header-gre",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-aft-afts-next-hop:interface-ref->gribi-aft-afts-next-hop-interface-ref",
+        "source": "gribi-aft-afts-next-hop",
+        "sourceHandle": "interface-ref",
+        "target": "gribi-aft-afts-next-hop-interface-ref",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-aft-afts-next-hop:ip-address->external-ywrapper-string-value",
+        "source": "gribi-aft-afts-next-hop",
+        "sourceHandle": "ip-address",
+        "target": "external-ywrapper-string-value",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-aft-afts-next-hop:ip-in-ip->gribi-aft-afts-next-hop-ip-in-ip",
+        "source": "gribi-aft-afts-next-hop",
+        "sourceHandle": "ip-in-ip",
+        "target": "gribi-aft-afts-next-hop-ip-in-ip",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-aft-afts-next-hop:mac-address->external-ywrapper-string-value",
+        "source": "gribi-aft-afts-next-hop",
+        "sourceHandle": "mac-address",
+        "target": "external-ywrapper-string-value",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-aft-afts-next-hop:network-instance->external-ywrapper-string-value",
+        "source": "gribi-aft-afts-next-hop",
+        "sourceHandle": "network-instance",
+        "target": "external-ywrapper-string-value",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-aft-afts-next-hop:pop-top-label->external-ywrapper-bool-value",
+        "source": "gribi-aft-afts-next-hop",
+        "sourceHandle": "pop-top-label",
+        "target": "external-ywrapper-bool-value",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-aft-afts-next-hop:pushed-mpls-label-stack->gribi-aft-afts-next-hop-pushed-mpls-label-stack-union",
+        "source": "gribi-aft-afts-next-hop",
+        "sourceHandle": "pushed-mpls-label-stack",
+        "target": "gribi-aft-afts-next-hop-pushed-mpls-label-stack-union",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-aft-afts-next-hop:tunnel-src-ip-address->external-ywrapper-string-value",
+        "source": "gribi-aft-afts-next-hop",
+        "sourceHandle": "tunnel-src-ip-address",
+        "target": "external-ywrapper-string-value",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-aft-afts-next-hop:vni-label->external-ywrapper-uint-value",
+        "source": "gribi-aft-afts-next-hop",
+        "sourceHandle": "vni-label",
+        "target": "external-ywrapper-uint-value",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-aft-afts-next-hop-encap-header:gre->gribi-aft-afts-next-hop-gre",
+        "source": "gribi-aft-afts-next-hop-encap-header",
+        "sourceHandle": "gre",
+        "target": "gribi-aft-afts-next-hop-gre",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-aft-afts-next-hop-encap-header:ipv4->gribi-aft-afts-next-hop-encap-header-ipv4",
+        "source": "gribi-aft-afts-next-hop-encap-header",
+        "sourceHandle": "ipv4",
+        "target": "gribi-aft-afts-next-hop-encap-header-ipv4",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-aft-afts-next-hop-encap-header:ipv6->gribi-aft-afts-next-hop-encap-header-ipv6",
+        "source": "gribi-aft-afts-next-hop-encap-header",
+        "sourceHandle": "ipv6",
+        "target": "gribi-aft-afts-next-hop-encap-header-ipv6",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-aft-afts-next-hop-encap-header:mpls->gribi-aft-afts-next-hop-encap-header-mpls",
+        "source": "gribi-aft-afts-next-hop-encap-header",
+        "sourceHandle": "mpls",
+        "target": "gribi-aft-afts-next-hop-encap-header-mpls",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-aft-afts-next-hop-encap-header:type->gribi-aft-enums-openconfig-aft-types-encapsulation-header-type",
+        "source": "gribi-aft-afts-next-hop-encap-header",
+        "sourceHandle": "type",
+        "target": "gribi-aft-enums-openconfig-aft-types-encapsulation-header-type",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-aft-afts-next-hop-encap-header:udp-v4->gribi-aft-afts-next-hop-encap-header-udp-v4",
+        "source": "gribi-aft-afts-next-hop-encap-header",
+        "sourceHandle": "udp-v4",
+        "target": "gribi-aft-afts-next-hop-encap-header-udp-v4",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-aft-afts-next-hop-encap-header:udp-v6->gribi-aft-afts-next-hop-encap-header-udp-v6",
+        "source": "gribi-aft-afts-next-hop-encap-header",
+        "sourceHandle": "udp-v6",
+        "target": "gribi-aft-afts-next-hop-encap-header-udp-v6",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-aft-afts-next-hop-encap-header-gre:dst-ip->external-ywrapper-string-value",
+        "source": "gribi-aft-afts-next-hop-encap-header-gre",
+        "sourceHandle": "dst-ip",
+        "target": "external-ywrapper-string-value",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-aft-afts-next-hop-encap-header-gre:src-ip->external-ywrapper-string-value",
+        "source": "gribi-aft-afts-next-hop-encap-header-gre",
+        "sourceHandle": "src-ip",
+        "target": "external-ywrapper-string-value",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-aft-afts-next-hop-encap-header-gre:ttl->external-ywrapper-uint-value",
+        "source": "gribi-aft-afts-next-hop-encap-header-gre",
+        "sourceHandle": "ttl",
+        "target": "external-ywrapper-uint-value",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-aft-afts-next-hop-encap-header-ipv4:dst-ip->external-ywrapper-string-value",
+        "source": "gribi-aft-afts-next-hop-encap-header-ipv4",
+        "sourceHandle": "dst-ip",
+        "target": "external-ywrapper-string-value",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-aft-afts-next-hop-encap-header-ipv4:src-ip->external-ywrapper-string-value",
+        "source": "gribi-aft-afts-next-hop-encap-header-ipv4",
+        "sourceHandle": "src-ip",
+        "target": "external-ywrapper-string-value",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-aft-afts-next-hop-encap-header-ipv6:dst-ip->external-ywrapper-string-value",
+        "source": "gribi-aft-afts-next-hop-encap-header-ipv6",
+        "sourceHandle": "dst-ip",
+        "target": "external-ywrapper-string-value",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-aft-afts-next-hop-encap-header-ipv6:src-ip->external-ywrapper-string-value",
+        "source": "gribi-aft-afts-next-hop-encap-header-ipv6",
+        "sourceHandle": "src-ip",
+        "target": "external-ywrapper-string-value",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-aft-afts-next-hop-encap-header-mpls:mpls-label-stack->gribi-aft-afts-next-hop-encap-header-mpls-mpls-label-stack-union",
+        "source": "gribi-aft-afts-next-hop-encap-header-mpls",
+        "sourceHandle": "mpls-label-stack",
+        "target": "gribi-aft-afts-next-hop-encap-header-mpls-mpls-label-stack-union",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-aft-afts-next-hop-encap-header-mpls:traffic-class->external-ywrapper-uint-value",
+        "source": "gribi-aft-afts-next-hop-encap-header-mpls",
+        "sourceHandle": "traffic-class",
+        "target": "external-ywrapper-uint-value",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-aft-afts-next-hop-encap-header-mpls-mpls-label-stack-union:mpls-label-stack-openconfigmplstypesmplslabelenum->gribi-aft-enums-openconfig-mpls-types-mpls-label-enum",
+        "source": "gribi-aft-afts-next-hop-encap-header-mpls-mpls-label-stack-union",
+        "sourceHandle": "mpls-label-stack-openconfigmplstypesmplslabelenum",
+        "target": "gribi-aft-enums-openconfig-mpls-types-mpls-label-enum",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-aft-afts-next-hop-encap-header-udp-v4:dscp->external-ywrapper-uint-value",
+        "source": "gribi-aft-afts-next-hop-encap-header-udp-v4",
+        "sourceHandle": "dscp",
+        "target": "external-ywrapper-uint-value",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-aft-afts-next-hop-encap-header-udp-v4:dst-ip->external-ywrapper-string-value",
+        "source": "gribi-aft-afts-next-hop-encap-header-udp-v4",
+        "sourceHandle": "dst-ip",
+        "target": "external-ywrapper-string-value",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-aft-afts-next-hop-encap-header-udp-v4:dst-udp-port->external-ywrapper-uint-value",
+        "source": "gribi-aft-afts-next-hop-encap-header-udp-v4",
+        "sourceHandle": "dst-udp-port",
+        "target": "external-ywrapper-uint-value",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-aft-afts-next-hop-encap-header-udp-v4:ip-ttl->external-ywrapper-uint-value",
+        "source": "gribi-aft-afts-next-hop-encap-header-udp-v4",
+        "sourceHandle": "ip-ttl",
+        "target": "external-ywrapper-uint-value",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-aft-afts-next-hop-encap-header-udp-v4:src-ip->external-ywrapper-string-value",
+        "source": "gribi-aft-afts-next-hop-encap-header-udp-v4",
+        "sourceHandle": "src-ip",
+        "target": "external-ywrapper-string-value",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-aft-afts-next-hop-encap-header-udp-v4:src-udp-port->external-ywrapper-uint-value",
+        "source": "gribi-aft-afts-next-hop-encap-header-udp-v4",
+        "sourceHandle": "src-udp-port",
+        "target": "external-ywrapper-uint-value",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-aft-afts-next-hop-encap-header-udp-v6:dscp->external-ywrapper-uint-value",
+        "source": "gribi-aft-afts-next-hop-encap-header-udp-v6",
+        "sourceHandle": "dscp",
+        "target": "external-ywrapper-uint-value",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-aft-afts-next-hop-encap-header-udp-v6:dst-ip->external-ywrapper-string-value",
+        "source": "gribi-aft-afts-next-hop-encap-header-udp-v6",
+        "sourceHandle": "dst-ip",
+        "target": "external-ywrapper-string-value",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-aft-afts-next-hop-encap-header-udp-v6:dst-udp-port->external-ywrapper-uint-value",
+        "source": "gribi-aft-afts-next-hop-encap-header-udp-v6",
+        "sourceHandle": "dst-udp-port",
+        "target": "external-ywrapper-uint-value",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-aft-afts-next-hop-encap-header-udp-v6:ip-ttl->external-ywrapper-uint-value",
+        "source": "gribi-aft-afts-next-hop-encap-header-udp-v6",
+        "sourceHandle": "ip-ttl",
+        "target": "external-ywrapper-uint-value",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-aft-afts-next-hop-encap-header-udp-v6:src-ip->external-ywrapper-string-value",
+        "source": "gribi-aft-afts-next-hop-encap-header-udp-v6",
+        "sourceHandle": "src-ip",
+        "target": "external-ywrapper-string-value",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-aft-afts-next-hop-encap-header-udp-v6:src-udp-port->external-ywrapper-uint-value",
+        "source": "gribi-aft-afts-next-hop-encap-header-udp-v6",
+        "sourceHandle": "src-udp-port",
+        "target": "external-ywrapper-uint-value",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-aft-afts-next-hop-encap-header-key:encap-header->gribi-aft-afts-next-hop-encap-header",
+        "source": "gribi-aft-afts-next-hop-encap-header-key",
+        "sourceHandle": "encap-header",
+        "target": "gribi-aft-afts-next-hop-encap-header",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-aft-afts-next-hop-gre:dst-ip->external-ywrapper-string-value",
+        "source": "gribi-aft-afts-next-hop-gre",
+        "sourceHandle": "dst-ip",
+        "target": "external-ywrapper-string-value",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-aft-afts-next-hop-gre:src-ip->external-ywrapper-string-value",
+        "source": "gribi-aft-afts-next-hop-gre",
+        "sourceHandle": "src-ip",
+        "target": "external-ywrapper-string-value",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-aft-afts-next-hop-gre:ttl->external-ywrapper-uint-value",
+        "source": "gribi-aft-afts-next-hop-gre",
+        "sourceHandle": "ttl",
+        "target": "external-ywrapper-uint-value",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-aft-afts-next-hop-interface-ref:interface->external-ywrapper-string-value",
+        "source": "gribi-aft-afts-next-hop-interface-ref",
+        "sourceHandle": "interface",
+        "target": "external-ywrapper-string-value",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-aft-afts-next-hop-interface-ref:subinterface->external-ywrapper-uint-value",
+        "source": "gribi-aft-afts-next-hop-interface-ref",
+        "sourceHandle": "subinterface",
+        "target": "external-ywrapper-uint-value",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-aft-afts-next-hop-ip-in-ip:dst-ip->external-ywrapper-string-value",
+        "source": "gribi-aft-afts-next-hop-ip-in-ip",
+        "sourceHandle": "dst-ip",
+        "target": "external-ywrapper-string-value",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-aft-afts-next-hop-ip-in-ip:src-ip->external-ywrapper-string-value",
+        "source": "gribi-aft-afts-next-hop-ip-in-ip",
+        "sourceHandle": "src-ip",
+        "target": "external-ywrapper-string-value",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-aft-afts-next-hop-pushed-mpls-label-stack-union:pushed-mpls-label-stack-openconfigmplstypesmplslabelenum->gribi-aft-enums-openconfig-mpls-types-mpls-label-enum",
+        "source": "gribi-aft-afts-next-hop-pushed-mpls-label-stack-union",
+        "sourceHandle": "pushed-mpls-label-stack-openconfigmplstypesmplslabelenum",
+        "target": "gribi-aft-enums-openconfig-mpls-types-mpls-label-enum",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-aft-afts-next-hop-group:backup-next-hop-group->external-ywrapper-uint-value",
+        "source": "gribi-aft-afts-next-hop-group",
+        "sourceHandle": "backup-next-hop-group",
+        "target": "external-ywrapper-uint-value",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-aft-afts-next-hop-group:color->external-ywrapper-uint-value",
+        "source": "gribi-aft-afts-next-hop-group",
+        "sourceHandle": "color",
+        "target": "external-ywrapper-uint-value",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-aft-afts-next-hop-group:next-hop->gribi-aft-afts-next-hop-key",
+        "source": "gribi-aft-afts-next-hop-group",
+        "sourceHandle": "next-hop",
+        "target": "gribi-aft-afts-next-hop-key",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-aft-afts-next-hop-group-next-hop:weight->external-ywrapper-uint-value",
+        "source": "gribi-aft-afts-next-hop-group-next-hop",
+        "sourceHandle": "weight",
+        "target": "external-ywrapper-uint-value",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-aft-afts-next-hop-group-next-hop-key:next-hop->gribi-aft-afts-next-hop-group-next-hop",
+        "source": "gribi-aft-afts-next-hop-group-next-hop-key",
+        "sourceHandle": "next-hop",
+        "target": "gribi-aft-afts-next-hop-group-next-hop",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-aft-afts-next-hop-group-key:next-hop-group->gribi-aft-afts-next-hop-group",
+        "source": "gribi-aft-afts-next-hop-group-key",
+        "sourceHandle": "next-hop-group",
+        "target": "gribi-aft-afts-next-hop-group",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-aft-afts-next-hop-key:next-hop->gribi-aft-afts-next-hop",
+        "source": "gribi-aft-afts-next-hop-key",
+        "sourceHandle": "next-hop",
+        "target": "gribi-aft-afts-next-hop",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-aft-afts-policy-forwarding-entry:entry-metadata->external-ywrapper-bytes-value",
+        "source": "gribi-aft-afts-policy-forwarding-entry",
+        "sourceHandle": "entry-metadata",
+        "target": "external-ywrapper-bytes-value",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-aft-afts-policy-forwarding-entry:ip-dscp->external-ywrapper-uint-value",
+        "source": "gribi-aft-afts-policy-forwarding-entry",
+        "sourceHandle": "ip-dscp",
+        "target": "external-ywrapper-uint-value",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-aft-afts-policy-forwarding-entry:ip-prefix->external-ywrapper-string-value",
+        "source": "gribi-aft-afts-policy-forwarding-entry",
+        "sourceHandle": "ip-prefix",
+        "target": "external-ywrapper-string-value",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-aft-afts-policy-forwarding-entry:ip-protocol-openconfigpacketmatchtypesipprotocol->gribi-aft-enums-openconfig-packet-match-types-ipprotocol",
+        "source": "gribi-aft-afts-policy-forwarding-entry",
+        "sourceHandle": "ip-protocol-openconfigpacketmatchtypesipprotocol",
+        "target": "gribi-aft-enums-openconfig-packet-match-types-ipprotocol",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-aft-afts-policy-forwarding-entry:l4-dst-port->external-ywrapper-uint-value",
+        "source": "gribi-aft-afts-policy-forwarding-entry",
+        "sourceHandle": "l4-dst-port",
+        "target": "external-ywrapper-uint-value",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-aft-afts-policy-forwarding-entry:l4-src-port->external-ywrapper-uint-value",
+        "source": "gribi-aft-afts-policy-forwarding-entry",
+        "sourceHandle": "l4-src-port",
+        "target": "external-ywrapper-uint-value",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-aft-afts-policy-forwarding-entry:mac-address->external-ywrapper-string-value",
+        "source": "gribi-aft-afts-policy-forwarding-entry",
+        "sourceHandle": "mac-address",
+        "target": "external-ywrapper-string-value",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-aft-afts-policy-forwarding-entry:mpls-label-openconfigmplstypesmplslabelenum->gribi-aft-enums-openconfig-mpls-types-mpls-label-enum",
+        "source": "gribi-aft-afts-policy-forwarding-entry",
+        "sourceHandle": "mpls-label-openconfigmplstypesmplslabelenum",
+        "target": "gribi-aft-enums-openconfig-mpls-types-mpls-label-enum",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-aft-afts-policy-forwarding-entry:mpls-tc->external-ywrapper-uint-value",
+        "source": "gribi-aft-afts-policy-forwarding-entry",
+        "sourceHandle": "mpls-tc",
+        "target": "external-ywrapper-uint-value",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-aft-afts-policy-forwarding-entry:next-hop-group->external-ywrapper-uint-value",
+        "source": "gribi-aft-afts-policy-forwarding-entry",
+        "sourceHandle": "next-hop-group",
+        "target": "external-ywrapper-uint-value",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-aft-afts-policy-forwarding-entry:next-hop-group-network-instance->external-ywrapper-string-value",
+        "source": "gribi-aft-afts-policy-forwarding-entry",
+        "sourceHandle": "next-hop-group-network-instance",
+        "target": "external-ywrapper-string-value",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-aft-afts-policy-forwarding-entry-key:policy-forwarding-entry->gribi-aft-afts-policy-forwarding-entry",
+        "source": "gribi-aft-afts-policy-forwarding-entry-key",
+        "sourceHandle": "policy-forwarding-entry",
+        "target": "gribi-aft-afts-policy-forwarding-entry",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-aft-device:afts->gribi-aft-afts",
+        "source": "gribi-aft-device",
+        "sourceHandle": "afts",
+        "target": "gribi-aft-afts",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-aftentry:ipv4->gribi-aft-afts-ipv4-entry-key",
+        "source": "gribi-aftentry",
+        "sourceHandle": "ipv4",
+        "target": "gribi-aft-afts-ipv4-entry-key",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-aftentry:ipv6->gribi-aft-afts-ipv6-entry-key",
+        "source": "gribi-aftentry",
+        "sourceHandle": "ipv6",
+        "target": "gribi-aft-afts-ipv6-entry-key",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-aftentry:mpls->gribi-aft-afts-label-entry-key",
+        "source": "gribi-aftentry",
+        "sourceHandle": "mpls",
+        "target": "gribi-aft-afts-label-entry-key",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-aftentry:next-hop-group->gribi-aft-afts-next-hop-group-key",
+        "source": "gribi-aftentry",
+        "sourceHandle": "next-hop-group",
+        "target": "gribi-aft-afts-next-hop-group-key",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-aftentry:next-hop->gribi-aft-afts-next-hop-key",
+        "source": "gribi-aftentry",
+        "sourceHandle": "next-hop",
+        "target": "gribi-aft-afts-next-hop-key",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-aftentry:mac-entry->gribi-aft-afts-mac-entry-key",
+        "source": "gribi-aftentry",
+        "sourceHandle": "mac-entry",
+        "target": "gribi-aft-afts-mac-entry-key",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-aftentry:policy-forwarding-entry->gribi-aft-afts-policy-forwarding-entry-key",
+        "source": "gribi-aftentry",
+        "sourceHandle": "policy-forwarding-entry",
+        "target": "gribi-aft-afts-policy-forwarding-entry-key",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-aftentry:backup-activation->gribi-aft-afts-backup-activation-key",
+        "source": "gribi-aftentry",
+        "sourceHandle": "backup-activation",
+        "target": "gribi-aft-afts-backup-activation-key",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-aftentry:rib-status->gribi-aftresult-status",
+        "source": "gribi-aftentry",
+        "sourceHandle": "rib-status",
+        "target": "gribi-aftresult-status",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-aftentry:fib-status->gribi-aftresult-status",
+        "source": "gribi-aftentry",
+        "sourceHandle": "fib-status",
+        "target": "gribi-aftresult-status",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-aftoperation:op->gribi-aftoperation-operation",
+        "source": "gribi-aftoperation",
+        "sourceHandle": "op",
+        "target": "gribi-aftoperation-operation",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-aftoperation:ipv4->gribi-aft-afts-ipv4-entry-key",
+        "source": "gribi-aftoperation",
+        "sourceHandle": "ipv4",
+        "target": "gribi-aft-afts-ipv4-entry-key",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-aftoperation:ipv6->gribi-aft-afts-ipv6-entry-key",
+        "source": "gribi-aftoperation",
+        "sourceHandle": "ipv6",
+        "target": "gribi-aft-afts-ipv6-entry-key",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-aftoperation:mpls->gribi-aft-afts-label-entry-key",
+        "source": "gribi-aftoperation",
+        "sourceHandle": "mpls",
+        "target": "gribi-aft-afts-label-entry-key",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-aftoperation:next-hop-group->gribi-aft-afts-next-hop-group-key",
+        "source": "gribi-aftoperation",
+        "sourceHandle": "next-hop-group",
+        "target": "gribi-aft-afts-next-hop-group-key",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-aftoperation:next-hop->gribi-aft-afts-next-hop-key",
+        "source": "gribi-aftoperation",
+        "sourceHandle": "next-hop",
+        "target": "gribi-aft-afts-next-hop-key",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-aftoperation:mac-entry->gribi-aft-afts-mac-entry-key",
+        "source": "gribi-aftoperation",
+        "sourceHandle": "mac-entry",
+        "target": "gribi-aft-afts-mac-entry-key",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-aftoperation:policy-forwarding-entry->gribi-aft-afts-policy-forwarding-entry-key",
+        "source": "gribi-aftoperation",
+        "sourceHandle": "policy-forwarding-entry",
+        "target": "gribi-aft-afts-policy-forwarding-entry-key",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-aftoperation:backup-activation->gribi-aft-afts-backup-activation-key",
+        "source": "gribi-aftoperation",
+        "sourceHandle": "backup-activation",
+        "target": "gribi-aft-afts-backup-activation-key",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-aftoperation:election-id->gribi-uint128",
+        "source": "gribi-aftoperation",
+        "sourceHandle": "election-id",
+        "target": "gribi-uint128",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-aftresult:status->gribi-aftresult-status",
+        "source": "gribi-aftresult",
+        "sourceHandle": "status",
+        "target": "gribi-aftresult-status",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-aftresult:error-details->gribi-afterror-details",
+        "source": "gribi-aftresult",
+        "sourceHandle": "error-details",
+        "target": "gribi-afterror-details",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-flush-request:id->gribi-uint128",
+        "source": "gribi-flush-request",
+        "sourceHandle": "id",
+        "target": "gribi-uint128",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-flush-request:override->gribi-empty",
+        "source": "gribi-flush-request",
+        "sourceHandle": "override",
+        "target": "gribi-empty",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-flush-request:all->gribi-empty",
+        "source": "gribi-flush-request",
+        "sourceHandle": "all",
+        "target": "gribi-empty",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-flush-response:result->gribi-flush-response-result",
+        "source": "gribi-flush-response",
+        "sourceHandle": "result",
+        "target": "gribi-flush-response-result",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-flush-response-error:status->gribi-modify-rpcerror-details-reason",
+        "source": "gribi-flush-response-error",
+        "sourceHandle": "status",
+        "target": "gribi-modify-rpcerror-details-reason",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-get-request:all->gribi-empty",
+        "source": "gribi-get-request",
+        "sourceHandle": "all",
+        "target": "gribi-empty",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-get-request:aft->gribi-afttype",
+        "source": "gribi-get-request",
+        "sourceHandle": "aft",
+        "target": "gribi-afttype",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-get-response:entry->gribi-aftentry",
+        "source": "gribi-get-response",
+        "sourceHandle": "entry",
+        "target": "gribi-aftentry",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-modify-request:operation->gribi-aftoperation",
+        "source": "gribi-modify-request",
+        "sourceHandle": "operation",
+        "target": "gribi-aftoperation",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-modify-request:params->gribi-session-parameters",
+        "source": "gribi-modify-request",
+        "sourceHandle": "params",
+        "target": "gribi-session-parameters",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-modify-request:election-id->gribi-uint128",
+        "source": "gribi-modify-request",
+        "sourceHandle": "election-id",
+        "target": "gribi-uint128",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-modify-response:result->gribi-aftresult",
+        "source": "gribi-modify-response",
+        "sourceHandle": "result",
+        "target": "gribi-aftresult",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-modify-response:session-params-result->gribi-session-parameters-result",
+        "source": "gribi-modify-response",
+        "sourceHandle": "session-params-result",
+        "target": "gribi-session-parameters-result",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-modify-response:election-id->gribi-uint128",
+        "source": "gribi-modify-response",
+        "sourceHandle": "election-id",
+        "target": "gribi-uint128",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-modify-rpcerror-details:reason->gribi-modify-rpcerror-details-reason",
+        "source": "gribi-modify-rpcerror-details",
+        "sourceHandle": "reason",
+        "target": "gribi-modify-rpcerror-details-reason",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-session-parameters:redundancy->gribi-session-parameters-client-redundancy",
+        "source": "gribi-session-parameters",
+        "sourceHandle": "redundancy",
+        "target": "gribi-session-parameters-client-redundancy",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-session-parameters:persistence->gribi-session-parameters-aftpersistence",
+        "source": "gribi-session-parameters",
+        "sourceHandle": "persistence",
+        "target": "gribi-session-parameters-aftpersistence",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-session-parameters:ack-type->gribi-session-parameters-aftresult-status-type",
+        "source": "gribi-session-parameters",
+        "sourceHandle": "ack-type",
+        "target": "gribi-session-parameters-aftresult-status-type",
+        "kind": "field",
+        "deprecated": false
+      },
+      {
+        "id": "gribi-session-parameters-result:status->gribi-aftresult-status",
+        "source": "gribi-session-parameters-result",
+        "sourceHandle": "status",
+        "target": "gribi-aftresult-status",
+        "kind": "field",
+        "deprecated": false
+      }
+    ],
+    "bounds": {
+      "width": 2490,
+      "height": 2780
+    }
+  },
   {
     "tag": "v1.9.1",
     "githubBase": "https://github.com/openconfig/gribi/blob/v1.9.1",
